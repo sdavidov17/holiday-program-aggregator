@@ -11,24 +11,49 @@ export default function Home() {
         <meta name="description" content="Find the perfect holiday programs for your children" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Holiday Program <span className="text-[hsl(280,100%,70%)]">Aggregator</span>
+      <main style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(to bottom, #2e026d, #15162c)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '3rem',
+          padding: '4rem 1rem'
+        }}>
+          <h1 style={{
+            fontSize: '3rem',
+            fontWeight: 'bold',
+            color: 'white',
+            textAlign: 'center'
+          }}>
+            Holiday Program <span style={{color: '#c084fc'}}>Aggregator</span>
           </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <div className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20">
-              <h3 className="text-2xl font-bold">Health Check →</h3>
-              <div className="text-lg">
-                {healthz.data ? (
-                  <div>
-                    <p>Status: {healthz.data.status}</p>
-                    <p>Time: {new Date(healthz.data.timestamp).toLocaleString()}</p>
-                  </div>
-                ) : (
-                  <p>Loading...</p>
-                )}
-              </div>
+          <div style={{
+            maxWidth: '320px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            padding: '1rem',
+            borderRadius: '12px',
+            color: 'white'
+          }}>
+            <h3 style={{fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem'}}>
+              Health Check →
+            </h3>
+            <div style={{fontSize: '1.125rem'}}>
+              {healthz.data ? (
+                <div>
+                  <p>Status: {healthz.data.status}</p>
+                  <p>Time: {new Date(healthz.data.timestamp).toLocaleString()}</p>
+                </div>
+              ) : (
+                <p>Loading...</p>
+              )}
             </div>
           </div>
         </div>
