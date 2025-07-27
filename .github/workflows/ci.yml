@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, epic-* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'pnpm'
+    
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+    
+    - name: Install dependencies
+      run: pnpm install
+    
+    - name: Run linting
+      run: pnpm lint
+    
+    - name: Run type checking
+      run: pnpm type-check
+    
+    - name: Run tests
+      run: pnpm test
+    
+    - name: Build application
+      run: pnpm build
+
+  deploy-preview:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    needs: test
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to Vercel (Preview)
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        scope: ${{ secrets.VERCEL_ORG_ID }}

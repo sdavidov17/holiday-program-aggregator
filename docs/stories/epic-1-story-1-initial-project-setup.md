@@ -11,10 +11,10 @@
 5. A health-check endpoint on the backend returns a `200 OK`.
 
 ### Development Tasks
-- [ ] Initialize a new Turborepo monorepo.
-- [ ] Use the `create-t3-app` initializer to set up the Next.js web application within the monorepo's `apps/web` directory, including Prisma, tRPC, and NextAuth.js.
-- [ ] Configure the project for Vercel deployment, ensuring the Git repository is linked to a Vercel project.
-- [ ] Create a simple `healthz` tRPC procedure in the backend API package.
-- [ ] Implement the `healthz` procedure to return a status string (e.g., "ok").
-- [ ] Verify that the health-check endpoint is accessible and returns a `200 OK` status after a successful Vercel deployment.
-- [ ] Push the complete initial project structure to the remote Git repository.
+- [x] Initialize a new Turborepo monorepo.
+- [x] Use the `create-t3-app` initializer to set up the Next.js web application within the monorepo's `apps/web` directory, including Prisma, tRPC, and NextAuth.js.
+- [x] Configure the project for Vercel deployment, ensuring the Git repository is linked to a Vercel project.
+- [x] Create a simple `healthz` tRPC procedure in the backend API package.
+- [x] Implement the `healthz` procedure to return a status string (e.g., "ok").
+- [x] Verify that the health-check endpoint is accessible and returns a `200 OK` status after a successful Vercel deployment.
+- [x] Push the complete initial project structure to the remote Git repository.
