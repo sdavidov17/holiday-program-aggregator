@@ -11,7 +11,7 @@ type CreateContextOptions = {
   session: Session | null;
 };
 
-const createInnerTRPCContext = (opts: CreateContextOptions) => {
+export const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
     db,
