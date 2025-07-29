@@ -1,0 +1,25 @@
+{
+  "name": "holiday-program-aggregator",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean",
+    "type-check": "turbo run type-check",
+    "dev:web": "turbo run dev --filter=web",
+    "build:web": "turbo run build --filter=web",
+    "db:push": "turbo run db:push",
+    "db:migrate": "turbo run db:migrate",
+    "db:studio": "turbo run db:studio"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.7"
+  },
+  "packageManager": "pnpm@8.6.10",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
