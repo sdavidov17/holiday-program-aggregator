@@ -9,6 +9,8 @@
     "start": "next start",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "type-check": "tsc --noEmit",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
@@ -32,6 +34,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.40.0",
     "@types/eslint": "^8.44.2",
     "@types/jest": "^29.5.5",
     "@types/node": "^18.16.0",
