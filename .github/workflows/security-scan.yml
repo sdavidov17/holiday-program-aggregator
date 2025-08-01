@@ -94,26 +94,40 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          pnpm install --frozen-lockfile
+          # Install jq for JSON parsing
+          sudo apt-get update && sudo apt-get install -y jq
 
       - name: Check licenses
         run: |
-          # Install license checker locally
+          # Install license checker globally
+          npm install -g license-checker
+          
+          # Check licenses in web app
           cd apps/web
-          pnpm add -D license-checker
           
           # Generate license report
-          npx license-checker --json --out licenses.json
+          license-checker --json --out licenses.json --excludePrivatePackages
           
-          # Check for problematic licenses
+          # Check for problematic licenses (case-insensitive)
           PROBLEMATIC_LICENSES="GPL|AGPL|LGPL|SSPL|Commons-Clause"
           
-          if grep -E "$PROBLEMATIC_LICENSES" licenses.json; then
-            echo "::error::Found packages with potentially problematic licenses"
+          if [ -f licenses.json ]; then
+            # Use jq to check license fields properly
+            PROBLEMATIC=$(cat licenses.json | jq -r 'to_entries[] | select(.value.licenses | test("'$PROBLEMATIC_LICENSES'"; "i")) | .key' || true)
+            
+            if [ ! -z "$PROBLEMATIC" ]; then
+              echo "::error::Found packages with potentially problematic licenses:"
+              echo "$PROBLEMATIC"
+              exit 1
+            fi
+            
+            echo "✅ License check passed - no problematic licenses found"
+          else
+            echo "::error::Failed to generate license report"
             exit 1
           fi
-          
-          echo "License check passed"
 
       - name: Upload license report
         if: always()
@@ -230,22 +244,41 @@ jobs:
           node-version: '18'
           cache: 'pnpm'
 
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Check outdated packages
         run: |
           echo "Checking for outdated packages..."
-          pnpm outdated --format json > outdated.json || true
+          cd apps/web
           
-          # Count outdated packages
+          # Get outdated packages
+          pnpm outdated --format json > outdated.json 2>/dev/null || true
+          
+          # Check if file exists and has content
           if [ -f outdated.json ] && [ -s outdated.json ]; then
-            OUTDATED_COUNT=$(cat outdated.json | jq 'length')
-            echo "Found $OUTDATED_COUNT outdated packages"
+            # Parse the JSON properly
+            OUTDATED_COUNT=$(cat outdated.json | jq 'length' 2>/dev/null || echo "0")
             
-            # Show major version updates
-            echo "Packages with major version updates:"
-            cat outdated.json | jq -r 'to_entries[] | select(.value.current != .value.wanted) | "\(.key): \(.value.current) -> \(.value.latest)"'
+            if [ "$OUTDATED_COUNT" != "0" ]; then
+              echo "::warning::Found $OUTDATED_COUNT outdated packages"
+              
+              # Show packages with major version updates
+              echo "Packages with available updates:"
+              cat outdated.json | jq -r 'to_entries[] | "\(.key): \(.value.current) -> \(.value.latest) (wanted: \(.value.wanted))"' 2>/dev/null || true
+              
+              # Only fail if there are critical security updates needed
+              # For now, we'll just warn about outdated packages
+              echo "✅ Outdated packages check completed (non-blocking)"
+            else
+              echo "✅ All packages are up to date"
+            fi
           else
-            echo "All packages are up to date"
+            echo "✅ No outdated packages found"
           fi
+          
+          # Always exit 0 to not fail the build
+          exit 0
 
       - name: Upload outdated report
         if: always()
