@@ -1,0 +1,297 @@
+{
+  "@next-auth/prisma-adapter@1.0.7": {
+    "licenses": "ISC",
+    "repository": "https://github.com/nextauthjs/next-auth",
+    "publisher": "William Luke",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@next-auth/prisma-adapter",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@next-auth/prisma-adapter/LICENSE"
+  },
+  "@playwright/test@1.54.1": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/microsoft/playwright",
+    "publisher": "Microsoft Corporation",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@playwright/test",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@playwright/test/LICENSE",
+    "noticeFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@playwright/test/NOTICE"
+  },
+  "@prisma/client@5.1.1": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/prisma/prisma",
+    "publisher": "Tim Suchanek",
+    "email": "suchanek@prisma.io",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@prisma/client",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@prisma/client/LICENSE"
+  },
+  "@t3-oss/env-nextjs@0.6.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/t3-oss/t3-env",
+    "publisher": "Julius Marminge",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@t3-oss/env-nextjs",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@t3-oss/env-nextjs/LICENSE"
+  },
+  "@tanstack/react-query@4.32.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/TanStack/query",
+    "publisher": "tannerlinsley",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@tanstack/react-query",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@tanstack/react-query/LICENSE"
+  },
+  "@testing-library/jest-dom@6.6.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/testing-library/jest-dom",
+    "publisher": "Ernesto Garcia",
+    "email": "gnapse@gmail.com",
+    "url": "http://gnapse.github.io",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@testing-library/jest-dom",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@testing-library/jest-dom/LICENSE"
+  },
+  "@testing-library/react@16.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/testing-library/react-testing-library",
+    "publisher": "Kent C. Dodds",
+    "email": "me@kentcdodds.com",
+    "url": "https://kentcdodds.com",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@testing-library/react",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@testing-library/react/LICENSE"
+  },
+  "@testing-library/user-event@14.6.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/testing-library/user-event",
+    "publisher": "Giorgio Polvara",
+    "email": "polvara@gmail.com",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@testing-library/user-event",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@testing-library/user-event/LICENSE"
+  },
+  "@trpc/client@10.37.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/trpc/trpc",
+    "publisher": "KATT",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@trpc/client",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@trpc/client/LICENSE"
+  },
+  "@trpc/next@10.37.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/trpc/trpc",
+    "publisher": "KATT",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@trpc/next",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@trpc/next/LICENSE"
+  },
+  "@trpc/react-query@10.37.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/trpc/trpc",
+    "publisher": "KATT",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@trpc/react-query",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@trpc/react-query/LICENSE"
+  },
+  "@trpc/server@10.37.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/trpc/trpc",
+    "publisher": "KATT",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@trpc/server",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@trpc/server/LICENSE"
+  },
+  "@types/eslint@8.44.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@types/eslint",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@types/eslint/LICENSE"
+  },
+  "@types/jest@29.5.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@types/jest",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@types/jest/LICENSE"
+  },
+  "@types/node@18.16.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@types/node",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@types/node/LICENSE"
+  },
+  "@types/react-dom@18.2.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@types/react-dom",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@types/react-dom/LICENSE"
+  },
+  "@types/react@18.2.20": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@types/react",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@types/react/LICENSE"
+  },
+  "@typescript-eslint/eslint-plugin@6.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/typescript-eslint/typescript-eslint",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@typescript-eslint/eslint-plugin",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@typescript-eslint/eslint-plugin/LICENSE"
+  },
+  "@typescript-eslint/parser@6.3.0": {
+    "licenses": "BSD-2-Clause",
+    "repository": "https://github.com/typescript-eslint/typescript-eslint",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@typescript-eslint/parser",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/@typescript-eslint/parser/LICENSE"
+  },
+  "autoprefixer@10.4.14": {
+    "licenses": "MIT",
+    "repository": "https://github.com/postcss/autoprefixer",
+    "publisher": "Andrey Sitnik",
+    "email": "andrey@sitnik.ru",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/autoprefixer",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/autoprefixer/LICENSE"
+  },
+  "eslint-config-next@13.4.19": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vercel/next.js",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/eslint-config-next"
+  },
+  "eslint@8.47.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/eslint/eslint",
+    "publisher": "Nicholas C. Zakas",
+    "email": "nicholas+npm@nczconsulting.com",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/eslint",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/eslint/LICENSE"
+  },
+  "jest-environment-jsdom@30.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jestjs/jest",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/jest-environment-jsdom",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/jest-environment-jsdom/LICENSE"
+  },
+  "jest-environment-node@29.7.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jestjs/jest",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/jest-environment-node",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/jest-environment-node/LICENSE"
+  },
+  "jest@29.7.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jestjs/jest",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/jest",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/jest/LICENSE"
+  },
+  "license-checker@25.0.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/davglass/license-checker",
+    "publisher": "Dav Glass",
+    "email": "davglass@gmail.com",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/license-checker",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/license-checker/LICENSE"
+  },
+  "next-auth@4.23.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/nextauthjs/next-auth",
+    "publisher": "Iain Collins",
+    "email": "me@iaincollins.com",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/next-auth",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/next-auth/LICENSE"
+  },
+  "next@13.5.9": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vercel/next.js",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/next",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/next/license.md"
+  },
+  "node-mocks-http@1.17.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/eugef/node-mocks-http",
+    "publisher": "Howard Abrams",
+    "email": "howard.abrams@gmail.com",
+    "url": "http://www.github.com/howardabrams",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/node-mocks-http",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/node-mocks-http/LICENSE"
+  },
+  "postcss@8.4.27": {
+    "licenses": "MIT",
+    "repository": "https://github.com/postcss/postcss",
+    "publisher": "Andrey Sitnik",
+    "email": "andrey@sitnik.ru",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/postcss",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/postcss/LICENSE"
+  },
+  "prettier-plugin-tailwindcss@0.5.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/tailwindlabs/prettier-plugin-tailwindcss",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/prettier-plugin-tailwindcss",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/prettier-plugin-tailwindcss/LICENSE"
+  },
+  "prettier@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/prettier/prettier",
+    "publisher": "James Long",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/prettier",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/prettier/LICENSE"
+  },
+  "prisma@5.1.1": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/prisma/prisma",
+    "publisher": "Tim Suchanek",
+    "email": "suchanek@prisma.io",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/prisma",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/prisma/LICENSE"
+  },
+  "react-dom@18.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/react-dom",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/react-dom/LICENSE"
+  },
+  "react@18.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/react",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/react/LICENSE"
+  },
+  "superjson@1.13.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/blitz-js/superjson",
+    "publisher": "Simon Knott",
+    "email": "info@simonknott.de",
+    "url": "https://simonknott.de",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/superjson",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/superjson/LICENSE"
+  },
+  "tailwindcss@3.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/tailwindlabs/tailwindcss",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/tailwindcss",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/tailwindcss/LICENSE"
+  },
+  "ts-jest@29.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/kulshekhar/ts-jest",
+    "publisher": "Kulshekhar Kabra",
+    "email": "kulshekhar@users.noreply.github.com",
+    "url": "https://github.com/kulshekhar",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/ts-jest",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/ts-jest/LICENSE.md"
+  },
+  "typescript@5.1.6": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/Microsoft/TypeScript",
+    "publisher": "Microsoft Corp.",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/typescript",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/typescript/LICENSE.txt"
+  },
+  "web@0.1.0": {
+    "licenses": "UNLICENSED",
+    "private": true,
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web"
+  },
+  "whatwg-fetch@3.6.20": {
+    "licenses": "MIT",
+    "repository": "https://github.com/github/fetch",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/whatwg-fetch",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/whatwg-fetch/LICENSE"
+  },
+  "zod@3.21.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/colinhacks/zod",
+    "publisher": "Colin McDonnell",
+    "email": "colin@colinhacks.com",
+    "path": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/zod",
+    "licenseFile": "/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/node_modules/zod/LICENSE"
+  }
+}
+

@@ -1,0 +1,444 @@
+{
+  "epics": [
+    {
+      "id": "epic1",
+      "title": "Initial Project Setup & Infrastructure",
+      "status": "completed",
+      "labels": ["infrastructure"],
+      "description": "Set up the foundational infrastructure, development environment, and deployment pipeline",
+      "dependencies": [],
+      "blocks": ["epic2", "epic3", "epic4", "epic5", "epic6", "epic7", "epic8", "epic9", "epic10"],
+      "stories": [
+        {
+          "id": "story1-1",
+          "title": "Repository & Development Environment Setup",
+          "status": "completed",
+          "points": 3
+        },
+        {
+          "id": "story1-2", 
+          "title": "CI/CD Pipeline Configuration",
+          "status": "completed",
+          "points": 5
+        },
+        {
+          "id": "story1-3",
+          "title": "Database Schema & Initial Models", 
+          "status": "completed",
+          "points": 5
+        },
+        {
+          "id": "story1-4",
+          "title": "Deployment Infrastructure Setup",
+          "status": "completed", 
+          "points": 3
+        }
+      ]
+    },
+    {
+      "id": "epic2",
+      "title": "Provider Management System",
+      "status": "not_started",
+      "labels": ["backend", "database"],
+      "description": "Build comprehensive provider management with admin CRUD, vetting, and bulk operations",
+      "dependencies": ["epic1"],
+      "blocks": ["epic3", "epic5"],
+      "stories": [
+        {
+          "id": "story2-1",
+          "title": "Provider Data Model & Database Schema",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story2-2",
+          "title": "Admin Provider CRUD Interface",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story2-3",
+          "title": "Provider Vetting Workflow",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story2-4",
+          "title": "Bulk Import/Export Functionality",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story2-5",
+          "title": "Provider Profile Media Management",
+          "status": "not_started",
+          "points": 5
+        }
+      ]
+    },
+    {
+      "id": "epic3",
+      "title": "Search & Discovery",
+      "status": "not_started",
+      "labels": ["frontend", "backend", "database"],
+      "description": "Implement powerful search with geospatial queries, filters, and personalization",
+      "dependencies": ["epic2"],
+      "blocks": ["epic6", "epic7"],
+      "stories": [
+        {
+          "id": "story3-1",
+          "title": "Basic Search Implementation",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story3-2",
+          "title": "Geospatial Search with PostGIS",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story3-3",
+          "title": "Advanced Filter System",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story3-4",
+          "title": "Search Results UI & Map View",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story3-5",
+          "title": "Saved Searches & Alerts",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story3-6",
+          "title": "Search Analytics & Optimization",
+          "status": "not_started",
+          "points": 5
+        }
+      ]
+    },
+    {
+      "id": "epic4",
+      "title": "Security, SRE & Observability",
+      "status": "completed",
+      "labels": ["security", "infrastructure"],
+      "description": "Implement comprehensive monitoring, security hardening, and observability practices",
+      "dependencies": ["epic1"],
+      "blocks": [],
+      "stories": [
+        {
+          "id": "story4-1",
+          "title": "Security Headers & CSP Implementation",
+          "status": "completed",
+          "points": 3
+        },
+        {
+          "id": "story4-2",
+          "title": "Structured Logging with Correlation IDs",
+          "status": "completed",
+          "points": 5
+        },
+        {
+          "id": "story4-3",
+          "title": "OpenTelemetry Distributed Tracing",
+          "status": "deferred",
+          "points": 8
+        },
+        {
+          "id": "story4-4",
+          "title": "Error Tracking with Sentry",
+          "status": "not_started",
+          "points": 3
+        },
+        {
+          "id": "story4-5",
+          "title": "Health Checks & Readiness Probes",
+          "status": "completed",
+          "points": 3
+        },
+        {
+          "id": "story4-6",
+          "title": "Authentication Audit Logging",
+          "status": "completed",
+          "points": 5
+        },
+        {
+          "id": "story4-7",
+          "title": "Rate Limiting & DDoS Protection",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story4-8",
+          "title": "SLO Definition & Monitoring",
+          "status": "deferred",
+          "points": 5
+        },
+        {
+          "id": "story4-9",
+          "title": "Synthetic Monitoring Implementation",
+          "status": "deferred",
+          "points": 5
+        },
+        {
+          "id": "story4-10",
+          "title": "Incident Response & Runbooks",
+          "status": "not_started",
+          "points": 3
+        },
+        {
+          "id": "story4-11",
+          "title": "Security Vulnerability Scanning",
+          "status": "completed",
+          "points": 2
+        },
+        {
+          "id": "story4-12",
+          "title": "Performance Testing & Optimization",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story4-13",
+          "title": "Basic Alerting System (Free Tier)",
+          "status": "not_started",
+          "points": 3
+        },
+        {
+          "id": "story4-14",
+          "title": "Log Rotation & Retention (Free Tier)",
+          "status": "not_started",
+          "points": 3
+        },
+        {
+          "id": "story4-15",
+          "title": "Simple Monitoring Dashboard (Free Tier)",
+          "status": "not_started",
+          "points": 5
+        }
+      ]
+    },
+    {
+      "id": "epic5",
+      "title": "Provider Portal",
+      "status": "not_started",
+      "labels": ["frontend", "backend"],
+      "description": "Self-service portal for providers to manage profiles, schedules, and bookings",
+      "dependencies": ["epic2"],
+      "blocks": ["epic7"],
+      "stories": [
+        {
+          "id": "story5-1",
+          "title": "Provider Authentication & Registration",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story5-2",
+          "title": "Provider Profile Management",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story5-3",
+          "title": "Program & Schedule Management",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story5-4",
+          "title": "Booking & Availability Management",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story5-5",
+          "title": "Provider Dashboard & Analytics",
+          "status": "not_started",
+          "points": 5
+        }
+      ]
+    },
+    {
+      "id": "epic6",
+      "title": "Subscription & Payment Processing",
+      "status": "not_started",
+      "labels": ["backend", "security"],
+      "description": "Implement Stripe-based subscriptions, payment processing, and billing",
+      "dependencies": ["epic3"],
+      "blocks": ["epic8"],
+      "stories": [
+        {
+          "id": "story6-1",
+          "title": "Stripe Integration & Configuration",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story6-2",
+          "title": "Subscription Tiers & Pricing",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story6-3",
+          "title": "Payment Flow Implementation",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story6-4",
+          "title": "Billing & Invoice Management",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story6-5",
+          "title": "Payment Security & Compliance",
+          "status": "not_started",
+          "points": 5
+        }
+      ]
+    },
+    {
+      "id": "epic7",
+      "title": "Communication Hub",
+      "status": "not_started",
+      "labels": ["frontend", "backend"],
+      "description": "Messaging, notifications, and review system for user engagement",
+      "dependencies": ["epic3", "epic5"],
+      "blocks": ["epic8"],
+      "stories": [
+        {
+          "id": "story7-1",
+          "title": "Internal Messaging System",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story7-2",
+          "title": "Email Notification System",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story7-3",
+          "title": "Booking Confirmation & Reminders",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story7-4",
+          "title": "Review & Rating System",
+          "status": "not_started",
+          "points": 8
+        }
+      ]
+    },
+    {
+      "id": "epic8",
+      "title": "Analytics & Business Intelligence",
+      "status": "not_started",
+      "labels": ["backend", "frontend"],
+      "description": "Comprehensive analytics for admins, providers, and business insights",
+      "dependencies": ["epic6", "epic7"],
+      "blocks": ["epic9", "epic10"],
+      "stories": [
+        {
+          "id": "story8-1",
+          "title": "Admin Analytics Dashboard",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story8-2",
+          "title": "Provider Performance Metrics",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story8-3",
+          "title": "Revenue & Financial Reports",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story8-4",
+          "title": "User Behavior Analytics",
+          "status": "not_started",
+          "points": 8
+        }
+      ]
+    },
+    {
+      "id": "epic9",
+      "title": "Mobile & Offline Support",
+      "status": "not_started",
+      "labels": ["frontend", "infrastructure"],
+      "description": "Progressive Web App with offline capabilities and mobile optimization",
+      "dependencies": ["epic8"],
+      "blocks": [],
+      "stories": [
+        {
+          "id": "story9-1",
+          "title": "PWA Implementation",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story9-2",
+          "title": "Offline Search & Caching",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story9-3",
+          "title": "Mobile UI/UX Optimization",
+          "status": "not_started",
+          "points": 5
+        }
+      ]
+    },
+    {
+      "id": "epic10",
+      "title": "Advanced Features & Integrations",
+      "status": "not_started",
+      "labels": ["frontend", "backend"],
+      "description": "AI recommendations, social features, and third-party integrations",
+      "dependencies": ["epic8"],
+      "blocks": [],
+      "stories": [
+        {
+          "id": "story10-1",
+          "title": "AI-Powered Recommendations",
+          "status": "not_started",
+          "points": 13
+        },
+        {
+          "id": "story10-2",
+          "title": "Social Features & Sharing",
+          "status": "not_started",
+          "points": 8
+        },
+        {
+          "id": "story10-3",
+          "title": "Calendar Integration",
+          "status": "not_started",
+          "points": 5
+        },
+        {
+          "id": "story10-4",
+          "title": "White-Label Support",
+          "status": "not_started",
+          "points": 8
+        }
+      ]
+    }
+  ]
+}

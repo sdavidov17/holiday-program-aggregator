@@ -1,0 +1,12 @@
+[allowlist]
+description = "Allowlist for test data"
+paths = [
+  '''apps/web/__tests__/utils/logger\.test\.ts''',
+]
+
+# Allow fake test data
+regexes = [
+  '''FAKE_[A-Z_]+''',
+  '''sk_test_FAKE_[A-Z_]+''',
+  '''pk_live_FAKE_[A-Z_]+''',
+]
