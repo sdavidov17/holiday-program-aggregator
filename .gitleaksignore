@@ -1,0 +1,5 @@
+# Test data for PII scrubbing - not real secrets
+apps/web/__tests__/utils/logger.test.ts:92:api_key: 'sk_test_abcdef123456',
+apps/web/__tests__/utils/logger.test.ts:93:apiKey: 'pk_live_xyz789',
+apps/web/__tests__/utils/logger.test.ts:94:token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0',
+apps/web/__tests__/utils/logger.test.ts:95:password: 'supersecret123',

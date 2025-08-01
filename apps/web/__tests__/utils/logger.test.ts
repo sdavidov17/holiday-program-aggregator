@@ -89,10 +89,10 @@ describe('StructuredLogger', () => {
     it('should scrub API keys and secrets', () => {
       const context = { correlationId: 'test-123' };
       const data = {
-        api_key: 'sk_test_abcdef123456',
-        apiKey: 'pk_live_xyz789',
-        token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0',
-        password: 'supersecret123',
+        api_key: 'sk_test_FAKE_KEY_FOR_TESTING',
+        apiKey: 'pk_live_FAKE_API_KEY',
+        token: 'FAKE_JWT_TOKEN_FOR_TESTING',
+        password: 'FAKE_PASSWORD_123',
       };
 
       logger.info('Test message', context, data);

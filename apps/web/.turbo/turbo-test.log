@@ -1,0 +1,47 @@
+
+> web@0.1.0 test /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web
+> jest
+
+PASS __tests__/utils/logger.test.ts
+PASS __tests__/healthz.test.ts
+  ● Console
+
+    console.info
+      {"timestamp":"2025-08-01T04:01:41.816Z","level":"info","message":"tRPC request started: healthz.healthz","context":{"correlationId":"test-correlation-id-1","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","hasSession":false}}
+
+      at StructuredLogger.output (src/utils/logger.ts:138:17)
+
+    console.info
+      {"timestamp":"2025-08-01T04:01:41.822Z","level":"info","message":"tRPC request completed: healthz.healthz","context":{"correlationId":"test-correlation-id-1","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","duration":6,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:138:17)
+
+    console.info
+      {"timestamp":"2025-08-01T04:01:41.824Z","level":"info","message":"tRPC request started: healthz.healthz","context":{"correlationId":"test-correlation-id-2","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","hasSession":false}}
+
+      at StructuredLogger.output (src/utils/logger.ts:138:17)
+
+    console.info
+      {"timestamp":"2025-08-01T04:01:41.825Z","level":"info","message":"tRPC request completed: healthz.healthz","context":{"correlationId":"test-correlation-id-2","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","duration":1,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:138:17)
+
+    console.info
+      {"timestamp":"2025-08-01T04:01:41.825Z","level":"info","message":"tRPC request started: healthz.healthz","context":{"correlationId":"test-correlation-id-2","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","hasSession":false}}
+
+      at StructuredLogger.output (src/utils/logger.ts:138:17)
+
+    console.info
+      {"timestamp":"2025-08-01T04:01:41.825Z","level":"info","message":"tRPC request completed: healthz.healthz","context":{"correlationId":"test-correlation-id-2","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","duration":0,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:138:17)
+
+PASS __tests__/middleware.test.ts
+PASS __tests__/index.test.tsx
+PASS __tests__/api/health.test.ts (6.771 s)
+
+Test Suites: 5 passed, 5 total
+Tests:       1 skipped, 43 passed, 44 total
+Snapshots:   0 total
+Time:        7.445 s
+Ran all test suites.

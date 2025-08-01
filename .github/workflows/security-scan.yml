@@ -92,11 +92,12 @@ jobs:
 
       - name: Check licenses
         run: |
-          # Install license checker
-          pnpm add -g license-checker
+          # Install license checker locally
+          cd apps/web
+          pnpm add -D license-checker
           
           # Generate license report
-          license-checker --json --out licenses.json
+          npx license-checker --json --out licenses.json
           
           # Check for problematic licenses
           PROBLEMATIC_LICENSES="GPL|AGPL|LGPL|SSPL|Commons-Clause"
