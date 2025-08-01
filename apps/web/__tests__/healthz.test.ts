@@ -12,7 +12,10 @@ jest.mock('../src/server/auth', () => ({
 
 describe('healthz endpoint', () => {
   it('should return status ok', async () => {
-    const ctx = createInnerTRPCContext({ session: null });
+    const ctx = createInnerTRPCContext({ 
+      session: null,
+      correlationId: 'test-correlation-id-1' 
+    });
     const caller = appRouter.createCaller(ctx);
 
     const result = await caller.healthz.healthz();
@@ -27,7 +30,10 @@ describe('healthz endpoint', () => {
   });
 
   it('should return consistent status', async () => {
-    const ctx = createInnerTRPCContext({ session: null });
+    const ctx = createInnerTRPCContext({ 
+      session: null,
+      correlationId: 'test-correlation-id-2' 
+    });
     const caller = appRouter.createCaller(ctx);
 
     const result1 = await caller.healthz.healthz();

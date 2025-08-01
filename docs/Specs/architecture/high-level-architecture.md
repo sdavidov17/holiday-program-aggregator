@@ -35,3 +35,72 @@
         V_API --> Email;
     ```
 * **Architectural Patterns:** Jamstack Architecture, Serverless Functions, Repository Pattern (with Prisma), and API Gateway Pattern (implicit via Next.js/Vercel).
+
+## **Observability & Security Architecture**
+
+### **Security Layers**
+1. **Edge Security:** Cloudflare WAF and DDoS protection
+2. **Application Security:** Security headers, CSP, rate limiting
+3. **Authentication:** NextAuth.js with secure session management
+4. **Data Security:** Field-level encryption for PII, TLS 1.3 everywhere
+
+### **Observability Stack**
+```mermaid
+graph TD
+    subgraph Application
+        APP[Next.js App]
+        API[tRPC API]
+        BG[Background Jobs]
+    end
+    
+    subgraph Telemetry Collection
+        OTEL[OpenTelemetry Collector]
+        LOG[Structured Logs]
+        METRIC[Metrics]
+        TRACE[Distributed Traces]
+    end
+    
+    subgraph Observability Platform
+        DD[Datadog/Honeycomb]
+        SENTRY[Sentry Error Tracking]
+        SYNTH[Synthetic Monitoring]
+    end
+    
+    subgraph Alerting
+        PD[PagerDuty]
+        SLACK[Slack Notifications]
+    end
+    
+    APP --> OTEL
+    API --> OTEL
+    BG --> OTEL
+    
+    OTEL --> LOG
+    OTEL --> METRIC
+    OTEL --> TRACE
+    
+    LOG --> DD
+    METRIC --> DD
+    TRACE --> DD
+    
+    APP --> SENTRY
+    API --> SENTRY
+    
+    DD --> PD
+    DD --> SLACK
+    SYNTH --> PD
+```
+
+### **Key Observability Components**
+1. **Distributed Tracing:** Full request lifecycle visibility across frontend and backend
+2. **Structured Logging:** JSON logs with correlation IDs for request tracking
+3. **Metrics Collection:** Business and technical metrics with configurable dashboards
+4. **Error Tracking:** Automatic error capture with PII scrubbing
+5. **Synthetic Monitoring:** Continuous testing of critical user journeys
+6. **Real User Monitoring (RUM):** Frontend performance metrics from actual users
+
+### **Security Monitoring**
+1. **Audit Logging:** All authentication and data access events
+2. **Anomaly Detection:** Unusual patterns in user behavior
+3. **Security Dashboards:** Failed logins, rate limit violations, suspicious activities
+4. **Compliance Reports:** APP compliance tracking and reporting

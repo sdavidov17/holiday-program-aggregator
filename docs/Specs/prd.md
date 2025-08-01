@@ -41,6 +41,12 @@ This document outlines the requirements for a Minimum Viable Product (MVP) desig
 * **NFR7 (Performance Testing):** The system must undergo load testing to ensure the search functionality can handle a simulated load of 500 concurrent users without performance degradation below the standard set in NFR1.
 * **NFR8 (Input Validation):** All user-submitted data must be rigorously validated on both the client and server-side to prevent common web vulnerabilities (e.g., XSS, SQL Injection).
 * **NFR9 (Password Security):** User passwords must be securely hashed using a modern, strong hashing algorithm (e.g., Argon2 or bcrypt). Plaintext passwords must never be stored.
+* **NFR10 (Observability):** The system must implement comprehensive distributed tracing, structured logging with correlation IDs, and metrics collection for all critical user journeys to enable proactive monitoring and rapid incident response.
+* **NFR11 (Security Headers):** The system must implement security headers including CSP, HSTS, X-Frame-Options, and other OWASP recommended headers to protect against common web vulnerabilities.
+* **NFR12 (Monitoring & Alerting):** The system must monitor all critical user journeys with defined SLOs (99.9% availability for authentication, 99.5% for payments) and alert the team within 2 minutes of SLO violations.
+* **NFR13 (Audit Logging):** All authentication events, data access, and administrative actions must be logged with tamper-proof audit trails retained for a minimum of 2 years to comply with Australian Privacy Principles.
+* **NFR14 (Error Tracking):** The system must capture and track all errors with full context (user, session, journey) while ensuring PII is properly scrubbed from error reports.
+* **NFR15 (Synthetic Monitoring):** Critical user journeys (signup, login, search, payment) must be continuously tested from Sydney region every 5 minutes with alerts for failures.
 
 ---
 ### **User Interface Design Goals**
@@ -66,6 +72,7 @@ This document outlines the requirements for a Minimum Viable Product (MVP) desig
 * **Epic 1: Foundation, Provider Management & Subscriptions:** To establish the core technical foundation, build the internal admin tools for provider management, and implement the user subscription and payment system.
 * **Epic 2: Parent-Facing Search & Discovery:** To launch the primary application, allowing subscribed users to search, filter, and view vetted holiday programs.
 * **Epic 3: Proactive Suggestions & User Preferences:** To enhance user value by implementing the preference center and the automated email system for curated suggestions.
+* **Epic 4: Security, SRE & Observability:** To implement comprehensive monitoring, security hardening, and observability practices ensuring the platform's reliability, security, and ability to proactively detect and respond to issues.
 
 ---
 ### **Epic 1: Foundation, Provider Management & Subscriptions (Hybrid Approach)**
@@ -137,6 +144,27 @@ This document outlines the requirements for a Minimum Viable Product (MVP) desig
 #### **Story 3.3: Email Delivery & Scheduling**
 *As the business, I want to automatically send the proactive suggestion emails to all subscribed users, so that we can deliver on our core value proposition.*
 * **Acceptance Criteria:** 1. The system integrates with a third-party email service. 2. A mobile-friendly email template is created. 3. A scheduled task runs automatically before each school holiday period. 4. The task triggers the email generation and sending for all active subscribers.
+
+---
+### **Epic 4: Security, SRE & Observability**
+
+**Epic Goal:** Implement comprehensive monitoring, security hardening, and observability practices ensuring the platform's reliability, security, and ability to proactively detect and respond to issues affecting critical user journeys.
+
+#### **Story 4.1: Security Headers & CSP Implementation**
+*As a security engineer, I want the application to implement comprehensive security headers, so that we protect users from common web vulnerabilities.*
+* **Acceptance Criteria:** 1. Security headers middleware implemented. 2. CSP configured for Stripe and OAuth. 3. Security headers score A+ on securityheaders.com. 4. No CSP violations in normal operation.
+
+#### **Story 4.2: Structured Logging with Correlation IDs**
+*As a developer, I want all logs to include correlation IDs and structured data, so that I can trace requests across the entire system.*
+* **Acceptance Criteria:** 1. Unique correlation IDs for all requests. 2. JSON structured logs with consistent schema. 3. No PII in logs. 4. Log aggregation configured.
+
+#### **Story 4.3: OpenTelemetry Distributed Tracing**
+*As an SRE, I want distributed tracing across all services, so that I can identify performance bottlenecks and debug issues quickly.*
+* **Acceptance Criteria:** 1. OpenTelemetry SDK integrated. 2. All endpoints create trace spans. 3. External API calls included in traces. 4. P95 latency dashboards available.
+
+#### **Story 4.4: Critical Journey Monitoring & Alerting**
+*As a product owner, I want monitoring of critical user journeys with proactive alerting, so that we detect and fix issues before users are impacted.*
+* **Acceptance Criteria:** 1. Synthetic tests for signup, login, search, payment. 2. Tests run every 5 minutes from Sydney. 3. Alerts within 2 minutes of failures. 4. SLOs defined and monitored for all journeys.
 
 ---
 ### **Checklist Results Report**

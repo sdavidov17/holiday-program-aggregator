@@ -1,0 +1,291 @@
+name: Security Scanning
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run security scans every Monday at 9 AM UTC (7 PM AEST)
+    - cron: '0 9 * * 1'
+
+jobs:
+  # Dependency vulnerability scanning
+  dependency-scan:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run npm audit
+        run: |
+          echo "Running npm audit..."
+          pnpm audit --json > audit-report.json || true
+          
+          # Parse audit report and check for critical/high vulnerabilities
+          if [ -f audit-report.json ]; then
+            CRITICAL=$(cat audit-report.json | jq '.metadata.vulnerabilities.critical // 0')
+            HIGH=$(cat audit-report.json | jq '.metadata.vulnerabilities.high // 0')
+            MODERATE=$(cat audit-report.json | jq '.metadata.vulnerabilities.moderate // 0')
+            
+            echo "Vulnerability Summary:"
+            echo "  Critical: $CRITICAL"
+            echo "  High: $HIGH"
+            echo "  Moderate: $MODERATE"
+            
+            # Fail if critical or high vulnerabilities found
+            if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
+              echo "::error::Found $CRITICAL critical and $HIGH high vulnerabilities"
+              cat audit-report.json | jq '.vulnerabilities'
+              exit 1
+            fi
+            
+            # Warn about moderate vulnerabilities
+            if [ "$MODERATE" -gt 0 ]; then
+              echo "::warning::Found $MODERATE moderate vulnerabilities"
+            fi
+          fi
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: npm-audit-report
+          path: audit-report.json
+
+  # License compliance check
+  license-check:
+    name: License Compliance Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check licenses
+        run: |
+          # Install license checker
+          pnpm add -g license-checker
+          
+          # Generate license report
+          license-checker --json --out licenses.json
+          
+          # Check for problematic licenses
+          PROBLEMATIC_LICENSES="GPL|AGPL|LGPL|SSPL|Commons-Clause"
+          
+          if grep -E "$PROBLEMATIC_LICENSES" licenses.json; then
+            echo "::error::Found packages with potentially problematic licenses"
+            exit 1
+          fi
+          
+          echo "License check passed"
+
+      - name: Upload license report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: license-report
+          path: licenses.json
+
+  # Static Application Security Testing (SAST)
+  sast-scan:
+    name: SAST Security Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript, typescript
+          queries: security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+  # Secret scanning
+  secret-scan:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for secret scanning
+
+      - name: TruffleHog OSS
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Security headers check (for deployed app)
+  security-headers:
+    name: Security Headers Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Check security headers
+        run: |
+          # Check if app is deployed
+          APP_URL="${{ secrets.APP_URL || 'https://holiday-aggregator.vercel.app' }}"
+          
+          if curl -s -o /dev/null -w "%{http_code}" "$APP_URL" | grep -q "200"; then
+            echo "Checking security headers for $APP_URL"
+            
+            # Get headers
+            HEADERS=$(curl -s -I "$APP_URL")
+            
+            # Check for required headers
+            REQUIRED_HEADERS=(
+              "X-Frame-Options"
+              "X-Content-Type-Options"
+              "X-XSS-Protection"
+              "Referrer-Policy"
+              "Content-Security-Policy"
+            )
+            
+            MISSING_HEADERS=()
+            for header in "${REQUIRED_HEADERS[@]}"; do
+              if ! echo "$HEADERS" | grep -qi "$header"; then
+                MISSING_HEADERS+=("$header")
+              fi
+            done
+            
+            if [ ${#MISSING_HEADERS[@]} -gt 0 ]; then
+              echo "::error::Missing security headers: ${MISSING_HEADERS[*]}"
+              exit 1
+            fi
+            
+            echo "All required security headers present"
+          else
+            echo "::warning::App not deployed yet, skipping security headers check"
+          fi
+
+  # Dependency update check
+  outdated-check:
+    name: Check Outdated Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Check outdated packages
+        run: |
+          echo "Checking for outdated packages..."
+          pnpm outdated --format json > outdated.json || true
+          
+          # Count outdated packages
+          if [ -f outdated.json ] && [ -s outdated.json ]; then
+            OUTDATED_COUNT=$(cat outdated.json | jq 'length')
+            echo "Found $OUTDATED_COUNT outdated packages"
+            
+            # Show major version updates
+            echo "Packages with major version updates:"
+            cat outdated.json | jq -r 'to_entries[] | select(.value.current != .value.wanted) | "\(.key): \(.value.current) -> \(.value.latest)"'
+          else
+            echo "All packages are up to date"
+          fi
+
+      - name: Upload outdated report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: outdated-packages-report
+          path: outdated.json
+
+  # Summary job
+  security-summary:
+    name: Security Scan Summary
+    runs-on: ubuntu-latest
+    needs: [dependency-scan, license-check, sast-scan, secret-scan, outdated-check]
+    if: always()
+    steps:
+      - name: Summary
+        run: |
+          echo "## Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Check job statuses
+          if [ "${{ needs.dependency-scan.result }}" == "success" ]; then
+            echo "✅ Dependency scan: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Dependency scan: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.license-check.result }}" == "success" ]; then
+            echo "✅ License check: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ License check: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.sast-scan.result }}" == "success" ]; then
+            echo "✅ SAST scan: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ SAST scan: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.secret-scan.result }}" == "success" ]; then
+            echo "✅ Secret scan: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Secret scan: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.outdated-check.result }}" == "success" ]; then
+            echo "✅ Outdated check: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Outdated check: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
