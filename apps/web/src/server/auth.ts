@@ -1,10 +1,8 @@
 import { type GetServerSidePropsContext } from "next";
-import NextAuth, { type DefaultSession } from "next-auth";
-import Discord from "next-auth/providers/discord";
-import Google from "next-auth/providers/google";
-import Apple from "next-auth/providers/apple";
-import Credentials from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { getServerSession, type NextAuthOptions, type DefaultSession } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 
@@ -24,31 +22,30 @@ const credentialsSchema = z.object({
   password: z.string().min(6),
 });
 
-export const { handlers, auth: getServerAuthSession, signIn, signOut } = NextAuth({
+export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
+    session: ({ session, token }) => ({
       ...session,
       user: {
         ...session.user,
-        id: user.id,
+        id: token.sub!,
       },
     }),
   },
   adapter: PrismaAdapter(db),
   providers: [
-    Discord({
-      clientId: env.DISCORD_CLIENT_ID ?? "",
-      clientSecret: env.DISCORD_CLIENT_SECRET ?? "",
-    }),
-    Google({
+    GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: env.GOOGLE_CLIENT_SECRET ?? "",
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
     }),
-    Apple({
-      clientId: env.APPLE_ID ?? "",
-      clientSecret: env.APPLE_SECRET ?? "",
-    }),
-    Credentials({
+    CredentialsProvider({
       name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
@@ -95,4 +92,11 @@ export const { handlers, auth: getServerAuthSession, signIn, signOut } = NextAut
   session: {
     strategy: "jwt",
   },
-});
+};
+
+export const getServerAuthSession = (ctx: {
+  req: GetServerSidePropsContext["req"];
+  res: GetServerSidePropsContext["res"];
+}) => {
+  return getServerSession(ctx.req, ctx.res, authOptions);
+};

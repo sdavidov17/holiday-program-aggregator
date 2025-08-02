@@ -184,7 +184,7 @@ export default function Profile({ user }: ProfileProps) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerAuthSession(context);
+  const session = await getServerAuthSession({ req: context.req, res: context.res });
 
   if (!session) {
     return {

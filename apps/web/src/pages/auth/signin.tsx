@@ -178,46 +178,12 @@ export default function SignIn() {
           Sign in with Google
         </button>
       </div>
-
-      <div style={{ marginBottom: "10px" }}>
-        <button
-          onClick={() => signIn("apple", { callbackUrl: "/profile" })}
-          style={{
-            width: "100%",
-            padding: "10px",
-            backgroundColor: "#000",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
-          Sign in with Apple
-        </button>
-      </div>
-
-      <div>
-        <button
-          onClick={() => signIn("discord", { callbackUrl: "/profile" })}
-          style={{
-            width: "100%",
-            padding: "10px",
-            backgroundColor: "#5865f2",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
-          Sign in with Discord
-        </button>
-      </div>
     </div>
   );
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerAuthSession(context);
+  const session = await getServerAuthSession({ req: context.req, res: context.res });
 
   // If already logged in, redirect to profile
   if (session) {
