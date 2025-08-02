@@ -6,9 +6,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 All project specifications are maintained in `/docs/`:
 
+### Core Documentation
+- **Quick Start**: `/docs/README.md` - Documentation hub with role-based navigation
 - **Product Requirements**: `/docs/Specs/prd.md` - Complete PRD with functional/non-functional requirements
-- **Architecture**: `/docs/Specs/architecture/` - High-level architecture, tech stack, data models, API specs
-- **Development Stories**: `/docs/stories/` - Epic breakdowns with acceptance criteria and tasks
+- **Project Roadmap**: `/docs/project-roadmap.md` - Timeline, milestones, and progress tracking
+- **Implementation Status**: `/docs/implementation-status.md` - Current development status
+
+### Technical Documentation
+- **Architecture**: `/docs/Specs/architecture/` - System design, tech stack, data models
+- **API Reference**: `/docs/api-reference.md` - Complete tRPC endpoint documentation
+- **Developer Onboarding**: `/docs/developer-onboarding.md` - 30-minute quick start guide
+- **Testing Strategy**: `/docs/testing-strategy.md` - Testing guidelines and patterns
+- **Deployment Guide**: `/docs/deployment-guide.md` - Deployment procedures
+
+### Process Documentation
+- **Development Stories**: `/docs/stories/` - All epic stories with acceptance criteria
+- **Team Guidelines**: `/docs/team-guidelines.md` - Communication and process guidelines
+- **Branching Strategy**: `/docs/branching-strategy.md` - Git workflow
 
 ## Development Commands
 

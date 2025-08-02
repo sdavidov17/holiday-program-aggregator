@@ -1,78 +1,123 @@
 # Epic Mapping: PRD vs GitHub Issues
 
-## Current State Analysis
+## Current State (Updated: August 2, 2025)
 
-There's a discrepancy between the epic structure in the PRD and the GitHub Issues. Here's the mapping:
+After reorganization, we now have a clear epic structure that aligns the PRD with GitHub Issues.
 
-### PRD Epic Structure (from docs/Specs/prd/)
-1. **Epic 1**: Foundation - Provider Management & Subscriptions (Hybrid Approach)
-2. **Epic 2**: Parent-Facing Search & Discovery
-3. **Epic 3**: Proactive Suggestions & User Preferences
-4. **Epic 4**: Security, SRE & Observability
+### Final Epic Structure
 
-### GitHub Issues Epic Structure
-1. **Epic 1**: Initial Project Setup & Infrastructure (Issue #2) ✅
-2. **Epic 2**: Provider Management System (Issue #3)
-3. **Epic 3**: Search & Discovery (Issue #6)
-4. **Epic 4**: Security, SRE & Observability (Issue #7)
-5. **Epic 5**: Provider Portal & Self-Service (Issue #9)
-6. **Epic 6**: Subscription & Payment Processing (Issue #9)
+#### Epic 0: Initial Project Setup & Infrastructure ✅
+- **GitHub Issue**: #2 (renamed from Epic 1)
+- **Status**: COMPLETED
+- **Stories**: 0.1-0.4 (Issues #10-13)
+- **Note**: Pre-PRD work completed before formal planning
+
+#### Epic 1: Foundation, Provider Management & Subscriptions
+- **GitHub Issue**: #99
+- **PRD**: `docs/Specs/prd/06-epic-1-foundation-provider-management-subscriptions-hybrid-approach.md`
+- **Stories**: 1.1-1.7 (Issues #92-98)
+- **Milestone**: Phase 1: Foundation
+
+#### Epic 2: Parent-Facing Search & Discovery
+- **GitHub Issue**: #104
+- **PRD**: `docs/Specs/prd/07-epic-2-parent-facing-search-discovery.md`
+- **Stories**: 2.1-2.4 (Issues #100-103)
+- **Milestone**: MVP Launch
+
+#### Epic 3: Proactive Suggestions & User Preferences
+- **GitHub Issue**: #105
+- **PRD**: `docs/Specs/prd/08-epic-3-proactive-suggestions-user-preferences.md`
+- **Stories**: 3.1-3.3 (Issues #83-85)
+- **Milestone**: Phase 4: Growth Features
+
+#### Epic 4: Security, SRE & Observability
+- **GitHub Issue**: #7
+- **PRD**: `docs/Specs/prd/09-epic-4-security-sre-observability.md`
+- **Stories**: 4.1-4.15 (Various issues)
+- **Milestone**: Phase 2 & 3
+
+### Additional GitHub Epics (Future Work)
+
+These epics exist in GitHub but are not yet defined in the PRD:
+
+5. **Epic 5**: Provider Portal & Self-Service (Issue #37)
+6. **Epic 6**: Subscription & Payment Processing (Issue #9) - Note: Partially covered in Epic 1
 7. **Epic 7**: Communication Hub (Issue #48)
 8. **Epic 8**: Analytics & Business Intelligence (Issue #53)
 9. **Epic 9**: Mobile & Offline Support (Issue #58)
 10. **Epic 10**: Advanced Features & Integrations (Issue #62)
+11. **Epic 11**: Proactive Suggestions (Issue #82) - Duplicate of Epic 3
 
-## Key Differences
+## Story Mapping
 
-1. **Epic 1 Scope**: 
-   - PRD: Includes provider management, user accounts, and subscriptions
-   - GitHub: Only initial setup and infrastructure (already completed)
+### Complete Story List by Epic
 
-2. **Provider Management**:
-   - PRD: Part of Epic 1
-   - GitHub: Separate Epic 2
+#### Epic 0 (Completed):
+- Story 0.1: Repository Setup → Issue #10 ✅
+- Story 0.2: CI/CD Pipeline → Issue #11 ✅
+- Story 0.3: Database Schema → Issue #12 ✅
+- Story 0.4: Deployment Infrastructure → Issue #13 ✅
 
-3. **Search & Discovery**:
-   - PRD: Epic 2
-   - GitHub: Epic 3
+#### Epic 1:
+- Story 1.1: Initial Project & CI/CD Setup → Issue #92
+- Story 1.2: User Account System → Issue #93
+- Story 1.3: Subscription & Payment Integration → Issue #94
+- Story 1.4: Subscription Lifecycle Management → Issue #95
+- Story 1.5: Manual Provider Onboarding → Issue #96
+- Story 1.6: Crawler-Assisted Data Entry → Issue #97
+- Story 1.7: Automated Data Refresh → Issue #98
 
-4. **Suggestions & Preferences**:
-   - PRD: Epic 3
-   - GitHub: Not explicitly an epic (might be part of Epic 3 or Epic 10)
+#### Epic 2:
+- Story 2.1: Search & Filter Interface → Issue #100
+- Story 2.2: Display Search Results → Issue #101
+- Story 2.3: Interactive Map View → Issue #102
+- Story 2.4: Provider Profile Page → Issue #103
 
-5. **Additional Epics in GitHub**:
-   - Epic 5: Provider Portal (not in original PRD)
-   - Epic 6: Subscription & Payment (was part of Epic 1 in PRD)
-   - Epic 7-10: Advanced features beyond MVP
+#### Epic 3:
+- Story 3.1: User Preference Center → Issue #83
+- Story 3.2: Proactive Email Generation → Issue #84
+- Story 3.3: Email Delivery & Scheduling → Issue #85
 
-## Stories Created vs GitHub Issues
+#### Epic 4:
+- Story 4.1-4.15: See `docs/epic-story-structure.md` for full list
 
-### Epic 2 (PRD) / Epic 3 (GitHub) - Search & Discovery
-Stories created in `/docs/stories/`:
-- epic-2-story-1-search-filter-interface.md → Should map to GitHub Story 3.x
-- epic-2-story-2-display-search-results.md → Should map to GitHub Story 3.x
-- epic-2-story-3-interactive-map-view.md → Should map to GitHub Story 3.x
-- epic-2-story-4-provider-profile-page.md → Should map to GitHub Story 3.x
+## Cleanup Actions Completed
 
-GitHub Stories (Issue #17-22):
-- Story 3.1: Basic Search Implementation
-- Story 3.2: Geospatial Search with PostGIS
-- Story 3.3: Advanced Filter System
-- Story 3.4: Search Results UI & Map View
-- Story 3.5: Saved Searches & Alerts
-- Story 3.6: Search Analytics & Optimization
+1. **Renamed Epic 1 → Epic 0**: The initial setup work is now Epic 0
+2. **Created New Epic 1**: Aligns with PRD definition
+3. **Created Epic 2 & 3 Issues**: Now properly numbered (#104, #105)
+4. **Updated All Story Numbers**: Stories now match their epic numbers
+5. **Created Missing Story Files**: All PRD stories have corresponding files
+6. **Updated Milestones**: All due dates start from July 27, 2025
 
-### Epic 3 (PRD) - Proactive Suggestions
-Stories created in `/docs/stories/`:
-- epic-3-story-1-user-preference-center.md
-- epic-3-story-2-proactive-email-generation.md
-- epic-3-story-3-email-delivery-scheduling.md
+## Old Issues to Archive
 
-No corresponding GitHub issues found - these might need to be created as part of Epic 10 (Advanced Features) or a new epic.
+The following issues use old numbering and should be closed/archived:
+- Issue #3: [EPIC 2] Provider Management (now part of Epic 1)
+- Issue #6: [EPIC 3] Search & Discovery (replaced by #104)
+- Issue #9: [EPIC 6] Subscription (covered in Epic 1)
+- Issue #82: [EPIC 11] Suggestions (duplicate of #105)
 
-## Recommendations
+## File Structure
 
-1. **Align Documentation**: Update either the PRD or GitHub issues to have consistent epic numbering
-2. **Create Missing Issues**: The proactive suggestions stories need GitHub issues
-3. **Update Milestones**: Ensure milestones reflect the actual implementation order
-4. **Story Mapping**: Map PRD stories to appropriate GitHub epic numbers
+```
+docs/
+├── Specs/prd/
+│   ├── 06-epic-1-*.md
+│   ├── 07-epic-2-*.md
+│   ├── 08-epic-3-*.md
+│   └── 09-epic-4-*.md
+└── stories/
+    ├── epic-0-story-*.md (4 files)
+    ├── epic-1-story-*.md (7 files)
+    ├── epic-2-story-*.md (4 files)
+    ├── epic-3-story-*.md (3 files)
+    └── epic-4-story-*.md (15 files)
+```
+
+## Next Steps
+
+1. **Close duplicate issues**: Archive old epic issues that have been replaced
+2. **Update issue references**: Ensure all stories reference correct epic issues
+3. **Begin Phase 1**: Start with Epic 1, Story 1.1 (Issue #92)
+4. **Regular sync**: Keep this mapping document updated as work progresses
