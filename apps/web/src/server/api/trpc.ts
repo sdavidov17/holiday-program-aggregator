@@ -26,7 +26,7 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
 
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
-  const session = await getServerAuthSession({ req, res });
+  const session = await getServerAuthSession();
   
   // Get correlation ID from headers (set by middleware)
   const correlationId = req.headers['x-correlation-id'] as string || `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;

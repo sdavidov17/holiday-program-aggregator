@@ -6,6 +6,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     '^~/(.*)$': '<rootDir>/src/$1',
+    'superjson': '<rootDir>/__mocks__/superjson.js',
   },
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
