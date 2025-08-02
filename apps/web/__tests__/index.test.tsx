@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { api } from '~/utils/api';
 import Home from '~/pages/index';
 
@@ -13,6 +14,21 @@ jest.mock('next/head', () => {
     },
   };
 });
+
+// Mock Next Link component
+jest.mock('next/link', () => {
+  return {
+    __esModule: true,
+    default: ({ children, href }: { children: React.ReactNode; href: string }) => {
+      return <a href={href}>{children}</a>;
+    },
+  };
+});
+
+// Mock NextAuth
+jest.mock('next-auth/react', () => ({
+  useSession: jest.fn(),
+}));
 
 // Mock the API
 jest.mock('~/utils/api', () => ({
@@ -37,6 +53,11 @@ describe('Home Page', () => {
       },
     });
     jest.clearAllMocks();
+    // Default mock for useSession
+    (useSession as jest.Mock).mockReturnValue({
+      data: null,
+      status: 'unauthenticated',
+    });
   });
 
   const renderWithClient = (ui: React.ReactElement) => {
@@ -156,5 +177,43 @@ describe('Home Page', () => {
     const main = screen.getByRole('main');
     expect(main).toHaveClass('flex', 'min-h-screen', 'flex-col', 'items-center', 'justify-center');
     expect(main).toHaveStyle({ background: 'linear-gradient(to bottom, #2e026d, #15162c)' });
+  });
+
+  it('shows Sign In link when not authenticated', () => {
+    const mockUseQuery = api.healthz.healthz.useQuery as jest.Mock;
+    mockUseQuery.mockReturnValue({
+      isLoading: false,
+      error: null,
+      data: null,
+    });
+
+    renderWithClient(<Home />);
+
+    const signInLink = screen.getByText('Sign In →');
+    expect(signInLink).toBeInTheDocument();
+    expect(signInLink.closest('a')).toHaveAttribute('href', '/auth/signin');
+  });
+
+  it('shows Profile link when authenticated', () => {
+    const mockUseQuery = api.healthz.healthz.useQuery as jest.Mock;
+    mockUseQuery.mockReturnValue({
+      isLoading: false,
+      error: null,
+      data: null,
+    });
+
+    (useSession as jest.Mock).mockReturnValue({
+      data: {
+        user: { id: '1', email: 'test@example.com' },
+        expires: '2024-12-31',
+      },
+      status: 'authenticated',
+    });
+
+    renderWithClient(<Home />);
+
+    const profileLink = screen.getByText('Profile →');
+    expect(profileLink).toBeInTheDocument();
+    expect(profileLink.closest('a')).toHaveAttribute('href', '/profile');
   });
 });

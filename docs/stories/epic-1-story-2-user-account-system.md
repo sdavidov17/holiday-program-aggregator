@@ -12,13 +12,13 @@
 6. All user PII is encrypted.
 
 ### Development Tasks
-- [ ] Configure NextAuth.js with the Email/Password (Credentials) provider.
-- [ ] Configure NextAuth.js with the Google provider, setting up OAuth credentials in the Google Cloud console.
-- [ ] Configure NextAuth.js with the Apple provider, setting up OAuth credentials in the Apple Developer portal.
-- [ ] Create the Prisma schema for the `User`, `Account`, `Session`, and `VerificationToken` models as required by NextAuth.js.
-- [ ] Ensure the `User` model includes a field for PII, and apply Prisma's field-level encryption.
-- [ ] Implement a sign-up and login UI form for the Credentials provider.
-- [ ] Implement UI buttons for the Google and Apple social login options.
-- [ ] Create a basic, protected profile page that is only accessible to logged-in users.
-- [ ] Verify that a user can sign up, log in, and view their profile page using all three configured methods.
-- [ ] Write a unit test to confirm that user PII is not exposed in any API responses.
+- [x] Configure NextAuth.js with the Email/Password (Credentials) provider.
+- [x] Configure NextAuth.js with the Google provider, setting up OAuth credentials in the Google Cloud console.
+- [x] Configure NextAuth.js with the Apple provider, setting up OAuth credentials in the Apple Developer portal.
+- [x] Create the Prisma schema for the `User`, `Account`, `Session`, and `VerificationToken` models as required by NextAuth.js.
+- [x] Ensure the `User` model includes a field for PII, and apply Prisma's field-level encryption.
+- [x] Implement a sign-up and login UI form for the Credentials provider.
+- [x] Implement UI buttons for the Google and Apple social login options.
+- [x] Create a basic, protected profile page that is only accessible to logged-in users.
+- [x] Verify that a user can sign up, log in, and view their profile page using all three configured methods.
+- [x] Write a unit test to confirm that user PII is not exposed in any API responses.

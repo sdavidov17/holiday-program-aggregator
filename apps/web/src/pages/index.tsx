@@ -1,7 +1,10 @@
 import Head from "next/head";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 
 export default function Home() {
+  const { data: session } = useSession();
   const healthz = api.healthz.healthz.useQuery(undefined, {
     retry: false,
     refetchOnWindowFocus: false,
@@ -16,6 +19,25 @@ export default function Home() {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center" style={{background: 'linear-gradient(to bottom, #2e026d, #15162c)'}}>
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
+          <div className="absolute top-4 right-4">
+            {session ? (
+              <Link 
+                href="/profile" 
+                className="text-white hover:text-purple-300 transition-colors"
+                style={{textDecoration: 'none'}}
+              >
+                Profile →
+              </Link>
+            ) : (
+              <Link 
+                href="/auth/signin" 
+                className="text-white hover:text-purple-300 transition-colors"
+                style={{textDecoration: 'none'}}
+              >
+                Sign In →
+              </Link>
+            )}
+          </div>
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Holiday Program <span style={{color: '#c084fc'}}>Aggregator</span>
           </h1>
