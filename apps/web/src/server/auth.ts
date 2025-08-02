@@ -1,11 +1,7 @@
 import { type GetServerSidePropsContext } from "next";
-import {
-  getServerSession,
-  type NextAuthOptions,
-  type DefaultSession,
-} from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import NextAuth, { type DefaultSession } from "next-auth";
+import Discord from "next-auth/providers/discord";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";
@@ -18,7 +14,7 @@ declare module "next-auth" {
   }
 }
 
-export const authOptions: NextAuthOptions = {
+export const { handlers, auth: getServerAuthSession, signIn, signOut } = NextAuth({
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
@@ -30,16 +26,9 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(db),
   providers: [
-    DiscordProvider({
+    Discord({
       clientId: env.DISCORD_CLIENT_ID ?? "",
       clientSecret: env.DISCORD_CLIENT_SECRET ?? "",
     }),
   ],
-};
-
-export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext["req"];
-  res: GetServerSidePropsContext["res"];
-}) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
-};
+});

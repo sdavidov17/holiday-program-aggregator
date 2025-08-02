@@ -1,7 +1,5 @@
 {
-  "sortedMiddleware": [
-    "/"
-  ],
+  "version": 3,
   "middleware": {
     "/": {
       "files": [
@@ -12,14 +10,23 @@
       "page": "/",
       "matchers": [
         {
-          "regexp": "^/.*$",
-          "originalSource": "/:path*"
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!_next\\/)[^/.]{1,}))(?:\\/((?!_next\\/static|_next\\/image|favicon.ico|public).*))(.json)?[\\/#\\?]?$",
+          "originalSource": "/((?!_next/static|_next/image|favicon.ico|public).*)"
         }
       ],
       "wasm": [],
-      "assets": []
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "cnjE_SyrtyBM3AIMgIf2k",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "xtP3cRdLd5RlmN78pH63yVrDyxr4ggI6OiyB5DBMZz4=",
+        "__NEXT_PREVIEW_MODE_ID": "d27fb62cbd13dc00bd04de5145b88e9b",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "b7e2adb6cf21f34ddacbe8f0f5e79b02efd70b2a925435b58a1a4d625de3f837",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "858d6ef40acce2a2530618d5cb00bb0a6bf34cabf2a106f71be9fcf49396b535"
+      }
     }
   },
   "functions": {},
-  "version": 2
+  "sortedMiddleware": [
+    "/"
+  ]
 }

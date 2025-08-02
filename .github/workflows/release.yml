@@ -1,0 +1,153 @@
+name: Release Tagging
+
+on:
+  push:
+    branches: [ main ]
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  tag-release:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'push' }}
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+    
+    - name: Get current date and build number
+      id: version
+      run: |
+        # Get current date in YYYY.MM.DD format
+        DATE=$(date -u +"%Y.%m.%d")
+        
+        # Get the count of builds today (for build number)
+        BUILD_COUNT=$(git tag -l "v${DATE}-*" | wc -l | xargs)
+        BUILD_NUMBER=$(printf "%03d" $((BUILD_COUNT + 1)))
+        
+        # Create version tag
+        VERSION="v${DATE}-${BUILD_NUMBER}"
+        
+        echo "version=${VERSION}" >> $GITHUB_OUTPUT
+        echo "date=${DATE}" >> $GITHUB_OUTPUT
+        echo "build=${BUILD_NUMBER}" >> $GITHUB_OUTPUT
+    
+    - name: Check Vercel Deployment Status
+      id: deployment
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      run: |
+        # Get the latest deployment for the main branch
+        DEPLOYMENT=$(curl -s \
+          -H "Authorization: Bearer $VERCEL_TOKEN" \
+          "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&target=production&limit=1" \
+          | jq -r '.deployments[0]')
+        
+        STATE=$(echo $DEPLOYMENT | jq -r '.state')
+        URL=$(echo $DEPLOYMENT | jq -r '.url')
+        
+        if [ "$STATE" = "READY" ]; then
+          echo "deployment_success=true" >> $GITHUB_OUTPUT
+          echo "deployment_url=$URL" >> $GITHUB_OUTPUT
+        else
+          echo "deployment_success=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Create and Push Tag
+      if: steps.deployment.outputs.deployment_success == 'true'
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
+        DEPLOYMENT_URL: ${{ steps.deployment.outputs.deployment_url }}
+      run: |
+        # Create annotated tag with deployment info
+        git tag -a "${VERSION}" -m "Release ${VERSION}
+
+        Automated release tag for successful production deployment.
+        
+        Deployment URL: https://${DEPLOYMENT_URL}
+        Commit: ${{ github.sha }}
+        Triggered by: ${{ github.actor }}
+        
+        CI Status: ✅ Passed
+        Deployment Status: ✅ Success"
+        
+        # Push the tag
+        git push origin "${VERSION}"
+    
+    - name: Create GitHub Release (for milestone releases)
+      if: |
+        steps.deployment.outputs.deployment_success == 'true' &&
+        contains(github.event.head_commit.message, '[release]')
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.version.outputs.version }}
+        release_name: Release ${{ steps.version.outputs.version }}
+        body: |
+          ## 🚀 Release ${{ steps.version.outputs.version }}
+          
+          ### Deployment Information
+          - **Environment**: Production
+          - **URL**: https://${{ steps.deployment.outputs.deployment_url }}
+          - **Commit**: ${{ github.sha }}
+          
+          ### Changes
+          See [commit history](https://github.com/${{ github.repository }}/commits/${{ steps.version.outputs.version }}) for full changes.
+          
+          ### How to Deploy
+          This release has been automatically deployed to production.
+          
+          To rollback to this version:
+          ```bash
+          git checkout ${{ steps.version.outputs.version }}
+          vercel --prod
+          ```
+        draft: false
+        prerelease: false
+    
+    - name: Notify on Failure
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '❌ Release tagging failed. Please check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).'
+          })
+
+  cleanup-old-tags:
+    runs-on: ubuntu-latest
+    needs: tag-release
+    if: success()
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Clean up old daily tags
+      run: |
+        # Keep only the last 30 days of tags
+        CUTOFF_DATE=$(date -u -d '30 days ago' +"%Y.%m.%d")
+        
+        git tag -l "v*" | while read tag; do
+          TAG_DATE=$(echo $tag | grep -oP 'v\K\d{4}\.\d{2}\.\d{2}' || true)
+          
+          if [[ -n "$TAG_DATE" ]] && [[ "$TAG_DATE" < "$CUTOFF_DATE" ]]; then
+            echo "Deleting old tag: $tag"
+            git push origin --delete "$tag" || true
+          fi
+        done

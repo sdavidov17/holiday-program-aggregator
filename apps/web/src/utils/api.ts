@@ -13,7 +13,6 @@ const getBaseUrl = () => {
 export const api = createTRPCNext<AppRouter>({
   config() {
     return {
-      transformer: superjson,
       links: [
         loggerLink({
           enabled: (opts) =>
@@ -22,10 +21,12 @@ export const api = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          transformer: superjson,
         }),
       ],
     };
   },
+  transformer: superjson,
   ssr: false,
 });
 
