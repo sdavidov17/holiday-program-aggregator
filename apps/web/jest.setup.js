@@ -2,6 +2,11 @@
 require('@testing-library/jest-dom');
 require('whatwg-fetch');
 
+// Polyfill TextEncoder/TextDecoder for jose library used by next-auth
+const { TextEncoder, TextDecoder } = require('util');
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 // Mock env.mjs module
 jest.mock('~/env.mjs', () => ({
   env: {
