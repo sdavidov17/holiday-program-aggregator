@@ -7,6 +7,7 @@ module.exports = {
   moduleNameMapper: {
     '^~/(.*)$': '<rootDir>/src/$1',
     'superjson': '<rootDir>/__mocks__/superjson.js',
+    '^~/env.mjs$': '<rootDir>/__mocks__/env.js',
   },
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
@@ -14,8 +15,13 @@ module.exports = {
         jsx: 'react-jsx',
       },
     }],
+    '^.+\\.mjs$': ['ts-jest', {
+      tsconfig: {
+        jsx: 'react-jsx',
+      },
+    }],
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'mjs'],
   testMatch: ['**/__tests__/**/*.(ts|tsx|js|jsx)', '**/*.(test|spec).(ts|tsx|js|jsx)'],
   testPathIgnorePatterns: ['/node_modules/', '/e2e/'],
   collectCoverageFrom: [
@@ -26,4 +32,7 @@ module.exports = {
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(@t3-oss/env-nextjs)/)',
+  ],
 };

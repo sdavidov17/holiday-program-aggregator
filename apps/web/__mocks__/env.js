@@ -1,9 +1,5 @@
-// Jest setup file
-require('@testing-library/jest-dom');
-require('whatwg-fetch');
-
-// Mock env.mjs module
-jest.mock('~/env.mjs', () => ({
+// Mock for ~/env.mjs in tests
+module.exports = {
   env: {
     NODE_ENV: 'test',
     NEXTAUTH_URL: 'http://localhost:3000',
@@ -17,4 +13,4 @@ jest.mock('~/env.mjs', () => ({
     DISCORD_CLIENT_SECRET: 'test-discord-client-secret',
     ENCRYPTION_KEY: 'test-32-character-encryption-key',
   }
-}), { virtual: true });
+};
