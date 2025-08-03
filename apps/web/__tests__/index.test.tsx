@@ -38,6 +38,19 @@ jest.mock('~/utils/api', () => ({
         useQuery: jest.fn(),
       },
     },
+    subscription: {
+      getSubscriptionStatus: {
+        useQuery: jest.fn(),
+      },
+      createCheckoutSession: {
+        useMutation: jest.fn(() => ({
+          mutate: jest.fn(),
+          mutateAsync: jest.fn(),
+          isLoading: false,
+          error: null,
+        })),
+      },
+    },
   },
 }));
 
@@ -58,6 +71,12 @@ describe('Home Page', () => {
       data: null,
       status: 'unauthenticated',
     });
+    // Default mock for subscription status
+    (api.subscription.getSubscriptionStatus.useQuery as jest.Mock).mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: null,
+    });
   });
 
   const renderWithClient = (ui: React.ReactElement) => {
@@ -69,13 +88,6 @@ describe('Home Page', () => {
   };
 
   it('renders the main heading', () => {
-    const mockUseQuery = api.healthz.healthz.useQuery as jest.Mock;
-    mockUseQuery.mockReturnValue({
-      isLoading: false,
-      error: null,
-      data: null,
-    });
-
     renderWithClient(<Home />);
 
     const heading = screen.getByRole('heading', { level: 1 });
@@ -83,63 +95,35 @@ describe('Home Page', () => {
     expect(heading).toHaveTextContent('Holiday Program Aggregator');
   });
 
-  it('displays loading state when health check is loading', () => {
-    const mockUseQuery = api.healthz.healthz.useQuery as jest.Mock;
-    mockUseQuery.mockReturnValue({
-      isLoading: true,
-      error: null,
-      data: null,
-    });
-
+  it('displays welcome message for unauthenticated users', () => {
     renderWithClient(<Home />);
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText('Welcome!')).toBeInTheDocument();
+    expect(screen.getByText('Sign in to start your subscription and discover amazing holiday programs.')).toBeInTheDocument();
   });
 
-  it('displays error state when health check fails', () => {
-    const mockUseQuery = api.healthz.healthz.useQuery as jest.Mock;
-    const errorMessage = 'Network error';
-    mockUseQuery.mockReturnValue({
-      isLoading: false,
-      error: { message: errorMessage },
-      data: null,
-    });
-
+  it('displays features section', () => {
     renderWithClient(<Home />);
 
-    expect(screen.getByText(`Error: ${errorMessage}`)).toBeInTheDocument();
+    expect(screen.getByText('Features')).toBeInTheDocument();
+    expect(screen.getByText('Curated holiday programs')).toBeInTheDocument();
+    expect(screen.getByText('Verified providers')).toBeInTheDocument();
   });
 
-  it('displays health check data when successful', () => {
-    const mockUseQuery = api.healthz.healthz.useQuery as jest.Mock;
-    const mockTimestamp = '2024-01-01T00:00:00.000Z';
-    mockUseQuery.mockReturnValue({
-      isLoading: false,
-      error: null,
-      data: {
-        status: 'ok',
-        timestamp: mockTimestamp,
-      },
-    });
-
+  it('displays benefits section', () => {
     renderWithClient(<Home />);
 
-    expect(screen.getByText('Status: ok')).toBeInTheDocument();
-    expect(screen.getByText(/Time:/)).toBeInTheDocument();
-    expect(screen.getByText(new RegExp(new Date(mockTimestamp).toLocaleString()))).toBeInTheDocument();
+    expect(screen.getByText('Benefits')).toBeInTheDocument();
+    expect(screen.getByText('Save time searching')).toBeInTheDocument();
+    expect(screen.getByText('Annual subscription')).toBeInTheDocument();
   });
 
-  it('renders the health check card', () => {
-    const mockUseQuery = api.healthz.healthz.useQuery as jest.Mock;
-    mockUseQuery.mockReturnValue({
-      isLoading: false,
-      error: null,
-      data: null,
-    });
-
+  it('shows Sign In to Get Started button for unauthenticated users', () => {
     renderWithClient(<Home />);
 
-    expect(screen.getByText('Health Check →')).toBeInTheDocument();
+    const ctaButton = screen.getByText('Sign In to Get Started');
+    expect(ctaButton).toBeInTheDocument();
+    expect(ctaButton.closest('a')).toHaveAttribute('href', '/auth/signin');
   });
 
   // Skip metadata test as it's handled by Next.js and not critical for unit tests
@@ -148,60 +132,7 @@ describe('Home Page', () => {
     // rendering pipeline is available
   });
 
-  it('calls useQuery with correct options', () => {
-    const mockUseQuery = api.healthz.healthz.useQuery as jest.Mock;
-    mockUseQuery.mockReturnValue({
-      isLoading: false,
-      error: null,
-      data: null,
-    });
-
-    renderWithClient(<Home />);
-
-    expect(mockUseQuery).toHaveBeenCalledWith(undefined, {
-      retry: false,
-      refetchOnWindowFocus: false,
-    });
-  });
-
-  it('renders with correct styles', () => {
-    const mockUseQuery = api.healthz.healthz.useQuery as jest.Mock;
-    mockUseQuery.mockReturnValue({
-      isLoading: false,
-      error: null,
-      data: null,
-    });
-
-    renderWithClient(<Home />);
-
-    const main = screen.getByRole('main');
-    expect(main).toHaveClass('flex', 'min-h-screen', 'flex-col', 'items-center', 'justify-center');
-    expect(main).toHaveStyle({ background: 'linear-gradient(to bottom, #2e026d, #15162c)' });
-  });
-
-  it('shows Sign In link when not authenticated', () => {
-    const mockUseQuery = api.healthz.healthz.useQuery as jest.Mock;
-    mockUseQuery.mockReturnValue({
-      isLoading: false,
-      error: null,
-      data: null,
-    });
-
-    renderWithClient(<Home />);
-
-    const signInLink = screen.getByText('Sign In →');
-    expect(signInLink).toBeInTheDocument();
-    expect(signInLink.closest('a')).toHaveAttribute('href', '/auth/signin');
-  });
-
-  it('shows Profile link when authenticated', () => {
-    const mockUseQuery = api.healthz.healthz.useQuery as jest.Mock;
-    mockUseQuery.mockReturnValue({
-      isLoading: false,
-      error: null,
-      data: null,
-    });
-
+  it('shows subscription prompt for authenticated users without subscription', () => {
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: { id: '1', email: 'test@example.com' },
@@ -210,10 +141,81 @@ describe('Home Page', () => {
       status: 'authenticated',
     });
 
+    (api.subscription.getSubscriptionStatus.useQuery as jest.Mock).mockReturnValue({
+      data: { hasSubscription: false, status: 'none' },
+      isLoading: false,
+      error: null,
+    });
+
+    renderWithClient(<Home />);
+
+    expect(screen.getByText('Get Full Access')).toBeInTheDocument();
+    expect(screen.getByText('Subscribe Now - $99/year')).toBeInTheDocument();
+  });
+
+  it('renders with correct styles', () => {
+    renderWithClient(<Home />);
+
+    const main = screen.getByRole('main');
+    expect(main).toHaveClass('flex', 'min-h-screen', 'flex-col', 'items-center', 'justify-center');
+    expect(main).toHaveStyle({ background: 'linear-gradient(to bottom, #2e026d, #15162c)' });
+  });
+
+  it('shows Sign In link when not authenticated', () => {
+    renderWithClient(<Home />);
+
+    const signInLink = screen.getByText('Sign In →');
+    expect(signInLink).toBeInTheDocument();
+    expect(signInLink.closest('a')).toHaveAttribute('href', '/auth/signin');
+  });
+
+  it('shows Profile link when authenticated', () => {
+    (useSession as jest.Mock).mockReturnValue({
+      data: {
+        user: { id: '1', email: 'test@example.com' },
+        expires: '2024-12-31',
+      },
+      status: 'authenticated',
+    });
+
+    (api.subscription.getSubscriptionStatus.useQuery as jest.Mock).mockReturnValue({
+      data: { hasSubscription: false, status: 'none' },
+      isLoading: false,
+      error: null,
+    });
+
     renderWithClient(<Home />);
 
     const profileLink = screen.getByText('Profile →');
     expect(profileLink).toBeInTheDocument();
     expect(profileLink.closest('a')).toHaveAttribute('href', '/profile');
+  });
+
+  it('shows active subscription status for users with active subscription', () => {
+    const mockPeriodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days from now
+    
+    (useSession as jest.Mock).mockReturnValue({
+      data: {
+        user: { id: '1', email: 'test@example.com' },
+        expires: '2024-12-31',
+      },
+      status: 'authenticated',
+    });
+
+    (api.subscription.getSubscriptionStatus.useQuery as jest.Mock).mockReturnValue({
+      data: { 
+        hasSubscription: true, 
+        status: 'active',
+        currentPeriodEnd: mockPeriodEnd.toISOString(),
+        cancelAtPeriodEnd: false
+      },
+      isLoading: false,
+      error: null,
+    });
+
+    renderWithClient(<Home />);
+
+    expect(screen.getByText('✓ Active Subscription')).toBeInTheDocument();
+    expect(screen.getByText(/Valid until:/)).toBeInTheDocument();
   });
 });

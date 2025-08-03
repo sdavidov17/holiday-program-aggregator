@@ -13,6 +13,8 @@ type CreateContextOptions = {
   session: Session | null;
   correlationId: string;
   requestPath?: string;
+  req?: CreateNextContextOptions['req'];
+  res?: CreateNextContextOptions['res'];
 };
 
 export const createInnerTRPCContext = (opts: CreateContextOptions) => {
@@ -21,6 +23,8 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
     db,
     correlationId: opts.correlationId,
     requestPath: opts.requestPath,
+    req: opts.req,
+    res: opts.res,
   };
 };
 
@@ -38,6 +42,8 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
     session,
     correlationId,
     requestPath,
+    req,
+    res,
   });
 };
 
