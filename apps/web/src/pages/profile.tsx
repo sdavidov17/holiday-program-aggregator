@@ -24,6 +24,17 @@ export default function Profile({ user }: ProfileProps) {
   
   const { data: subscriptionStatus } = api.subscription.getSubscriptionStatus.useQuery();
 
+  const createCheckoutSession = api.subscription.createCheckoutSession.useMutation({
+    onSuccess: async (data) => {
+      if (data.url) {
+        await router.push(data.url);
+      }
+    },
+    onError: (error) => {
+      alert(`Error creating checkout session: ${error.message}`);
+    },
+  });
+
   const updateProfile = api.user.updateProfile.useMutation({
     onSuccess: () => {
       setIsEditing(false);
@@ -217,7 +228,24 @@ export default function Profile({ user }: ProfileProps) {
               )}
             </>
           ) : (
-            <p>No active subscription</p>
+            <>
+              <p style={{ marginBottom: "15px" }}>No active subscription</p>
+              <button
+                onClick={() => createCheckoutSession.mutate({})}
+                disabled={createCheckoutSession.isPending}
+                style={{
+                  padding: "10px 20px",
+                  backgroundColor: "#28a745",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: createCheckoutSession.isPending ? "not-allowed" : "pointer",
+                  opacity: createCheckoutSession.isPending ? 0.7 : 1,
+                }}
+              >
+                {createCheckoutSession.isPending ? "Loading..." : "Subscribe Now - $99/year"}
+              </button>
+            </>
           )}
         </div>
       )}
