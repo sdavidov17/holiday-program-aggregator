@@ -1,0 +1,14 @@
+version: 1.0.0
+expansion-packs:
+  devops:
+    name: devops
+    path: ../web-bundles/expansion-packs/bmad-infrastructure-devops
+    enabled: true
+    agents:
+      - infra-devops-platform
+  security:
+    name: security  
+    path: ../web-bundles/expansion-packs/security
+    enabled: true
+    agents:
+      - security

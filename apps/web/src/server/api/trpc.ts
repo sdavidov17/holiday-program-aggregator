@@ -47,7 +47,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   });
 };
 
-const t = initTRPC.context<typeof createTRPCContext>().create({
+export const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
@@ -131,3 +131,10 @@ export const protectedProcedure = t.procedure
       },
     });
   });
+
+// Import the subscription middleware
+import { requireActiveSubscription } from "./middleware/requireActiveSubscription";
+
+// Premium procedure that requires an active subscription
+export const premiumProcedure = protectedProcedure
+  .use(requireActiveSubscription);

@@ -6,6 +6,7 @@ import {
   createCheckoutSession,
   ANNUAL_SUBSCRIPTION_CONFIG,
 } from "~/utils/stripe";
+import { SubscriptionStatus } from "@prisma/client";
 
 export const subscriptionRouter = createTRPCRouter({
   getSubscriptionStatus: protectedProcedure.query(async ({ ctx }) => {
@@ -18,7 +19,7 @@ export const subscriptionRouter = createTRPCRouter({
     if (!subscription) {
       return {
         hasSubscription: false,
-        status: "none",
+        status: "none" as const,
       };
     }
 
@@ -27,7 +28,24 @@ export const subscriptionRouter = createTRPCRouter({
       status: subscription.status,
       currentPeriodEnd: subscription.currentPeriodEnd,
       cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+      expiresAt: subscription.expiresAt,
     };
+  }),
+
+  getStatus: protectedProcedure.query(async ({ ctx }) => {
+    const subscription = await ctx.db.subscription.findUnique({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      select: {
+        status: true,
+        expiresAt: true,
+        currentPeriodEnd: true,
+        cancelAtPeriodEnd: true,
+      }
+    });
+
+    return subscription;
   }),
 
   createCheckoutSession: protectedProcedure
@@ -51,7 +69,7 @@ export const subscriptionRouter = createTRPCRouter({
         },
       });
 
-      if (existingSubscription?.status === "active") {
+      if (existingSubscription?.status === SubscriptionStatus.ACTIVE) {
         throw new Error("You already have an active subscription");
       }
 
@@ -75,7 +93,7 @@ export const subscriptionRouter = createTRPCRouter({
             userId: user.id,
             stripeCustomerId,
             stripePriceId: input.priceId ?? env.STRIPE_ANNUAL_PRICE_ID,
-            status: "inactive",
+            status: SubscriptionStatus.PENDING,
           },
           update: {
             stripeCustomerId,
@@ -110,7 +128,7 @@ export const subscriptionRouter = createTRPCRouter({
       },
     });
 
-    if (!subscription || subscription.status !== "active") {
+    if (!subscription || subscription.status !== SubscriptionStatus.ACTIVE) {
       throw new Error("No active subscription found");
     }
 
@@ -129,6 +147,7 @@ export const subscriptionRouter = createTRPCRouter({
       },
       data: {
         cancelAtPeriodEnd: true,
+        canceledAt: new Date(),
       },
     });
 

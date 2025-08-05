@@ -4,6 +4,8 @@ import { getServerAuthSession } from "~/server/auth";
 import { useState } from "react";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { SubscriptionStatus } from "@prisma/client";
 
 interface ProfileProps {
   user: {
@@ -195,17 +197,17 @@ export default function Profile({ user }: ProfileProps) {
       {subscriptionStatus && (
         <div style={{ marginBottom: "20px", padding: "20px", backgroundColor: "#f8f9fa", borderRadius: "8px" }}>
           <h2 style={{ marginBottom: "15px" }}>Subscription</h2>
-          {subscriptionStatus.hasSubscription && subscriptionStatus.status === "active" ? (
+          {subscriptionStatus.hasSubscription && subscriptionStatus.status === SubscriptionStatus.ACTIVE ? (
             <>
               <p style={{ marginBottom: "10px" }}>
                 <strong>Status:</strong> Active ✓
               </p>
               <p style={{ marginBottom: "10px" }}>
-                <strong>Valid until:</strong> {subscriptionStatus.currentPeriodEnd ? 
+                <strong>Valid until:</strong> {subscriptionStatus?.currentPeriodEnd ? 
                   new Date(subscriptionStatus.currentPeriodEnd).toLocaleDateString() : 
                   'N/A'}
               </p>
-              {subscriptionStatus.cancelAtPeriodEnd ? (
+              {subscriptionStatus?.cancelAtPeriodEnd ? (
                 <p style={{ color: "#dc3545", marginBottom: "10px" }}>
                   Will cancel at period end
                 </p>
@@ -226,6 +228,19 @@ export default function Profile({ user }: ProfileProps) {
                   {cancelSubscription.isPending ? "Cancelling..." : "Cancel Subscription"}
                 </button>
               )}
+              
+              <div style={{ marginTop: "20px" }}>
+                <Link href="/search" style={{
+                  padding: "10px 20px",
+                  backgroundColor: "#007bff",
+                  color: "white",
+                  textDecoration: "none",
+                  borderRadius: "4px",
+                  display: "inline-block",
+                }}>
+                  Go to Program Search →
+                </Link>
+              </div>
             </>
           ) : (
             <>

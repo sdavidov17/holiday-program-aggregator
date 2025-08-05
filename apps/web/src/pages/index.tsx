@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
+import { SubscriptionStatus } from "@prisma/client";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -67,15 +68,15 @@ export default function Home() {
           {/* Subscription Status */}
           {session && (
             <div className="flex flex-col items-center gap-4">
-              {subscriptionStatus?.hasSubscription && subscriptionStatus.status === "active" ? (
+              {subscriptionStatus?.hasSubscription && subscriptionStatus.status === SubscriptionStatus.ACTIVE ? (
                 <div className="rounded-lg p-6 text-center" style={{backgroundColor: 'rgba(34, 197, 94, 0.2)', border: '1px solid rgba(34, 197, 94, 0.5)'}}>
                   <p className="text-lg text-white mb-2">✓ Active Subscription</p>
                   <p className="text-sm text-gray-300">
-                    Valid until: {subscriptionStatus.currentPeriodEnd ? 
+                    Valid until: {subscriptionStatus?.currentPeriodEnd ? 
                       new Date(subscriptionStatus.currentPeriodEnd).toLocaleDateString() : 
                       'N/A'}
                   </p>
-                  {subscriptionStatus.cancelAtPeriodEnd && (
+                  {subscriptionStatus?.cancelAtPeriodEnd && (
                     <p className="text-sm text-yellow-400 mt-2">
                       Will cancel at period end
                     </p>
