@@ -28,6 +28,8 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
   };
 };
 
+export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
+
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
   const session = await getServerAuthSession({ req, res });
@@ -133,8 +135,8 @@ export const protectedProcedure = t.procedure
   });
 
 // Import the subscription middleware
-import { requireActiveSubscription } from "./middleware/requireActiveSubscription";
+import { requireActiveSubscriptionMiddleware } from "./middleware/requireActiveSubscription";
 
 // Premium procedure that requires an active subscription
 export const premiumProcedure = protectedProcedure
-  .use(requireActiveSubscription);
+  .use(requireActiveSubscriptionMiddleware);

@@ -5,9 +5,11 @@ import { env } from "~/env.mjs";
 import { db } from "~/server/db";
 import { SubscriptionStatus } from "@prisma/client";
 
-const stripe = new Stripe(env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2025-07-30.basil",
-});
+const stripe = env.STRIPE_SECRET_KEY 
+  ? new Stripe(env.STRIPE_SECRET_KEY, {
+      apiVersion: "2025-07-30.basil",
+    })
+  : null;
 
 export const config = {
   api: {
@@ -27,6 +29,11 @@ export default async function handler(
   const sig = req.headers["stripe-signature"];
   if (!sig || !env.STRIPE_WEBHOOK_SECRET) {
     return res.status(400).send("Missing stripe signature or webhook secret");
+  }
+
+  if (!stripe) {
+    console.error("Stripe is not configured");
+    return res.status(500).send("Stripe is not configured on the server");
   }
 
   let event: Stripe.Event;

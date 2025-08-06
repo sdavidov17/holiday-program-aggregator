@@ -1,8 +1,14 @@
 import { TRPCError } from "@trpc/server";
-import { t } from "../trpc";
 import { SubscriptionStatus } from "@prisma/client";
+import { type Context } from "../trpc";
 
-export const requireActiveSubscription = t.middleware(async ({ ctx, next }) => {
+export const requireActiveSubscriptionMiddleware = async ({ 
+  ctx, 
+  next 
+}: {
+  ctx: Context;
+  next: (opts?: { ctx: Context }) => Promise<any>;
+}) => {
   if (!ctx.session?.user) {
     throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
@@ -39,9 +45,6 @@ export const requireActiveSubscription = t.middleware(async ({ ctx, next }) => {
   }
 
   return next({
-    ctx: {
-      ...ctx,
-      subscription,
-    },
+    ctx,
   });
-});
+};

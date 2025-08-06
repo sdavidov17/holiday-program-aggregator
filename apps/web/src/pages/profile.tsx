@@ -3,9 +3,7 @@ import { signOut } from "next-auth/react";
 import { getServerAuthSession } from "~/server/auth";
 import { useState } from "react";
 import { api } from "~/utils/api";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { SubscriptionStatus } from "@prisma/client";
 
 interface ProfileProps {
   user: {
@@ -17,25 +15,11 @@ interface ProfileProps {
 }
 
 export default function Profile({ user }: ProfileProps) {
-  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(user.name || "");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
-  
-  const { data: subscriptionStatus } = api.subscription.getSubscriptionStatus.useQuery();
-
-  const createCheckoutSession = api.subscription.createCheckoutSession.useMutation({
-    onSuccess: async (data) => {
-      if (data.url) {
-        await router.push(data.url);
-      }
-    },
-    onError: (error) => {
-      alert(`Error creating checkout session: ${error.message}`);
-    },
-  });
 
   const updateProfile = api.user.updateProfile.useMutation({
     onSuccess: () => {
@@ -44,16 +28,6 @@ export default function Profile({ user }: ProfileProps) {
     },
     onError: (error) => {
       alert(`Error updating profile: ${error.message}`);
-    },
-  });
-
-  const cancelSubscription = api.subscription.cancelSubscription.useMutation({
-    onSuccess: () => {
-      alert("Subscription will be cancelled at the end of the billing period.");
-      void router.reload();
-    },
-    onError: (error) => {
-      alert(`Error cancelling subscription: ${error.message}`);
     },
   });
 
@@ -194,76 +168,23 @@ export default function Profile({ user }: ProfileProps) {
       <hr style={{ margin: "20px 0" }} />
 
       {/* Subscription Information */}
-      {subscriptionStatus && (
-        <div style={{ marginBottom: "20px", padding: "20px", backgroundColor: "#f8f9fa", borderRadius: "8px" }}>
-          <h2 style={{ marginBottom: "15px" }}>Subscription</h2>
-          {subscriptionStatus.hasSubscription && subscriptionStatus.status === SubscriptionStatus.ACTIVE ? (
-            <>
-              <p style={{ marginBottom: "10px" }}>
-                <strong>Status:</strong> Active ✓
-              </p>
-              <p style={{ marginBottom: "10px" }}>
-                <strong>Valid until:</strong> {subscriptionStatus?.currentPeriodEnd ? 
-                  new Date(subscriptionStatus.currentPeriodEnd).toLocaleDateString() : 
-                  'N/A'}
-              </p>
-              {subscriptionStatus?.cancelAtPeriodEnd ? (
-                <p style={{ color: "#dc3545", marginBottom: "10px" }}>
-                  Will cancel at period end
-                </p>
-              ) : (
-                <button
-                  onClick={() => cancelSubscription.mutate()}
-                  disabled={cancelSubscription.isPending}
-                  style={{
-                    padding: "8px 16px",
-                    backgroundColor: "#dc3545",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "4px",
-                    cursor: cancelSubscription.isPending ? "not-allowed" : "pointer",
-                    opacity: cancelSubscription.isPending ? 0.7 : 1,
-                  }}
-                >
-                  {cancelSubscription.isPending ? "Cancelling..." : "Cancel Subscription"}
-                </button>
-              )}
-              
-              <div style={{ marginTop: "20px" }}>
-                <Link href="/search" style={{
-                  padding: "10px 20px",
-                  backgroundColor: "#007bff",
-                  color: "white",
-                  textDecoration: "none",
-                  borderRadius: "4px",
-                  display: "inline-block",
-                }}>
-                  Go to Program Search →
-                </Link>
-              </div>
-            </>
-          ) : (
-            <>
-              <p style={{ marginBottom: "15px" }}>No active subscription</p>
-              <button
-                onClick={() => createCheckoutSession.mutate({})}
-                disabled={createCheckoutSession.isPending}
-                style={{
-                  padding: "10px 20px",
-                  backgroundColor: "#28a745",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: createCheckoutSession.isPending ? "not-allowed" : "pointer",
-                  opacity: createCheckoutSession.isPending ? 0.7 : 1,
-                }}
-              >
-                {createCheckoutSession.isPending ? "Loading..." : "Subscribe Now - $99/year"}
-              </button>
-            </>
-          )}
-        </div>
-      )}
+      <div style={{ marginBottom: "20px" }}>
+        <h2 style={{ marginBottom: "10px" }}>Subscription</h2>
+        <Link 
+          href="/subscription" 
+          style={{
+            display: "inline-block",
+            padding: "10px 20px",
+            backgroundColor: "#007bff",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px",
+            marginBottom: "20px",
+          }}
+        >
+          Manage Subscription →
+        </Link>
+      </div>
 
       <button
         onClick={() => signOut({ callbackUrl: "/" })}

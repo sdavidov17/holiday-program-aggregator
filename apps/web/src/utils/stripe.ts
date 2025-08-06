@@ -9,7 +9,7 @@ export const stripe = env.STRIPE_SECRET_KEY
         typescript: true,
       }
     )
-  : ({} as Stripe); // Mock for tests when no key is provided
+  : null;
 
 export const ANNUAL_SUBSCRIPTION_CONFIG = {
   mode: "subscription" as const,
@@ -25,6 +25,12 @@ export async function createStripeCustomer(
   userId: string,
   name?: string | null
 ) {
+  if (!stripe) {
+    throw new Error(
+      "Stripe is not configured. Please set STRIPE_SECRET_KEY in your .env file."
+    );
+  }
+  
   const customer = await stripe.customers.create({
     email,
     name: name ?? undefined,
@@ -43,6 +49,18 @@ export async function createCheckoutSession(
   successUrl: string,
   cancelUrl: string
 ) {
+  if (!stripe) {
+    throw new Error(
+      "Stripe is not configured. Please set STRIPE_SECRET_KEY in your .env file."
+    );
+  }
+  
+  if (!priceId || priceId === "price_...") {
+    throw new Error(
+      "Invalid Stripe price ID. Please set STRIPE_ANNUAL_PRICE_ID in your .env file with a valid price ID from your Stripe dashboard."
+    );
+  }
+  
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
     payment_method_types: ["card"],
@@ -74,11 +92,23 @@ export async function constructWebhookEvent(
   rawBody: string | Buffer,
   signature: string
 ) {
+  if (!stripe) {
+    throw new Error(
+      "Stripe is not configured. Please set STRIPE_SECRET_KEY in your .env file."
+    );
+  }
+  
+  if (!env.STRIPE_WEBHOOK_SECRET) {
+    throw new Error(
+      "Stripe webhook secret is not configured. Please set STRIPE_WEBHOOK_SECRET in your .env file."
+    );
+  }
+  
   try {
     const event = stripe.webhooks.constructEvent(
       rawBody,
       signature,
-      env.STRIPE_WEBHOOK_SECRET ?? ""
+      env.STRIPE_WEBHOOK_SECRET
     );
     return event;
   } catch (err) {
@@ -88,10 +118,22 @@ export async function constructWebhookEvent(
 }
 
 export async function getSubscription(subscriptionId: string) {
+  if (!stripe) {
+    throw new Error(
+      "Stripe is not configured. Please set STRIPE_SECRET_KEY in your .env file."
+    );
+  }
+  
   return stripe.subscriptions.retrieve(subscriptionId);
 }
 
 export async function cancelSubscription(subscriptionId: string) {
+  if (!stripe) {
+    throw new Error(
+      "Stripe is not configured. Please set STRIPE_SECRET_KEY in your .env file."
+    );
+  }
+  
   return stripe.subscriptions.update(subscriptionId, {
     cancel_at_period_end: true,
   });

@@ -55,11 +55,23 @@ export const subscriptionRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      console.log("createCheckoutSession called");
+      
       const { user } = ctx.session;
       const { req, res } = ctx;
 
+      console.log("User:", user?.id, user?.email);
+      console.log("Stripe config:", {
+        hasSecretKey: !!env.STRIPE_SECRET_KEY,
+        hasPriceId: !!env.STRIPE_ANNUAL_PRICE_ID,
+        priceId: env.STRIPE_ANNUAL_PRICE_ID
+      });
+
       if (!env.STRIPE_SECRET_KEY || !env.STRIPE_ANNUAL_PRICE_ID) {
-        throw new Error("Stripe configuration is missing");
+        throw new Error(
+          "Stripe configuration is missing. Please set STRIPE_SECRET_KEY and STRIPE_ANNUAL_PRICE_ID in your .env file. " +
+          "See docs/stripe-setup.md for setup instructions."
+        );
       }
 
       // Check if user already has a subscription

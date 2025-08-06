@@ -1,21 +1,38 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import { api } from "~/utils/api";
 
 export default function SubscriptionSuccess() {
   const router = useRouter();
   const { data: session } = useSession();
   const { session_id } = router.query;
+  const [redirectTimer, setRedirectTimer] = useState(10);
+  
+  // Check subscription status
+  const { data: subscriptionStatus, refetch } = api.subscription.getSubscriptionStatus.useQuery(
+    undefined,
+    {
+      enabled: !!session?.user,
+      refetchInterval: 2000, // Check every 2 seconds
+    }
+  );
 
   useEffect(() => {
-    // Redirect to home after 5 seconds
-    const timer = setTimeout(() => {
-      void router.push("/");
-    }, 5000);
+    // Countdown timer
+    const timer = setInterval(() => {
+      setRedirectTimer((prev) => {
+        if (prev <= 1) {
+          void router.push("/profile");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [router]);
 
   return (
@@ -31,11 +48,31 @@ export default function SubscriptionSuccess() {
               Welcome to Holiday Program Aggregator!
             </h1>
             <p className="text-lg text-gray-300 mb-6">
-              Your subscription has been activated successfully. You now have full access to all our premium features.
+              Your payment was successful! 
             </p>
-            <p className="text-sm text-gray-400 mb-6">
-              {session_id && `Session ID: ${session_id}`}
-            </p>
+            
+            {/* Webhook status indicator */}
+            <div className="mb-6 p-4 rounded" style={{backgroundColor: 'rgba(255, 255, 255, 0.1)'}}>
+              {subscriptionStatus?.hasSubscription ? (
+                <div className="text-green-400">
+                  ✅ Subscription is active and ready to use!
+                </div>
+              ) : (
+                <div className="text-yellow-400">
+                  ⏳ Setting up your subscription... 
+                  <br />
+                  <span className="text-sm text-gray-400">
+                    (This may take a moment if webhooks are not configured)
+                  </span>
+                </div>
+              )}
+            </div>
+            
+            {session_id && (
+              <p className="text-xs text-gray-500 mb-4">
+                Session ID: {session_id}
+              </p>
+            )}
             <div className="flex flex-col gap-3">
               <Link
                 href="/"
@@ -60,7 +97,7 @@ export default function SubscriptionSuccess() {
               </Link>
             </div>
             <p className="text-sm text-gray-400 mt-6">
-              Redirecting to dashboard in 5 seconds...
+              Redirecting to your profile in {redirectTimer} seconds...
             </p>
           </div>
         </div>
