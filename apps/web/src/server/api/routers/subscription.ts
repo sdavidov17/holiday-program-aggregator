@@ -1,51 +1,27 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { env } from "~/env.mjs";
-import {
-  createStripeCustomer,
-  createCheckoutSession,
-  ANNUAL_SUBSCRIPTION_CONFIG,
-} from "~/utils/stripe";
-import { SubscriptionStatus } from "@prisma/client";
+import { SubscriptionService } from "~/services/subscription.service";
 
 export const subscriptionRouter = createTRPCRouter({
   getSubscriptionStatus: protectedProcedure.query(async ({ ctx }) => {
-    const subscription = await ctx.db.subscription.findUnique({
-      where: {
-        userId: ctx.session.user.id,
-      },
-    });
-
-    if (!subscription) {
-      return {
-        hasSubscription: false,
-        status: "none" as const,
-      };
-    }
-
-    return {
-      hasSubscription: true,
-      status: subscription.status,
-      currentPeriodEnd: subscription.currentPeriodEnd,
-      cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
-      expiresAt: subscription.expiresAt,
-    };
+    const service = new SubscriptionService(ctx.db);
+    return await service.getSubscriptionStatus(ctx.session.user.id);
   }),
 
   getStatus: protectedProcedure.query(async ({ ctx }) => {
-    const subscription = await ctx.db.subscription.findUnique({
-      where: {
-        userId: ctx.session.user.id,
-      },
-      select: {
-        status: true,
-        expiresAt: true,
-        currentPeriodEnd: true,
-        cancelAtPeriodEnd: true,
-      }
-    });
+    const service = new SubscriptionService(ctx.db);
+    const subscription = await service.getSubscription(ctx.session.user.id);
+    
+    if (!subscription) {
+      return null;
+    }
 
-    return subscription;
+    return {
+      status: subscription.status,
+      expiresAt: subscription.expiresAt,
+      currentPeriodEnd: subscription.currentPeriodEnd,
+      cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+    };
   }),
 
   createCheckoutSession: protectedProcedure
@@ -55,116 +31,33 @@ export const subscriptionRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      console.log("createCheckoutSession called");
-      
+      const service = new SubscriptionService(ctx.db);
       const { user } = ctx.session;
-      const { req, res } = ctx;
+      const { req } = ctx;
 
-      console.log("User:", user?.id, user?.email);
-      console.log("Stripe config:", {
-        hasSecretKey: !!env.STRIPE_SECRET_KEY,
-        hasPriceId: !!env.STRIPE_ANNUAL_PRICE_ID,
-        priceId: env.STRIPE_ANNUAL_PRICE_ID
-      });
-
-      if (!env.STRIPE_SECRET_KEY || !env.STRIPE_ANNUAL_PRICE_ID) {
-        throw new Error(
-          "Stripe configuration is missing. Please set STRIPE_SECRET_KEY and STRIPE_ANNUAL_PRICE_ID in your .env file. " +
-          "See docs/stripe-setup.md for setup instructions."
-        );
-      }
-
-      // Check if user already has a subscription
-      const existingSubscription = await ctx.db.subscription.findUnique({
-        where: {
-          userId: user.id,
-        },
-      });
-
-      if (existingSubscription?.status === SubscriptionStatus.ACTIVE) {
-        throw new Error("You already have an active subscription");
-      }
-
-      // Get or create Stripe customer
-      let stripeCustomerId = existingSubscription?.stripeCustomerId;
-
-      if (!stripeCustomerId) {
-        const customer = await createStripeCustomer(
-          user.email!,
-          user.id,
-          user.name
-        );
-        stripeCustomerId = customer.id;
-
-        // Create or update subscription record
-        await ctx.db.subscription.upsert({
-          where: {
-            userId: user.id,
-          },
-          create: {
-            userId: user.id,
-            stripeCustomerId,
-            stripePriceId: input.priceId ?? env.STRIPE_ANNUAL_PRICE_ID,
-            status: SubscriptionStatus.PENDING,
-          },
-          update: {
-            stripeCustomerId,
-            stripePriceId: input.priceId ?? env.STRIPE_ANNUAL_PRICE_ID,
-          },
-        });
-      }
-
-      // Create checkout session
+      // Build URLs for redirect
       const host = req?.headers?.host ?? "localhost:3000";
       const protocol = host.includes("localhost") ? "http" : "https";
       const baseUrl = `${protocol}://${host}`;
+      
+      const successUrl = `${baseUrl}/subscription/success?session_id={CHECKOUT_SESSION_ID}`;
+      const cancelUrl = `${baseUrl}/subscription/cancelled`;
 
-      const session = await createCheckoutSession(
-        stripeCustomerId,
+      return await service.createCheckoutSession(
         user.id,
-        input.priceId ?? env.STRIPE_ANNUAL_PRICE_ID,
-        `${baseUrl}/subscription/success?session_id={CHECKOUT_SESSION_ID}`,
-        `${baseUrl}/subscription/cancelled`
+        user.email!,
+        successUrl,
+        cancelUrl
       );
-
-      return {
-        url: session.url,
-        sessionId: session.id,
-      };
     }),
 
   cancelSubscription: protectedProcedure.mutation(async ({ ctx }) => {
-    const subscription = await ctx.db.subscription.findUnique({
-      where: {
-        userId: ctx.session.user.id,
-      },
-    });
+    const service = new SubscriptionService(ctx.db);
+    return await service.cancelSubscription(ctx.session.user.id);
+  }),
 
-    if (!subscription || subscription.status !== SubscriptionStatus.ACTIVE) {
-      throw new Error("No active subscription found");
-    }
-
-    if (!subscription.stripeSubscriptionId) {
-      throw new Error("Invalid subscription state");
-    }
-
-    // Import stripe utils dynamically to avoid circular dependency
-    const { cancelSubscription } = await import("~/utils/stripe");
-    await cancelSubscription(subscription.stripeSubscriptionId);
-
-    // Update database
-    await ctx.db.subscription.update({
-      where: {
-        id: subscription.id,
-      },
-      data: {
-        cancelAtPeriodEnd: true,
-        canceledAt: new Date(),
-      },
-    });
-
-    return {
-      success: true,
-    };
+  resumeSubscription: protectedProcedure.mutation(async ({ ctx }) => {
+    const service = new SubscriptionService(ctx.db);
+    return await service.resumeSubscription(ctx.session.user.id);
   }),
 });
