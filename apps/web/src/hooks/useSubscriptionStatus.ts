@@ -1,6 +1,11 @@
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import { SubscriptionStatus } from "@prisma/client";
+import { 
+  isSubscriptionActive, 
+  isSubscriptionInTrial,
+  doesSubscriptionNeedRenewal,
+  getDaysUntilExpiry 
+} from "~/utils/subscription";
 
 export function useSubscriptionStatus() {
   const { data: session } = useSession();
@@ -9,17 +14,17 @@ export function useSubscriptionStatus() {
     { enabled: !!session }
   );
 
-  const hasActiveSubscription = subscription?.status === SubscriptionStatus.ACTIVE;
-  const isExpired = subscription?.status === SubscriptionStatus.EXPIRED;
-  const isPending = subscription?.status === SubscriptionStatus.PENDING;
-  const isCanceled = subscription?.status === SubscriptionStatus.CANCELED;
+  const hasActiveSubscription = isSubscriptionActive(subscription ?? null);
+  const isInTrial = isSubscriptionInTrial(subscription ?? null);
+  const needsRenewal = doesSubscriptionNeedRenewal(subscription ?? null);
+  const daysUntilExpiry = getDaysUntilExpiry(subscription ?? null);
   const expiresAt = subscription?.expiresAt;
 
   return {
     hasActiveSubscription,
-    isExpired,
-    isPending,
-    isCanceled,
+    isInTrial,
+    needsRenewal,
+    daysUntilExpiry,
     expiresAt,
     isLoading,
     subscription,
