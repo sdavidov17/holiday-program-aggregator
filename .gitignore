@@ -1,1 +1,24 @@
 node_modules
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*~
+*.swp
+*.swo
+
+# BMAD/Expansion pack files (not needed for this project)
+.bmad-core/
+.claude/
+.clinerules/
+.cursor/
+.roo/
+expansion-packs/
+web-bundles/
+*expansion-pack*
