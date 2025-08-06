@@ -13,12 +13,13 @@ Thumbs.db
 *.swp
 *.swo
 
-# BMAD/Expansion pack files (not needed for this project)
-.bmad-core/
-.claude/
-.clinerules/
-.cursor/
-.roo/
-expansion-packs/
-web-bundles/
-*expansion-pack*
+# BMAD/Expansion pack files - KEEP THESE FOR DEVELOPMENT
+# Commented out to preserve BMAD functionality
+# .bmad-core/
+# .claude/
+# .clinerules/
+# .cursor/
+# .roo/
+# expansion-packs/
+# web-bundles/
+# *expansion-pack*
