@@ -9,7 +9,21 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z
       .string()
-      .url()
+      .refine(
+        (str) => {
+          // Allow both standard URLs and PostgreSQL connection strings
+          try {
+            new URL(str);
+            return true;
+          } catch {
+            // Check if it's a valid PostgreSQL connection string
+            return str.startsWith("postgresql://") || 
+                   str.startsWith("postgres://") ||
+                   str.startsWith("file:"); // SQLite
+          }
+        },
+        "Invalid database URL"
+      )
       .refine(
         (str) => !str.includes("YOUR_MYSQL_URL_HERE"),
         "You forgot to change the default URL"
