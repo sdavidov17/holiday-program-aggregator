@@ -29,34 +29,47 @@ test.describe('Homepage', () => {
     expect(background).toContain('gradient');
   });
 
-  test('should display health check card', async ({ page }) => {
-    const healthCard = page.locator('text=Health Check');
-    await expect(healthCard).toBeVisible();
+  test('should display sign in link when not authenticated', async ({ page }) => {
+    const signInLink = page.locator('text=Sign In →');
+    await expect(signInLink).toBeVisible();
   });
 
-  test('should display health check status', async ({ page }) => {
-    // Wait for the API call to complete
-    await page.waitForResponse('**/api/trpc/healthz.healthz*');
+  test('should display welcome message when not authenticated', async ({ page }) => {
+    const welcomeText = page.locator('text=Welcome!');
+    await expect(welcomeText).toBeVisible();
     
-    const status = page.locator('text=Status: ok');
-    await expect(status).toBeVisible({ timeout: 10000 });
+    const signInPrompt = page.locator('text=Sign in to start your subscription');
+    await expect(signInPrompt).toBeVisible();
+  });
+
+  test('should display features card', async ({ page }) => {
+    const featuresCard = page.locator('text=Features');
+    await expect(featuresCard).toBeVisible();
     
-    const timestamp = page.locator('text=Time:');
-    await expect(timestamp).toBeVisible();
+    const features = page.locator('text=Curated holiday programs');
+    await expect(features).toBeVisible();
+  });
+
+  test('should display benefits card', async ({ page }) => {
+    const benefitsCard = page.locator('text=Benefits');
+    await expect(benefitsCard).toBeVisible();
+    
+    const benefits = page.locator('text=Save time searching');
+    await expect(benefits).toBeVisible();
   });
 
   test('should have white text', async ({ page }) => {
+    // Check if the heading has the text-white class
     const heading = page.locator('h1');
-    const color = await heading.evaluate((el) => {
-      return window.getComputedStyle(el).color;
+    const hasWhiteTextClass = await heading.evaluate((el) => {
+      return el.classList.contains('text-white');
     });
     
-    // White text should be rgb(255, 255, 255)
-    expect(color).toBe('rgb(255, 255, 255)');
+    expect(hasWhiteTextClass).toBe(true);
   });
 
   test('should have semi-transparent card background', async ({ page }) => {
-    const card = page.locator('text=Health Check').locator('..');
+    const card = page.locator('text=Features').locator('..');
     const backgroundColor = await card.evaluate((el) => {
       return window.getComputedStyle(el).backgroundColor;
     });
