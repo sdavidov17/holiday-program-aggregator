@@ -27,15 +27,23 @@ jobs:
     
     - name: Run linting
       run: pnpm lint
+      env:
+        NEXTAUTH_SECRET: "test-secret-for-ci"
     
     - name: Run type checking
       run: pnpm type-check
+      env:
+        NEXTAUTH_SECRET: "test-secret-for-ci"
     
     - name: Run tests
       run: pnpm test
+      env:
+        NEXTAUTH_SECRET: "test-secret-for-ci"
     
     - name: Build application
       run: pnpm build
+      env:
+        NEXTAUTH_SECRET: "test-secret-for-ci"
 
   deploy-preview:
     runs-on: ubuntu-latest
