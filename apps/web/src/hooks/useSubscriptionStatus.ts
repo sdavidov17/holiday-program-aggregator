@@ -14,10 +14,17 @@ export function useSubscriptionStatus() {
     { enabled: !!session }
   );
 
-  const hasActiveSubscription = isSubscriptionActive(subscription ?? null);
-  const isInTrial = isSubscriptionInTrial(subscription ?? null);
-  const needsRenewal = doesSubscriptionNeedRenewal(subscription ?? null);
-  const daysUntilExpiry = getDaysUntilExpiry(subscription ?? null);
+  const subscriptionData = subscription ? {
+    status: subscription.status,
+    expiresAt: subscription.expiresAt,
+    currentPeriodEnd: subscription.currentPeriodEnd,
+    cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+  } : null;
+  
+  const hasActiveSubscription = isSubscriptionActive(subscriptionData);
+  const isInTrial = isSubscriptionInTrial(subscriptionData);
+  const needsRenewal = doesSubscriptionNeedRenewal(subscriptionData);
+  const daysUntilExpiry = getDaysUntilExpiry(subscriptionData);
   const expiresAt = subscription?.expiresAt;
 
   return {

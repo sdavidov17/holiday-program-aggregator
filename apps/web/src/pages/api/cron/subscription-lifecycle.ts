@@ -22,14 +22,14 @@ export default async function handler(
     const result = await processSubscriptionLifecycle();
     
     // Log the results
-    logger.info('Cron job completed', { result });
+    logger.info('Cron job completed', { correlationId: 'cron-' + Date.now(), result });
     
     return res.status(200).json({ 
       success: true, 
       processed: result 
     });
   } catch (error) {
-    logger.error('Subscription lifecycle cron error', { error });
+    logger.error('Subscription lifecycle cron error', { correlationId: 'cron-error-' + Date.now(), error });
     return res.status(500).json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Unknown error' 

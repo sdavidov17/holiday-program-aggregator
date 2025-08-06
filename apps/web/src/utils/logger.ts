@@ -9,6 +9,7 @@ export interface LogContext {
   journey?: string;
   traceId?: string;
   spanId?: string;
+  [key: string]: unknown; // Allow additional properties
 }
 
 export interface LogEntry {
@@ -106,7 +107,7 @@ export class StructuredLogger {
     };
 
     if (data) {
-      entry.data = this.scrubPII(data);
+      entry.data = this.scrubPII(data) as Record<string, unknown>;
     }
 
     if (error) {
