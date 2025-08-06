@@ -15,7 +15,7 @@
     "db:studio": "turbo run db:studio"
   },
   "devDependencies": {
-    "turbo": "^1.10.7"
+    "turbo": "^2.5.5"
   },
   "packageManager": "pnpm@8.6.10",
   "workspaces": [
