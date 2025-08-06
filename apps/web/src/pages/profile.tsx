@@ -3,6 +3,7 @@ import { signOut } from "next-auth/react";
 import { getServerAuthSession } from "~/server/auth";
 import { useState } from "react";
 import { api } from "~/utils/api";
+import Link from "next/link";
 
 interface ProfileProps {
   user: {
@@ -165,6 +166,25 @@ export default function Profile({ user }: ProfileProps) {
       )}
 
       <hr style={{ margin: "20px 0" }} />
+
+      {/* Subscription Information */}
+      <div style={{ marginBottom: "20px" }}>
+        <h2 style={{ marginBottom: "10px" }}>Subscription</h2>
+        <Link 
+          href="/subscription" 
+          style={{
+            display: "inline-block",
+            padding: "10px 20px",
+            backgroundColor: "#007bff",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "4px",
+            marginBottom: "20px",
+          }}
+        >
+          Manage Subscription →
+        </Link>
+      </div>
 
       <button
         onClick={() => signOut({ callbackUrl: "/" })}

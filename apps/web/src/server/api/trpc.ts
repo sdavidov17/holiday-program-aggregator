@@ -13,6 +13,8 @@ type CreateContextOptions = {
   session: Session | null;
   correlationId: string;
   requestPath?: string;
+  req?: CreateNextContextOptions['req'];
+  res?: CreateNextContextOptions['res'];
 };
 
 export const createInnerTRPCContext = (opts: CreateContextOptions) => {
@@ -21,8 +23,12 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
     db,
     correlationId: opts.correlationId,
     requestPath: opts.requestPath,
+    req: opts.req,
+    res: opts.res,
   };
 };
+
+export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
 
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
@@ -38,10 +44,12 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
     session,
     correlationId,
     requestPath,
+    req,
+    res,
   });
 };
 
-const t = initTRPC.context<typeof createTRPCContext>().create({
+export const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
@@ -125,3 +133,10 @@ export const protectedProcedure = t.procedure
       },
     });
   });
+
+// Import the subscription middleware
+import { requireActiveSubscriptionMiddleware } from "./middleware/requireActiveSubscription";
+
+// Premium procedure that requires an active subscription
+export const premiumProcedure = protectedProcedure
+  .use(requireActiveSubscriptionMiddleware);

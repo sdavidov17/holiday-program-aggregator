@@ -1,0 +1,13 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/subscription-lifecycle",
+      "schedule": "0 9 * * *"
+    }
+  ],
+  "functions": {
+    "src/pages/api/cron/subscription-lifecycle.ts": {
+      "maxDuration": 30
+    }
+  }
+}

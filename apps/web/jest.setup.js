@@ -21,5 +21,21 @@ jest.mock('~/env.mjs', () => ({
     DISCORD_CLIENT_ID: 'test-discord-client-id',
     DISCORD_CLIENT_SECRET: 'test-discord-client-secret',
     ENCRYPTION_KEY: 'test-32-character-encryption-key',
+    STRIPE_SECRET_KEY: 'sk_test_123',
+    STRIPE_WEBHOOK_SECRET: 'whsec_test_123',
+    STRIPE_ANNUAL_PRICE_ID: 'price_test_123',
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_test_123',
   }
 }), { virtual: true });
+
+// Mock Next.js router
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+    pathname: '/',
+    route: '/',
+    asPath: '/',
+    query: {},
+    reload: jest.fn(),
+  })),
+}));
