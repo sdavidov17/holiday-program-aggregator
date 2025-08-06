@@ -51,7 +51,13 @@ export function SubscriptionCard() {
     );
   }
 
-  const subscriptionData = subscription?.hasSubscription ? subscription : null;
+  const subscriptionData = subscription?.hasSubscription && subscription.status ? {
+    status: subscription.status,
+    expiresAt: subscription.expiresAt,
+    currentPeriodEnd: subscription.currentPeriodEnd,
+    cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+  } : null;
+  
   const isActive = isSubscriptionActive(subscriptionData);
   const needsRenewal = doesSubscriptionNeedRenewal(subscriptionData);
   const statusLabel = getSubscriptionStatusLabel(subscriptionData);

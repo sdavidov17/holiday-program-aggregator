@@ -139,4 +139,48 @@ import { requireActiveSubscriptionMiddleware } from "./middleware/requireActiveS
 
 // Premium procedure that requires an active subscription
 export const premiumProcedure = protectedProcedure
-  .use(requireActiveSubscriptionMiddleware);
+  .use(async ({ ctx, next }) => {
+    const { isSubscriptionActive } = await import("~/utils/subscription");
+    const { SubscriptionStatus } = await import("@prisma/client");
+    
+    const subscription = await ctx.db.subscription.findUnique({
+      where: { userId: ctx.session.user.id }
+    });
+
+    if (!isSubscriptionActive(subscription)) {
+      logger.warn('Access denied - no active subscription', {
+        correlationId: ctx.correlationId,
+        userId: ctx.session.user.id,
+        subscriptionStatus: subscription?.status
+      });
+      
+      throw new TRPCError({ 
+        code: 'FORBIDDEN',
+        message: 'Active subscription required'
+      });
+    }
+
+    // Check if subscription has expired and needs status update
+    if (subscription && subscription.expiresAt && subscription.expiresAt < new Date() && subscription.status === SubscriptionStatus.ACTIVE) {
+      // Update status to expired
+      await ctx.db.subscription.update({
+        where: { id: subscription.id },
+        data: { status: SubscriptionStatus.EXPIRED }
+      });
+      
+      logger.info('Subscription expired and status updated', {
+        correlationId: ctx.correlationId,
+        subscriptionId: subscription.id,
+        userId: ctx.session.user.id
+      });
+      
+      throw new TRPCError({ 
+        code: 'FORBIDDEN',
+        message: 'Subscription has expired'
+      });
+    }
+
+    return next({
+      ctx,
+    });
+  });

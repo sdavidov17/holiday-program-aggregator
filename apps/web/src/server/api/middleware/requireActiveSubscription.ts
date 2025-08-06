@@ -21,6 +21,7 @@ export const requireActiveSubscriptionMiddleware = async ({
 
   if (!isSubscriptionActive(subscription)) {
     logger.warn('Access denied - no active subscription', {
+      correlationId: ctx.correlationId,
       userId: ctx.session.user.id,
       subscriptionStatus: subscription?.status
     });
@@ -40,6 +41,7 @@ export const requireActiveSubscriptionMiddleware = async ({
     });
     
     logger.info('Subscription expired and status updated', {
+      correlationId: ctx.correlationId,
       subscriptionId: subscription.id,
       userId: ctx.session.user.id
     });

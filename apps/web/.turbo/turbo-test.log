@@ -2,46 +2,132 @@
 > web@0.1.0 test /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web
 > jest
 
-PASS __tests__/utils/logger.test.ts
-PASS __tests__/healthz.test.ts
+PASS src/pages/api/cron/__tests__/subscription-lifecycle.test.ts
   ● Console
 
     console.info
-      {"timestamp":"2025-08-01T04:01:41.816Z","level":"info","message":"tRPC request started: healthz.healthz","context":{"correlationId":"test-correlation-id-1","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","hasSession":false}}
+      {"timestamp":"2025-08-06T11:03:41.169Z","level":"info","message":"Cron job completed","context":{"correlationId":"cron-1754478221169","result":{"reminders":5,"expired":2,"errors":[]},"environment":"test","service":"holiday-aggregator"}}
 
-      at StructuredLogger.output (src/utils/logger.ts:138:17)
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.error
+      {"timestamp":"2025-08-06T11:03:41.174Z","level":"error","message":"Subscription lifecycle cron error","context":{"correlationId":"cron-error-1754478221174","error":{},"environment":"test","service":"holiday-aggregator"}}
+
+      143 |         break;
+      144 |       case 'error':
+    > 145 |         console.error(json);
+          |                 ^
+      146 |         break;
+      147 |     }
+      148 |   }
+
+      at StructuredLogger.output (src/utils/logger.ts:145:17)
+      at StructuredLogger.error (src/utils/logger.ts:167:10)
+      at handler (src/pages/api/cron/subscription-lifecycle.ts:32:12)
+      at Object.<anonymous> (src/pages/api/cron/__tests__/subscription-lifecycle.test.ts:93:5)
+
+PASS src/hooks/__tests__/useSubscriptionStatus.test.ts
+PASS src/components/__tests__/PremiumFeatureGuard.test.tsx
+PASS src/pages/api/stripe/__tests__/webhook.test.ts
+  ● Console
 
     console.info
-      {"timestamp":"2025-08-01T04:01:41.822Z","level":"info","message":"tRPC request completed: healthz.healthz","context":{"correlationId":"test-correlation-id-1","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","duration":6,"success":true}}
+      {"timestamp":"2025-08-06T11:03:41.490Z","level":"info","message":"Checkout session completed","context":{"correlationId":"unknown","sessionId":"cs_test_123","userId":"user123","environment":"test","service":"holiday-aggregator"}}
 
-      at StructuredLogger.output (src/utils/logger.ts:138:17)
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.error
+      {"timestamp":"2025-08-06T11:03:41.492Z","level":"error","message":"No userId in session metadata","context":{"correlationId":"unknown","sessionId":"cs_test_123","environment":"test","service":"holiday-aggregator"}}
+
+      143 |         break;
+      144 |       case 'error':
+    > 145 |         console.error(json);
+          |                 ^
+      146 |         break;
+      147 |     }
+      148 |   }
+
+      at StructuredLogger.output (src/utils/logger.ts:145:17)
+      at StructuredLogger.error (src/utils/logger.ts:167:10)
+      at handler (src/pages/api/stripe/webhook.ts:61:18)
+      at Object.<anonymous> (src/pages/api/stripe/__tests__/webhook.test.ts:127:7)
 
     console.info
-      {"timestamp":"2025-08-01T04:01:41.824Z","level":"info","message":"tRPC request started: healthz.healthz","context":{"correlationId":"test-correlation-id-2","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","hasSession":false}}
+      {"timestamp":"2025-08-06T11:03:41.493Z","level":"info","message":"Subscription updated","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","status":"active","environment":"test","service":"holiday-aggregator"}}
 
-      at StructuredLogger.output (src/utils/logger.ts:138:17)
-
-    console.info
-      {"timestamp":"2025-08-01T04:01:41.825Z","level":"info","message":"tRPC request completed: healthz.healthz","context":{"correlationId":"test-correlation-id-2","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","duration":1,"success":true}}
-
-      at StructuredLogger.output (src/utils/logger.ts:138:17)
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.info
-      {"timestamp":"2025-08-01T04:01:41.825Z","level":"info","message":"tRPC request started: healthz.healthz","context":{"correlationId":"test-correlation-id-2","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","hasSession":false}}
+      {"timestamp":"2025-08-06T11:03:41.493Z","level":"info","message":"Subscription updated","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","status":"past_due","environment":"test","service":"holiday-aggregator"}}
 
-      at StructuredLogger.output (src/utils/logger.ts:138:17)
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.info
-      {"timestamp":"2025-08-01T04:01:41.825Z","level":"info","message":"tRPC request completed: healthz.healthz","context":{"correlationId":"test-correlation-id-2","environment":"test","service":"holiday-aggregator"},"data":{"path":"healthz.healthz","duration":0,"success":true}}
+      {"timestamp":"2025-08-06T11:03:41.493Z","level":"info","message":"Subscription deleted","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
 
-      at StructuredLogger.output (src/utils/logger.ts:138:17)
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
 
-PASS __tests__/middleware.test.ts
-PASS __tests__/index.test.tsx
-PASS __tests__/api/health.test.ts (6.771 s)
+    console.info
+      {"timestamp":"2025-08-06T11:03:41.494Z","level":"info","message":"Invoice payment succeeded","context":{"correlationId":"unknown","invoiceId":"in_test_123","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
 
-Test Suites: 5 passed, 5 total
-Tests:       1 skipped, 43 passed, 44 total
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.warn
+      {"timestamp":"2025-08-06T11:03:41.494Z","level":"warn","message":"Invoice payment failed","context":{"correlationId":"unknown","invoiceId":"in_test_123","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
+
+      140 |         break;
+      141 |       case 'warn':
+    > 142 |         console.warn(json);
+          |                 ^
+      143 |         break;
+      144 |       case 'error':
+      145 |         console.error(json);
+
+      at StructuredLogger.output (src/utils/logger.ts:142:17)
+      at StructuredLogger.warn (src/utils/logger.ts:162:10)
+      at handler (src/pages/api/stripe/webhook.ts:181:16)
+      at Object.<anonymous> (src/pages/api/stripe/__tests__/webhook.test.ts:329:7)
+
+    console.info
+      {"timestamp":"2025-08-06T11:03:41.494Z","level":"info","message":"Unhandled webhook event","context":{"correlationId":"unknown","eventType":"some.unknown.event","environment":"test","service":"holiday-aggregator"}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.error
+      {"timestamp":"2025-08-06T11:03:41.494Z","level":"error","message":"Webhook signature verification failed","context":{"correlationId":"unknown","error":{},"environment":"test","service":"holiday-aggregator"}}
+
+      143 |         break;
+      144 |       case 'error':
+    > 145 |         console.error(json);
+          |                 ^
+      146 |         break;
+      147 |     }
+      148 |   }
+
+      at StructuredLogger.output (src/utils/logger.ts:145:17)
+      at StructuredLogger.error (src/utils/logger.ts:167:10)
+      at handler (src/pages/api/stripe/webhook.ts:51:12)
+      at Object.<anonymous> (src/pages/api/stripe/__tests__/webhook.test.ts:379:5)
+
+    console.error
+      {"timestamp":"2025-08-06T11:03:41.495Z","level":"error","message":"Error processing webhook","context":{"correlationId":"unknown","error":{},"environment":"test","service":"holiday-aggregator"}}
+
+      143 |         break;
+      144 |       case 'error':
+    > 145 |         console.error(json);
+          |                 ^
+      146 |         break;
+      147 |     }
+      148 |   }
+
+      at StructuredLogger.output (src/utils/logger.ts:145:17)
+      at StructuredLogger.error (src/utils/logger.ts:167:10)
+      at handler (src/pages/api/stripe/webhook.ts:191:12)
+      at Object.<anonymous> (src/pages/api/stripe/__tests__/webhook.test.ts:408:5)
+
+
+Test Suites: 4 passed, 4 total
+Tests:       29 passed, 29 total
 Snapshots:   0 total
-Time:        7.445 s
+Time:        1.217 s
 Ran all test suites.

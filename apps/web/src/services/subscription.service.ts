@@ -49,6 +49,7 @@ export class SubscriptionService {
     cancelUrl: string
   ) {
     logger.info("Creating checkout session", {
+      correlationId: 'checkout-' + Date.now(),
       userId,
       email,
       stripeConfig: {
@@ -78,7 +79,8 @@ export class SubscriptionService {
     // Get or create Stripe customer
     let stripeCustomerId = existingSubscription?.stripeCustomerId;
     if (!stripeCustomerId) {
-      stripeCustomerId = await createStripeCustomer(email, userId);
+      const customer = await createStripeCustomer(email, userId);
+      stripeCustomerId = customer.id;
       
       // Store customer ID if we have a subscription record
       if (existingSubscription) {
@@ -90,15 +92,13 @@ export class SubscriptionService {
     }
 
     // Create checkout session
-    const session = await createCheckoutSession({
-      customerId: stripeCustomerId,
-      priceId: env.STRIPE_ANNUAL_PRICE_ID,
+    const session = await createCheckoutSession(
+      stripeCustomerId,
+      userId,
+      env.STRIPE_ANNUAL_PRICE_ID,
       successUrl,
-      cancelUrl,
-      metadata: {
-        userId,
-      },
-    });
+      cancelUrl
+    );
 
     // Create or update subscription record with pending status
     await this.db.subscription.upsert({
@@ -158,6 +158,7 @@ export class SubscriptionService {
     });
 
     logger.info("Subscription canceled", {
+      correlationId: 'cancel-' + Date.now(),
       userId,
       subscriptionId: subscription.id,
       stripeSubscriptionId: subscription.stripeSubscriptionId,
@@ -213,6 +214,7 @@ export class SubscriptionService {
     });
 
     logger.info("Subscription resumed", {
+      correlationId: 'resume-' + Date.now(),
       userId,
       subscriptionId: subscription.id,
       stripeSubscriptionId: subscription.stripeSubscriptionId,
@@ -256,6 +258,7 @@ export class SubscriptionService {
     });
 
     logger.info("Checkout completed and subscription activated", {
+      correlationId: 'checkout-complete-' + Date.now(),
       userId,
       stripeSubscriptionId,
     });
@@ -274,6 +277,7 @@ export class SubscriptionService {
 
     if (!subscription) {
       logger.error("Subscription not found for webhook update", {
+        correlationId: 'webhook-error-' + Date.now(),
         stripeSubscriptionId,
       });
       throw new Error("Subscription not found");
@@ -285,6 +289,7 @@ export class SubscriptionService {
     });
 
     logger.info("Subscription updated from webhook", {
+      correlationId: 'webhook-update-' + Date.now(),
       subscriptionId: subscription.id,
       stripeSubscriptionId,
       updates,

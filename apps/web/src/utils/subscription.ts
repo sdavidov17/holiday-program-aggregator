@@ -1,10 +1,20 @@
 import { SubscriptionStatus } from "@prisma/client";
 import type { Subscription } from "@prisma/client";
 
+// Minimal subscription data needed for status checks
+export interface SubscriptionData {
+  status: SubscriptionStatus;
+  expiresAt: Date | null;
+  currentPeriodEnd: Date | null;
+  cancelAtPeriodEnd: boolean;
+  trialEndsAt?: Date | null;
+  stripeSubscriptionId?: string | null;
+}
+
 /**
  * Check if a subscription is currently active
  */
-export function isSubscriptionActive(subscription: Subscription | null): boolean {
+export function isSubscriptionActive(subscription: SubscriptionData | Subscription | null): boolean {
   if (!subscription) return false;
   
   return (
@@ -16,13 +26,14 @@ export function isSubscriptionActive(subscription: Subscription | null): boolean
 /**
  * Check if a subscription is in trial period
  */
-export function isSubscriptionInTrial(subscription: Subscription | null): boolean {
+export function isSubscriptionInTrial(subscription: SubscriptionData | Subscription | null): boolean {
   if (!subscription) return false;
   
   // Check if subscription is active and has a trial end date in the future
   return (
     subscription.status === SubscriptionStatus.ACTIVE &&
     subscription.trialEndsAt !== null &&
+    subscription.trialEndsAt !== undefined &&
     subscription.trialEndsAt > new Date()
   );
 }
@@ -30,7 +41,7 @@ export function isSubscriptionInTrial(subscription: Subscription | null): boolea
 /**
  * Check if a subscription needs renewal
  */
-export function doesSubscriptionNeedRenewal(subscription: Subscription | null): boolean {
+export function doesSubscriptionNeedRenewal(subscription: SubscriptionData | Subscription | null): boolean {
   if (!subscription) return false;
   
   const needsRenewal = 
@@ -45,7 +56,7 @@ export function doesSubscriptionNeedRenewal(subscription: Subscription | null): 
 /**
  * Get human-readable subscription status
  */
-export function getSubscriptionStatusLabel(subscription: Subscription | null): string {
+export function getSubscriptionStatusLabel(subscription: SubscriptionData | Subscription | null): string {
   if (!subscription) return "No Subscription";
   
   switch (subscription.status) {
@@ -67,7 +78,7 @@ export function getSubscriptionStatusLabel(subscription: Subscription | null): s
 /**
  * Get subscription status color for UI
  */
-export function getSubscriptionStatusColor(subscription: Subscription | null): string {
+export function getSubscriptionStatusColor(subscription: SubscriptionData | Subscription | null): string {
   if (!subscription) return "gray";
   
   switch (subscription.status) {
@@ -88,7 +99,7 @@ export function getSubscriptionStatusColor(subscription: Subscription | null): s
 /**
  * Calculate days until subscription expires
  */
-export function getDaysUntilExpiry(subscription: Subscription | null): number | null {
+export function getDaysUntilExpiry(subscription: SubscriptionData | Subscription | null): number | null {
   if (!subscription || !subscription.currentPeriodEnd) return null;
   
   const now = new Date();
@@ -102,7 +113,7 @@ export function getDaysUntilExpiry(subscription: Subscription | null): number | 
 /**
  * Check if subscription can be canceled
  */
-export function canCancelSubscription(subscription: Subscription | null): boolean {
+export function canCancelSubscription(subscription: SubscriptionData | Subscription | null): boolean {
   if (!subscription) return false;
   
   return (
@@ -115,7 +126,7 @@ export function canCancelSubscription(subscription: Subscription | null): boolea
 /**
  * Check if subscription can be resumed (un-canceled)
  */
-export function canResumeSubscription(subscription: Subscription | null): boolean {
+export function canResumeSubscription(subscription: SubscriptionData | Subscription | null): boolean {
   if (!subscription) return false;
   
   return (

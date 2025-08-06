@@ -113,7 +113,7 @@ export async function constructWebhookEvent(
     );
     return event;
   } catch (err) {
-    logger.error("Webhook signature verification failed", { error: err });
+    logger.error("Webhook signature verification failed", { correlationId: 'webhook-verify-' + Date.now(), error: err });
     throw new Error("Webhook signature verification failed");
   }
 }
