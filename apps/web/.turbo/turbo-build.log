@@ -2,35 +2,61 @@
 > web@0.1.0 build /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web
 > next build
 
-- info Loaded env from /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/.env
-- info Linting and checking validity of types...
-- info Creating an optimized production build...
+   ▲ Next.js 15.4.5
+   - Environments: .env.local, .env
+
+   Linting and checking validity of types ...
+   Creating an optimized production build ...
 
 warn - The `content` option in your Tailwind CSS configuration is missing or empty.
 warn - Configure your content sources or your generated CSS will be missing styles.
 warn - https://tailwindcss.com/docs/content-configuration
-- info Compiled successfully
-- info Collecting page data...
-- info Generating static pages (0/6)
-- info Generating static pages (1/6)
-- info Generating static pages (2/6)
-- info Generating static pages (4/6)
-- info Generating static pages (6/6)
-- info Finalizing page optimization...
 
-Route (pages)                              Size     First Load JS
-┌ ○ /                                      849 B           113 kB
-├   /_app                                  0 B             113 kB
-├ ○ /404                                   181 B           113 kB
-├ λ /api/auth/[...nextauth]                0 B             113 kB
-└ λ /api/trpc/[trpc]                       0 B             113 kB
-+ First Load JS shared by all              114 kB
-  ├ chunks/framework-9834ccc70d32f187.js   45.2 kB
-  ├ chunks/main-7adb89fa125ca181.js        30.1 kB
-  ├ chunks/pages/_app-2e54f7b4d9ada6e0.js  36.5 kB
-  ├ chunks/webpack-ee7e63bc15b31913.js     815 B
-  └ css/b7ac5921b4818781.css               1.38 kB
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+warn - Configure your content sources or your generated CSS will be missing styles.
+warn - https://tailwindcss.com/docs/content-configuration
+ ✓ Compiled successfully in 2000ms
+   Collecting page data ...
+   Generating static pages (0/16) ...
+   Generating static pages (4/16) 
+   Generating static pages (8/16) 
+   Generating static pages (12/16) 
+ ✓ Generating static pages (16/16)
+   Finalizing page optimization ...
+   Collecting build traces ...
 
-λ  (Server)  server-side renders at runtime (uses getInitialProps or getServerSideProps)
-○  (Static)  automatically rendered as static HTML (uses no initial props)
+Route (pages)                                           Size  First Load JS
+┌ ○ /                                                1.74 kB         149 kB
+├   /_app                                                0 B         129 kB
+├ ○ /404                                               180 B         129 kB
+├ ○ /admin/subscription-monitor                      1.64 kB         133 kB
+├ ƒ /api/auth/[...nextauth]                              0 B         129 kB
+├ ƒ /api/auth/signup                                     0 B         129 kB
+├ ƒ /api/cron/__tests__/subscription-lifecycle.test      0 B         129 kB
+├ ƒ /api/cron/subscription-lifecycle                     0 B         129 kB
+├ ƒ /api/health                                          0 B         129 kB
+├ ƒ /api/health/live                                     0 B         129 kB
+├ ƒ /api/health/ready                                    0 B         129 kB
+├ ƒ /api/stripe/__tests__/webhook.test                   0 B         129 kB
+├ ƒ /api/stripe/webhook                                  0 B         129 kB
+├ ƒ /api/test                                            0 B         129 kB
+├ ƒ /api/trpc/[trpc]                                     0 B         129 kB
+├ ○ /auth/error                                        675 B         132 kB
+├ ƒ /auth/signin                                     1.32 kB         131 kB
+├ ƒ /profile                                         1.22 kB         133 kB
+├ ○ /search                                          2.06 kB         149 kB
+├ ƒ /subscription                                     3.1 kB         150 kB
+├   └ css/062abfc6caaaa277.css                       1.71 kB
+├ ○ /subscription/cancelled                            962 B         133 kB
+└ ○ /subscription/success                            1.29 kB         133 kB
++ First Load JS shared by all                         131 kB
+  ├ chunks/framework-cbbd317a9058e723.js             57.7 kB
+  ├ chunks/main-2a8fef56c918f267.js                  34.4 kB
+  ├ chunks/pages/_app-7b2d97f1d2078705.js            36.2 kB
+  └ other shared chunks (total)                      2.35 kB
+
+ƒ Middleware                                         33.5 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
 

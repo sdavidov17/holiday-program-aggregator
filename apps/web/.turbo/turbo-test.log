@@ -6,12 +6,12 @@ PASS src/pages/api/cron/__tests__/subscription-lifecycle.test.ts
   ● Console
 
     console.info
-      {"timestamp":"2025-08-06T11:03:41.169Z","level":"info","message":"Cron job completed","context":{"correlationId":"cron-1754478221169","result":{"reminders":5,"expired":2,"errors":[]},"environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.480Z","level":"info","message":"Cron job completed","context":{"correlationId":"cron-1754480583480","result":{"reminders":5,"expired":2,"errors":[]},"environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.error
-      {"timestamp":"2025-08-06T11:03:41.174Z","level":"error","message":"Subscription lifecycle cron error","context":{"correlationId":"cron-error-1754478221174","error":{},"environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.483Z","level":"error","message":"Subscription lifecycle cron error","context":{"correlationId":"cron-error-1754480583483","error":{},"environment":"test","service":"holiday-aggregator"}}
 
       143 |         break;
       144 |       case 'error':
@@ -32,12 +32,12 @@ PASS src/pages/api/stripe/__tests__/webhook.test.ts
   ● Console
 
     console.info
-      {"timestamp":"2025-08-06T11:03:41.490Z","level":"info","message":"Checkout session completed","context":{"correlationId":"unknown","sessionId":"cs_test_123","userId":"user123","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.771Z","level":"info","message":"Checkout session completed","context":{"correlationId":"unknown","sessionId":"cs_test_123","userId":"user123","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.error
-      {"timestamp":"2025-08-06T11:03:41.492Z","level":"error","message":"No userId in session metadata","context":{"correlationId":"unknown","sessionId":"cs_test_123","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.773Z","level":"error","message":"No userId in session metadata","context":{"correlationId":"unknown","sessionId":"cs_test_123","environment":"test","service":"holiday-aggregator"}}
 
       143 |         break;
       144 |       case 'error':
@@ -53,27 +53,27 @@ PASS src/pages/api/stripe/__tests__/webhook.test.ts
       at Object.<anonymous> (src/pages/api/stripe/__tests__/webhook.test.ts:127:7)
 
     console.info
-      {"timestamp":"2025-08-06T11:03:41.493Z","level":"info","message":"Subscription updated","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","status":"active","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.774Z","level":"info","message":"Subscription updated","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","status":"active","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.info
-      {"timestamp":"2025-08-06T11:03:41.493Z","level":"info","message":"Subscription updated","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","status":"past_due","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.774Z","level":"info","message":"Subscription updated","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","status":"past_due","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.info
-      {"timestamp":"2025-08-06T11:03:41.493Z","level":"info","message":"Subscription deleted","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.774Z","level":"info","message":"Subscription deleted","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.info
-      {"timestamp":"2025-08-06T11:03:41.494Z","level":"info","message":"Invoice payment succeeded","context":{"correlationId":"unknown","invoiceId":"in_test_123","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.775Z","level":"info","message":"Invoice payment succeeded","context":{"correlationId":"unknown","invoiceId":"in_test_123","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.warn
-      {"timestamp":"2025-08-06T11:03:41.494Z","level":"warn","message":"Invoice payment failed","context":{"correlationId":"unknown","invoiceId":"in_test_123","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.775Z","level":"warn","message":"Invoice payment failed","context":{"correlationId":"unknown","invoiceId":"in_test_123","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
 
       140 |         break;
       141 |       case 'warn':
@@ -89,12 +89,12 @@ PASS src/pages/api/stripe/__tests__/webhook.test.ts
       at Object.<anonymous> (src/pages/api/stripe/__tests__/webhook.test.ts:329:7)
 
     console.info
-      {"timestamp":"2025-08-06T11:03:41.494Z","level":"info","message":"Unhandled webhook event","context":{"correlationId":"unknown","eventType":"some.unknown.event","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.775Z","level":"info","message":"Unhandled webhook event","context":{"correlationId":"unknown","eventType":"some.unknown.event","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.error
-      {"timestamp":"2025-08-06T11:03:41.494Z","level":"error","message":"Webhook signature verification failed","context":{"correlationId":"unknown","error":{},"environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.776Z","level":"error","message":"Webhook signature verification failed","context":{"correlationId":"unknown","error":{},"environment":"test","service":"holiday-aggregator"}}
 
       143 |         break;
       144 |       case 'error':
@@ -110,7 +110,7 @@ PASS src/pages/api/stripe/__tests__/webhook.test.ts
       at Object.<anonymous> (src/pages/api/stripe/__tests__/webhook.test.ts:379:5)
 
     console.error
-      {"timestamp":"2025-08-06T11:03:41.495Z","level":"error","message":"Error processing webhook","context":{"correlationId":"unknown","error":{},"environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-06T11:43:03.776Z","level":"error","message":"Error processing webhook","context":{"correlationId":"unknown","error":{},"environment":"test","service":"holiday-aggregator"}}
 
       143 |         break;
       144 |       case 'error':
@@ -129,5 +129,5 @@ PASS src/pages/api/stripe/__tests__/webhook.test.ts
 Test Suites: 4 passed, 4 total
 Tests:       29 passed, 29 total
 Snapshots:   0 total
-Time:        1.217 s
+Time:        1.165 s
 Ran all test suites.
