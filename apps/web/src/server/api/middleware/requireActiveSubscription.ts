@@ -1,41 +1,49 @@
 import { TRPCError } from "@trpc/server";
 import { SubscriptionStatus } from "@prisma/client";
 import { type Context } from "../trpc";
+import { isSubscriptionActive } from "~/utils/subscription";
+import { logger } from "~/utils/logger";
 
 export const requireActiveSubscriptionMiddleware = async ({ 
   ctx, 
   next 
 }: {
   ctx: Context;
-  next: (opts?: { ctx: Context }) => Promise<any>;
+  next: (opts?: { ctx: Context }) => Promise<unknown>;
 }) => {
   if (!ctx.session?.user) {
     throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
 
   const subscription = await ctx.db.subscription.findUnique({
-    where: { userId: ctx.session.user.id },
-    select: { 
-      id: true,
-      status: true, 
-      expiresAt: true,
-      currentPeriodEnd: true,
-    }
+    where: { userId: ctx.session.user.id }
   });
 
-  if (!subscription || subscription.status !== SubscriptionStatus.ACTIVE) {
+  if (!isSubscriptionActive(subscription)) {
+    logger.warn('Access denied - no active subscription', {
+      correlationId: ctx.correlationId,
+      userId: ctx.session.user.id,
+      subscriptionStatus: subscription?.status
+    });
+    
     throw new TRPCError({ 
       code: 'FORBIDDEN',
       message: 'Active subscription required'
     });
   }
 
-  // Check if subscription has expired
-  if (subscription.expiresAt && subscription.expiresAt < new Date()) {
+  // Check if subscription has expired and needs status update
+  if (subscription && subscription.expiresAt && subscription.expiresAt < new Date() && subscription.status === SubscriptionStatus.ACTIVE) {
     // Update status to expired
     await ctx.db.subscription.update({
       where: { id: subscription.id },
       data: { status: SubscriptionStatus.EXPIRED }
+    });
+    
+    logger.info('Subscription expired and status updated', {
+      correlationId: ctx.correlationId,
+      subscriptionId: subscription.id,
+      userId: ctx.session.user.id
     });
     
     throw new TRPCError({ 

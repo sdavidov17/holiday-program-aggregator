@@ -26,9 +26,9 @@ describe('PremiumFeatureGuard', () => {
   it('should show loading spinner when loading', () => {
     mockUseSubscriptionStatus.mockReturnValue({
       hasActiveSubscription: false,
-      isExpired: false,
-      isPending: false,
-      isCanceled: false,
+      isInTrial: false,
+      needsRenewal: false,
+      daysUntilExpiry: null,
       expiresAt: null,
       isLoading: true,
       subscription: null,
@@ -48,9 +48,9 @@ describe('PremiumFeatureGuard', () => {
   it('should show children when user has active subscription', () => {
     mockUseSubscriptionStatus.mockReturnValue({
       hasActiveSubscription: true,
-      isExpired: false,
-      isPending: false,
-      isCanceled: false,
+      isInTrial: false,
+      needsRenewal: false,
+      daysUntilExpiry: null,
       expiresAt: new Date('2025-12-31'),
       isLoading: false,
       subscription: {
@@ -74,9 +74,9 @@ describe('PremiumFeatureGuard', () => {
   it('should show default fallback when no active subscription', () => {
     mockUseSubscriptionStatus.mockReturnValue({
       hasActiveSubscription: false,
-      isExpired: true,
-      isPending: false,
-      isCanceled: false,
+      needsRenewal: true,
+      isInTrial: false,
+      daysUntilExpiry: null,
       expiresAt: new Date('2024-01-01'),
       isLoading: false,
       subscription: {
@@ -102,9 +102,9 @@ describe('PremiumFeatureGuard', () => {
   it('should show custom fallback when provided', () => {
     mockUseSubscriptionStatus.mockReturnValue({
       hasActiveSubscription: false,
-      isExpired: false,
-      isPending: true,
-      isCanceled: false,
+      isInTrial: false,
+      needsRenewal: true,
+      daysUntilExpiry: null,
       expiresAt: null,
       isLoading: false,
       subscription: {
@@ -130,9 +130,9 @@ describe('PremiumFeatureGuard', () => {
   it('should handle canceled subscription as inactive', () => {
     mockUseSubscriptionStatus.mockReturnValue({
       hasActiveSubscription: false,
-      isExpired: false,
-      isPending: false,
-      isCanceled: true,
+      isInTrial: false,
+      needsRenewal: true,
+      daysUntilExpiry: null,
       expiresAt: new Date('2025-01-01'),
       isLoading: false,
       subscription: {

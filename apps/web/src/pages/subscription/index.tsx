@@ -3,7 +3,6 @@ import { getServerAuthSession } from "~/server/auth";
 import Head from "next/head";
 import Link from "next/link";
 import { SubscriptionCard } from "~/components/SubscriptionCard";
-import { DebugSubscription } from "~/components/DebugSubscription";
 import styles from "./subscription.module.css";
 
 export default function SubscriptionPage() {
@@ -27,9 +26,6 @@ export default function SubscriptionPage() {
         </div>
 
         <div className={styles.content}>
-          {/* Debug component - remove after fixing the issue */}
-          <DebugSubscription />
-          
           <SubscriptionCard />
 
           <div className={styles.faq}>

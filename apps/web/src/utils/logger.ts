@@ -9,6 +9,7 @@ export interface LogContext {
   journey?: string;
   traceId?: string;
   spanId?: string;
+  [key: string]: unknown; // Allow additional properties
 }
 
 export interface LogEntry {
@@ -16,7 +17,7 @@ export interface LogEntry {
   level: LogLevel;
   message: string;
   context: LogContext;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   error?: {
     name: string;
     message: string;
@@ -25,7 +26,7 @@ export interface LogEntry {
 }
 
 // PII patterns to scrub from logs
-const PII_PATTERNS: Array<{ pattern: RegExp; replacement: string | ((match: string, ...args: any[]) => string) }> = [
+const PII_PATTERNS: Array<{ pattern: RegExp; replacement: string | ((match: string, ...args: string[]) => string) }> = [
   // Email addresses
   { pattern: /([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, replacement: '[REDACTED_EMAIL]' },
   // Phone numbers (Australian format)
@@ -60,7 +61,7 @@ export class StructuredLogger {
   /**
    * Scrubs PII from any data object
    */
-  private scrubPII(data: any): any {
+  private scrubPII(data: unknown): unknown {
     if (!data) return data;
 
     const jsonString = JSON.stringify(data);
@@ -91,7 +92,7 @@ export class StructuredLogger {
     level: LogLevel,
     message: string,
     context: LogContext,
-    data?: any,
+    data?: unknown,
     error?: Error
   ): LogEntry {
     const entry: LogEntry = {
@@ -106,7 +107,7 @@ export class StructuredLogger {
     };
 
     if (data) {
-      entry.data = this.scrubPII(data);
+      entry.data = this.scrubPII(data) as Record<string, unknown>;
     }
 
     if (error) {
@@ -146,22 +147,22 @@ export class StructuredLogger {
     }
   }
 
-  debug(message: string, context: LogContext, data?: any): void {
+  debug(message: string, context: LogContext, data?: unknown): void {
     const entry = this.createLogEntry('debug', message, context, data);
     this.output(entry);
   }
 
-  info(message: string, context: LogContext, data?: any): void {
+  info(message: string, context: LogContext, data?: unknown): void {
     const entry = this.createLogEntry('info', message, context, data);
     this.output(entry);
   }
 
-  warn(message: string, context: LogContext, data?: any): void {
+  warn(message: string, context: LogContext, data?: unknown): void {
     const entry = this.createLogEntry('warn', message, context, data);
     this.output(entry);
   }
 
-  error(message: string, context: LogContext, error?: Error, data?: any): void {
+  error(message: string, context: LogContext, error?: Error, data?: unknown): void {
     const entry = this.createLogEntry('error', message, context, data, error);
     this.output(entry);
   }

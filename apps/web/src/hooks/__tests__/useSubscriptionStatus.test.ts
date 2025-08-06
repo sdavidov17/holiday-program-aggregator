@@ -54,9 +54,9 @@ describe('useSubscriptionStatus', () => {
     const { result } = renderHook(() => useSubscriptionStatus());
 
     expect(result.current.hasActiveSubscription).toBe(true);
-    expect(result.current.isExpired).toBe(false);
-    expect(result.current.isPending).toBe(false);
-    expect(result.current.isCanceled).toBe(false);
+    expect(result.current.isInTrial).toBe(false);
+    expect(result.current.needsRenewal).toBe(false);
+    expect(result.current.daysUntilExpiry).toBeGreaterThan(0);
     expect(result.current.expiresAt).toEqual(new Date('2025-12-31'));
     expect(result.current.isLoading).toBe(false);
     expect(result.current.subscription).toEqual(mockSubscription);
@@ -73,7 +73,7 @@ describe('useSubscriptionStatus', () => {
     });
 
     const mockSubscription = {
-      status: SubscriptionStatus.EXPIRED,
+      status: SubscriptionStatus.CANCELED,
       expiresAt: new Date('2024-01-01'),
       currentPeriodEnd: new Date('2024-01-01'),
       cancelAtPeriodEnd: false,
@@ -92,9 +92,9 @@ describe('useSubscriptionStatus', () => {
     const { result } = renderHook(() => useSubscriptionStatus());
 
     expect(result.current.hasActiveSubscription).toBe(false);
-    expect(result.current.isExpired).toBe(true);
-    expect(result.current.isPending).toBe(false);
-    expect(result.current.isCanceled).toBe(false);
+    expect(result.current.isInTrial).toBe(false);
+    expect(result.current.needsRenewal).toBe(true);
+    expect(result.current.daysUntilExpiry).toBeLessThan(0);
   });
 
   it('should return correct status for pending subscription', () => {
@@ -127,9 +127,9 @@ describe('useSubscriptionStatus', () => {
     const { result } = renderHook(() => useSubscriptionStatus());
 
     expect(result.current.hasActiveSubscription).toBe(false);
-    expect(result.current.isExpired).toBe(false);
-    expect(result.current.isPending).toBe(true);
-    expect(result.current.isCanceled).toBe(false);
+    expect(result.current.isInTrial).toBe(false);
+    expect(result.current.needsRenewal).toBe(true);
+    expect(result.current.daysUntilExpiry).toBeNull();
   });
 
   it('should return correct status for canceled subscription', () => {
@@ -144,8 +144,8 @@ describe('useSubscriptionStatus', () => {
 
     const mockSubscription = {
       status: SubscriptionStatus.CANCELED,
-      expiresAt: new Date('2025-01-01'),
-      currentPeriodEnd: new Date('2025-01-01'),
+      expiresAt: new Date('2024-01-01'),
+      currentPeriodEnd: new Date('2024-01-01'),
       cancelAtPeriodEnd: true,
     };
 
@@ -162,9 +162,9 @@ describe('useSubscriptionStatus', () => {
     const { result } = renderHook(() => useSubscriptionStatus());
 
     expect(result.current.hasActiveSubscription).toBe(false);
-    expect(result.current.isExpired).toBe(false);
-    expect(result.current.isPending).toBe(false);
-    expect(result.current.isCanceled).toBe(true);
+    expect(result.current.isInTrial).toBe(false);
+    expect(result.current.needsRenewal).toBe(true);
+    expect(result.current.daysUntilExpiry).toBeLessThan(0);
   });
 
   it('should not fetch when user is not authenticated', () => {
@@ -242,9 +242,9 @@ describe('useSubscriptionStatus', () => {
     const { result } = renderHook(() => useSubscriptionStatus());
 
     expect(result.current.hasActiveSubscription).toBe(false);
-    expect(result.current.isExpired).toBe(false);
-    expect(result.current.isPending).toBe(false);
-    expect(result.current.isCanceled).toBe(false);
+    expect(result.current.isInTrial).toBe(false);
+    expect(result.current.needsRenewal).toBe(false);
+    expect(result.current.daysUntilExpiry).toBeNull();
     expect(result.current.expiresAt).toBeUndefined();
     expect(result.current.subscription).toBeNull();
   });

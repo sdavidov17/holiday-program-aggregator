@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { env } from "~/env.mjs";
+import { logger } from "~/utils/logger";
 
 export const stripe = env.STRIPE_SECRET_KEY 
   ? new Stripe(
@@ -112,7 +113,7 @@ export async function constructWebhookEvent(
     );
     return event;
   } catch (err) {
-    console.error("Webhook signature verification failed:", err);
+    logger.error("Webhook signature verification failed", { correlationId: 'webhook-verify-' + Date.now(), error: err });
     throw new Error("Webhook signature verification failed");
   }
 }

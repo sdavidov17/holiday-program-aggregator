@@ -4,6 +4,8 @@ import Stripe from "stripe";
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";
 import { SubscriptionStatus } from "@prisma/client";
+import { logger } from "~/utils/logger";
+import { SubscriptionService } from "~/services/subscription.service";
 
 const stripe = env.STRIPE_SECRET_KEY 
   ? new Stripe(env.STRIPE_SECRET_KEY, {
@@ -32,7 +34,7 @@ export default async function handler(
   }
 
   if (!stripe) {
-    console.error("Stripe is not configured");
+    logger.error("Stripe is not configured", { correlationId: req.headers['x-request-id'] as string || 'unknown' });
     return res.status(500).send("Stripe is not configured on the server");
   }
 
@@ -46,7 +48,7 @@ export default async function handler(
       env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
-    console.error("Webhook signature verification failed:", err);
+    logger.error("Webhook signature verification failed", { correlationId: req.headers['x-request-id'] as string || 'unknown', error: err });
     return res.status(400).send(`Webhook Error: ${err instanceof Error ? err.message : 'Unknown error'}`);
   }
 
@@ -56,7 +58,7 @@ export default async function handler(
         const session = event.data.object as Stripe.Checkout.Session;
         
         if (!session.metadata?.userId) {
-          console.error("No userId in session metadata");
+          logger.error("No userId in session metadata", { correlationId: req.headers['x-request-id'] as string || 'unknown', sessionId: session.id });
           return res.status(400).send("Missing userId in metadata");
         }
 
@@ -70,7 +72,7 @@ export default async function handler(
           },
         });
 
-        console.log("Checkout session completed:", session.id);
+        logger.info("Checkout session completed", { correlationId: req.headers['x-request-id'] as string || 'unknown', sessionId: session.id, userId: session.metadata?.userId });
         break;
       }
 
@@ -83,7 +85,7 @@ export default async function handler(
         });
 
         if (!dbSubscription) {
-          console.error("No subscription found for:", subscription.id);
+          logger.error("No subscription found", { correlationId: req.headers['x-request-id'] as string || 'unknown', subscriptionId: subscription.id });
           return res.status(404).send("Subscription not found");
         }
 
@@ -100,7 +102,7 @@ export default async function handler(
           },
         });
 
-        console.log("Subscription updated:", subscription.id);
+        logger.info("Subscription updated", { correlationId: req.headers['x-request-id'] as string || 'unknown', subscriptionId: subscription.id, status: subscription.status });
         break;
       }
 
@@ -112,7 +114,7 @@ export default async function handler(
         });
 
         if (!dbSubscription) {
-          console.error("No subscription found for:", subscription.id);
+          logger.error("No subscription found", { correlationId: req.headers['x-request-id'] as string || 'unknown', subscriptionId: subscription.id });
           return res.status(404).send("Subscription not found");
         }
 
@@ -126,7 +128,7 @@ export default async function handler(
           },
         });
 
-        console.log("Subscription deleted:", subscription.id);
+        logger.info("Subscription deleted", { correlationId: req.headers['x-request-id'] as string || 'unknown', subscriptionId: subscription.id });
         break;
       }
 
@@ -151,7 +153,7 @@ export default async function handler(
           });
         }
 
-        console.log("Invoice payment succeeded:", invoice.id);
+        logger.info("Invoice payment succeeded", { correlationId: req.headers['x-request-id'] as string || 'unknown', invoiceId: invoice.id, subscriptionId: (invoice as any).subscription });
         break;
       }
 
@@ -176,17 +178,17 @@ export default async function handler(
           });
         }
 
-        console.log("Invoice payment failed:", invoice.id);
+        logger.warn("Invoice payment failed", { correlationId: req.headers['x-request-id'] as string || 'unknown', invoiceId: invoice.id, subscriptionId: (invoice as any).subscription });
         break;
       }
 
       default:
-        console.log(`Unhandled event type: ${event.type}`);
+        logger.info("Unhandled webhook event", { correlationId: req.headers['x-request-id'] as string || 'unknown', eventType: event.type });
     }
 
     return res.json({ received: true });
   } catch (error) {
-    console.error("Error processing webhook:", error);
+    logger.error("Error processing webhook", { correlationId: req.headers['x-request-id'] as string || 'unknown', error });
     return res.status(500).send("Webhook processing error");
   }
 }
