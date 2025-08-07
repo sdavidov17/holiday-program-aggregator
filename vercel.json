@@ -1,7 +1,4 @@
 {
-  "git": {
-    "deploymentEnabled": false
-  },
   "framework": null,
   "installCommand": "pnpm install",
   "buildCommand": "cd apps/web && pnpm build",

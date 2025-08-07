@@ -15,7 +15,9 @@ gh api \
   -H "Accept: application/vnd.github+json" \
   /repos/$GITHUB_REPOSITORY/branches/main/protection \
   --field "required_status_checks[strict]=true" \
-  --field "required_status_checks[contexts][]=quality-checks" \
+  --field "required_status_checks[contexts][]=Code Quality" \
+  --field "required_status_checks[contexts][]=Security Scans" \
+  --field "required_status_checks[contexts][]=License Compliance" \
   --field "required_status_checks[contexts][]=Vercel" \
   --field "enforce_admins=false" \
   --field "required_pull_request_reviews[dismiss_stale_reviews]=true" \

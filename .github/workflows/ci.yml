@@ -127,8 +127,6 @@ jobs:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        working-directory: ./apps/web
-        scope: ${{ secrets.VERCEL_ORG_ID }}
         github-comment: false  # We'll make a better comment
     
     - name: Comment on PR
@@ -202,8 +200,6 @@ jobs:
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         vercel-args: '--prod'
-        working-directory: ./apps/web
-        scope: ${{ secrets.VERCEL_ORG_ID }}
     
     - name: Wait for Deployment
       run: sleep 45
