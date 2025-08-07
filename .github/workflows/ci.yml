@@ -127,7 +127,6 @@ jobs:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        vercel-args: '--yes'
         working-directory: ./apps/web
         scope: ${{ secrets.VERCEL_ORG_ID }}
         github-comment: false  # We'll make a better comment
@@ -202,7 +201,7 @@ jobs:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        vercel-args: '--prod --yes'
+        vercel-args: '--prod'
         working-directory: ./apps/web
         scope: ${{ secrets.VERCEL_ORG_ID }}
     
