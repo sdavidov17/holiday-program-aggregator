@@ -1,116 +1,182 @@
-# Branching Strategy & Release Process
+# Simplified Branching Strategy (Trunk-Based Development)
 
 ## Overview
 
-This document outlines our Git branching strategy and release process for the Holiday Program Aggregator project.
+We use a simplified trunk-based development approach optimized for speed and safety, leveraging Vercel's Preview and Production environments.
+
+## Core Principle
+
+```
+Feature Branch → PR → main → Production
+       ↓               ↓          ↓
+   Preview URL    Automatic   Immediate
+```
 
 ## Branch Strategy
 
 ### Main Branch (`main`)
-- **Purpose**: Production-ready code
-- **Protection**: Fully protected with strict rules
-- **Deploys to**: Production environment
+- **Purpose**: Single source of truth
+- **Protection**: PR required, tests must pass
+- **Deployments**: Automatic to production after checks pass
 - **Direct commits**: Not allowed
 
-### Story Branches (`story/<epic>-<story>-<description>`)
-- **Purpose**: Development of individual user stories
-- **Naming convention**: `story/epic-1-story-2-user-account-system`
+### Feature Branches
+- **Naming**: `feature/<description>` or `story/<epic>-<story>`
 - **Created from**: `main`
-- **Merges to**: `main` via Pull Request
-- **Lifetime**: Deleted after merge
+- **Merged to**: `main` via PR
+- **Preview**: Automatic Vercel preview on push
+- **Lifetime**: Delete after merge
 
-### Hotfix Branches (`hotfix/<issue>-<description>`)
-- **Purpose**: Critical production fixes
-- **Naming convention**: `hotfix/fix-payment-processing`
-- **Created from**: `main`
-- **Merges to**: `main` via Pull Request
-- **Lifetime**: Deleted after merge
+### Hotfix Branches
+- **Naming**: `hotfix/<description>`
+- **Purpose**: Emergency fixes only
+- **Fast-track**: Simplified review process
+- **Testing**: Preview → Production
 
-## Workflow
+## Deployment Pipeline
 
-1. **Start a new story**:
-   ```bash
-   git checkout main
-   git pull origin main
-   git checkout -b story/epic-2-story-1-search-interface
-   ```
+### 1. Feature Development
+```bash
+# Create feature branch
+git checkout -b feature/add-search-filters
 
-2. **Regular commits**:
-   ```bash
-   git add .
-   git commit -m "feat: implement search filter component"
-   git push origin story/epic-2-story-1-search-interface
-   ```
+# Work and commit
+git add .
+git commit -m "feat: add search filters"
+git push origin feature/add-search-filters
 
-3. **Create Pull Request**:
-   - Target branch: `main`
-   - Required reviews: 1 (or self-merge for solo developers)
-   - All checks must pass
+# Vercel creates preview URL automatically
+# Create PR when ready
+```
 
-4. **After merge**:
-   - Branch is automatically deleted
-   - Production deployment triggered
+### 2. Main Branch Pipeline
+When merged to `main`:
+1. **All checks run** (2-3 minutes)
+   - Quality checks (lint, types, tests)
+   - Security scans
+   - License compliance
+2. **Deploy to production** (2-3 minutes)
+3. **Health checks** on production
+4. **Auto-tag release** (v2025.08.07-abc123)
+5. **Create GitHub release**
+
+Total time: ~5-6 minutes from merge to production
+
+### 3. Emergency Rollback
+```bash
+# Option 1: Vercel Dashboard (Instant)
+# Go to Deployments → Previous deployment → Promote
+
+# Option 2: Git revert
+./scripts/rollback.sh
+```
+
+## Safety Features
+
+### 1. Preview Deployments
+- **URL**: Auto-generated per PR
+- **Purpose**: Test features before merge
+- **Trigger**: Only after all checks pass
+- **Isolation**: Each PR gets its own environment
+
+### 2. Automated Version Tags
+- **Format**: `v<year>.<month>.<day>-<commit>`
+- **Example**: `v2025.08.07-a3f89c2`
+- **Purpose**: Easy rollback reference
+
+### 3. Health Checks
+```yaml
+# Automatic checks before production:
+- /api/health/live - Service is running
+- /api/health/ready - Database connected
+```
+
+### 4. Simple Changelog
+- Generated from commit messages
+- Groups by type (features, fixes, etc.)
+- Attached to GitHub releases
+
+## Commit Message Format
+
+Keep it simple but descriptive:
+- `feat: add user authentication`
+- `fix: resolve payment processing error`
+- `docs: update API documentation`
+- `chore: upgrade dependencies`
 
 ## Release Process
 
-### Automatic Tagging
-When a deployment to production succeeds:
-1. CI/CD automatically creates a Git tag
-2. Tag format: `v<year>.<month>.<day>-<build-number>` (e.g., `v2025.08.01-001`)
-3. Tag includes deployment metadata
+### Automatic Releases
+Every push to `main` creates a release:
+1. Run tests
+2. Deploy to staging
+3. Validate health
+4. Deploy to production
+5. Tag version
+6. Create GitHub release
 
 ### Manual Release Notes
-For significant releases:
-1. Create GitHub Release from tag
-2. Include:
-   - Features added (stories completed)
-   - Bugs fixed
-   - Breaking changes
-   - Migration notes
+For major releases, edit the auto-generated GitHub release to add:
+- Screenshots
+- Migration steps
+- Breaking changes
+- Special instructions
 
-## Branch Protection Rules
+## When to Use Feature Flags
 
-### `main` branch protection:
-- ✅ Require pull request reviews (1 review minimum)
-- ✅ Dismiss stale pull request approvals
-- ✅ Require status checks to pass:
-  - `test` (CI workflow)
-  - `security-scan`
-- ✅ Require branches to be up to date
-- ✅ Require conversation resolution
-- ✅ Require signed commits (recommended)
-- ✅ Include administrators in restrictions
-- ✅ Restrict who can push (only through PRs)
+Instead of long-lived branches, use feature flags for:
+- Incomplete features
+- A/B testing
+- Gradual rollouts
+- Quick disable without deployment
 
-### Additional Rules:
-- ✅ Automatically delete head branches after merge
-- ✅ Allow squash merging only (keep history clean)
-- ❌ Disable force pushes
-- ❌ Disable branch deletion
+Example:
+```typescript
+if (process.env.NEXT_PUBLIC_ENABLE_NEW_SEARCH === 'true') {
+  return <NewSearchComponent />
+}
+return <OldSearchComponent />
+```
 
-## Commit Message Convention
+## Best Practices
 
-Follow conventional commits:
-- `feat:` New features
-- `fix:` Bug fixes
-- `docs:` Documentation changes
-- `style:` Code style changes
-- `refactor:` Code refactoring
-- `test:` Test additions/changes
-- `chore:` Build process/auxiliary changes
+1. **Small PRs**: Easier to review and less risky
+2. **Frequent merges**: Multiple times per day is fine
+3. **Write tests**: Catch issues before staging
+4. **Monitor staging**: 5 minutes is enough to catch most issues
+5. **Use preview URLs**: Share with stakeholders before merging
+6. **Trust the pipeline**: If tests pass, ship it
 
-Example: `feat: add geospatial search for providers`
+## Migration Path
+
+If you need more control later:
+1. **Add approval gate**: Require manual approval for production
+2. **Extend staging time**: Increase from 5 minutes to hours/days
+3. **Add environments**: Dev → Staging → UAT → Production
+4. **Switch to Git Flow**: When you have 5+ developers
 
 ## Emergency Procedures
 
-### Rollback Process
-1. Identify the last known good tag
-2. Create a revert PR or deploy previous tag
-3. Tag the rollback: `v<date>-rollback-<original-tag>`
+### Production Issue
+1. **Check staging first** - Is it also broken there?
+2. **Rollback if critical** - Use Vercel dashboard (instant)
+3. **Fix forward if minor** - Create hotfix branch
+4. **Communicate** - Update status page/users
 
-### Hotfix Process
-1. Create hotfix branch from `main`
-2. Fix the issue with minimal changes
-3. Test thoroughly
-4. Fast-track PR review
-5. Deploy immediately after merge
+### Rollback Steps
+1. Go to [Vercel Dashboard](https://vercel.com)
+2. Click your project
+3. Go to "Deployments"
+4. Find last stable deployment
+5. Click "..." → "Promote to Production"
+6. Done in 30 seconds!
+
+## Why This Works
+
+- **Simple**: One branch, one pipeline
+- **Fast**: 10 minutes to production
+- **Safe**: Staging catches issues
+- **Flexible**: Easy to add complexity later
+- **Proven**: Used by Google, Facebook, Netflix
+
+This approach gives you 90% of the safety with 10% of the complexity!

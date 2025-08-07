@@ -1,59 +1,126 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, epic-* ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
+    types: [ opened, synchronize, reopened ]
+
+# Cancel in-progress runs for the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  test:
+  # Core quality checks - runs fast, fails fast
+  quality-checks:
+    name: Code Quality
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v4
     
-    - name: Install pnpm
-      uses: pnpm/action-setup@v4
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      id: setup
     
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'pnpm'
-    
-    - name: Install dependencies
-      run: pnpm install
-    
-    - name: Run linting
+    - name: Lint Code
       run: pnpm lint
       env:
         NEXTAUTH_SECRET: "test-secret-for-ci"
     
-    - name: Run type checking
+    - name: Type Check
       run: pnpm type-check
       env:
         NEXTAUTH_SECRET: "test-secret-for-ci"
     
-    - name: Run tests
+    - name: Run Tests
       run: pnpm test
       env:
         NEXTAUTH_SECRET: "test-secret-for-ci"
     
-    - name: Build application
+    - name: Build Application
       run: pnpm build
       env:
         NEXTAUTH_SECRET: "test-secret-for-ci"
+        SKIP_ENV_VALIDATION: true
 
-  deploy-preview:
+  # Security scans - runs in parallel with quality checks
+  security-checks:
+    name: Security Scans
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    needs: test
+    permissions:
+      contents: read
+      security-events: write
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Need full history for some scans
+    
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+    
+    # Fast security checks
+    - name: Dependency Audit
+      run: |
+        pnpm audit --audit-level=high || {
+          echo "::warning::Found vulnerabilities - check SECURITY.md"
+        }
+    
+    - name: Secret Scanning
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ github.event.repository.default_branch }}
+        head: HEAD
+        extra_args: --only-verified
+    
+    # CodeQL Analysis
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: javascript, typescript
+    
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+
+  # License compliance - quick check
+  license-check:
+    name: License Compliance
+    runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v4
     
-    - name: Deploy to Vercel (Preview)
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+    
+    - name: Check Licenses
+      run: |
+        npx license-checker --onlyAllow "MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;0BSD;CC0-1.0;Unlicense" --excludePrivatePackages
+
+  # Deploy preview for PRs only after ALL checks pass
+  deploy-preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    needs: [quality-checks, security-checks, license-check]
+    if: |
+      github.event_name == 'pull_request' && 
+      needs.quality-checks.result == 'success' && 
+      needs.security-checks.result == 'success' &&
+      needs.license-check.result == 'success'
+    
+    environment:
+      name: preview
+      url: ${{ steps.deploy.outputs.preview-url }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Deploy to Vercel Preview
+      id: deploy
       uses: amondnet/vercel-action@v25
       with:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -62,16 +129,73 @@ jobs:
         vercel-args: '--yes'
         working-directory: ./apps/web
         scope: ${{ secrets.VERCEL_ORG_ID }}
+        github-comment: false  # We'll make a better comment
+    
+    - name: Comment on PR
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const botComment = comments.find(comment => 
+            comment.user.type === 'Bot' && 
+            comment.body.includes('Vercel Preview Deployment')
+          );
+          
+          const body = `### 🚀 Vercel Preview Deployment
+          
+          | Status | Preview | Updated |
+          |--------|---------|---------|
+          | ✅ Ready | [Visit Preview](${{ steps.deploy.outputs.preview-url }}) | ${new Date().toUTCString()} |
+          
+          **All checks passed before deployment:**
+          - ✅ Code quality (lint, types, tests)
+          - ✅ Security scans
+          - ✅ License compliance`;
+          
+          if (botComment) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: botComment.id,
+              body
+            });
+          } else {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+          }
 
+  # Deploy to production only after ALL checks pass on main
   deploy-production:
+    name: Deploy Production
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: test
+    needs: [quality-checks, security-checks, license-check]
+    if: |
+      github.ref == 'refs/heads/main' && 
+      github.event_name == 'push' &&
+      needs.quality-checks.result == 'success' && 
+      needs.security-checks.result == 'success' &&
+      needs.license-check.result == 'success'
+    
+    environment:
+      name: production
+      url: https://holidayprograms.com.au
     
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     
-    - name: Deploy to Vercel (Production)
+    - name: Deploy to Vercel Production
+      id: deploy
       uses: amondnet/vercel-action@v25
       with:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -80,3 +204,109 @@ jobs:
         vercel-args: '--prod --yes'
         working-directory: ./apps/web
         scope: ${{ secrets.VERCEL_ORG_ID }}
+    
+    - name: Wait for Deployment
+      run: sleep 45
+    
+    - name: Verify Production Health
+      run: |
+        echo "🏥 Verifying production deployment..."
+        MAX_RETRIES=5
+        RETRY_COUNT=0
+        
+        # Check both health endpoints
+        until curl -f https://holidayprograms.com.au/api/health/live && \
+              curl -f https://holidayprograms.com.au/api/health/ready; do
+          RETRY_COUNT=$((RETRY_COUNT+1))
+          if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+            echo "❌ Production health check failed!"
+            exit 1
+          fi
+          echo "Retry $RETRY_COUNT/$MAX_RETRIES..."
+          sleep 15
+        done
+        
+        echo "✅ Production is healthy and ready!"
+    
+    - name: Tag Release
+      if: success()
+      run: |
+        VERSION="v$(date +%Y.%m.%d)-$(git rev-parse --short HEAD)"
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git tag -a $VERSION -m "Production release $VERSION"
+        git push origin $VERSION
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+    
+    - name: Create Release
+      if: success()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # Get commit messages since last tag
+        LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+        
+        # Build release notes
+        NOTES="## 🚀 Production Release\n\n"
+        NOTES="${NOTES}**Live at**: https://holidayprograms.com.au\n\n"
+        
+        if [ -n "$LAST_TAG" ]; then
+          # Extract different types of changes
+          FEATURES=$(git log --pretty=format:"- %s" $LAST_TAG..HEAD | grep -E "^- feat" | sed 's/feat[(:]//' || true)
+          FIXES=$(git log --pretty=format:"- %s" $LAST_TAG..HEAD | grep -E "^- fix" | sed 's/fix[(:]//' || true)
+          
+          if [ -n "$FEATURES" ]; then
+            NOTES="${NOTES}### ✨ New Features\n${FEATURES}\n\n"
+          fi
+          
+          if [ -n "$FIXES" ]; then
+            NOTES="${NOTES}### 🐛 Bug Fixes\n${FIXES}\n\n"
+          fi
+        fi
+        
+        NOTES="${NOTES}### 📋 Quality Assurance\n"
+        NOTES="${NOTES}- ✅ All tests passed\n"
+        NOTES="${NOTES}- ✅ Security scans completed\n"
+        NOTES="${NOTES}- ✅ License compliance verified\n"
+        NOTES="${NOTES}- ✅ Production health verified\n"
+        
+        # Create release
+        gh release create ${{ env.VERSION }} \
+          --title "Release ${{ env.VERSION }}" \
+          --notes "$NOTES" \
+          --target main
+
+  # Summary for better visibility
+  deployment-summary:
+    name: Deployment Summary
+    runs-on: ubuntu-latest
+    needs: [deploy-preview, deploy-production]
+    if: always()
+    
+    steps:
+    - name: Summary
+      run: |
+        echo "## 📊 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ "${{ github.event_name }}" == "pull_request" ]; then
+          if [ "${{ needs.deploy-preview.result }}" == "success" ]; then
+            echo "✅ **Preview Deployment**: Successful" >> $GITHUB_STEP_SUMMARY
+            echo "   All quality and security checks passed" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.deploy-preview.result }}" == "skipped" ]; then
+            echo "⏭️ **Preview Deployment**: Skipped (checks failed)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Preview Deployment**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+        fi
+        
+        if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          if [ "${{ needs.deploy-production.result }}" == "success" ]; then
+            echo "✅ **Production Deployment**: Successful" >> $GITHUB_STEP_SUMMARY
+            echo "   Site is live at https://holidayprograms.com.au" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.deploy-production.result }}" == "skipped" ]; then
+            echo "⏭️ **Production Deployment**: Skipped (checks failed)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Production Deployment**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+        fi
