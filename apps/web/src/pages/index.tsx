@@ -64,6 +64,9 @@ export default function Home() {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Holiday Program <span style={{color: '#c084fc'}}>Aggregator</span>
           </h1>
+          <p className="text-xl text-white/90 mb-4">
+            Find the perfect school holiday activities for your kids
+          </p>
           
           {/* Subscription Status */}
           {session && (
