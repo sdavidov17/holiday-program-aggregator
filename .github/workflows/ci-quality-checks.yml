@@ -69,13 +69,22 @@ jobs:
           echo "::warning::Found vulnerabilities - check SECURITY.md"
         }
     
-    - name: Secret Scanning
+    - name: Secret Scanning  
+      if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000')
       uses: trufflesecurity/trufflehog@main
       continue-on-error: true
       with:
         path: ./
-        base: ${{ github.event.pull_request.base.sha || github.event.before || 'HEAD~1' }}
-        head: ${{ github.event.pull_request.head.sha || github.sha || 'HEAD' }}
+        base: ${{ github.event.pull_request.base.sha || github.event.before }}
+        head: ${{ github.event.pull_request.head.sha || github.sha }}
+        extra_args: --only-verified
+        
+    - name: Secret Scanning (Full Repo)
+      if: github.event_name == 'push' && github.event.before == '0000000000000000000000000000000000000000'
+      uses: trufflesecurity/trufflehog@main
+      continue-on-error: true
+      with:
+        path: ./
         extra_args: --only-verified
     
     # CodeQL Analysis
@@ -107,7 +116,10 @@ jobs:
   monitor-production:
     name: Monitor Production
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: |
+      always() &&
+      github.ref == 'refs/heads/main' && 
+      github.event_name == 'push'
     needs: [quality-checks, security-checks, license-check]
     
     steps:
