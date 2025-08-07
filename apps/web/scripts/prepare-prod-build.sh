@@ -11,6 +11,10 @@ if [ "$VERCEL" = "1" ] || [ "$NODE_ENV" = "production" ]; then
   # Generate Prisma client with PostgreSQL provider
   pnpm prisma generate
   
+  # Deploy database schema (create tables if they don't exist)
+  echo "Deploying database schema..."
+  pnpm prisma db push --skip-generate
+  
   # Restore original schema for next builds
   mv prisma/schema.prisma.bak prisma/schema.prisma
 else
