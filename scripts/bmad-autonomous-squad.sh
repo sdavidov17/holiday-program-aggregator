@@ -150,6 +150,25 @@ tmux send-keys -t $SESSION_NAME:ux-expert "echo '  - Enhance form validation fee
 tmux send-keys -t $SESSION_NAME:ux-expert "echo '  - Add micro-interactions'" C-m
 tmux send-keys -t $SESSION_NAME:ux-expert "echo '  - Implement responsive design'" C-m
 
+# Window 11: DevOps Engineer
+tmux new-window -t $SESSION_NAME -n "devops"
+tmux send-keys -t $SESSION_NAME:devops "clear" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo -e '${ORANGE}=== 🔧 DevOps Engineer ===${NC}'" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo ''" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo 'Role: Infrastructure, CI/CD, and platform engineering'" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo 'Focus: Deployment automation, monitoring, and reliability'" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo ''" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo 'Current DevOps Tasks:'" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo '  - Vercel deployment configuration'" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo '  - CI/CD pipeline optimization'" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo '  - Security scanning automation'" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo '  - PostgreSQL database setup'" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo '  - Monitoring and alerting'" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo ''" C-m
+tmux send-keys -t $SESSION_NAME:devops "echo 'Infrastructure Status:'" C-m
+tmux send-keys -t $SESSION_NAME:devops "# Check GitHub Actions status" C-m
+tmux send-keys -t $SESSION_NAME:devops "gh run list --limit=5"
+
 # Create monitoring panes
 tmux split-window -t $SESSION_NAME:bmad-master -h -p 40
 tmux send-keys -t $SESSION_NAME:bmad-master.1 "# Project status monitor" C-m
@@ -162,6 +181,10 @@ tmux send-keys -t $SESSION_NAME:dev.1 "tail -f dev.log 2>/dev/null || echo 'Wait
 tmux split-window -t $SESSION_NAME:qa -h -p 50
 tmux send-keys -t $SESSION_NAME:qa.1 "# CI/CD status" C-m
 tmux send-keys -t $SESSION_NAME:qa.1 "gh pr checks 2>/dev/null || echo 'No active PR'" C-m
+
+tmux split-window -t $SESSION_NAME:devops -v -p 40
+tmux send-keys -t $SESSION_NAME:devops.1 "# Monitor deployments" C-m
+tmux send-keys -t $SESSION_NAME:devops.1 "watch -n 30 'echo \"🚀 Recent Deployments:\"; echo; gh run list --workflow=ci-quality-checks.yml --limit=3; echo; echo \"📊 Vercel Status:\"; curl -s https://holidayprograms.com.au/api/health/live 2>/dev/null && echo \" ✅ Production is UP\" || echo \" ❌ Production is DOWN\"'" C-m
 
 # Display session info
 echo -e "${GREEN}✅ BMAD Autonomous Squad is ready!${NC}"
@@ -177,6 +200,7 @@ echo "  7. 🏃 SM - Scrum Master"
 echo "  8. 💻 Dev - Developer (with server)"
 echo "  9. 🧪 QA - QA Engineer (with tests)"
 echo "  10. 🎨 UX - UX Expert"
+echo "  11. 🔧 DevOps - DevOps Engineer"
 echo ""
 echo -e "${YELLOW}Navigation:${NC}"
 echo "  Switch windows: Ctrl+b [0-9]"

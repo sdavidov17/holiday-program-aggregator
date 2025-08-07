@@ -4,10 +4,5 @@
       "path": "/api/cron/subscription-lifecycle",
       "schedule": "0 9 * * *"
     }
-  ],
-  "functions": {
-    "pages/api/cron/subscription-lifecycle.ts": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }
