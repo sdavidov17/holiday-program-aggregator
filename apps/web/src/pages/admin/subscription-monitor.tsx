@@ -35,8 +35,12 @@ const SubscriptionMonitor: NextPage = () => {
     refreshMetrics();
   }, []);
 
-  // Only allow admin users (in production, check for admin role)
-  if (!session?.user?.email?.includes('clearroute.io')) {
+  // Only allow admin users - check email domain properly
+  const userEmail = session?.user?.email || '';
+  const emailDomain = userEmail.split('@')[1];
+  const isAdminDomain = emailDomain === 'clearroute.io';
+  
+  if (!isAdminDomain) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">

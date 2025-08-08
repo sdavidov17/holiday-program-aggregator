@@ -52,7 +52,23 @@ class MonitoringService {
   }
 
   private generateSessionId(): string {
-    return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    // Use crypto.randomUUID for cryptographically secure session IDs
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return `session_${crypto.randomUUID()}`;
+    }
+    // Fallback for older browsers using crypto.getRandomValues
+    const array = new Uint32Array(2);
+    if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+      crypto.getRandomValues(array);
+      return `session_${Date.now()}_${array[0]!.toString(36)}_${array[1]!.toString(36)}`;
+    }
+    // Server-side Node.js environment
+    if (typeof window === 'undefined') {
+      const { randomBytes } = require('crypto');
+      return `session_${randomBytes(16).toString('hex')}`;
+    }
+    // Last resort fallback (should not reach here in modern environments)
+    throw new Error('No secure random number generator available');
   }
 
   private initializePerformanceObserver() {

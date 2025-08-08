@@ -183,6 +183,23 @@ export function getCorrelationId(req: NextApiRequest): string {
  * Generates a new correlation ID
  */
 export function generateCorrelationId(): string {
-  // Simple implementation - in production, you might use nanoid or uuid
-  return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+  // Use crypto API for secure correlation IDs
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  
+  // Server-side Node.js fallback
+  if (typeof window === 'undefined') {
+    const { randomBytes } = require('crypto');
+    return randomBytes(16).toString('hex');
+  }
+  
+  // Browser fallback using crypto.getRandomValues
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    const array = new Uint8Array(16);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+  
+  throw new Error('No secure random number generator available');
 }
