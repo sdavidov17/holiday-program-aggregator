@@ -109,7 +109,7 @@ export default function Home() {
         <div className="container-custom section-padding">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-in">
-              <h1 className="text-5xl lg:text-6xl font-display font-bold text-gray-900 mb-6">
+              <h1 className="text-5xl lg:text-6xl font-sans font-bold text-gray-900 mb-6">
                 Find providers for{" "}
                 <span className="text-gradient">school holidays</span>
               </h1>
@@ -190,7 +190,7 @@ export default function Home() {
       <section className="section-padding bg-white">
         <div className="container-custom">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-display font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-sans font-bold text-gray-900 mb-4">
               Popular Activities
             </h2>
             <p className="text-lg text-gray-600">
@@ -216,7 +216,7 @@ export default function Home() {
         <div className="container-custom">
           <div className="flex items-center justify-between mb-12">
             <div>
-              <h2 className="text-3xl lg:text-4xl font-display font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl lg:text-4xl font-sans font-bold text-gray-900 mb-4">
                 Featured Providers
               </h2>
               <p className="text-lg text-gray-600">
@@ -246,7 +246,7 @@ export default function Home() {
       <section className="section-padding bg-white">
         <div className="container-custom">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-display font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-sans font-bold text-gray-900 mb-4">
               Why Families Choose HolidayHeroes
             </h2>
             <p className="text-lg text-gray-600">
@@ -301,7 +301,7 @@ export default function Home() {
       {/* CTA Section */}
       <section className="section-padding bg-gradient-to-br from-primary-600 to-primary-700">
         <div className="container-custom text-center">
-          <h2 className="text-3xl lg:text-4xl font-display font-bold text-white mb-4">
+          <h2 className="text-3xl lg:text-4xl font-sans font-bold text-white mb-4">
             Ready to Find the Perfect Holiday Program?
           </h2>
           <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
@@ -333,7 +333,7 @@ export default function Home() {
             <div>
               <div className="mb-4">
                 <Logo showText={false} />
-                <span className="font-display font-bold text-xl text-white ml-2">HolidayHeroes</span>
+                <span className="font-sans font-bold text-xl text-white ml-2">HolidayHeroes</span>
               </div>
               <p className="text-sm">
                 Australia&apos;s trusted platform for finding school holiday programs

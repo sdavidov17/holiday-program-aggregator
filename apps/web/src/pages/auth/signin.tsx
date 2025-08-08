@@ -85,7 +85,7 @@ export default function SignIn() {
           <div className="bg-white rounded-3xl shadow-large p-8">
             {/* Title */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">
+              <h1 className="text-3xl font-sans font-bold text-gray-900 mb-2">
                 {isSignUp ? "Create Account" : "Welcome Back!"}
               </h1>
               <p className="text-gray-600">

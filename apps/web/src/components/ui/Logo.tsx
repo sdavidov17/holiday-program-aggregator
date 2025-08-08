@@ -21,7 +21,7 @@ export default function Logo({ className = "", showText = true }: LogoProps) {
         <div className="absolute -top-1 -right-1 w-3 h-3 bg-secondary-400 rounded-full animate-bounce-light" />
       </div>
       {showText && (
-        <span className="font-display font-bold text-xl text-gray-900">
+        <span className="font-sans font-bold text-xl text-gray-900">
           HolidayHeroes
         </span>
       )}
