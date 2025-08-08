@@ -13,7 +13,12 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      role: "USER" | "ADMIN";
     } & DefaultSession["user"];
+  }
+  
+  interface User {
+    role: "USER" | "ADMIN";
   }
 }
 
@@ -24,13 +29,31 @@ const credentialsSchema = z.object({
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: token.sub!,
-      },
-    }),
+    session: async ({ session, token }) => {
+      if (token.sub) {
+        // Fetch user role from database
+        const user = await db.user.findUnique({
+          where: { id: token.sub },
+          select: { role: true },
+        });
+        
+        return {
+          ...session,
+          user: {
+            ...session.user,
+            id: token.sub,
+            role: user?.role ?? "USER",
+          },
+        };
+      }
+      return session;
+    },
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.role = user.role;
+      }
+      return token;
+    },
   },
   adapter: PrismaAdapter(db),
   providers: [
@@ -81,6 +104,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           image: user.image,
+          role: user.role,
         };
       },
     }),
