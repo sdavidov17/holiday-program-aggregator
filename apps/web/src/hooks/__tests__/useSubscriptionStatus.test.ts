@@ -27,7 +27,7 @@ describe('useSubscriptionStatus', () => {
   it('should return correct status for active subscription', () => {
     mockUseSession.mockReturnValue({
       data: { 
-        user: { id: '1', email: 'test@example.com' },
+        user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },
       status: 'authenticated',
@@ -65,7 +65,7 @@ describe('useSubscriptionStatus', () => {
   it('should return correct status for expired subscription', () => {
     mockUseSession.mockReturnValue({
       data: { 
-        user: { id: '1', email: 'test@example.com' },
+        user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },
       status: 'authenticated',
@@ -100,7 +100,7 @@ describe('useSubscriptionStatus', () => {
   it('should return correct status for pending subscription', () => {
     mockUseSession.mockReturnValue({
       data: { 
-        user: { id: '1', email: 'test@example.com' },
+        user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },
       status: 'authenticated',
@@ -135,7 +135,7 @@ describe('useSubscriptionStatus', () => {
   it('should return correct status for canceled subscription', () => {
     mockUseSession.mockReturnValue({
       data: { 
-        user: { id: '1', email: 'test@example.com' },
+        user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },
       status: 'authenticated',
@@ -195,7 +195,7 @@ describe('useSubscriptionStatus', () => {
   it('should handle loading state', () => {
     mockUseSession.mockReturnValue({
       data: { 
-        user: { id: '1', email: 'test@example.com' },
+        user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },
       status: 'authenticated',
@@ -222,7 +222,7 @@ describe('useSubscriptionStatus', () => {
   it('should handle no subscription data', () => {
     mockUseSession.mockReturnValue({
       data: { 
-        user: { id: '1', email: 'test@example.com' },
+        user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },
       status: 'authenticated',

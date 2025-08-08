@@ -1,9 +1,7 @@
 {
   "/_app": "pages/_app.js",
-  "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/": "pages/index.js",
-  "/subscription/cancelled": "pages/subscription/cancelled.js",
-  "/api/trpc/[trpc]": "pages/api/trpc/[trpc].js",
-  "/profile": "pages/profile.js"
+  "/_document": "pages/_document.js",
+  "/auth/signin": "pages/auth/signin.js",
+  "/admin/providers/new": "pages/admin/providers/new.js"
 }

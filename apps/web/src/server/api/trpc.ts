@@ -3,6 +3,7 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { randomBytes } from "crypto";
 
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
@@ -34,8 +35,9 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
   const session = await getServerAuthSession({ req, res });
   
-  // Get correlation ID from headers (set by middleware)
-  const correlationId = req.headers['x-correlation-id'] as string || `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+  // Get correlation ID from headers (set by middleware) or generate secure one
+  const correlationId = req.headers['x-correlation-id'] as string || 
+    `${Date.now()}-${randomBytes(6).toString('hex')}`;
   
   // Get request path for logging
   const requestPath = req.url;

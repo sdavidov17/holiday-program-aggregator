@@ -3,6 +3,10 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { encryptPII } from "~/utils/encryption";
 
 export const userRouter = createTRPCRouter({
+  me: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.session.user;
+  }),
+  
   updateProfile: protectedProcedure
     .input(z.object({
       name: z.string().optional(),

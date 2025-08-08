@@ -2,10 +2,23 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 /**
- * Generates a correlation ID
+ * Generates a secure correlation ID
  */
 function generateCorrelationId(): string {
-  return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+  // Use crypto.randomUUID if available (most modern browsers/Node 19+)
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  
+  // Fallback to crypto.getRandomValues for older environments
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    const array = new Uint8Array(16);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+  
+  // This should not be reached in production but provides a clear error
+  throw new Error('No secure random number generator available for correlation ID');
 }
 
 /**
