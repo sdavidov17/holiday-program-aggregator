@@ -1,4 +1,4 @@
-import { SubscriptionStatus } from "~/server/db";
+import { SubscriptionStatus } from "~/types/database";
 import type { Subscription } from "@prisma/client";
 
 // Minimal subscription data needed for status checks
