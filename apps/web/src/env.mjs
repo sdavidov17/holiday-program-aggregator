@@ -57,6 +57,11 @@ export const env = createEnv({
     // Cron and Email
     CRON_SECRET: z.string().optional(),
     RESEND_API_KEY: z.string().optional(),
+    // Admin Setup
+    ADMIN_EMAIL: z.string().optional(),
+    ADMIN_PASSWORD: z.string().optional(),
+    ADMIN_NAME: z.string().optional(),
+    ADMIN_SETUP_KEY: z.string().optional(),
   },
 
   /**
@@ -91,6 +96,10 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     CRON_SECRET: process.env.CRON_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+    ADMIN_NAME: process.env.ADMIN_NAME,
+    ADMIN_SETUP_KEY: process.env.ADMIN_SETUP_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
