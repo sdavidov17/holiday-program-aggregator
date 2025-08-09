@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
+    provider = "sqlite"
     url      = env("DATABASE_URL")
 }
 
@@ -43,7 +43,7 @@ model User {
     phoneNumber   String?       // Encrypted PII
     dateOfBirth   String?       // Encrypted PII
     address       String?       // Encrypted PII
-    role          UserRole      @default(USER)
+    role          String      @default("USER") // SQLite doesn't support enums
     accounts      Account[]
     sessions      Session[]
     subscription  Subscription?
@@ -59,18 +59,20 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-enum UserRole {
-    USER
-    ADMIN
-}
+// Enums are commented out for SQLite compatibility
+// Uncomment these when using PostgreSQL
+// enum UserRole {
+//     USER
+//     ADMIN
+// }
 
-enum SubscriptionStatus {
-    PENDING
-    ACTIVE
-    PAST_DUE
-    CANCELED
-    EXPIRED
-}
+// enum SubscriptionStatus {
+//     PENDING
+//     ACTIVE
+//     PAST_DUE
+//     CANCELED
+//     EXPIRED
+// }
 
 model Subscription {
     id                   String             @id @default(cuid())
@@ -79,7 +81,7 @@ model Subscription {
     stripeSubscriptionId String?            @unique
     stripePriceId        String?
     stripePaymentStatus  String             @default("pending")
-    status               SubscriptionStatus @default(PENDING)
+    status               String @default("PENDING") // SQLite doesn't support enums
     currentPeriodStart   DateTime?
     currentPeriodEnd     DateTime?
     cancelAtPeriodEnd    Boolean            @default(false)
