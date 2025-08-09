@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { SubscriptionStatus } from "@prisma/client";
+import { SubscriptionStatus } from "~/server/db";
 import { type Context } from "../trpc";
 import { isSubscriptionActive } from "~/utils/subscription";
 import { logger } from "~/utils/logger";

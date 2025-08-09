@@ -1,6 +1,6 @@
 import { createMocks } from 'node-mocks-http';
 import { db } from '~/server/db';
-import { SubscriptionStatus } from '@prisma/client';
+import { SubscriptionStatus } from '~/server/db';
 
 // Mock dependencies before imports
 jest.mock('micro', () => ({
@@ -23,6 +23,13 @@ jest.mock('~/server/db', () => ({
       findUnique: jest.fn(),
       update: jest.fn(),
     },
+  },
+  SubscriptionStatus: {
+    PENDING: 'PENDING',
+    ACTIVE: 'ACTIVE',
+    PAST_DUE: 'PAST_DUE',
+    CANCELED: 'CANCELED',
+    EXPIRED: 'EXPIRED',
   },
 }));
 

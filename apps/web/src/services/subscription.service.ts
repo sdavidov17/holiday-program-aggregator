@@ -1,4 +1,5 @@
-import { type Prisma, type PrismaClient, SubscriptionStatus } from "@prisma/client";
+import { type Prisma, type PrismaClient } from "@prisma/client";
+import { SubscriptionStatus } from "~/server/db";
 import { TRPCError } from "@trpc/server";
 import {
   createStripeCustomer,

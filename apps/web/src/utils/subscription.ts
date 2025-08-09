@@ -1,4 +1,4 @@
-import { SubscriptionStatus } from "@prisma/client";
+import { SubscriptionStatus } from "~/server/db";
 import type { Subscription } from "@prisma/client";
 
 // Minimal subscription data needed for status checks
@@ -11,11 +11,16 @@ export interface SubscriptionData {
   stripeSubscriptionId?: string | null;
 }
 
+// Partial subscription data (from API responses)
+export type PartialSubscriptionData = Partial<SubscriptionData> & {
+  status?: SubscriptionStatus;
+}
+
 /**
  * Check if a subscription is currently active
  */
-export function isSubscriptionActive(subscription: SubscriptionData | Subscription | null): boolean {
-  if (!subscription) return false;
+export function isSubscriptionActive(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): boolean {
+  if (!subscription || !subscription.status) return false;
   
   return (
     subscription.status === SubscriptionStatus.ACTIVE &&
@@ -26,8 +31,8 @@ export function isSubscriptionActive(subscription: SubscriptionData | Subscripti
 /**
  * Check if a subscription is in trial period
  */
-export function isSubscriptionInTrial(subscription: SubscriptionData | Subscription | null): boolean {
-  if (!subscription) return false;
+export function isSubscriptionInTrial(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): boolean {
+  if (!subscription || !subscription.status) return false;
   
   // Check if subscription is active and has a trial end date in the future
   return (
@@ -41,8 +46,8 @@ export function isSubscriptionInTrial(subscription: SubscriptionData | Subscript
 /**
  * Check if a subscription needs renewal
  */
-export function doesSubscriptionNeedRenewal(subscription: SubscriptionData | Subscription | null): boolean {
-  if (!subscription) return false;
+export function doesSubscriptionNeedRenewal(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): boolean {
+  if (!subscription || !subscription.status) return false;
   
   const needsRenewal = 
     subscription.status === SubscriptionStatus.PAST_DUE ||
@@ -56,8 +61,8 @@ export function doesSubscriptionNeedRenewal(subscription: SubscriptionData | Sub
 /**
  * Get human-readable subscription status
  */
-export function getSubscriptionStatusLabel(subscription: SubscriptionData | Subscription | null): string {
-  if (!subscription) return "No Subscription";
+export function getSubscriptionStatusLabel(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): string {
+  if (!subscription || !subscription.status) return "No Subscription";
   
   switch (subscription.status) {
     case SubscriptionStatus.ACTIVE:
@@ -78,8 +83,8 @@ export function getSubscriptionStatusLabel(subscription: SubscriptionData | Subs
 /**
  * Get subscription status color for UI
  */
-export function getSubscriptionStatusColor(subscription: SubscriptionData | Subscription | null): string {
-  if (!subscription) return "gray";
+export function getSubscriptionStatusColor(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): string {
+  if (!subscription || !subscription.status) return "gray";
   
   switch (subscription.status) {
     case SubscriptionStatus.ACTIVE:
@@ -99,7 +104,7 @@ export function getSubscriptionStatusColor(subscription: SubscriptionData | Subs
 /**
  * Calculate days until subscription expires
  */
-export function getDaysUntilExpiry(subscription: SubscriptionData | Subscription | null): number | null {
+export function getDaysUntilExpiry(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): number | null {
   if (!subscription || !subscription.currentPeriodEnd) return null;
   
   const now = new Date();
@@ -113,25 +118,27 @@ export function getDaysUntilExpiry(subscription: SubscriptionData | Subscription
 /**
  * Check if subscription can be canceled
  */
-export function canCancelSubscription(subscription: SubscriptionData | Subscription | null): boolean {
-  if (!subscription) return false;
+export function canCancelSubscription(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): boolean {
+  if (!subscription || !subscription.status) return false;
   
   return (
     subscription.status === SubscriptionStatus.ACTIVE &&
     !subscription.cancelAtPeriodEnd &&
-    subscription.stripeSubscriptionId !== null
+    subscription.stripeSubscriptionId !== null &&
+    subscription.stripeSubscriptionId !== undefined
   );
 }
 
 /**
  * Check if subscription can be resumed (un-canceled)
  */
-export function canResumeSubscription(subscription: SubscriptionData | Subscription | null): boolean {
-  if (!subscription) return false;
+export function canResumeSubscription(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): boolean {
+  if (!subscription || !subscription.status) return false;
   
   return (
     subscription.status === SubscriptionStatus.ACTIVE &&
     subscription.cancelAtPeriodEnd === true &&
-    subscription.stripeSubscriptionId !== null
+    subscription.stripeSubscriptionId !== null &&
+    subscription.stripeSubscriptionId !== undefined
   );
 }

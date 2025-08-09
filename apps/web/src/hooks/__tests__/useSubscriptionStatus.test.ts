@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { useSubscriptionStatus } from '../useSubscriptionStatus';
 import { useSession } from 'next-auth/react';
 import { api } from '~/utils/api';
-import { SubscriptionStatus } from '@prisma/client';
+import { SubscriptionStatus } from '~/server/db';
 
 // Mock dependencies
 jest.mock('next-auth/react');

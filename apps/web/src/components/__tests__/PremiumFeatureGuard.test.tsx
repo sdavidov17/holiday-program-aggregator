@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { PremiumFeatureGuard } from '../PremiumFeatureGuard';
 import { useSubscriptionStatus } from '~/hooks/useSubscriptionStatus';
-import { SubscriptionStatus } from '@prisma/client';
+import { SubscriptionStatus } from '~/server/db';
 
 // Mock the useSubscriptionStatus hook
 jest.mock('~/hooks/useSubscriptionStatus');

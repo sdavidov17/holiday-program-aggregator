@@ -1,5 +1,4 @@
-import { db } from "~/server/db";
-import { SubscriptionStatus } from "@prisma/client";
+import { db, SubscriptionStatus } from "~/server/db";
 import { sendRenewalReminder, sendExpirationNotice } from "./email";
 import { addDays, isBefore, startOfDay } from "date-fns";
 import { SubscriptionMetricsCollector } from "~/utils/subscription-metrics";
