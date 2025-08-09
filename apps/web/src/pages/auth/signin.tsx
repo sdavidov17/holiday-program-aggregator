@@ -149,6 +149,7 @@ export default function SignIn() {
                   <input
                     id="email"
                     type="email"
+                    autoComplete="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="input pl-10"
@@ -169,6 +170,7 @@ export default function SignIn() {
                   <input
                     id="password"
                     type="password"
+                    autoComplete={isSignUp ? "new-password" : "current-password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="input pl-10"
@@ -191,6 +193,7 @@ export default function SignIn() {
                     <input
                       id="confirmPassword"
                       type="password"
+                      autoComplete="new-password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className="input pl-10"
