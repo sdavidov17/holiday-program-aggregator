@@ -3,7 +3,7 @@ import { buffer } from "micro";
 import Stripe from "stripe";
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";
-import { SubscriptionStatus } from "@prisma/client";
+import { SubscriptionStatus } from "~/server/db";
 import { logger } from "~/utils/logger";
 import { SubscriptionService } from "~/services/subscription.service";
 

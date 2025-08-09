@@ -143,7 +143,7 @@ import { requireActiveSubscriptionMiddleware } from "./middleware/requireActiveS
 export const premiumProcedure = protectedProcedure
   .use(async ({ ctx, next }) => {
     const { isSubscriptionActive } = await import("~/utils/subscription");
-    const { SubscriptionStatus } = await import("@prisma/client");
+    const { SubscriptionStatus } = await import("~/server/db");
     
     const subscription = await ctx.db.subscription.findUnique({
       where: { userId: ctx.session.user.id }
