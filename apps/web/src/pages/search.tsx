@@ -33,10 +33,11 @@ const SearchPage: NextPage = () => {
               {/* Placeholder for search functionality */}
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
                     Location
                   </label>
                   <input
+                    id="location"
                     type="text"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter suburb or postcode"
@@ -44,10 +45,10 @@ const SearchPage: NextPage = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="age-group" className="block text-sm font-medium text-gray-700 mb-2">
                     Age Group
                   </label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                  <select id="age-group" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                     <option>Select age group</option>
                     <option>5-7 years</option>
                     <option>8-10 years</option>
@@ -57,10 +58,10 @@ const SearchPage: NextPage = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="activity-type" className="block text-sm font-medium text-gray-700 mb-2">
                     Activity Type
                   </label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                  <select id="activity-type" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                     <option>All activities</option>
                     <option>Sports</option>
                     <option>Arts & Crafts</option>
@@ -70,7 +71,7 @@ const SearchPage: NextPage = () => {
                   </select>
                 </div>
                 
-                <button className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition">
+                <button type="button" className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition">
                   Search Programs
                 </button>
               </div>
