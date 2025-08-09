@@ -16,6 +16,10 @@
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:migrate": "prisma migrate dev",
+    "db:migrate:prod": "prisma migrate deploy",
+    "db:generate": "prisma generate",
+    "db:switch:sqlite": "./scripts/switch-db.sh sqlite",
+    "db:switch:postgres": "./scripts/switch-db.sh postgresql",
     "postinstall": "prisma generate"
   },
   "dependencies": {

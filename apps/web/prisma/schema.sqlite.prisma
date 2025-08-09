@@ -1,12 +1,12 @@
-// This schema is for PostgreSQL (Production/Staging)
-// To use: cp schema.postgresql.prisma schema.prisma
+// This schema is for SQLite (Local Development)
+// To use: cp schema.sqlite.prisma schema.prisma
 
 generator client {
     provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
+    provider = "sqlite"
     url      = env("DATABASE_URL")
 }
 
@@ -42,7 +42,7 @@ model User {
     emailVerified DateTime?
     image         String?
     name          String?
-    role          UserRole  @default(USER)
+    role          String    @default("USER") // SQLite doesn't support enums
     accounts      Account[]
     sessions      Session[]
     
@@ -60,12 +60,6 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-enum UserRole {
-    USER
-    ADMIN
-    PROVIDER
-}
-
 // Subscription model for tracking Stripe subscriptions
 model Subscription {
     id                   String            @id @default(cuid())
@@ -79,7 +73,7 @@ model Subscription {
     stripePaymentMethodId String?
     
     // Subscription details
-    status               SubscriptionStatus @default(PENDING)
+    status               String            @default("PENDING") // SQLite doesn't support enums
     currentPeriodStart   DateTime?
     currentPeriodEnd     DateTime?
     cancelAtPeriodEnd    Boolean           @default(false)
@@ -93,15 +87,6 @@ model Subscription {
     
     createdAt            DateTime           @default(now())
     updatedAt            DateTime           @updatedAt
-}
-
-enum SubscriptionStatus {
-    PENDING
-    ACTIVE
-    TRIALING
-    PAST_DUE
-    CANCELED
-    EXPIRED
 }
 
 // Provider model for managing providers
@@ -121,7 +106,7 @@ model Provider {
     postcode         String
     
     // Vetting
-    vettingStatus    VettingStatus @default(PENDING)
+    vettingStatus    String   @default("PENDING") // SQLite doesn't support enums
     vettedBy         String?
     vettedAt         DateTime?
     vettingNotes     String?
@@ -136,14 +121,6 @@ model Provider {
     programs         Program[]
     createdAt        DateTime  @default(now())
     updatedAt        DateTime  @updatedAt
-}
-
-enum VettingStatus {
-    PENDING
-    IN_REVIEW
-    APPROVED
-    REJECTED
-    SUSPENDED
 }
 
 // Program model for provider programs
@@ -181,8 +158,8 @@ model Program {
     ndisApproved     Boolean  @default(false)
     
     // Status
-    status           ProgramStatus @default(DRAFT)
-    featured         Boolean       @default(false)
+    status           String   @default("DRAFT") // SQLite doesn't support enums
+    featured         Boolean  @default(false)
     
     // Media
     imageUrl         String?
@@ -194,12 +171,4 @@ model Program {
     
     createdAt        DateTime  @default(now())
     updatedAt        DateTime  @updatedAt
-}
-
-enum ProgramStatus {
-    DRAFT
-    PUBLISHED
-    FULLY_BOOKED
-    CANCELLED
-    COMPLETED
 }
