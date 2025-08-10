@@ -53,6 +53,7 @@ export default function SignIn() {
           await router.push(loginType === 'admin' ? "/admin" : "/");
         }
       } catch (err) {
+        console.error("Signup error:", err);
         setError(err instanceof Error ? err.message : "An error occurred");
       }
     } else {

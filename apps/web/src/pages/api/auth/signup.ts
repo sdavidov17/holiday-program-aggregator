@@ -20,7 +20,10 @@ export default async function handler(
     const parsed = signupSchema.safeParse(req.body);
     
     if (!parsed.success) {
-      return res.status(400).json({ error: "Invalid input" });
+      return res.status(400).json({ 
+        error: "Invalid input",
+        details: parsed.error.errors 
+      });
     }
 
     const { email, password } = parsed.data;
@@ -51,6 +54,16 @@ export default async function handler(
     });
   } catch (error) {
     console.error("Signup error:", error);
-    res.status(500).json({ error: "Failed to create user" });
+    
+    // Provide more detailed error in development
+    const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+    const errorDetails = process.env.NODE_ENV === "development" && error instanceof Error 
+      ? { stack: error.stack, name: error.name }
+      : undefined;
+    
+    res.status(500).json({ 
+      error: errorMessage,
+      details: errorDetails
+    });
   }
 }
