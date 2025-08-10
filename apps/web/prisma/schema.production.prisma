@@ -74,7 +74,7 @@ model Provider {
     logoUrl             String?
     bannerUrl           String?
     capacity            Int?
-    ageGroups           String[] // JSON array stored as text
+    ageGroups           String   @default("[]") // JSON array stored as text
     specialNeeds        Boolean  @default(false)
     specialNeedsDetails String?
     isPublished         Boolean  @default(false)
@@ -105,7 +105,7 @@ model Program {
     endDate        DateTime
     startTime      String // Store as "HH:MM"
     endTime        String // Store as "HH:MM"
-    daysOfWeek     String[] // JSON array of days
+    daysOfWeek     String   @default("[]") // JSON array of days
     capacity       Int?
     enrollmentUrl  String?
     imageUrl       String?

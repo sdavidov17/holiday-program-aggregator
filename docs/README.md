@@ -18,6 +18,8 @@ Welcome to the Holiday Program Aggregator documentation. This guide helps differ
 
 ### 💻 Developers
 - [Developer Onboarding](./developer-onboarding.md) - **START HERE** for new devs
+- [Environment Setup Guide](./environment-setup-guide.md) - Complete environment configuration
+- [Database Management Strategy](./database-management-strategy.md) - Database setup and management
 - [Architecture Overview](./Specs/architecture/high-level-architecture.md) - System design
 - [API Reference](./api-reference.md) - tRPC API documentation
 - [Testing Strategy](./testing-strategy.md) - Test guidelines

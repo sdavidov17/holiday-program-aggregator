@@ -17,6 +17,8 @@
     "db:studio": "prisma studio",
     "db:migrate": "node scripts/setup-prisma.js && prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
+    "db:seed:preview": "tsx prisma/seed.preview.ts",
+    "db:seed:production": "tsx prisma/seed.production.ts",
     "db:reset": "prisma migrate reset",
     "db:test-login": "tsx prisma/test-login.ts",
     "postinstall": "node scripts/setup-prisma.js && prisma generate"
