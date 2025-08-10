@@ -2,6 +2,7 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 import { z } from "zod";
 import { db } from "~/server/db";
 import { hashPassword } from "~/utils/encryption";
+import { authRateLimit } from "~/lib/rate-limiter";
 
 const signupSchema = z.object({
   email: z.string().email(),
@@ -14,6 +15,15 @@ export default async function handler(
 ) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  // Apply rate limiting for signup
+  const rateLimitResult = await authRateLimit(req, res);
+  if (!rateLimitResult.success) {
+    return res.status(429).json({ 
+      error: "Too many signup attempts. Please try again later.",
+      retryAfter: rateLimitResult.reset
+    });
   }
 
   try {

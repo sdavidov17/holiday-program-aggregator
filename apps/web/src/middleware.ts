@@ -79,6 +79,26 @@ function generateCSP(): string {
 }
 
 export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  
+  // CRITICAL SECURITY: Block debug endpoints in production completely
+  if (process.env.NODE_ENV === 'production') {
+    // Block all debug endpoints
+    if (pathname.startsWith('/api/debug')) {
+      return new NextResponse(null, { status: 404 });
+    }
+    
+    // Block admin setup endpoint in production
+    if (pathname === '/api/admin/setup') {
+      return new NextResponse(null, { status: 404 });
+    }
+    
+    // Block test endpoints
+    if (pathname === '/api/test' || pathname === '/test-provider') {
+      return new NextResponse(null, { status: 404 });
+    }
+  }
+  
   // Get or generate correlation ID
   const correlationId = request.headers.get('x-correlation-id') || generateCorrelationId();
   

@@ -120,6 +120,33 @@ export class AuditLogger {
     
     return 0;
   }
+
+  /**
+   * Log a data action for audit trail
+   */
+  async logAction(
+    action: 'CREATE' | 'UPDATE' | 'DELETE',
+    modelName: string,
+    recordId: string,
+    userId: string,
+    details?: Record<string, any>
+  ): Promise<void> {
+    const context: LogContext = {
+      correlationId: `audit-${action.toLowerCase()}-${Date.now()}`,
+    };
+
+    logger.info(`Data Action: ${action} ${modelName}`, context, {
+      action,
+      modelName,
+      recordId,
+      userId,
+      details,
+      journey: 'data-audit',
+    });
+
+    // In production, this would write to an audit log table
+    // For now, just log it for monitoring
+  }
 }
 
 export const auditLogger = new AuditLogger();
