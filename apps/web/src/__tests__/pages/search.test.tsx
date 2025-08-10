@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { SessionProvider } from 'next-auth/react';
-import SearchPage from '../search';
+import SearchPage from '../../pages/search';
 import '@testing-library/jest-dom';
 
 // Mock next-auth

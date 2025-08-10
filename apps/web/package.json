@@ -21,6 +21,11 @@
     "db:seed:production": "tsx prisma/seed.production.ts",
     "db:reset": "prisma migrate reset",
     "db:test-login": "tsx prisma/test-login.ts",
+    "docker:up": "docker-compose up -d postgres",
+    "docker:down": "docker-compose down",
+    "docker:reset": "docker-compose down -v && docker-compose up -d postgres",
+    "docker:logs": "docker-compose logs -f postgres",
+    "docker:shell": "docker-compose exec postgres psql -U postgres -d holiday_aggregator",
     "postinstall": "node scripts/setup-prisma.js && prisma generate"
   },
   "dependencies": {
