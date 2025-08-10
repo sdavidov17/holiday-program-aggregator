@@ -73,10 +73,7 @@ export default function EditProviderPage() {
     updateProvider.mutate({
       id,
       ...formData,
-      tags: formData.tags ? formData.tags.split(",").map(t => t.trim()) : undefined,
-      certifications: formData.certifications ? formData.certifications.split(",").map(t => t.trim()) : undefined,
-      specializations: formData.specializations ? formData.specializations.split(",").map(t => t.trim()) : undefined,
-      ageGroups: formData.ageGroups ? formData.ageGroups.split(",").map(t => t.trim()) : undefined,
+      ageGroups: formData.ageGroups ? formData.ageGroups.split(",").map((t: string) => t.trim()) : undefined,
     });
   };
 
@@ -282,7 +279,7 @@ export default function EditProviderPage() {
                   type="url"
                   id="bannerImageUrl"
                   name="bannerImageUrl"
-                  value={formData.bannerImageUrl}
+                  value={formData.bannerUrl}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
@@ -294,50 +291,6 @@ export default function EditProviderPage() {
           <div>
             <h3 className="mb-4 text-lg font-medium text-gray-900">Additional Information</h3>
             <div className="space-y-4">
-              <div>
-                <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
-                  Tags (comma-separated)
-                </label>
-                <input
-                  type="text"
-                  id="tags"
-                  name="tags"
-                  value={formData.tags}
-                  onChange={handleChange}
-                  placeholder="e.g., outdoor, sports, educational"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="certifications" className="block text-sm font-medium text-gray-700">
-                  Certifications (comma-separated)
-                </label>
-                <input
-                  type="text"
-                  id="certifications"
-                  name="certifications"
-                  value={formData.certifications}
-                  onChange={handleChange}
-                  placeholder="e.g., First Aid, Working with Children"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="specializations" className="block text-sm font-medium text-gray-700">
-                  Specializations (comma-separated)
-                </label>
-                <input
-                  type="text"
-                  id="specializations"
-                  name="specializations"
-                  value={formData.specializations}
-                  onChange={handleChange}
-                  placeholder="e.g., Special Needs, Gifted Programs"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
               
               <div>
                 <label htmlFor="ageGroups" className="block text-sm font-medium text-gray-700">
@@ -386,14 +339,9 @@ export default function EditProviderPage() {
               </label>
             </div>
             
-            {provider.vettedAt && (
+            {provider.vettingDate && (
               <p className="mt-2 text-sm text-gray-500">
-                Vetted on {new Date(provider.vettedAt).toLocaleDateString()}
-              </p>
-            )}
-            {provider.publishedAt && (
-              <p className="text-sm text-gray-500">
-                Published on {new Date(provider.publishedAt).toLocaleDateString()}
+                Vetted on {new Date(provider.vettingDate).toLocaleDateString()}
               </p>
             )}
           </div>

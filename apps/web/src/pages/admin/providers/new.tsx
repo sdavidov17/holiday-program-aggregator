@@ -13,21 +13,23 @@ export default function NewProviderPage() {
   });
 
   const [formData, setFormData] = useState({
-    name: "",
+    businessName: "",
+    contactName: "",
     description: "",
     website: "",
     email: "",
     phone: "",
+    abn: "",
     address: "",
     suburb: "",
     state: "",
     postcode: "",
     logoUrl: "",
-    bannerImageUrl: "",
-    tags: "",
-    certifications: "",
-    specializations: "",
+    bannerUrl: "",
+    capacity: 0,
     ageGroups: "",
+    specialNeeds: false,
+    specialNeedsDetails: "",
     isVetted: false,
     isPublished: false,
   });
@@ -36,19 +38,49 @@ export default function NewProviderPage() {
     e.preventDefault();
     
     // Basic validation
-    if (!formData.name.trim()) {
-      alert("Provider name is required");
+    if (!formData.businessName.trim()) {
+      alert("Business name is required");
       return;
     }
     
-    // Email validation
-    if (formData.email && !formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    if (!formData.contactName.trim()) {
+      alert("Contact name is required");
+      return;
+    }
+    
+    if (!formData.description.trim()) {
+      alert("Description is required");
+      return;
+    }
+    
+    if (!formData.address.trim()) {
+      alert("Address is required");
+      return;
+    }
+    
+    if (!formData.suburb.trim()) {
+      alert("Suburb is required");
+      return;
+    }
+    
+    if (!formData.state.trim()) {
+      alert("State is required");
+      return;
+    }
+    
+    if (!formData.postcode.trim()) {
+      alert("Postcode is required");
+      return;
+    }
+    
+    // Email validation - required field
+    if (!formData.email || !formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
       alert("Please enter a valid email address");
       return;
     }
     
-    // Phone validation (Australian format)
-    if (formData.phone && !formData.phone.match(/^[0-9\s\-\+\(\)]+$/)) {
+    // Phone validation (Australian format) - required field
+    if (!formData.phone || !formData.phone.match(/^[0-9\s\-\+\(\)]+$/)) {
       alert("Please enter a valid phone number");
       return;
     }
@@ -61,9 +93,7 @@ export default function NewProviderPage() {
     
     createProvider.mutate({
       ...formData,
-      tags: formData.tags ? formData.tags.split(",").map(t => t.trim()).filter(Boolean) : undefined,
-      certifications: formData.certifications ? formData.certifications.split(",").map(t => t.trim()).filter(Boolean) : undefined,
-      specializations: formData.specializations ? formData.specializations.split(",").map(t => t.trim()).filter(Boolean) : undefined,
+      capacity: formData.capacity || undefined,
       ageGroups: formData.ageGroups ? formData.ageGroups.split(",").map(t => t.trim()).filter(Boolean) : undefined,
     });
   };
@@ -85,15 +115,30 @@ export default function NewProviderPage() {
             <h3 className="mb-4 text-lg font-medium text-gray-900">Basic Information</h3>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Provider Name *
+                <label htmlFor="businessName" className="block text-sm font-medium text-gray-700">
+                  Business Name *
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
+                  id="businessName"
+                  name="businessName"
                   required
-                  value={formData.name}
+                  value={formData.businessName}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="contactName" className="block text-sm font-medium text-gray-700">
+                  Contact Name *
+                </label>
+                <input
+                  type="text"
+                  id="contactName"
+                  name="contactName"
+                  required
+                  value={formData.contactName}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
@@ -247,14 +292,14 @@ export default function NewProviderPage() {
               </div>
               
               <div>
-                <label htmlFor="bannerImageUrl" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="bannerUrl" className="block text-sm font-medium text-gray-700">
                   Banner Image URL
                 </label>
                 <input
                   type="url"
-                  id="bannerImageUrl"
-                  name="bannerImageUrl"
-                  value={formData.bannerImageUrl}
+                  id="bannerUrl"
+                  name="bannerUrl"
+                  value={formData.bannerUrl}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
@@ -267,46 +312,46 @@ export default function NewProviderPage() {
             <h3 className="mb-4 text-lg font-medium text-gray-900">Additional Information</h3>
             <div className="space-y-4">
               <div>
-                <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
-                  Tags (comma-separated)
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="specialNeeds"
+                    checked={formData.specialNeeds}
+                    onChange={handleChange}
+                    className="mr-2 rounded border-gray-300"
+                  />
+                  <span className="text-sm font-medium text-gray-700">Special Needs Accommodation</span>
                 </label>
-                <input
-                  type="text"
-                  id="tags"
-                  name="tags"
-                  value={formData.tags}
-                  onChange={handleChange}
-                  placeholder="e.g., outdoor, sports, educational"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
               </div>
               
-              <div>
-                <label htmlFor="certifications" className="block text-sm font-medium text-gray-700">
-                  Certifications (comma-separated)
-                </label>
-                <input
-                  type="text"
-                  id="certifications"
-                  name="certifications"
-                  value={formData.certifications}
-                  onChange={handleChange}
-                  placeholder="e.g., First Aid, Working with Children"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
+              {formData.specialNeeds && (
+                <div>
+                  <label htmlFor="specialNeedsDetails" className="block text-sm font-medium text-gray-700">
+                    Special Needs Details
+                  </label>
+                  <textarea
+                    id="specialNeedsDetails"
+                    name="specialNeedsDetails"
+                    value={formData.specialNeedsDetails}
+                    onChange={handleChange}
+                    rows={3}
+                    placeholder="Details about special needs accommodation"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  />
+                </div>
+              )}
               
               <div>
-                <label htmlFor="specializations" className="block text-sm font-medium text-gray-700">
-                  Specializations (comma-separated)
+                <label htmlFor="capacity" className="block text-sm font-medium text-gray-700">
+                  Capacity
                 </label>
                 <input
-                  type="text"
-                  id="specializations"
-                  name="specializations"
-                  value={formData.specializations}
+                  type="number"
+                  id="capacity"
+                  name="capacity"
+                  value={formData.capacity}
                   onChange={handleChange}
-                  placeholder="e.g., Special Needs, Gifted Programs"
+                  min="1"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>

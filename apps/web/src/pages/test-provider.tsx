@@ -36,7 +36,7 @@ export default function TestProviderPage() {
               <ul className="list-disc pl-5">
                 {providers.map((p) => (
                   <li key={p.id}>
-                    {p.name} - {p.isPublished ? "Published" : "Draft"}
+                    {p.businessName} - {p.isPublished ? "Published" : "Draft"}
                   </li>
                 ))}
               </ul>

@@ -16,23 +16,23 @@ const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
 
 // Input schemas
 const createProviderSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  description: z.string().optional(),
+  businessName: z.string().min(1, "Business name is required"),
+  contactName: z.string().min(1, "Contact name is required"),
+  email: z.string().email("Valid email required"),
+  phone: z.string().min(1, "Phone is required"),
   website: z.string().url().optional().or(z.literal("")),
-  email: z.string().email().optional().or(z.literal("")),
-  phone: z.string().optional(),
-  address: z.string().optional(),
-  suburb: z.string().optional(),
-  state: z.string().optional(),
-  postcode: z.string().optional(),
-  latitude: z.number().optional(),
-  longitude: z.number().optional(),
+  abn: z.string().optional(),
+  address: z.string().min(1, "Address is required"),
+  suburb: z.string().min(1, "Suburb is required"),
+  state: z.string().min(1, "State is required"),
+  postcode: z.string().min(1, "Postcode is required"),
+  description: z.string().min(1, "Description is required"),
   logoUrl: z.string().url().optional().or(z.literal("")),
-  bannerImageUrl: z.string().url().optional().or(z.literal("")),
-  tags: z.array(z.string()).optional(),
-  certifications: z.array(z.string()).optional(),
-  specializations: z.array(z.string()).optional(),
+  bannerUrl: z.string().url().optional().or(z.literal("")),
+  capacity: z.number().optional(),
   ageGroups: z.array(z.string()).optional(),
+  specialNeeds: z.boolean().optional(),
+  specialNeedsDetails: z.string().optional(),
   isVetted: z.boolean().optional(),
   isPublished: z.boolean().optional(),
 });
@@ -44,27 +44,20 @@ const updateProviderSchema = createProviderSchema.partial().extend({
 const createProgramSchema = z.object({
   providerId: z.string(),
   name: z.string().min(1, "Name is required"),
-  description: z.string().optional(),
-  category: z.string().optional(),
-  startDate: z.date().optional(),
-  endDate: z.date().optional(),
-  duration: z.string().optional(),
-  schedule: z.string().optional(),
-  minAge: z.number().int().min(0).optional(),
-  maxAge: z.number().int().min(0).optional(),
+  description: z.string().min(1, "Description is required"),
+  category: z.string().min(1, "Category is required"),
+  ageMin: z.number().int().min(0),
+  ageMax: z.number().int().min(0),
+  price: z.number().min(0),
+  location: z.string().min(1, "Location is required"),
+  startDate: z.date(),
+  endDate: z.date(),
+  startTime: z.string().regex(/^\d{2}:\d{2}$/, "Time must be in HH:MM format"),
+  endTime: z.string().regex(/^\d{2}:\d{2}$/, "Time must be in HH:MM format"),
+  daysOfWeek: z.array(z.string()).optional(),
   capacity: z.number().int().min(0).optional(),
-  spotsAvailable: z.number().int().min(0).optional(),
-  price: z.number().min(0).optional(),
-  earlyBirdPrice: z.number().min(0).optional(),
-  earlyBirdDeadline: z.date().optional(),
-  venue: z.string().optional(),
-  address: z.string().optional(),
-  suburb: z.string().optional(),
+  enrollmentUrl: z.string().url().optional().or(z.literal("")),
   imageUrl: z.string().url().optional().or(z.literal("")),
-  galleryUrls: z.array(z.string().url()).optional(),
-  requirements: z.array(z.string()).optional(),
-  includedItems: z.array(z.string()).optional(),
-  activities: z.array(z.string()).optional(),
   isActive: z.boolean().optional(),
   isPublished: z.boolean().optional(),
 });
@@ -116,7 +109,7 @@ export const providerRouter = createTRPCRouter({
         },
       },
       orderBy: {
-        name: "asc",
+        businessName: "asc",
       },
     });
   }),
@@ -154,18 +147,14 @@ export const providerRouter = createTRPCRouter({
   create: adminProcedure
     .input(createProviderSchema)
     .mutation(async ({ ctx, input }) => {
-      const { tags, certifications, specializations, ageGroups, ...providerData } = input;
+      const { ageGroups, ...providerData } = input;
       
       const provider = await ctx.db.provider.create({
         data: {
           ...providerData,
-          tags: tags ? JSON.stringify(tags) : null,
-          certifications: certifications ? JSON.stringify(certifications) : null,
-          specializations: specializations ? JSON.stringify(specializations) : null,
-          ageGroups: ageGroups ? JSON.stringify(ageGroups) : null,
-          vettedBy: input.isVetted ? ctx.session.user.id : null,
-          vettedAt: input.isVetted ? new Date() : null,
-          publishedAt: input.isPublished ? new Date() : null,
+          ageGroups: ageGroups ? JSON.stringify(ageGroups) : "[]",
+          vettingDate: input.isVetted ? new Date() : null,
+          vettingStatus: input.isVetted ? "APPROVED" : "NOT_STARTED",
         },
       });
 
@@ -185,7 +174,7 @@ export const providerRouter = createTRPCRouter({
   update: adminProcedure
     .input(updateProviderSchema)
     .mutation(async ({ ctx, input }) => {
-      const { id, tags, certifications, specializations, ageGroups, ...updateData } = input;
+      const { id, ageGroups, ...updateData } = input;
       
       // Check if vetting status changed
       const existingProvider = await ctx.db.provider.findUnique({
@@ -203,28 +192,19 @@ export const providerRouter = createTRPCRouter({
       const dataToUpdate: any = { ...updateData };
       
       // Handle JSON fields
-      if (tags !== undefined) {
-        dataToUpdate.tags = tags ? JSON.stringify(tags) : null;
-      }
-      if (certifications !== undefined) {
-        dataToUpdate.certifications = certifications ? JSON.stringify(certifications) : null;
-      }
-      if (specializations !== undefined) {
-        dataToUpdate.specializations = specializations ? JSON.stringify(specializations) : null;
-      }
       if (ageGroups !== undefined) {
-        dataToUpdate.ageGroups = ageGroups ? JSON.stringify(ageGroups) : null;
+        dataToUpdate.ageGroups = ageGroups ? JSON.stringify(ageGroups) : "[]";
       }
 
       // Update vetting info if status changed
       if (input.isVetted !== undefined && input.isVetted !== existingProvider.isVetted) {
-        dataToUpdate.vettedBy = input.isVetted ? ctx.session.user.id : null;
-        dataToUpdate.vettedAt = input.isVetted ? new Date() : null;
+        dataToUpdate.vettingDate = input.isVetted ? new Date() : null;
+        dataToUpdate.vettingStatus = input.isVetted ? "APPROVED" : "NOT_STARTED";
       }
 
       // Update publishing info if status changed
       if (input.isPublished !== undefined && input.isPublished !== existingProvider.isPublished) {
-        dataToUpdate.publishedAt = input.isPublished ? new Date() : null;
+        // Just update the isPublished flag, no publishedAt field in schema
       }
 
       const provider = await ctx.db.provider.update({
@@ -251,7 +231,7 @@ export const providerRouter = createTRPCRouter({
       // Get provider name for audit log
       const provider = await ctx.db.provider.findUnique({
         where: { id: input.id },
-        select: { name: true },
+        select: { businessName: true },
       });
 
       if (!provider) {
@@ -271,7 +251,7 @@ export const providerRouter = createTRPCRouter({
         correlationId: ctx.correlationId,
       }, {
         providerId: input.id,
-        providerName: provider.name,
+        providerName: provider.businessName,
         action: "PROVIDER_DELETED",
       });
       
@@ -298,8 +278,8 @@ export const providerRouter = createTRPCRouter({
         where: { id: input.id },
         data: {
           isVetted: !provider.isVetted,
-          vettedBy: !provider.isVetted ? ctx.session.user.id : null,
-          vettedAt: !provider.isVetted ? new Date() : null,
+          vettingDate: !provider.isVetted ? new Date() : null,
+          vettingStatus: !provider.isVetted ? "APPROVED" : "NOT_STARTED",
         },
       });
 
@@ -343,7 +323,6 @@ export const providerRouter = createTRPCRouter({
         where: { id: input.id },
         data: {
           isPublished: !provider.isPublished,
-          publishedAt: !provider.isPublished ? new Date() : null,
         },
       });
 
@@ -364,21 +343,12 @@ export const providerRouter = createTRPCRouter({
   createProgram: adminProcedure
     .input(createProgramSchema)
     .mutation(async ({ ctx, input }) => {
-      const { 
-        galleryUrls, 
-        requirements, 
-        includedItems, 
-        activities, 
-        ...programData 
-      } = input;
+      const { daysOfWeek, ...programData } = input;
 
       const program = await ctx.db.program.create({
         data: {
           ...programData,
-          galleryUrls: galleryUrls ? JSON.stringify(galleryUrls) : null,
-          requirements: requirements ? JSON.stringify(requirements) : null,
-          includedItems: includedItems ? JSON.stringify(includedItems) : null,
-          activities: activities ? JSON.stringify(activities) : null,
+          daysOfWeek: daysOfWeek ? JSON.stringify(daysOfWeek) : "[]",
         },
       });
 

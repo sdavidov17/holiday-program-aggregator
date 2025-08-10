@@ -18,9 +18,6 @@ interface ProfileProps {
 export default function Profile({ user }: ProfileProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(user.name || "");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
 
   const updateProfile = api.user.updateProfile.useMutation({
     onSuccess: () => {
@@ -35,9 +32,6 @@ export default function Profile({ user }: ProfileProps) {
   const handleSaveProfile = () => {
     updateProfile.mutate({
       name,
-      phoneNumber,
-      address,
-      dateOfBirth,
     });
   };
 
@@ -73,44 +67,6 @@ export default function Profile({ user }: ProfileProps) {
             />
           </div>
 
-          <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="phoneNumber" style={{ display: "block", marginBottom: "5px" }}>
-              Phone Number (will be encrypted)
-            </label>
-            <input
-              id="phoneNumber"
-              type="tel"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              style={{ width: "100%", padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }}
-            />
-          </div>
-
-          <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="dateOfBirth" style={{ display: "block", marginBottom: "5px" }}>
-              Date of Birth (will be encrypted)
-            </label>
-            <input
-              id="dateOfBirth"
-              type="date"
-              value={dateOfBirth}
-              onChange={(e) => setDateOfBirth(e.target.value)}
-              style={{ width: "100%", padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }}
-            />
-          </div>
-
-          <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="address" style={{ display: "block", marginBottom: "5px" }}>
-              Address (will be encrypted)
-            </label>
-            <textarea
-              id="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              rows={3}
-              style={{ width: "100%", padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }}
-            />
-          </div>
 
           <div style={{ marginBottom: "20px" }}>
             <button
