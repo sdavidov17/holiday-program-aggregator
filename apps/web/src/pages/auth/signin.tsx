@@ -21,14 +21,14 @@ export default function SignIn() {
     setError("");
     setLoading(true);
 
-    if (isSignUp) {
-      if (password !== confirmPassword) {
-        setError("Passwords do not match");
-        setLoading(false);
-        return;
-      }
+    try {
+      if (isSignUp) {
+        if (password !== confirmPassword) {
+          setError("Passwords do not match");
+          setLoading(false);
+          return;
+        }
 
-      try {
         const res = await fetch("/api/auth/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -36,8 +36,14 @@ export default function SignIn() {
         });
 
         if (!res.ok) {
-          const data = await res.json();
-          throw new Error(data.error || "Failed to create account");
+          let errorMessage = "Failed to create account";
+          try {
+            const data = await res.json();
+            errorMessage = data.error || errorMessage;
+          } catch (e) {
+            console.error("Failed to parse error response:", e);
+          }
+          throw new Error(errorMessage);
         }
 
         // Sign in after successful signup
@@ -52,25 +58,25 @@ export default function SignIn() {
         } else {
           await router.push(loginType === 'admin' ? "/admin" : "/");
         }
-      } catch (err) {
-        console.error("Signup error:", err);
-        setError(err instanceof Error ? err.message : "An error occurred");
-      }
-    } else {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError("Invalid email or password");
       } else {
-        await router.push(loginType === 'admin' ? "/admin" : "/");
-      }
-    }
+        const result = await signIn("credentials", {
+          email,
+          password,
+          redirect: false,
+        });
 
-    setLoading(false);
+        if (result?.error) {
+          setError("Invalid email or password");
+        } else {
+          await router.push(loginType === 'admin' ? "/admin" : "/");
+        }
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setError(error instanceof Error ? error.message : "An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
