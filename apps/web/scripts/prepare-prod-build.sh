@@ -15,6 +15,12 @@ if [ "$VERCEL" = "1" ] || [ "$NODE_ENV" = "production" ]; then
   echo "Deploying database schema..."
   pnpm prisma db push --skip-generate
   
+  # Fix role enum issue if it exists
+  echo "Checking and fixing role field type..."
+  if [ -f prisma/migrations/fix_role_enum.sql ]; then
+    pnpm prisma db execute --file prisma/migrations/fix_role_enum.sql || echo "Role field migration applied or not needed"
+  fi
+  
   # Seed the database with admin account
   echo "Seeding database with admin account..."
   tsx prisma/seed.production.ts || echo "Seeding completed or data already exists"

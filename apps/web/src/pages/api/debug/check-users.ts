@@ -11,35 +11,29 @@ export default async function handler(
 
   try {
     // Get all users (without passwords)
-    const users = await db.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-        emailVerified: true,
-        createdAt: true,
-        password: true, // Include to check if password exists
-      },
-    });
+    // Use raw query to handle potential enum issues
+    const users = await db.$queryRaw`
+      SELECT 
+        id,
+        email,
+        name,
+        CAST(role AS TEXT) as role,
+        "emailVerified",
+        "createdAt",
+        CASE WHEN password IS NOT NULL THEN true ELSE false END as "hasPassword",
+        LENGTH(password) as "passwordLength"
+      FROM "User"
+    ` as any[];
 
-    // Check if passwords exist (don't return actual hashes)
-    const usersWithPasswordCheck = users.map(user => ({
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
-      emailVerified: user.emailVerified,
-      createdAt: user.createdAt,
-      hasPassword: !!user.password,
-      passwordLength: user.password?.length || 0,
-    }));
+    // Users are already formatted from the raw query
 
     res.status(200).json({
       totalUsers: users.length,
-      users: usersWithPasswordCheck,
+      users: users,
       adminExists: users.some(u => u.role === "ADMIN"),
       sergeExists: users.some(u => u.email === "serge@test.com"),
+      databaseUrl: process.env.DATABASE_URL ? "Configured" : "Missing",
+      environment: process.env.NODE_ENV,
     });
   } catch (error) {
     console.error("Check users error:", error);
