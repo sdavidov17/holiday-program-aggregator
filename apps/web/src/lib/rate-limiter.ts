@@ -96,7 +96,7 @@ export async function rateLimit(
   let timestamps = limiter.get(clientId) || [];
   
   // Remove old timestamps outside the current window
-  timestamps = timestamps.filter(t => t > windowStart);
+  timestamps = timestamps.filter((t: number) => t > windowStart);
   
   // Check if limit exceeded
   if (timestamps.length >= maxRequests) {

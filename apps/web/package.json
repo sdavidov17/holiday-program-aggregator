@@ -45,6 +45,8 @@
     "bcryptjs": "^3.0.2",
     "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
+    "express-rate-limit": "^8.0.1",
+    "lru-cache": "^11.1.0",
     "lucide-react": "^0.537.0",
     "micro": "^10.0.1",
     "next": "^15.4.5",
