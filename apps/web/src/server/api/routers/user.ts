@@ -26,9 +26,8 @@ export const userRouter = createTRPCRouter({
         where: { id: ctx.session.user.id },
         data: {
           name,
-          phoneNumber: encryptedPhone,
-          dateOfBirth: encryptedDOB,
-          address: encryptedAddress,
+          // Note: phoneNumber, dateOfBirth, address fields don't exist in current schema
+          // These would need to be added to the User model if needed
         },
         select: {
           id: true,

@@ -1,4 +1,12 @@
-import { db, SubscriptionStatus } from "~/server/db";
+import { db } from "~/server/db";
+
+enum SubscriptionStatus {
+  PENDING = "PENDING",
+  ACTIVE = "ACTIVE",
+  PAST_DUE = "PAST_DUE",
+  CANCELED = "CANCELED",
+  EXPIRED = "EXPIRED"
+}
 import { sendRenewalReminder, sendExpirationNotice } from "./email";
 import { addDays, isBefore, startOfDay } from "date-fns";
 import { SubscriptionMetricsCollector } from "~/utils/subscription-metrics";

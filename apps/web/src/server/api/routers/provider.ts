@@ -163,8 +163,8 @@ export const providerRouter = createTRPCRouter({
           certifications: certifications ? JSON.stringify(certifications) : null,
           specializations: specializations ? JSON.stringify(specializations) : null,
           ageGroups: ageGroups ? JSON.stringify(ageGroups) : null,
-          vettedBy: input.isVetted ? ctx.session.user.id : null,
           vettedAt: input.isVetted ? new Date() : null,
+          vettedBy: input.isVetted ? ctx.session.user.id : null,
           publishedAt: input.isPublished ? new Date() : null,
         },
       });
@@ -298,8 +298,8 @@ export const providerRouter = createTRPCRouter({
         where: { id: input.id },
         data: {
           isVetted: !provider.isVetted,
-          vettedBy: !provider.isVetted ? ctx.session.user.id : null,
           vettedAt: !provider.isVetted ? new Date() : null,
+          vettedBy: !provider.isVetted ? ctx.session.user.id : null,
         },
       });
 
@@ -343,7 +343,6 @@ export const providerRouter = createTRPCRouter({
         where: { id: input.id },
         data: {
           isPublished: !provider.isPublished,
-          publishedAt: !provider.isPublished ? new Date() : null,
         },
       });
 
@@ -364,21 +363,17 @@ export const providerRouter = createTRPCRouter({
   createProgram: adminProcedure
     .input(createProgramSchema)
     .mutation(async ({ ctx, input }) => {
-      const { 
-        galleryUrls, 
-        requirements, 
-        includedItems, 
-        activities, 
-        ...programData 
-      } = input;
-
+      const { requirements, includedItems, activities, galleryUrls, ...programData } = input;
+      
       const program = await ctx.db.program.create({
         data: {
           ...programData,
-          galleryUrls: galleryUrls ? JSON.stringify(galleryUrls) : null,
+          minAge: input.minAge,
+          maxAge: input.maxAge,
           requirements: requirements ? JSON.stringify(requirements) : null,
           includedItems: includedItems ? JSON.stringify(includedItems) : null,
           activities: activities ? JSON.stringify(activities) : null,
+          galleryUrls: galleryUrls ? JSON.stringify(galleryUrls) : null,
         },
       });
 
