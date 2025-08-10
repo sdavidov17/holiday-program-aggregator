@@ -6,75 +6,71 @@ test.describe('Homepage', () => {
   });
 
   test('should display the page title', async ({ page }) => {
-    await expect(page).toHaveTitle('Holiday Program Aggregator');
+    await expect(page).toHaveTitle(/HolidayHeroes/);
   });
 
   test('should display the main heading', async ({ page }) => {
-    const heading = page.locator('h1');
+    const heading = page.locator('h1').first();
     await expect(heading).toBeVisible();
-    await expect(heading).toContainText('Holiday Program');
-    await expect(heading).toContainText('Aggregator');
+    await expect(heading).toContainText('Find providers for school holidays');
   });
 
-  test('should have purple gradient background', async ({ page }) => {
-    const main = page.locator('main');
-    await expect(main).toBeVisible();
+  test('should have header with navigation', async ({ page }) => {
+    const header = page.locator('header');
+    await expect(header).toBeVisible();
     
-    // Check that the main element has the gradient background
-    const background = await main.evaluate((el) => {
-      const style = window.getComputedStyle(el);
-      return style.background || style.backgroundImage;
-    });
-    
-    expect(background).toContain('gradient');
+    // Check navigation links
+    const browseLink = page.locator('text=Browse Activities');
+    await expect(browseLink).toBeVisible();
   });
 
   test('should display sign in link when not authenticated', async ({ page }) => {
-    const signInLink = page.locator('text=Sign In →');
+    const signInLink = page.locator('text=Sign In').first();
     await expect(signInLink).toBeVisible();
   });
 
-  test('should display welcome message when not authenticated', async ({ page }) => {
-    const welcomeText = page.locator('text=Welcome!');
-    await expect(welcomeText).toBeVisible();
-    
-    const signInPrompt = page.locator('text=Sign in to start your subscription');
-    await expect(signInPrompt).toBeVisible();
+  test('should display get started button when not authenticated', async ({ page }) => {
+    const getStartedButton = page.locator('text=Get Started').first();
+    await expect(getStartedButton).toBeVisible();
   });
 
-  test('should display features card', async ({ page }) => {
-    const featuresCard = page.locator('text=Features');
-    await expect(featuresCard).toBeVisible();
+  test('should display search form', async ({ page }) => {
+    // Look for search input fields - Updated to match actual placeholders
+    const searchInput = page.locator('input[type="text"]').first();
+    await expect(searchInput).toBeVisible();
     
-    const features = page.locator('text=Curated holiday programs');
-    await expect(features).toBeVisible();
+    const searchButton = page.locator('button:has-text("Search")');
+    await expect(searchButton).toBeVisible();
   });
 
-  test('should display benefits card', async ({ page }) => {
-    const benefitsCard = page.locator('text=Benefits');
-    await expect(benefitsCard).toBeVisible();
-    
-    const benefits = page.locator('text=Save time searching');
-    await expect(benefits).toBeVisible();
+  test('should display why choose us section', async ({ page }) => {
+    // Check for any section with benefits or features
+    const whySection = page.locator('h2').filter({ hasText: /Why|Trust|Choose/i });
+    const sectionCount = await whySection.count();
+    expect(sectionCount).toBeGreaterThan(0);
   });
 
-  test('should have white text', async ({ page }) => {
-    // Check if the heading has the text-white class
-    const heading = page.locator('h1');
-    const hasWhiteTextClass = await heading.evaluate((el) => {
-      return el.classList.contains('text-white');
-    });
+  test('should display featured providers', async ({ page }) => {
+    const featuredSection = page.locator('text=Featured Providers');
+    await expect(featuredSection).toBeVisible();
     
-    expect(hasWhiteTextClass).toBe(true);
+    // Check for at least one provider card
+    const providerCard = page.locator('text=Creative Kids Club');
+    await expect(providerCard).toBeVisible();
   });
 
-  test('should have semi-transparent card background', async ({ page }) => {
-    const card = page.locator('text=Features').locator('..');
-    const backgroundColor = await card.evaluate((el) => {
-      return window.getComputedStyle(el).backgroundColor;
-    });
+  test('should have footer with information', async ({ page }) => {
+    const footer = page.locator('footer');
+    await expect(footer).toBeVisible();
     
-    // Should have alpha transparency
-    expect(backgroundColor).toContain('rgba');
+    // Check for footer content - Updated to match actual footer text
+    const footerText = page.locator('footer').locator('text=/Copyright|HolidayHeroes|©/i');
+    const textCount = await footerText.count();
+    expect(textCount).toBeGreaterThan(0);
+  });
+
+  test('should have CTA section', async ({ page }) => {
+    const ctaSection = page.locator('text=Ready to find the perfect holiday program?');
+    await expect(ctaSection).toBeVisible();
   });
 });

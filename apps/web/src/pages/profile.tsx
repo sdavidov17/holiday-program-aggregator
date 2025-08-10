@@ -11,6 +11,7 @@ interface ProfileProps {
     email: string | null;
     name: string | null;
     image: string | null;
+    role: "USER" | "ADMIN";
   };
 }
 
@@ -166,6 +167,28 @@ export default function Profile({ user }: ProfileProps) {
       )}
 
       <hr style={{ margin: "20px 0" }} />
+
+      {/* Admin Panel Link */}
+      {user.role === "ADMIN" && (
+        <div style={{ marginBottom: "20px" }}>
+          <h2 style={{ marginBottom: "10px" }}>Administration</h2>
+          <Link 
+            href="/admin" 
+            style={{
+              display: "inline-block",
+              padding: "10px 20px",
+              backgroundColor: "#dc3545",
+              color: "white",
+              textDecoration: "none",
+              borderRadius: "4px",
+              marginBottom: "10px",
+              marginRight: "10px",
+            }}
+          >
+            Admin Panel →
+          </Link>
+        </div>
+      )}
 
       {/* Subscription Information */}
       <div style={{ marginBottom: "20px" }}>

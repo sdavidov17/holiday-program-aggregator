@@ -5,6 +5,7 @@ import Link from "next/link";
 export default function AdminDashboard() {
   const { data: providers } = api.provider.getAll.useQuery();
   const { data: session } = api.user.me.useQuery();
+  const { data: userStats } = api.admin.getUserStats.useQuery();
 
   return (
     <AdminLayout title="Dashboard">
@@ -37,6 +38,23 @@ export default function AdminDashboard() {
           </Link>
         </div>
 
+        {/* Users Stats */}
+        <div className="rounded-lg bg-white p-6 shadow">
+          <h3 className="text-lg font-semibold text-gray-900">Users</h3>
+          <p className="mt-2 text-3xl font-bold text-green-600">
+            {userStats?.totalUsers || 0}
+          </p>
+          <p className="text-sm text-gray-500">
+            Total users ({userStats?.adminUsers || 0} admins)
+          </p>
+          <Link
+            href="/admin/users"
+            className="mt-4 inline-block text-sm font-medium text-green-600 hover:text-green-800"
+          >
+            Manage users →
+          </Link>
+        </div>
+
         {/* Quick Actions */}
         <div className="rounded-lg bg-white p-6 shadow">
           <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
@@ -52,6 +70,12 @@ export default function AdminDashboard() {
               className="block w-full rounded border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               Manage Providers
+            </Link>
+            <Link
+              href="/admin/users"
+              className="block w-full rounded border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              Manage Users
             </Link>
           </div>
         </div>

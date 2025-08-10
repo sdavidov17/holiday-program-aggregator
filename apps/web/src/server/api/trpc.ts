@@ -139,6 +139,18 @@ export const protectedProcedure = t.procedure
 // Import the subscription middleware
 import { requireActiveSubscriptionMiddleware } from "./middleware/requireActiveSubscription";
 
+// Admin procedure that requires admin role
+export const adminProcedure = protectedProcedure
+  .use(({ ctx, next }) => {
+    if (ctx.session.user.role !== "ADMIN") {
+      throw new TRPCError({ 
+        code: "FORBIDDEN",
+        message: "Only admins can perform this action" 
+      });
+    }
+    return next({ ctx });
+  });
+
 // Premium procedure that requires an active subscription
 export const premiumProcedure = protectedProcedure
   .use(async ({ ctx, next }) => {
