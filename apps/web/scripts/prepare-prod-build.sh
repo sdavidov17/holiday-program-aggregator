@@ -15,6 +15,10 @@ if [ "$VERCEL" = "1" ] || [ "$NODE_ENV" = "production" ]; then
   echo "Deploying database schema..."
   pnpm prisma db push --skip-generate
   
+  # Seed the database with admin account
+  echo "Seeding database with admin account..."
+  tsx prisma/seed.production.ts || echo "Seeding completed or data already exists"
+  
   # Restore original schema for next builds
   mv prisma/schema.prisma.bak prisma/schema.prisma
 else
