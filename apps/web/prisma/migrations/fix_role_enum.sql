@@ -27,3 +27,8 @@ UPDATE "User" SET role = 'USER' WHERE role IS NULL;
 
 -- Ensure role is not null
 ALTER TABLE "User" ALTER COLUMN role SET NOT NULL;
+
+-- Add check constraint for valid roles (optional but recommended)
+ALTER TABLE "User" DROP CONSTRAINT IF EXISTS user_role_check;
+ALTER TABLE "User" ADD CONSTRAINT user_role_check 
+  CHECK (role IN ('USER', 'ADMIN'));
