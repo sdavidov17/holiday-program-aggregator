@@ -20,7 +20,8 @@ model Account {
     scope             String?
     id_token          String?
     session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
 }
@@ -34,21 +35,19 @@ model Session {
 }
 
 model User {
-    id            String        @id @default(cuid())
-    name          String?
-    email         String?       @unique
+    id            String    @id @default(cuid())
+    email         String    @unique
     emailVerified DateTime?
     image         String?
-    password      String?       // For credentials provider
-    phoneNumber   String?       // Encrypted PII
-    dateOfBirth   String?       // Encrypted PII
-    address       String?       // Encrypted PII
-    role          String      @default("USER") // SQLite doesn't support enums
+    name          String?
+    password      String?   // For credentials auth
+    role          String    @default("USER") // "USER" or "ADMIN"
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+
     accounts      Account[]
     sessions      Session[]
-    subscription  Subscription?
-    createdAt     DateTime      @default(now())
-    updatedAt     DateTime      @updatedAt
+    subscriptions Subscription[]
 }
 
 model VerificationToken {
@@ -59,137 +58,93 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-// Enums are commented out for SQLite compatibility
-// Uncomment these when using PostgreSQL
-// enum UserRole {
-//     USER
-//     ADMIN
-// }
+model Provider {
+    id                  String   @id @default(cuid())
+    businessName        String
+    contactName         String
+    email               String
+    phone               String
+    website             String?
+    abn                 String?
+    address             String
+    suburb              String
+    state               String
+    postcode            String
+    description         String
+    logoUrl             String?
+    bannerUrl           String?
+    capacity            Int?
+    ageGroups           String   @default("[]") // JSON array stored as text
+    specialNeeds        Boolean  @default(false)
+    specialNeedsDetails String?
+    isPublished         Boolean  @default(false)
+    isVetted            Boolean  @default(false)
+    vettingNotes        String?
+    vettingDate         DateTime?
+    vettingStatus       String   @default("NOT_STARTED") // NOT_STARTED, IN_PROGRESS, APPROVED, REJECTED
+    createdAt           DateTime @default(now())
+    updatedAt           DateTime @updatedAt
 
-// enum SubscriptionStatus {
-//     PENDING
-//     ACTIVE
-//     PAST_DUE
-//     CANCELED
-//     EXPIRED
-// }
+    programs Program[]
+
+    @@index([suburb, state])
+    @@index([isPublished, isVetted])
+}
+
+model Program {
+    id             String   @id @default(cuid())
+    providerId     String
+    name           String
+    description    String
+    category       String
+    ageMin         Int
+    ageMax         Int
+    price          Float
+    location       String
+    startDate      DateTime
+    endDate        DateTime
+    startTime      String // Store as "HH:MM"
+    endTime        String // Store as "HH:MM"
+    daysOfWeek     String   @default("[]") // JSON array of days
+    capacity       Int?
+    enrollmentUrl  String?
+    imageUrl       String?
+    isActive       Boolean  @default(true)
+    isPublished    Boolean  @default(false)
+    programStatus  String   @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED, CANCELLED
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+
+    provider Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+    @@index([startDate, endDate])
+    @@index([category, isActive, isPublished])
+    @@index([providerId])
+}
 
 model Subscription {
-    id                   String             @id @default(cuid())
-    userId               String             @unique
-    stripeCustomerId     String?
-    stripeSubscriptionId String?            @unique
-    stripePriceId        String?
-    stripePaymentStatus  String             @default("pending")
-    status               String @default("PENDING") // SQLite doesn't support enums
-    currentPeriodStart   DateTime?
-    currentPeriodEnd     DateTime?
-    cancelAtPeriodEnd    Boolean            @default(false)
-    canceledAt           DateTime?
-    expiresAt            DateTime?
-    trialEndsAt          DateTime?
-    
-    // Audit fields for lifecycle management
-    lastReminderSentAt   DateTime?
-    reminderCount        Int                @default(0)
-    
-    createdAt            DateTime           @default(now())
-    updatedAt            DateTime           @updatedAt
-    
-    user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-    
-    @@index([status, expiresAt])
+    id                     String    @id @default(cuid())
+    userId                 String    @unique
+    status                 String    @default("PENDING") // PENDING, ACTIVE, PAST_DUE, CANCELED, EXPIRED
+    stripeCustomerId       String?
+    stripeSubscriptionId   String?   @unique
+    stripePriceId          String?
+    stripePaymentMethodId  String?
+    stripePaymentIntentId  String?
+    stripePaymentStatus    String?
+    currentPeriodStart     DateTime?
+    currentPeriodEnd       DateTime?
+    canceledAt             DateTime?
+    cancelAtPeriodEnd      Boolean   @default(false)
+    trialEndsAt            DateTime?
+    expiresAt              DateTime?
+    lastReminderSent       DateTime?
+    reminderCount          Int       @default(0)
+    createdAt              DateTime  @default(now())
+    updatedAt              DateTime  @updatedAt
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
     @@index([userId])
-}
-
-// Provider model for holiday program providers
-model Provider {
-    id               String    @id @default(cuid())
-    name             String
-    description      String?
-    website          String?
-    email            String?
-    phone            String?
-    address          String?
-    suburb           String?
-    state            String?
-    postcode         String?
-    latitude         Float?    // For geospatial features
-    longitude        Float?    // For geospatial features
-    logoUrl          String?
-    bannerImageUrl   String?
-    
-    // Vetting and publishing status
-    isVetted         Boolean   @default(false)
-    isPublished      Boolean   @default(false)
-    vettedAt         DateTime?
-    vettedBy         String?   // User ID of admin who vetted
-    publishedAt      DateTime?
-    
-    // Metadata
-    tags             String?   // JSON array of tags
-    certifications   String?   // JSON array of certifications
-    specializations  String?   // JSON array of specializations
-    ageGroups        String?   // JSON array of age groups served
-    
-    createdAt        DateTime  @default(now())
-    updatedAt        DateTime  @updatedAt
-    
-    programs         Program[]
-    
-    @@index([isPublished, isVetted])
-    @@index([suburb, state])
-}
-
-// Program model for individual holiday programs
-model Program {
-    id               String    @id @default(cuid())
-    providerId       String
-    name             String
-    description      String?
-    category         String?   // e.g., "Sports", "Arts", "STEM", etc.
-    
-    // Schedule and duration
-    startDate        DateTime?
-    endDate          DateTime?
-    duration         String?   // e.g., "1 week", "3 days"
-    schedule         String?   // e.g., "Mon-Fri 9am-3pm"
-    
-    // Age and capacity
-    minAge           Int?
-    maxAge           Int?
-    capacity         Int?
-    spotsAvailable   Int?
-    
-    // Pricing
-    price            Float?
-    earlyBirdPrice   Float?
-    earlyBirdDeadline DateTime?
-    
-    // Location (can be different from provider's main location)
-    venue            String?
-    address          String?
-    suburb           String?
-    
-    // Images and media
-    imageUrl         String?
-    galleryUrls      String?   // JSON array of image URLs
-    
-    // Status
-    isActive         Boolean   @default(true)
-    isPublished      Boolean   @default(false)
-    
-    // Requirements and features
-    requirements     String?   // JSON array of requirements
-    includedItems    String?   // JSON array of what's included
-    activities       String?   // JSON array of activities
-    
-    createdAt        DateTime  @default(now())
-    updatedAt        DateTime  @updatedAt
-    
-    provider         Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
-    
-    @@index([providerId])
-    @@index([category, isActive, isPublished])
-    @@index([startDate, endDate])
+    @@index([status, expiresAt])
 }

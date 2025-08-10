@@ -106,7 +106,7 @@ export default function AdminDashboard() {
               {providers?.slice(0, 5).map((provider) => (
                 <tr key={provider.id}>
                   <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
-                    {provider.name}
+                    {provider.businessName}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                     <span className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
