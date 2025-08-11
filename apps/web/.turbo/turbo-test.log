@@ -2,42 +2,230 @@
 > web@0.1.0 test /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web
 > jest
 
-PASS src/pages/api/cron/__tests__/subscription-lifecycle.test.ts
+PASS src/__tests__/security/rate-limiting.test.ts
+  ● Console
+
+    console.error
+      Signup error: TypeError: Cannot read properties of undefined (reading 'id')
+          at handler (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/pages/api/auth/signup.ts:63:20)
+          at processTicksAndRejections (node:internal/process/task_queues:105:5)
+          at Object.<anonymous> (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/rate-limiting.test.ts:49:9)
+
+      64 |     });
+      65 |   } catch (error) {
+    > 66 |     console.error("Signup error:", error);
+         |             ^
+      67 |     
+      68 |     // Provide more detailed error in development
+      69 |     const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+
+      at handler (src/pages/api/auth/signup.ts:66:13)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:49:9)
+
+    console.error
+      Signup error: TypeError: Cannot read properties of undefined (reading 'id')
+          at handler (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/pages/api/auth/signup.ts:63:20)
+          at processTicksAndRejections (node:internal/process/task_queues:105:5)
+          at Object.<anonymous> (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/rate-limiting.test.ts:49:9)
+
+      64 |     });
+      65 |   } catch (error) {
+    > 66 |     console.error("Signup error:", error);
+         |             ^
+      67 |     
+      68 |     // Provide more detailed error in development
+      69 |     const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+
+      at handler (src/pages/api/auth/signup.ts:66:13)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:49:9)
+
+    console.error
+      Signup error: TypeError: Cannot read properties of undefined (reading 'id')
+          at handler (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/pages/api/auth/signup.ts:63:20)
+          at processTicksAndRejections (node:internal/process/task_queues:105:5)
+          at Object.<anonymous> (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/rate-limiting.test.ts:49:9)
+
+      64 |     });
+      65 |   } catch (error) {
+    > 66 |     console.error("Signup error:", error);
+         |             ^
+      67 |     
+      68 |     // Provide more detailed error in development
+      69 |     const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+
+      at handler (src/pages/api/auth/signup.ts:66:13)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:49:9)
+
+    console.error
+      Signup error: TypeError: Cannot read properties of undefined (reading 'id')
+          at handler (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/pages/api/auth/signup.ts:63:20)
+          at processTicksAndRejections (node:internal/process/task_queues:105:5)
+          at Object.<anonymous> (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/rate-limiting.test.ts:49:9)
+
+      64 |     });
+      65 |   } catch (error) {
+    > 66 |     console.error("Signup error:", error);
+         |             ^
+      67 |     
+      68 |     // Provide more detailed error in development
+      69 |     const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+
+      at handler (src/pages/api/auth/signup.ts:66:13)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:49:9)
+
+    console.error
+      Signup error: TypeError: Cannot read properties of undefined (reading 'id')
+          at handler (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/pages/api/auth/signup.ts:63:20)
+          at processTicksAndRejections (node:internal/process/task_queues:105:5)
+          at Object.<anonymous> (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/rate-limiting.test.ts:49:9)
+
+      64 |     });
+      65 |   } catch (error) {
+    > 66 |     console.error("Signup error:", error);
+         |             ^
+      67 |     
+      68 |     // Provide more detailed error in development
+      69 |     const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+
+      at handler (src/pages/api/auth/signup.ts:66:13)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:49:9)
+
+    console.warn
+      Rate limit exceeded {
+        clientId: '192.168.1.1',
+        endpoint: '/api/auth/signup',
+        requests: 5,
+        limit: 5
+      }
+
+      108 |     
+      109 |     // Log rate limit violation
+    > 110 |     console.warn('Rate limit exceeded', {
+          |             ^
+      111 |       clientId,
+      112 |       endpoint,
+      113 |       requests: timestamps.length,
+
+      at rateLimit (src/lib/rate-limiter.ts:110:13)
+      at authRateLimit (src/lib/rate-limiter.ts:176:3)
+      at handler (src/pages/api/auth/signup.ts:21:46)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:49:28)
+
+    console.error
+      Signup error: TypeError: Cannot read properties of undefined (reading 'id')
+          at handler (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/pages/api/auth/signup.ts:63:20)
+          at processTicksAndRejections (node:internal/process/task_queues:105:5)
+          at Object.<anonymous> (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/rate-limiting.test.ts:71:7)
+
+      64 |     });
+      65 |   } catch (error) {
+    > 66 |     console.error("Signup error:", error);
+         |             ^
+      67 |     
+      68 |     // Provide more detailed error in development
+      69 |     const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+
+      at handler (src/pages/api/auth/signup.ts:66:13)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:71:7)
+
+    console.error
+      Signup error: TypeError: Cannot read properties of undefined (reading 'id')
+          at handler (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/pages/api/auth/signup.ts:63:20)
+          at processTicksAndRejections (node:internal/process/task_queues:105:5)
+          at Object.<anonymous> (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/rate-limiting.test.ts:93:9)
+
+      64 |     });
+      65 |   } catch (error) {
+    > 66 |     console.error("Signup error:", error);
+         |             ^
+      67 |     
+      68 |     // Provide more detailed error in development
+      69 |     const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+
+      at handler (src/pages/api/auth/signup.ts:66:13)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:93:9)
+
+    console.error
+      Signup error: TypeError: Cannot read properties of undefined (reading 'id')
+          at handler (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/pages/api/auth/signup.ts:63:20)
+          at processTicksAndRejections (node:internal/process/task_queues:105:5)
+          at Object.<anonymous> (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/rate-limiting.test.ts:93:9)
+
+      64 |     });
+      65 |   } catch (error) {
+    > 66 |     console.error("Signup error:", error);
+         |             ^
+      67 |     
+      68 |     // Provide more detailed error in development
+      69 |     const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+
+      at handler (src/pages/api/auth/signup.ts:66:13)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:93:9)
+
+    console.error
+      Signup error: TypeError: Cannot read properties of undefined (reading 'id')
+          at handler (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/pages/api/auth/signup.ts:63:20)
+          at processTicksAndRejections (node:internal/process/task_queues:105:5)
+          at Object.<anonymous> (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/rate-limiting.test.ts:93:9)
+
+      64 |     });
+      65 |   } catch (error) {
+    > 66 |     console.error("Signup error:", error);
+         |             ^
+      67 |     
+      68 |     // Provide more detailed error in development
+      69 |     const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+
+      at handler (src/pages/api/auth/signup.ts:66:13)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:93:9)
+
+    console.error
+      Signup error: TypeError: Cannot read properties of undefined (reading 'id')
+          at handler (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/pages/api/auth/signup.ts:63:20)
+          at processTicksAndRejections (node:internal/process/task_queues:105:5)
+          at Object.<anonymous> (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/rate-limiting.test.ts:109:7)
+
+      64 |     });
+      65 |   } catch (error) {
+    > 66 |     console.error("Signup error:", error);
+         |             ^
+      67 |     
+      68 |     // Provide more detailed error in development
+      69 |     const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+
+      at handler (src/pages/api/auth/signup.ts:66:13)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:109:7)
+
+    console.warn
+      Rate limit exceeded {
+        clientId: '192.168.1.6',
+        endpoint: '/api/test',
+        requests: 5,
+        limit: 5
+      }
+
+      108 |     
+      109 |     // Log rate limit violation
+    > 110 |     console.warn('Rate limit exceeded', {
+          |             ^
+      111 |       clientId,
+      112 |       endpoint,
+      113 |       requests: timestamps.length,
+
+      at rateLimit (src/lib/rate-limiter.ts:110:13)
+      at authRateLimit (src/lib/rate-limiter.ts:176:3)
+      at Object.<anonymous> (src/__tests__/security/rate-limiting.test.ts:150:42)
+
+PASS src/__tests__/api/stripe/webhook.test.ts
   ● Console
 
     console.info
-      {"timestamp":"2025-08-06T11:43:03.480Z","level":"info","message":"Cron job completed","context":{"correlationId":"cron-1754480583480","result":{"reminders":5,"expired":2,"errors":[]},"environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-11T12:19:51.090Z","level":"info","message":"Checkout session completed","context":{"correlationId":"unknown","sessionId":"cs_test_123","userId":"user123","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.error
-      {"timestamp":"2025-08-06T11:43:03.483Z","level":"error","message":"Subscription lifecycle cron error","context":{"correlationId":"cron-error-1754480583483","error":{},"environment":"test","service":"holiday-aggregator"}}
-
-      143 |         break;
-      144 |       case 'error':
-    > 145 |         console.error(json);
-          |                 ^
-      146 |         break;
-      147 |     }
-      148 |   }
-
-      at StructuredLogger.output (src/utils/logger.ts:145:17)
-      at StructuredLogger.error (src/utils/logger.ts:167:10)
-      at handler (src/pages/api/cron/subscription-lifecycle.ts:32:12)
-      at Object.<anonymous> (src/pages/api/cron/__tests__/subscription-lifecycle.test.ts:93:5)
-
-PASS src/hooks/__tests__/useSubscriptionStatus.test.ts
-PASS src/components/__tests__/PremiumFeatureGuard.test.tsx
-PASS src/pages/api/stripe/__tests__/webhook.test.ts
-  ● Console
-
-    console.info
-      {"timestamp":"2025-08-06T11:43:03.771Z","level":"info","message":"Checkout session completed","context":{"correlationId":"unknown","sessionId":"cs_test_123","userId":"user123","environment":"test","service":"holiday-aggregator"}}
-
-      at StructuredLogger.output (src/utils/logger.ts:139:17)
-
-    console.error
-      {"timestamp":"2025-08-06T11:43:03.773Z","level":"error","message":"No userId in session metadata","context":{"correlationId":"unknown","sessionId":"cs_test_123","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-11T12:19:51.099Z","level":"error","message":"No userId in session metadata","context":{"correlationId":"unknown","sessionId":"cs_test_123","environment":"test","service":"holiday-aggregator"}}
 
       143 |         break;
       144 |       case 'error':
@@ -50,30 +238,30 @@ PASS src/pages/api/stripe/__tests__/webhook.test.ts
       at StructuredLogger.output (src/utils/logger.ts:145:17)
       at StructuredLogger.error (src/utils/logger.ts:167:10)
       at handler (src/pages/api/stripe/webhook.ts:61:18)
-      at Object.<anonymous> (src/pages/api/stripe/__tests__/webhook.test.ts:127:7)
+      at Object.<anonymous> (src/__tests__/api/stripe/webhook.test.ts:134:7)
 
     console.info
-      {"timestamp":"2025-08-06T11:43:03.774Z","level":"info","message":"Subscription updated","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","status":"active","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-11T12:19:51.100Z","level":"info","message":"Subscription updated","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","status":"active","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.info
-      {"timestamp":"2025-08-06T11:43:03.774Z","level":"info","message":"Subscription updated","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","status":"past_due","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-11T12:19:51.101Z","level":"info","message":"Subscription updated","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","status":"past_due","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.info
-      {"timestamp":"2025-08-06T11:43:03.774Z","level":"info","message":"Subscription deleted","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-11T12:19:51.102Z","level":"info","message":"Subscription deleted","context":{"correlationId":"unknown","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.info
-      {"timestamp":"2025-08-06T11:43:03.775Z","level":"info","message":"Invoice payment succeeded","context":{"correlationId":"unknown","invoiceId":"in_test_123","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-11T12:19:51.103Z","level":"info","message":"Invoice payment succeeded","context":{"correlationId":"unknown","invoiceId":"in_test_123","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.warn
-      {"timestamp":"2025-08-06T11:43:03.775Z","level":"warn","message":"Invoice payment failed","context":{"correlationId":"unknown","invoiceId":"in_test_123","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-11T12:19:51.104Z","level":"warn","message":"Invoice payment failed","context":{"correlationId":"unknown","invoiceId":"in_test_123","subscriptionId":"sub_test_123","environment":"test","service":"holiday-aggregator"}}
 
       140 |         break;
       141 |       case 'warn':
@@ -86,15 +274,15 @@ PASS src/pages/api/stripe/__tests__/webhook.test.ts
       at StructuredLogger.output (src/utils/logger.ts:142:17)
       at StructuredLogger.warn (src/utils/logger.ts:162:10)
       at handler (src/pages/api/stripe/webhook.ts:181:16)
-      at Object.<anonymous> (src/pages/api/stripe/__tests__/webhook.test.ts:329:7)
+      at Object.<anonymous> (src/__tests__/api/stripe/webhook.test.ts:336:7)
 
     console.info
-      {"timestamp":"2025-08-06T11:43:03.775Z","level":"info","message":"Unhandled webhook event","context":{"correlationId":"unknown","eventType":"some.unknown.event","environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-11T12:19:51.104Z","level":"info","message":"Unhandled webhook event","context":{"correlationId":"unknown","eventType":"some.unknown.event","environment":"test","service":"holiday-aggregator"}}
 
       at StructuredLogger.output (src/utils/logger.ts:139:17)
 
     console.error
-      {"timestamp":"2025-08-06T11:43:03.776Z","level":"error","message":"Webhook signature verification failed","context":{"correlationId":"unknown","error":{},"environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-11T12:19:51.105Z","level":"error","message":"Webhook signature verification failed","context":{"correlationId":"unknown","error":{},"environment":"test","service":"holiday-aggregator"}}
 
       143 |         break;
       144 |       case 'error':
@@ -107,10 +295,10 @@ PASS src/pages/api/stripe/__tests__/webhook.test.ts
       at StructuredLogger.output (src/utils/logger.ts:145:17)
       at StructuredLogger.error (src/utils/logger.ts:167:10)
       at handler (src/pages/api/stripe/webhook.ts:51:12)
-      at Object.<anonymous> (src/pages/api/stripe/__tests__/webhook.test.ts:379:5)
+      at Object.<anonymous> (src/__tests__/api/stripe/webhook.test.ts:386:5)
 
     console.error
-      {"timestamp":"2025-08-06T11:43:03.776Z","level":"error","message":"Error processing webhook","context":{"correlationId":"unknown","error":{},"environment":"test","service":"holiday-aggregator"}}
+      {"timestamp":"2025-08-11T12:19:51.105Z","level":"error","message":"Error processing webhook","context":{"correlationId":"unknown","error":{},"environment":"test","service":"holiday-aggregator"}}
 
       143 |         break;
       144 |       case 'error':
@@ -123,11 +311,256 @@ PASS src/pages/api/stripe/__tests__/webhook.test.ts
       at StructuredLogger.output (src/utils/logger.ts:145:17)
       at StructuredLogger.error (src/utils/logger.ts:167:10)
       at handler (src/pages/api/stripe/webhook.ts:191:12)
-      at Object.<anonymous> (src/pages/api/stripe/__tests__/webhook.test.ts:408:5)
+      at Object.<anonymous> (src/__tests__/api/stripe/webhook.test.ts:415:5)
+
+PASS src/__tests__/pages/search.test.tsx
+PASS src/hooks/__tests__/useSubscriptionStatus.test.ts
+PASS src/components/__tests__/PremiumFeatureGuard.test.tsx
+PASS src/server/api/routers/__tests__/provider.test.ts
+  ● Console
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.220Z","level":"info","message":"tRPC request started: getAll","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getAll","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.226Z","level":"info","message":"tRPC request completed: getAll","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getAll","duration":6,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.233Z","level":"info","message":"tRPC request started: getAll","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getAll","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.234Z","level":"info","message":"tRPC request completed: getAll","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getAll","duration":1,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.234Z","level":"info","message":"tRPC request started: getAll","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getAll","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.235Z","level":"info","message":"tRPC request completed: getAll","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getAll","duration":1,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.235Z","level":"info","message":"tRPC request started: getPublished","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getPublished","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.235Z","level":"info","message":"tRPC request completed: getPublished","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getPublished","duration":0,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.235Z","level":"info","message":"tRPC request started: getById","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getById","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.236Z","level":"info","message":"tRPC request completed: getById","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getById","duration":1,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.236Z","level":"info","message":"tRPC request started: getById","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getById","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.236Z","level":"info","message":"tRPC request completed: getById","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getById","duration":0,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.236Z","level":"info","message":"tRPC request started: getById","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getById","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.237Z","level":"info","message":"tRPC request completed: getById","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"getById","duration":1,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.237Z","level":"info","message":"tRPC request started: create","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"create","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.237Z","level":"info","message":"tRPC request completed: create","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"create","duration":0,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.237Z","level":"info","message":"tRPC request started: create","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"create","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.238Z","level":"info","message":"Provider created","context":{"userId":"admin-1","correlationId":"test-correlation-id","environment":"test","service":"holiday-aggregator"},"data":{"providerId":"new-1","action":"PROVIDER_CREATED"}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.239Z","level":"info","message":"tRPC request completed: create","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"create","duration":2,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.239Z","level":"info","message":"tRPC request started: update","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"update","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.239Z","level":"info","message":"tRPC request completed: update","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"update","duration":0,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.239Z","level":"info","message":"tRPC request started: update","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"update","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.240Z","level":"info","message":"Provider updated","context":{"userId":"admin-1","correlationId":"test-correlation-id","environment":"test","service":"holiday-aggregator"},"data":{"providerId":"1","action":"PROVIDER_UPDATED"}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.240Z","level":"info","message":"tRPC request completed: update","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"update","duration":1,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.240Z","level":"info","message":"tRPC request started: delete","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"delete","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.240Z","level":"info","message":"tRPC request completed: delete","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"delete","duration":0,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.240Z","level":"info","message":"tRPC request started: delete","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"delete","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.241Z","level":"info","message":"Provider deleted","context":{"userId":"admin-1","correlationId":"test-correlation-id","environment":"test","service":"holiday-aggregator"},"data":{"providerId":"1","action":"PROVIDER_DELETED"}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.241Z","level":"info","message":"tRPC request completed: delete","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"delete","duration":1,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.241Z","level":"info","message":"tRPC request started: delete","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"delete","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.241Z","level":"info","message":"tRPC request completed: delete","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"delete","duration":0,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.241Z","level":"info","message":"tRPC request started: toggleVetting","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"toggleVetting","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.241Z","level":"info","message":"Provider vetting status changed","context":{"userId":"admin-1","correlationId":"test-correlation-id","environment":"test","service":"holiday-aggregator"},"data":{"providerId":"1","isVetted":true,"action":"PROVIDER_VETTING_TOGGLED"}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.241Z","level":"info","message":"tRPC request completed: toggleVetting","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"toggleVetting","duration":0,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.242Z","level":"info","message":"tRPC request started: togglePublishing","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"togglePublishing","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.242Z","level":"info","message":"Provider publishing status changed","context":{"userId":"admin-1","correlationId":"test-correlation-id","environment":"test","service":"holiday-aggregator"},"data":{"providerId":"1","isPublished":true,"action":"PROVIDER_PUBLISHING_TOGGLED"}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.242Z","level":"info","message":"tRPC request completed: togglePublishing","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"togglePublishing","duration":0,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.242Z","level":"info","message":"tRPC request started: togglePublishing","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"togglePublishing","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.242Z","level":"info","message":"tRPC request completed: togglePublishing","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"togglePublishing","duration":0,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.242Z","level":"info","message":"tRPC request started: createProgram","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"createProgram","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.243Z","level":"info","message":"tRPC request completed: createProgram","context":{"correlationId":"test-correlation-id","userId":"user-1","sessionId":"user@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"createProgram","duration":1,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.243Z","level":"info","message":"tRPC request started: createProgram","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"createProgram","hasSession":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.243Z","level":"info","message":"tRPC request completed: createProgram","context":{"correlationId":"test-correlation-id","userId":"admin-1","sessionId":"admin@test.com","environment":"test","service":"holiday-aggregator"},"data":{"path":"createProgram","duration":0,"success":true}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+PASS src/__tests__/api/cron/subscription-lifecycle.test.ts
+  ● Console
+
+    console.info
+      {"timestamp":"2025-08-11T12:19:51.549Z","level":"info","message":"Cron job completed","context":{"correlationId":"cron-1754914791549","result":{"reminders":5,"expired":2,"errors":[]},"environment":"test","service":"holiday-aggregator"}}
+
+      at StructuredLogger.output (src/utils/logger.ts:139:17)
+
+    console.error
+      {"timestamp":"2025-08-11T12:19:51.552Z","level":"error","message":"Subscription lifecycle cron error","context":{"correlationId":"cron-error-1754914791552","error":{},"environment":"test","service":"holiday-aggregator"}}
+
+      143 |         break;
+      144 |       case 'error':
+    > 145 |         console.error(json);
+          |                 ^
+      146 |         break;
+      147 |     }
+      148 |   }
+
+      at StructuredLogger.output (src/utils/logger.ts:145:17)
+      at StructuredLogger.error (src/utils/logger.ts:167:10)
+      at handler (src/pages/api/cron/subscription-lifecycle.ts:32:12)
+      at Object.<anonymous> (src/__tests__/api/cron/subscription-lifecycle.test.ts:93:5)
 
 
-Test Suites: 4 passed, 4 total
-Tests:       29 passed, 29 total
+Test Suites: 7 passed, 7 total
+Tests:       60 passed, 60 total
 Snapshots:   0 total
-Time:        1.165 s
+Time:        1.873 s
 Ran all test suites.

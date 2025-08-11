@@ -1,61 +1,82 @@
 
 > web@0.1.0 build /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web
-> next build
+> node scripts/setup-prisma.js && ./scripts/prepare-prod-build.sh && next build
 
-   ▲ Next.js 15.4.5
+🔧 Configuring Prisma for PostgreSQL...
+⚠️  DATABASE_URL not set, using default local PostgreSQL connection
+   Set DATABASE_URL to: postgresql://postgres:postgres@localhost:5432/holiday_aggregator?schema=public
+✅ PostgreSQL configuration ready
+   Environment: Development
+   Docker: No
+   Database URL: postgresql://postgres:****@localhost:5432/holiday_aggregator?schema=public
+Development environment - using SQLite
+warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+For more information, see: https://pris.ly/prisma-config
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v6.13.0) to ./../../node_modules/.pnpm/@prisma+client@6.13.0_prisma@6.13.0_typescript@5.9.2/node_modules/@prisma/client in 33ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+
+   ▲ Next.js 15.4.6
    - Environments: .env.local, .env
 
    Linting and checking validity of types ...
    Creating an optimized production build ...
-
-warn - The `content` option in your Tailwind CSS configuration is missing or empty.
-warn - Configure your content sources or your generated CSS will be missing styles.
-warn - https://tailwindcss.com/docs/content-configuration
-
-warn - The `content` option in your Tailwind CSS configuration is missing or empty.
-warn - Configure your content sources or your generated CSS will be missing styles.
-warn - https://tailwindcss.com/docs/content-configuration
  ✓ Compiled successfully in 2000ms
    Collecting page data ...
-   Generating static pages (0/16) ...
-   Generating static pages (4/16) 
-   Generating static pages (8/16) 
-   Generating static pages (12/16) 
- ✓ Generating static pages (16/16)
+   Generating static pages (0/28) ...
+   Generating static pages (7/28) 
+   Generating static pages (14/28) 
+   Generating static pages (21/28) 
+ ✓ Generating static pages (28/28)
    Finalizing page optimization ...
    Collecting build traces ...
 
-Route (pages)                                           Size  First Load JS
-┌ ○ /                                                1.74 kB         149 kB
-├   /_app                                                0 B         129 kB
-├ ○ /404                                               180 B         129 kB
-├ ○ /admin/subscription-monitor                      1.64 kB         133 kB
-├ ƒ /api/auth/[...nextauth]                              0 B         129 kB
-├ ƒ /api/auth/signup                                     0 B         129 kB
-├ ƒ /api/cron/__tests__/subscription-lifecycle.test      0 B         129 kB
-├ ƒ /api/cron/subscription-lifecycle                     0 B         129 kB
-├ ƒ /api/health                                          0 B         129 kB
-├ ƒ /api/health/live                                     0 B         129 kB
-├ ƒ /api/health/ready                                    0 B         129 kB
-├ ƒ /api/stripe/__tests__/webhook.test                   0 B         129 kB
-├ ƒ /api/stripe/webhook                                  0 B         129 kB
-├ ƒ /api/test                                            0 B         129 kB
-├ ƒ /api/trpc/[trpc]                                     0 B         129 kB
-├ ○ /auth/error                                        675 B         132 kB
-├ ƒ /auth/signin                                     1.32 kB         131 kB
-├ ƒ /profile                                         1.22 kB         133 kB
-├ ○ /search                                          2.06 kB         149 kB
-├ ƒ /subscription                                     3.1 kB         150 kB
-├   └ css/062abfc6caaaa277.css                       1.71 kB
-├ ○ /subscription/cancelled                            962 B         133 kB
-└ ○ /subscription/success                            1.29 kB         133 kB
-+ First Load JS shared by all                         131 kB
-  ├ chunks/framework-cbbd317a9058e723.js             57.7 kB
-  ├ chunks/main-2a8fef56c918f267.js                  34.4 kB
-  ├ chunks/pages/_app-7b2d97f1d2078705.js            36.2 kB
-  └ other shared chunks (total)                      2.35 kB
+Route (pages)                                 Size  First Load JS
+┌ ○ /                                      9.82 kB         141 kB
+├   /_app                                      0 B         129 kB
+├ ○ /404                                     179 B         129 kB
+├ ○ /admin                                 2.03 kB         134 kB
+├ ○ /admin/providers                        2.3 kB         134 kB
+├ ○ /admin/providers/[id]                     3 kB         135 kB
+├ ○ /admin/providers/new                    2.9 kB         134 kB
+├ ○ /admin/subscription-monitor            1.63 kB         133 kB
+├ ○ /admin/users                           2.38 kB         134 kB
+├ ƒ /api/admin/setup                           0 B         129 kB
+├ ƒ /api/auth/[...nextauth]                    0 B         129 kB
+├ ƒ /api/auth/signup                           0 B         129 kB
+├ ƒ /api/cron/subscription-lifecycle           0 B         129 kB
+├ ƒ /api/debug/auth-test                       0 B         129 kB
+├ ƒ /api/debug/check-auth                      0 B         129 kB
+├ ƒ /api/debug/check-users                     0 B         129 kB
+├ ƒ /api/debug/seed-admin                      0 B         129 kB
+├ ƒ /api/health                                0 B         129 kB
+├ ƒ /api/health/live                           0 B         129 kB
+├ ƒ /api/health/ready                          0 B         129 kB
+├ ƒ /api/stripe/webhook                        0 B         129 kB
+├ ƒ /api/test                                  0 B         129 kB
+├ ƒ /api/trpc/[trpc]                           0 B         129 kB
+├ ○ /auth/error                              674 B         132 kB
+├ ƒ /auth/signin                           2.93 kB         135 kB
+├ ƒ /profile                               1.11 kB         133 kB
+├ ○ /search                                2.15 kB         134 kB
+├ ƒ /subscription                          3.53 kB         135 kB
+├   └ css/305dc20cad357a31.css             1.24 kB
+├ ○ /subscription/cancelled                  959 B         133 kB
+├ ○ /subscription/success                  1.28 kB         133 kB
+└ ○ /test-provider                           878 B         132 kB
++ First Load JS shared by all               135 kB
+  ├ chunks/framework-01dc2719891821bb.js   57.8 kB
+  ├ chunks/main-713da7b4f4389b0c.js        33.9 kB
+  ├ chunks/pages/_app-5d607ad484ec3de9.js  36.5 kB
+  └ other shared chunks (total)            6.88 kB
 
-ƒ Middleware                                         33.5 kB
+ƒ Middleware                                 34 kB
 
 ○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand
