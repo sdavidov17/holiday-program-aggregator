@@ -41,7 +41,7 @@ jest.mock('~/env.mjs', () => ({
 }));
 
 // Import handler after mocks are set up
-import handler from '../webhook';
+import handler from '../../../pages/api/stripe/webhook';
 
 describe('/api/stripe/webhook', () => {
   beforeEach(() => {

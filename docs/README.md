@@ -1,31 +1,33 @@
-# Holiday Program Aggregator Documentation
+# 📚 Holiday Program Aggregator Documentation
 
-Welcome to the Holiday Program Aggregator documentation. This guide helps different team members find the information they need quickly.
+Welcome to the Holiday Program Aggregator documentation. This hub provides easy navigation to all project documentation based on your role and needs.
 
-## Quick Links by Role
+## 🚀 Quick Start by Role
 
-### 🎯 Product Managers
-- [Product Requirements](./Specs/prd.md) - Complete PRD with all requirements
-- [Product Brief](./Specs/product-brief.md) - Executive summary
-- [Project Roadmap](./project-roadmap.md) - Timeline and milestones
-- [Implementation Status](./implementation-status.md) - Current progress
+### For Developers
+- **[Developer Onboarding](./guides/developer-onboarding.md)** - Get started in 30 minutes
+- **[Local Setup Guide](./guides/local-setup.md)** - Development environment setup
+- **[Architecture Overview](./architecture/)** - System design and tech stack
+- **[API Documentation](./api/)** - API reference and examples
+- **[Development Stories](./stories/)** - User stories and acceptance criteria
 
-### 🏃 Scrum Masters
-- [Epic Story Structure](./epic-story-structure.md) - All stories organized by epic
-- [Team Guidelines](./team-guidelines.md) - Process and communication
-- [Branching Strategy](./branching-strategy.md) - Git workflow
-- [Stories Folder](./stories/) - Individual story details
+### For DevOps/SRE
+- **[Deployment Guide](./guides/deployment.md)** - Deployment procedures
+- **[Runbooks](./runbooks/)** - Operational procedures
+- **[Database Setup](./guides/database-postgresql-setup.md)** - PostgreSQL configuration
+- **[Monitoring & Alerts](./runbooks/monitoring-alerts.md)** - Observability setup
 
-### 💻 Developers
-- [Developer Onboarding](./developer-onboarding.md) - **START HERE** for new devs
-- [Architecture Overview](./Specs/architecture/high-level-architecture.md) - System design
-- [API Reference](./api-reference.md) - tRPC API documentation
-- [Testing Strategy](./testing-strategy.md) - Test guidelines
-- [Deployment Guide](./deployment-guide.md) - Deploy procedures
+### For Product/Business
+- **[Product Requirements](./reference/prd/)** - Complete PRD documentation
+- **[Project Roadmap](./project/roadmap.md)** - Timeline and milestones
+- **[Implementation Status](./project/implementation-status.md)** - Current progress
+- **[UX Design Guide](./reference/ux-design/)** - Design specifications
 
-### 🎨 Designers
-- [UI Design Goals](./Specs/prd/03-user-interface-design-goals.md) - Design principles
-- [Front-end Spec](./Specs/front-end-spec.md) - Component specifications
+### For Project Management
+- **[Project Overview](./project/)** - Project management documentation
+- **[Epic Mapping](./project/epic-mapping.md)** - Epic to story relationships
+- **[Team Guidelines](./project/team-guidelines.md)** - Team processes
+- **[GitHub Issues](https://github.com/sdavidov17/holiday-program-aggregator/issues)** - Active work items
 
 ## Project Overview
 
@@ -44,58 +46,63 @@ Welcome to the Holiday Program Aggregator documentation. This guide helps differ
 - **Auth**: NextAuth v5
 - **Hosting**: Vercel (Sydney region)
 
-## Documentation Structure
+## 📁 Documentation Structure
 
 ```
 docs/
-├── README.md                    # This file
-├── project-roadmap.md          # Master timeline
-├── implementation-status.md    # Progress tracking
-├── epic-story-structure.md     # Story mapping
-│
-├── Onboarding & Guidelines/
-│   ├── developer-onboarding.md
-│   ├── team-guidelines.md
-│   └── branching-strategy.md
-│
-├── Technical Docs/
-│   ├── api-reference.md
-│   ├── testing-strategy.md
-│   └── deployment-guide.md
-│
-├── Specs/
-│   ├── prd.md                  # Product requirements
-│   ├── architecture/           # Technical architecture
-│   └── prd/                    # Detailed PRD sections
-│
-└── stories/                    # All 33 story files
-    ├── epic-0-story-*.md      # Completed setup
-    ├── epic-1-story-*.md      # Foundation
-    ├── epic-2-story-*.md      # Search & Discovery
-    ├── epic-3-story-*.md      # Suggestions
-    └── epic-4-story-*.md      # Security & SRE
+├── architecture/        # System design & technical architecture
+├── api/                # API documentation and references
+├── guides/             # How-to guides and tutorials
+├── runbooks/           # Operational procedures
+├── reference/          # Business docs (PRD, UX, BMAD artifacts)
+├── stories/            # Development stories and epics
+├── project/            # Project management and planning
+└── legacy/             # Archived documentation
 ```
 
-## Current Status (August 2025)
+## 🔍 Find What You Need
 
-- **Completed**: Epic 0 (Initial Setup) ✅
-- **Next Up**: Epic 1, Story 1 - Initial Project Setup
-- **Target MVP**: October 31, 2025
+### Technical Documentation
+- **[Architecture](./architecture/)** - System design, tech stack, data models
+- **[API Reference](./api/api-reference.md)** - Endpoint documentation
+- **[Testing Strategy](./guides/testing-strategy.md)** - Testing approach
+- **[Database Schema](./architecture/data-models.md)** - Data structure
 
-## Getting Started
+### Process Documentation
+- **[Branching Strategy](./project/branching-strategy.md)** - Git workflow
+- **[Deployment Process](./guides/deployment.md)** - Release procedures
+- **[Incident Response](./runbooks/incident-response.md)** - Incident handling
+
+### Business Documentation
+- **[Product Brief](./reference/product-brief.md)** - Executive summary
+- **[PRD](./reference/prd/)** - Detailed requirements
+- **[Epic List](./reference/prd/05-epic-list.md)** - All epics
+
+## 🎯 Current Focus
+
+### Active Development
+Check the [Implementation Status](./project/implementation-status.md) for current sprint work.
+
+### Critical Issues
+View [High Priority Issues](https://github.com/sdavidov17/holiday-program-aggregator/issues?q=is%3Aopen+label%3A%22priority%3A+critical%22) on GitHub.
+
+### Upcoming Milestones
+See the [Project Roadmap](./project/roadmap.md) for upcoming releases.
+
+## 🛠️ Getting Started
 
 ### For New Team Members
-1. Read [Team Guidelines](./team-guidelines.md)
-2. Complete [Developer Onboarding](./developer-onboarding.md)
-3. Review [Project Roadmap](./project-roadmap.md)
-4. Check [Implementation Status](./implementation-status.md)
+1. Read [Team Guidelines](./project/team-guidelines.md)
+2. Complete [Developer Onboarding](./guides/developer-onboarding.md)
+3. Review [Project Roadmap](./project/roadmap.md)
+4. Check [Implementation Status](./project/implementation-status.md)
 
 ### For Daily Work
-1. Find your story in [Epic Story Structure](./epic-story-structure.md)
+1. Find your story in [Epic Mapping](./project/epic-mapping.md)
 2. Read the detailed story file in `stories/`
-3. Follow [Branching Strategy](./branching-strategy.md)
-4. Use [API Reference](./api-reference.md) for endpoints
-5. Follow [Testing Strategy](./testing-strategy.md)
+3. Follow [Branching Strategy](./project/branching-strategy.md)
+4. Use [API Reference](./api/api-reference.md) for endpoints
+5. Follow [Testing Strategy](./guides/testing-strategy.md)
 
 ## Key Commands
 
@@ -114,28 +121,41 @@ vercel              # Deploy preview
 vercel --prod       # Deploy production
 ```
 
-## Important Links
+## 🔗 Important Links
 
-- **GitHub**: [Repository](#) (update with actual link)
-- **Staging**: https://staging-holidayprograms.com.au
-- **Production**: https://holidayprograms.com.au
-- **Figma**: [Design System](#) (update with actual link)
+### External Resources
+- **GitHub**: [Repository](https://github.com/sdavidov17/holiday-program-aggregator)
+- **Vercel Dashboard**: [Deployments](https://vercel.com/dashboard)
+- **Neon Database**: [Console](https://console.neon.tech)
 
-## Communication
+### Internal Tools
+- **Prisma Studio**: http://localhost:5555 (local only)
+- **API Playground**: http://localhost:3000/api/trpc-playground (local only)
 
-- **Slack**: #holiday-program-dev
-- **Issues**: Use GitHub Issues
-- **PRs**: Follow PR template
-- **Urgent**: Use #urgent channel
+## 📖 Documentation Standards
 
-## Need Help?
+### Contributing to Docs
+- Use Markdown for all documentation
+- Include a table of contents for long documents
+- Add code examples where relevant
+- Keep documentation up to date with code changes
+- Link related documents for easy navigation
 
-1. Check relevant documentation above
-2. Ask in Slack #dev channel
-3. Create GitHub issue with `question` label
-4. Schedule pairing session with team member
+### Documentation Review
+All documentation changes should be reviewed for:
+- Technical accuracy
+- Clarity and completeness
+- Proper formatting
+- Updated cross-references
+
+## 🆘 Need Help?
+
+- **Technical Issues**: Check [Troubleshooting Guide](./guides/troubleshooting.md)
+- **Process Questions**: See [Team Guidelines](./project/team-guidelines.md)
+- **Urgent Issues**: Follow [Incident Response](./runbooks/incident-response.md)
 
 ---
 
-**Last Updated**: August 2, 2025  
-**Maintained By**: Development Team
+*Last Updated: January 2025*
+*Version: 2.0.0*
+*Maintained By: Development Team*

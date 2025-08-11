@@ -129,10 +129,17 @@ async function main() {
     process.exit(1);
   }
 
-  // Get credentials from environment or use defaults
-  const adminEmail = process.env.ADMIN_EMAIL || 'serge@test.com';
-  const adminPassword = process.env.ADMIN_PASSWORD || 'Password120619';
-  const regularUserEmail = 'serge.user@test.com';
+  // Get credentials from environment (required for testing)
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  
+  if (!adminEmail || !adminPassword) {
+    console.log(`\n${colors.red}❌ Error: ADMIN_EMAIL and ADMIN_PASSWORD environment variables are required${colors.reset}`);
+    console.log(`${colors.yellow}Usage: ADMIN_EMAIL="admin@example.com" ADMIN_PASSWORD="secure-password" tsx prisma/test-login.ts${colors.reset}`);
+    process.exit(1);
+  }
+  
+  const regularUserEmail = adminEmail.replace('@', '.user@');
 
   // Test admin login
   const adminSuccess = await testLogin(adminEmail, adminPassword, UserRole.ADMIN);

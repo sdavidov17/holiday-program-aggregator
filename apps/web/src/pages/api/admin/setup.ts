@@ -25,7 +25,11 @@ export default async function handler(
 
   // Check setup key (should be set in environment variables)
   const setupKey = req.headers['x-setup-key'];
-  const expectedKey = env.ADMIN_SETUP_KEY || 'setup-admin-120619';
+  const expectedKey = env.ADMIN_SETUP_KEY;
+  if (!expectedKey) {
+    console.error('ADMIN_SETUP_KEY not configured');
+    return res.status(500).json({ error: 'Server configuration error' });
+  }
   
   if (setupKey !== expectedKey) {
     return res.status(401).json({ error: 'Invalid setup key' });
@@ -45,8 +49,14 @@ export default async function handler(
     }
 
     // Get credentials from request or use defaults
-    const email = req.body.email || env.ADMIN_EMAIL || 'serge@test.com';
-    const password = req.body.password || env.ADMIN_PASSWORD || 'Password120619';
+    const email = req.body.email || env.ADMIN_EMAIL;
+    const password = req.body.password || env.ADMIN_PASSWORD;
+    
+    if (!email || !password) {
+      return res.status(400).json({ 
+        error: 'Admin credentials must be provided or configured' 
+      });
+    }
     const name = req.body.name || env.ADMIN_NAME || 'Serge Admin';
 
     // Validate email

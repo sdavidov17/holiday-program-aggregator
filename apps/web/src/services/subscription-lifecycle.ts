@@ -61,8 +61,8 @@ async function sendRenewalReminders(metrics: SubscriptionMetricsCollector): Prom
         },
         // Only send if we haven't sent a reminder in the last 24 hours
         OR: [
-          { lastReminderSentAt: null },
-          { lastReminderSentAt: { lt: addDays(new Date(), -1) } }
+          { lastReminderSent: null },
+          { lastReminderSent: { lt: addDays(new Date(), -1) } }
         ]
       },
       include: {
@@ -90,7 +90,7 @@ async function sendRenewalReminders(metrics: SubscriptionMetricsCollector): Prom
         await db.subscription.update({
           where: { id: subscription.id },
           data: {
-            lastReminderSentAt: new Date(),
+            lastReminderSent: new Date(),
             reminderCount: { increment: 1 }
           }
         });

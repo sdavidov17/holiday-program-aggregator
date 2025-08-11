@@ -91,14 +91,14 @@ export const authOptions: NextAuthOptions = {
         if (!user || !user.password) {
           return null;
         }
-
+        
         // Verify password
         const passwordValid = await bcrypt.compare(password, user.password);
         
         if (!passwordValid) {
           return null;
         }
-
+        
         return {
           id: user.id,
           email: user.email,

@@ -106,7 +106,7 @@ describe("providerRouter", () => {
             where: { isPublished: true, isActive: true },
           },
         },
-        orderBy: { name: "asc" },
+        orderBy: { businessName: "asc" },
       });
     });
   });
@@ -151,7 +151,17 @@ describe("providerRouter", () => {
 
   describe("create", () => {
     it("should require admin role", async () => {
-      await expect(router.create({ name: "New Provider" })).rejects.toThrow(TRPCError);
+      await expect(router.create({ 
+        businessName: "New Provider",
+        contactName: "John Doe",
+        email: "test@example.com",
+        phone: "0400000000",
+        address: "123 Test St",
+        suburb: "Sydney",
+        state: "NSW",
+        postcode: "2000",
+        description: "Test description"
+      })).rejects.toThrow(TRPCError);
     });
 
     it("should create a new provider", async () => {
@@ -166,7 +176,14 @@ describe("providerRouter", () => {
       mockDb.provider.create.mockResolvedValue(newProvider);
       
       const result = await adminRouter.create({
-        name: "New Provider",
+        businessName: "New Provider",
+        contactName: "John Doe",
+        email: "test@example.com",
+        phone: "0400000000",
+        address: "123 Test St",
+        suburb: "Sydney",
+        state: "NSW",
+        postcode: "2000",
         description: "Test description",
         isVetted: true,
         isPublished: false,
@@ -175,10 +192,10 @@ describe("providerRouter", () => {
       expect(result).toEqual(newProvider);
       expect(mockDb.provider.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
-          name: "New Provider",
+          businessName: "New Provider",
           description: "Test description",
-          vettedBy: "admin-1",
-          vettedAt: expect.any(Date),
+          vettingStatus: "APPROVED",
+          vettingDate: expect.any(Date),
         }),
       });
     });
@@ -186,7 +203,7 @@ describe("providerRouter", () => {
 
   describe("update", () => {
     it("should require admin role", async () => {
-      await expect(router.update({ id: "1", name: "Updated" })).rejects.toThrow(TRPCError);
+      await expect(router.update({ id: "1", businessName: "Updated" })).rejects.toThrow(TRPCError);
     });
 
     it("should update provider", async () => {
@@ -198,7 +215,7 @@ describe("providerRouter", () => {
       
       const result = await adminRouter.update({
         id: "1",
-        name: "Updated",
+        businessName: "Updated",
         isVetted: true,
       });
       
@@ -206,10 +223,10 @@ describe("providerRouter", () => {
       expect(mockDb.provider.update).toHaveBeenCalledWith({
         where: { id: "1" },
         data: expect.objectContaining({
-          name: "Updated",
+          businessName: "Updated",
           isVetted: true,
-          vettedBy: "admin-1",
-          vettedAt: expect.any(Date),
+          vettingDate: expect.any(Date),
+          vettingStatus: "APPROVED",
         }),
       });
     });
@@ -254,8 +271,8 @@ describe("providerRouter", () => {
         where: { id: "1" },
         data: {
           isVetted: true,
-          vettedBy: "admin-1",
-          vettedAt: expect.any(Date),
+          vettingDate: expect.any(Date),
+          vettingStatus: "APPROVED",
         },
       });
     });
@@ -276,7 +293,6 @@ describe("providerRouter", () => {
         where: { id: "1" },
         data: {
           isPublished: true,
-          publishedAt: expect.any(Date),
         },
       });
     });
@@ -294,7 +310,17 @@ describe("providerRouter", () => {
     it("should require admin role", async () => {
       await expect(router.createProgram({ 
         providerId: "1", 
-        name: "New Program" 
+        name: "New Program",
+        description: "Program description",
+        category: "Sports",
+        ageMin: 5,
+        ageMax: 12,
+        price: 100,
+        location: "Sydney",
+        startDate: new Date(),
+        endDate: new Date(),
+        startTime: "09:00",
+        endTime: "17:00" 
       })).rejects.toThrow(TRPCError);
     });
 
@@ -311,7 +337,16 @@ describe("providerRouter", () => {
       const result = await adminRouter.createProgram({
         providerId: "1",
         name: "Summer Camp",
+        description: "Fun summer camp",
         category: "Sports",
+        ageMin: 5,
+        ageMax: 12,
+        price: 150,
+        location: "Camp Site",
+        startDate: new Date(),
+        endDate: new Date(),
+        startTime: "09:00",
+        endTime: "17:00",
       });
       
       expect(result).toEqual(newProgram);
@@ -319,7 +354,13 @@ describe("providerRouter", () => {
         data: expect.objectContaining({
           providerId: "1",
           name: "Summer Camp",
+          description: "Fun summer camp",
           category: "Sports",
+          ageMin: 5,
+          ageMax: 12,
+          price: 150,
+          location: "Camp Site",
+          daysOfWeek: "[]",
         }),
       });
     });

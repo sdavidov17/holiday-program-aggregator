@@ -120,7 +120,7 @@ export default function ProvidersListPage() {
                 <td className="px-6 py-4">
                   <div>
                     <div className="text-sm font-medium text-gray-900">
-                      {provider.name}
+                      {provider.businessName}
                     </div>
                     {provider.email && (
                       <div className="text-sm text-gray-500">{provider.email}</div>
@@ -172,7 +172,7 @@ export default function ProvidersListPage() {
                       Edit
                     </Link>
                     <button
-                      onClick={() => handleDelete(provider.id, provider.name)}
+                      onClick={() => handleDelete(provider.id, provider.businessName)}
                       disabled={deleteProvider.isPending}
                       className="text-red-600 hover:text-red-900 disabled:cursor-not-allowed disabled:opacity-50"
                     >

@@ -20,21 +20,23 @@ export default function EditProviderPage() {
   });
 
   const [formData, setFormData] = useState({
-    name: "",
+    businessName: "",
+    contactName: "",
     description: "",
     website: "",
     email: "",
     phone: "",
+    abn: "",
     address: "",
     suburb: "",
     state: "",
     postcode: "",
     logoUrl: "",
-    bannerImageUrl: "",
-    tags: "",
-    certifications: "",
-    specializations: "",
+    bannerUrl: "",
+    capacity: 0,
     ageGroups: "",
+    specialNeeds: false,
+    specialNeedsDetails: "",
     isVetted: false,
     isPublished: false,
   });
@@ -42,21 +44,23 @@ export default function EditProviderPage() {
   useEffect(() => {
     if (provider) {
       setFormData({
-        name: provider.name || "",
+        businessName: provider.businessName || "",
+        contactName: provider.contactName || "",
         description: provider.description || "",
         website: provider.website || "",
         email: provider.email || "",
         phone: provider.phone || "",
+        abn: provider.abn || "",
         address: provider.address || "",
         suburb: provider.suburb || "",
         state: provider.state || "",
         postcode: provider.postcode || "",
         logoUrl: provider.logoUrl || "",
-        bannerImageUrl: provider.bannerImageUrl || "",
-        tags: provider.tags ? JSON.parse(provider.tags).join(", ") : "",
-        certifications: provider.certifications ? JSON.parse(provider.certifications).join(", ") : "",
-        specializations: provider.specializations ? JSON.parse(provider.specializations).join(", ") : "",
+        bannerUrl: provider.bannerUrl || "",
+        capacity: provider.capacity || 0,
         ageGroups: provider.ageGroups ? JSON.parse(provider.ageGroups).join(", ") : "",
+        specialNeeds: provider.specialNeeds || false,
+        specialNeedsDetails: provider.specialNeedsDetails || "",
         isVetted: provider.isVetted,
         isPublished: provider.isPublished,
       });
@@ -69,10 +73,7 @@ export default function EditProviderPage() {
     updateProvider.mutate({
       id,
       ...formData,
-      tags: formData.tags ? formData.tags.split(",").map(t => t.trim()) : undefined,
-      certifications: formData.certifications ? formData.certifications.split(",").map(t => t.trim()) : undefined,
-      specializations: formData.specializations ? formData.specializations.split(",").map(t => t.trim()) : undefined,
-      ageGroups: formData.ageGroups ? formData.ageGroups.split(",").map(t => t.trim()) : undefined,
+      ageGroups: formData.ageGroups ? formData.ageGroups.split(",").map((t: string) => t.trim()) : undefined,
     });
   };
 
@@ -101,7 +102,7 @@ export default function EditProviderPage() {
   }
 
   return (
-    <AdminLayout title={`Edit Provider: ${provider.name}`}>
+    <AdminLayout title={`Edit Provider: ${provider.businessName}`}>
       <div className="mx-auto max-w-4xl">
         <form onSubmit={handleSubmit} className="space-y-6 rounded-lg bg-white p-6 shadow">
           {/* Basic Information */}
@@ -109,15 +110,15 @@ export default function EditProviderPage() {
             <h3 className="mb-4 text-lg font-medium text-gray-900">Basic Information</h3>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Provider Name *
+                <label htmlFor="businessName" className="block text-sm font-medium text-gray-700">
+                  Business Name *
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
+                  id="businessName"
+                  name="businessName"
                   required
-                  value={formData.name}
+                  value={formData.businessName}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
@@ -278,7 +279,7 @@ export default function EditProviderPage() {
                   type="url"
                   id="bannerImageUrl"
                   name="bannerImageUrl"
-                  value={formData.bannerImageUrl}
+                  value={formData.bannerUrl}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
@@ -290,50 +291,6 @@ export default function EditProviderPage() {
           <div>
             <h3 className="mb-4 text-lg font-medium text-gray-900">Additional Information</h3>
             <div className="space-y-4">
-              <div>
-                <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
-                  Tags (comma-separated)
-                </label>
-                <input
-                  type="text"
-                  id="tags"
-                  name="tags"
-                  value={formData.tags}
-                  onChange={handleChange}
-                  placeholder="e.g., outdoor, sports, educational"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="certifications" className="block text-sm font-medium text-gray-700">
-                  Certifications (comma-separated)
-                </label>
-                <input
-                  type="text"
-                  id="certifications"
-                  name="certifications"
-                  value={formData.certifications}
-                  onChange={handleChange}
-                  placeholder="e.g., First Aid, Working with Children"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="specializations" className="block text-sm font-medium text-gray-700">
-                  Specializations (comma-separated)
-                </label>
-                <input
-                  type="text"
-                  id="specializations"
-                  name="specializations"
-                  value={formData.specializations}
-                  onChange={handleChange}
-                  placeholder="e.g., Special Needs, Gifted Programs"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
               
               <div>
                 <label htmlFor="ageGroups" className="block text-sm font-medium text-gray-700">
@@ -382,14 +339,9 @@ export default function EditProviderPage() {
               </label>
             </div>
             
-            {provider.vettedAt && (
+            {provider.vettingDate && (
               <p className="mt-2 text-sm text-gray-500">
-                Vetted on {new Date(provider.vettedAt).toLocaleDateString()}
-              </p>
-            )}
-            {provider.publishedAt && (
-              <p className="text-sm text-gray-500">
-                Published on {new Date(provider.publishedAt).toLocaleDateString()}
+                Vetted on {new Date(provider.vettingDate).toLocaleDateString()}
               </p>
             )}
           </div>

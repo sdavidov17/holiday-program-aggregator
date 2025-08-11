@@ -1,84 +1,49 @@
 #!/usr/bin/env node
 
 /**
- * Prisma Schema Setup Script
- * 
- * This script automatically configures Prisma to use:
- * - SQLite for local development
- * - PostgreSQL for production (Vercel)
- * 
- * It runs before build and generate commands.
+ * Simplified Prisma setup script for PostgreSQL-only configuration
+ * All environments now use PostgreSQL for consistency
  */
 
 const fs = require('fs');
 const path = require('path');
 
+console.log('🔧 Configuring Prisma for PostgreSQL...');
+
 const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production';
-const isVercelBuild = process.env.VERCEL === '1';
+const isDocker = process.env.DOCKER_ENV === 'true';
 
-console.log('🔧 Configuring Prisma schema...');
-console.log(`   Environment: ${isProduction ? 'Production (PostgreSQL)' : 'Development (SQLite)'}`);
-console.log(`   VERCEL env: ${process.env.VERCEL}`);
-console.log(`   NODE_ENV: ${process.env.NODE_ENV}`);
-
-const schemaPath = path.join(__dirname, '..', 'prisma', 'schema.prisma');
-const sqliteSchemaPath = path.join(__dirname, '..', 'prisma', 'schema.sqlite.prisma');
-const postgresSchemaPath = path.join(__dirname, '..', 'prisma', 'schema.production.prisma');
-
-// Create SQLite schema if it doesn't exist
-if (!fs.existsSync(sqliteSchemaPath)) {
-  const currentSchema = fs.readFileSync(schemaPath, 'utf8');
-  const sqliteSchema = currentSchema.replace(
-    /provider\s*=\s*"postgresql"/g,
-    'provider = "sqlite"'
-  );
-  fs.writeFileSync(sqliteSchemaPath, sqliteSchema);
-  console.log('   Created schema.sqlite.prisma');
-}
-
-// Use appropriate schema based on environment
-if (isProduction || isVercelBuild) {
-  // Use PostgreSQL schema for production
-  if (fs.existsSync(postgresSchemaPath)) {
-    const postgresSchema = fs.readFileSync(postgresSchemaPath, 'utf8');
-    fs.writeFileSync(schemaPath, postgresSchema);
-    console.log('✅ Using PostgreSQL schema for production');
-  } else {
-    // Fallback: modify existing schema to use PostgreSQL
-    const currentSchema = fs.readFileSync(schemaPath, 'utf8');
-    const updatedSchema = currentSchema.replace(
-      /provider\s*=\s*"sqlite"/g,
-      'provider = "postgresql"'
-    );
-    fs.writeFileSync(schemaPath, updatedSchema);
-    console.log('✅ Updated schema to use PostgreSQL');
-  }
-} else {
-  // Use SQLite schema for local development
-  if (fs.existsSync(sqliteSchemaPath)) {
-    const sqliteSchema = fs.readFileSync(sqliteSchemaPath, 'utf8');
-    fs.writeFileSync(schemaPath, sqliteSchema);
-    console.log('✅ Using SQLite schema for local development');
-  } else {
-    // Ensure SQLite is set
-    const currentSchema = fs.readFileSync(schemaPath, 'utf8');
-    const updatedSchema = currentSchema.replace(
-      /provider\s*=\s*"postgresql"/g,
-      'provider = "sqlite"'
-    );
-    fs.writeFileSync(schemaPath, updatedSchema);
-    console.log('✅ Updated schema to use SQLite');
-  }
-}
-
-// Also ensure DATABASE_URL is set appropriately
+// Ensure DATABASE_URL is set
 if (!process.env.DATABASE_URL) {
   if (isProduction) {
-    console.warn('⚠️  DATABASE_URL not set in production!');
+    console.error('❌ DATABASE_URL not set in production!');
+    console.error('   Please configure your PostgreSQL database connection');
+    process.exit(1);
   } else {
-    process.env.DATABASE_URL = 'file:./db.sqlite';
-    console.log('   Set DATABASE_URL to: file:./db.sqlite');
+    // Default to local PostgreSQL (Docker or local installation)
+    const defaultUrl = isDocker 
+      ? 'postgresql://postgres:postgres@postgres:5432/holiday_aggregator?schema=public'
+      : 'postgresql://postgres:postgres@localhost:5432/holiday_aggregator?schema=public';
+    
+    process.env.DATABASE_URL = defaultUrl;
+    console.log('⚠️  DATABASE_URL not set, using default local PostgreSQL connection');
+    console.log(`   Set DATABASE_URL to: ${defaultUrl}`);
   }
-} else {
-  console.log(`   DATABASE_URL: ${process.env.DATABASE_URL.substring(0, 20)}...`);
+}
+
+// Validate PostgreSQL connection string
+if (!process.env.DATABASE_URL.startsWith('postgresql://') && !process.env.DATABASE_URL.startsWith('postgres://')) {
+  console.error('❌ DATABASE_URL must be a PostgreSQL connection string');
+  console.error('   Example: postgresql://user:password@localhost:5432/database');
+  process.exit(1);
+}
+
+console.log('✅ PostgreSQL configuration ready');
+console.log(`   Environment: ${isProduction ? 'Production' : 'Development'}`);
+console.log(`   Docker: ${isDocker ? 'Yes' : 'No'}`);
+console.log(`   Database URL: ${process.env.DATABASE_URL.replace(/:[^:@]+@/, ':****@')}`); // Hide password
+
+// Check if PostGIS is required
+if (process.env.ENABLE_POSTGIS === 'true') {
+  console.log('🗺️  PostGIS extensions enabled for geospatial features');
 }

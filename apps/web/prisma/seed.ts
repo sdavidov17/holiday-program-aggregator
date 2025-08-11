@@ -12,10 +12,17 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Starting database seed...');
 
-  // Get admin credentials from environment or use defaults
-  const adminEmail = process.env.ADMIN_EMAIL || 'serge@test.com';
-  const adminPassword = process.env.ADMIN_PASSWORD || 'Password120619';
+  // Get admin credentials from environment variables ONLY
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
   const adminName = process.env.ADMIN_NAME || 'Admin User';
+  
+  if (!adminEmail || !adminPassword) {
+    console.warn('⚠️  Admin credentials not found in environment variables');
+    console.log('   Set ADMIN_EMAIL and ADMIN_PASSWORD in .env.local');
+    console.log('   Skipping admin user creation...');
+    return;
+  }
 
   // Hash the password
   const hashedPassword = await bcrypt.hash(adminPassword, 10);

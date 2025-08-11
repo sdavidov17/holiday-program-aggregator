@@ -2,6 +2,7 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 import { z } from "zod";
 import { db } from "~/server/db";
 import { hashPassword } from "~/utils/encryption";
+import { authRateLimit } from "~/lib/rate-limiter";
 
 const signupSchema = z.object({
   email: z.string().email(),
@@ -16,11 +17,23 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  // Apply rate limiting for signup
+  const rateLimitResult = await authRateLimit(req, res);
+  if (!rateLimitResult.success) {
+    return res.status(429).json({ 
+      error: "Too many signup attempts. Please try again later.",
+      retryAfter: rateLimitResult.reset
+    });
+  }
+
   try {
     const parsed = signupSchema.safeParse(req.body);
     
     if (!parsed.success) {
-      return res.status(400).json({ error: "Invalid input" });
+      return res.status(400).json({ 
+        error: "Invalid input",
+        details: parsed.error.errors 
+      });
     }
 
     const { email, password } = parsed.data;
@@ -51,6 +64,16 @@ export default async function handler(
     });
   } catch (error) {
     console.error("Signup error:", error);
-    res.status(500).json({ error: "Failed to create user" });
+    
+    // Provide more detailed error in development
+    const errorMessage = error instanceof Error ? error.message : "Failed to create user";
+    const errorDetails = process.env.NODE_ENV === "development" && error instanceof Error 
+      ? { stack: error.stack, name: error.name }
+      : undefined;
+    
+    res.status(500).json({ 
+      error: errorMessage,
+      details: errorDetails
+    });
   }
 }
