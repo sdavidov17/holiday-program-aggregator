@@ -18,7 +18,10 @@ if [ "$VERCEL" = "1" ] || [ "$NODE_ENV" = "production" ]; then
   # Fix role enum issue if it exists
   echo "Checking and fixing role field type..."
   if [ -f prisma/migrations/fix_role_enum.sql ]; then
+    echo "Applying role enum fix migration..."
     pnpm prisma db execute --file prisma/migrations/fix_role_enum.sql || echo "Role field migration applied or not needed"
+  else
+    echo "No role enum fix migration file found"
   fi
   
   # Seed the database with admin account
