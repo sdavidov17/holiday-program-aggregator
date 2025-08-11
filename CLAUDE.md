@@ -51,4 +51,22 @@ pnpm build:web        # Build web app only
 - **Architecture**: Serverless on Vercel, PostgreSQL with PostGIS, Sydney region
 - **Key Features**: Provider vetting, geospatial search, subscription management, automated suggestions
 
+## Development Rules
+
+### Story & Issue Management
+**IMPORTANT**: Always keep `/docs/stories/` and GitHub Issues synchronized:
+- When creating or updating a story in `/docs/stories/`, create/update the corresponding GitHub issue
+- When working on a GitHub issue, ensure the story document reflects the current state
+- Story documents should include GitHub issue numbers for cross-reference
+- GitHub issues should link back to story documents for detailed technical specs
+- Use consistent naming: `[EPIC X] Title` or `[STORY X.Y] Title` in both places
+- Update implementation status in both locations when work is completed
+
+### Code Quality Standards
+- Always run `pnpm lint && pnpm typecheck` before committing
+- Ensure test coverage remains above 75%
+- Follow repository pattern for database operations
+- Use proper error handling with AppError classes
+- Never commit sensitive information or debug endpoints
+
 Refer to documentation in `/docs/` for all implementation details, requirements, and architectural decisions.
