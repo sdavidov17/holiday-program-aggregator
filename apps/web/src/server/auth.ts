@@ -75,44 +75,29 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("[AUTH] Authorize called with email:", credentials?.email);
-        
         const parsed = credentialsSchema.safeParse(credentials);
         
         if (!parsed.success) {
-          console.error("[AUTH] Credentials validation failed:", parsed.error);
           return null;
         }
 
         const { email, password } = parsed.data;
-        console.log("[AUTH] Looking up user:", email);
 
         // Find user by email
         const user = await db.user.findUnique({
           where: { email },
         });
 
-        if (!user) {
-          console.log("[AUTH] User not found:", email);
+        if (!user || !user.password) {
           return null;
         }
-        
-        if (!user.password) {
-          console.log("[AUTH] User has no password (OAuth only?):", email);
-          return null;
-        }
-
-        console.log("[AUTH] User found, verifying password for:", email);
         
         // Verify password
         const passwordValid = await bcrypt.compare(password, user.password);
         
         if (!passwordValid) {
-          console.log("[AUTH] Invalid password for user:", email);
           return null;
         }
-
-        console.log("[AUTH] Authentication successful for:", email, "Role:", user.role);
         
         return {
           id: user.id,
