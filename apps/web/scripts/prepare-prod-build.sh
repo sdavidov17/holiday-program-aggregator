@@ -25,6 +25,15 @@ if [ "$VERCEL" = "1" ] || [ "$NODE_ENV" = "production" ]; then
   echo "Deploying database schema..."
   pnpm prisma db push --skip-generate --accept-data-loss
   
+  # Clear any stale connections before seeding
+  echo "Clearing database connections..."
+  npx prisma db execute --schema prisma/schema.prisma --stdin <<EOF || true
+SELECT pg_terminate_backend(pid) 
+FROM pg_stat_activity 
+WHERE pid <> pg_backend_pid() 
+AND datname = current_database();
+EOF
+  
   # Seed the database with admin account
   echo "Seeding database with admin account..."
   tsx prisma/seed.production.ts || echo "Seeding completed or data already exists"
