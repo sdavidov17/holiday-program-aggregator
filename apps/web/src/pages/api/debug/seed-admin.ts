@@ -18,9 +18,15 @@ export default async function handler(
 
   try {
     // Admin credentials
-    const adminEmail = process.env.ADMIN_EMAIL || "serge@test.com";
-    const adminPassword = process.env.ADMIN_PASSWORD || "Password120619";
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
     const adminName = process.env.ADMIN_NAME || "Admin User";
+    
+    if (!adminEmail || !adminPassword) {
+      return res.status(500).json({ 
+        error: "Admin credentials not configured in environment variables" 
+      });
+    }
 
     // Check if admin already exists
     const existingAdmin = await db.user.findUnique({
