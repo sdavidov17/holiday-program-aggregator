@@ -1,34 +1,57 @@
--- Fix role field type mismatch
--- This converts enum to text type if it exists
+-- Fix for role and status ENUM type mismatch
+-- This converts PostgreSQL ENUMs to TEXT to match Prisma schema
 
--- First, check if role is an enum and convert to text
+-- Convert User.role from ENUM to TEXT
 DO $$ 
 BEGIN
-    -- Check if the column exists and is an enum
+    -- Check if role is an ENUM type
     IF EXISTS (
         SELECT 1 
-        FROM information_schema.columns 
-        WHERE table_name = 'User' 
-        AND column_name = 'role'
-        AND data_type = 'USER-DEFINED'
+        FROM pg_type t
+        JOIN pg_enum e ON t.oid = e.enumtypid
+        WHERE t.typname = 'Role'
     ) THEN
-        -- Convert enum to text, preserving values
+        -- Convert the column to TEXT
         ALTER TABLE "User" 
         ALTER COLUMN role TYPE TEXT 
         USING role::TEXT;
+        
+        -- Drop the ENUM type
+        DROP TYPE IF EXISTS "Role" CASCADE;
+        
+        RAISE NOTICE 'Converted User.role from ENUM to TEXT';
+    ELSE
+        RAISE NOTICE 'User.role is already TEXT';
     END IF;
 END $$;
 
--- Ensure the column has the correct default
-ALTER TABLE "User" ALTER COLUMN role SET DEFAULT 'USER';
+-- Convert Subscription.status from ENUM to TEXT
+DO $$ 
+BEGIN
+    -- Check if status is an ENUM type
+    IF EXISTS (
+        SELECT 1 
+        FROM pg_type t
+        JOIN pg_enum e ON t.oid = e.enumtypid
+        WHERE t.typname = 'SubscriptionStatus'
+    ) THEN
+        -- Convert the column to TEXT
+        ALTER TABLE "Subscription"
+        ALTER COLUMN status TYPE TEXT
+        USING status::TEXT;
+        
+        -- Drop the ENUM type
+        DROP TYPE IF EXISTS "SubscriptionStatus" CASCADE;
+        
+        RAISE NOTICE 'Converted Subscription.status from ENUM to TEXT';
+    ELSE
+        RAISE NOTICE 'Subscription.status is already TEXT';
+    END IF;
+END $$;
 
--- Update any null values to USER
-UPDATE "User" SET role = 'USER' WHERE role IS NULL;
+-- Ensure default values are set
+ALTER TABLE "User" 
+ALTER COLUMN role SET DEFAULT 'USER';
 
--- Ensure role is not null
-ALTER TABLE "User" ALTER COLUMN role SET NOT NULL;
-
--- Add check constraint for valid roles (optional but recommended)
-ALTER TABLE "User" DROP CONSTRAINT IF EXISTS user_role_check;
-ALTER TABLE "User" ADD CONSTRAINT user_role_check 
-  CHECK (role IN ('USER', 'ADMIN'));
+ALTER TABLE "Subscription"
+ALTER COLUMN status SET DEFAULT 'PENDING';
