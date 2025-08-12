@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# Cancel in-progress runs for the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Single job that runs all checks
+  checks:
+    name: Quality Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for some checks
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      
+      # Intelligent caching
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      # Run all checks in parallel where possible
+      - name: Run checks
+        run: |
+          echo "::group::Linting"
+          pnpm lint
+          echo "::endgroup::"
+          
+          echo "::group::Type checking"
+          pnpm typecheck || pnpm type-check
+          echo "::endgroup::"
+          
+          echo "::group::Tests"
+          pnpm test
+          echo "::endgroup::"
+        env:
+          NODE_ENV: test
+          DATABASE_URL: "file:./test.db"
+          NEXTAUTH_SECRET: "test-secret-for-ci"
+          ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+      
+      # Security audit (non-blocking)
+      - name: Security audit
+        run: pnpm audit --audit-level=high || true
+        continue-on-error: true
+      
+      # Build validation (only on main branch pushes)
+      - name: Build check
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: pnpm build
+        env:
+          SKIP_ENV_VALIDATION: true
+          DATABASE_URL: "file:./test.db"
+          NEXTAUTH_SECRET: "test-secret-for-ci"
+          NEXTAUTH_URL: "http://localhost:3000"
+          ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+
+  # Optional: Claude Code Review (only if you have the GitHub App installed)
+  claude-review:
+    name: Claude Review
+    if: |
+      github.event_name == 'pull_request' && 
+      github.event.pull_request.draft == false &&
+      contains(github.event.pull_request.labels.*.name, 'claude-review')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Claude Code Review
+        uses: anthropics/claude-code-action@beta
+        continue-on-error: true  # Don't block PR if review fails
