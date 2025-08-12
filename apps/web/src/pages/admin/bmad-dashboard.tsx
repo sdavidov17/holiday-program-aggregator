@@ -395,7 +395,7 @@ const BMADDashboard: NextPage = () => {
           </div>
           <div className="mt-4 p-3 bg-blue-50 rounded-lg">
             <p className="text-sm text-blue-800">
-              💡 Tip: Use Claude Code's Task tool to delegate work to subagents for research, analysis, and complex tasks.
+              💡 Tip: Use Claude Code&apos;s Task tool to delegate work to subagents for research, analysis, and complex tasks.
             </p>
           </div>
         </div>
