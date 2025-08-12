@@ -30,8 +30,6 @@ jobs:
       
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
       
       # Intelligent caching
       - name: Get pnpm store directory
