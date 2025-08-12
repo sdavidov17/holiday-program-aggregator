@@ -27,8 +27,35 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.(ts|tsx|js|jsx)',
     '!src/**/*.d.ts',
+    '!src/**/*.stories.tsx',
+    '!src/**/__tests__/**',
+    '!src/**/__mocks__/**',
+    '!src/pages/_app.tsx',
+    '!src/pages/_document.tsx',
+    '!src/env.mjs',
   ],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  coverageThreshold: {
+    global: {
+      branches: 15,
+      functions: 10,
+      lines: 20,
+      statements: 20,
+    },
+  },
+  coverageReporters: ['text', 'text-summary', 'html', 'lcov', 'json-summary'],
+  reporters: [
+    'default',
+    ['jest-junit', {
+      outputDirectory: 'coverage',
+      outputName: 'junit.xml',
+      suiteName: 'Holiday Program Aggregator Tests',
+      classNameTemplate: '{classname}',
+      titleTemplate: '{title}',
+      ancestorSeparator: ' › ',
+      usePathForSuiteName: true,
+    }],
+  ],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironmentOptions: {
     customExportConditions: [''],
   },

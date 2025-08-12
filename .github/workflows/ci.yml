@@ -56,17 +56,45 @@ jobs:
           echo "::endgroup::"
           
           echo "::group::Type checking"
-          pnpm typecheck || pnpm type-check
+          pnpm type-check
           echo "::endgroup::"
           
           echo "::group::Tests"
-          pnpm test
+          cd apps/web && pnpm test:ci
           echo "::endgroup::"
         env:
           NODE_ENV: test
           DATABASE_URL: "file:./test.db"
           NEXTAUTH_SECRET: "test-secret-for-ci"
           ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+      
+      # Upload test results
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            apps/web/coverage/junit.xml
+            apps/web/coverage/coverage-summary.json
+      
+      # Upload coverage reports
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: apps/web/coverage/
+      
+      # Add test summary to PR
+      - name: Test Report Summary
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Jest Tests
+          path: apps/web/coverage/junit.xml
+          reporter: jest-junit
+          fail-on-error: false
       
       # Security audit (non-blocking)
       - name: Security audit
