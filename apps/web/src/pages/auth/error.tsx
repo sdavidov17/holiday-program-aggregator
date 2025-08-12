@@ -9,6 +9,7 @@ export default function AuthError() {
     Configuration: "There is a problem with the server configuration.",
     AccessDenied: "You do not have permission to sign in.",
     Verification: "The verification token has expired or has already been used.",
+    OAuthAccountNotLinked: "This email is already registered. Please sign in with your password instead, or use the same method you used when you first signed up.",
     Default: "An error occurred during authentication.",
   };
 

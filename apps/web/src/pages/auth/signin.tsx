@@ -1,7 +1,7 @@
 import { type GetServerSidePropsContext } from "next";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getServerAuthSession } from "~/server/auth";
 import Logo from "~/components/ui/Logo";
 import Link from "next/link";
@@ -15,6 +15,13 @@ export default function SignIn() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Check for OAuth errors
+  useEffect(() => {
+    if (router.query.error === 'OAuthAccountNotLinked') {
+      setError('This email is already registered. Please sign in with your password or use the same method you used when signing up.');
+    }
+  }, [router.query.error]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
