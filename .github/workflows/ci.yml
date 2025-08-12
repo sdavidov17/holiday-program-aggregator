@@ -86,9 +86,9 @@ jobs:
           name: coverage-report
           path: apps/web/coverage/
       
-      # Add test summary to PR
+      # Add test summary to PR (only on pull requests)
       - name: Test Report Summary
-        if: always()
+        if: always() && github.event_name == 'pull_request'
         uses: dorny/test-reporter@v1
         with:
           name: Jest Tests
