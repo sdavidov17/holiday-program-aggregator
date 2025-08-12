@@ -4,7 +4,7 @@ import 'whatwg-fetch';
 import { TextEncoder, TextDecoder } from 'util';
 
 // Polyfill TextEncoder/TextDecoder for jose library used by next-auth
-global.TextEncoder = TextEncoder;
+global.TextEncoder = TextEncoder as any;
 global.TextDecoder = TextDecoder as any;
 
 // Mock env.mjs module
@@ -45,8 +45,7 @@ import { cleanupTestUsers } from './src/__tests__/helpers/test-users';
 
 // Global test setup
 beforeAll(async () => {
-  // Set test environment variables
-  process.env.NODE_ENV = 'test';
+  // Test environment is already set by Jest
   process.env.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL || 'file:./test.db';
   
   // Clean up any existing test users before all tests
