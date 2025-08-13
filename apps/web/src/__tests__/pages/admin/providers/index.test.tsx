@@ -22,7 +22,9 @@ jest.mock('next/router', () => ({
 
 // Mock Next.js Link
 jest.mock('next/link', () => {
-  return ({ children, href }: any) => <a href={href}>{children}</a>;
+  const MockedLink = ({ children, href }: any) => <a href={href}>{children}</a>;
+  MockedLink.displayName = 'MockedLink';
+  return MockedLink;
 });
 
 // Mock AdminLayout
