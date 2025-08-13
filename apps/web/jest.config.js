@@ -54,6 +54,16 @@ module.exports = {
       ancestorSeparator: ' › ',
       usePathForSuiteName: true,
     }],
+    ['jest-ctrf-json-reporter', {
+      outputDir: 'coverage',
+      outputFile: 'ctrf-report.json',
+      testType: 'unit',
+      appName: 'Holiday Heroes Web',
+      appVersion: '0.1.0',
+      environment: process.env.NODE_ENV || 'test',
+      buildName: process.env.GITHUB_RUN_ID || 'local',
+      buildNumber: process.env.GITHUB_RUN_NUMBER || '0',
+    }],
   ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironmentOptions: {

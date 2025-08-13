@@ -172,6 +172,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.6)
+      ctrf:
+        specifier: ^0.0.12
+        version: 0.0.12
       eslint:
         specifier: ^8.57.1
         version: 8.57.1
@@ -181,6 +184,9 @@ importers:
       jest:
         specifier: ^30.0.5
         version: 30.0.5(@types/node@24.2.1)
+      jest-ctrf-json-reporter:
+        specifier: ^0.0.9
+        version: 0.0.9
       jest-environment-jsdom:
         specifier: ^30.0.5
         version: 30.0.5
@@ -1195,14 +1201,12 @@ packages:
   /@isaacs/balanced-match@4.0.1:
     resolution: {integrity: sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==}
     engines: {node: 20 || >=22}
-    dev: false
 
   /@isaacs/brace-expansion@5.0.0:
     resolution: {integrity: sha512-ZT55BDLV0yv0RBm2czMiZ+SqCGO7AvmOM3G/w2xhVPH+te0aKgFjmBvGlL1dH+ql2tgGO3MVrbb3jCKyvpgnxA==}
     engines: {node: 20 || >=22}
     dependencies:
       '@isaacs/balanced-match': 4.0.1
-    dev: false
 
   /@isaacs/cliui@8.0.2:
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -3395,6 +3399,15 @@ packages:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
     dev: true
 
+  /ctrf@0.0.12:
+    resolution: {integrity: sha512-FLGO/5C6f4tKd5qH/8SF9nvgaqt8I57LzDCJBWuBzj/3c4cDlh4Kt3eA89ZqJxgNt9nHQ1jYAwo6BK19ThzQwQ==}
+    hasBin: true
+    dependencies:
+      glob: 11.0.3
+      typescript: 5.9.2
+      yargs: 17.7.2
+    dev: true
+
   /damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
     dev: true
@@ -4656,7 +4669,6 @@ packages:
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
       path-scurry: 2.0.0
-    dev: false
 
   /glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
@@ -5262,7 +5274,6 @@ packages:
     engines: {node: 20 || >=22}
     dependencies:
       '@isaacs/cliui': 8.0.2
-    dev: false
 
   /jest-changed-files@30.0.5:
     resolution: {integrity: sha512-bGl2Ntdx0eAwXuGpdLdVYVr5YQHnSZlQ0y9HVDu565lCUAe9sj6JOtBbMmBBikGIegne9piDDIOeiLVoqTkz4A==}
@@ -5373,6 +5384,10 @@ packages:
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
+    dev: true
+
+  /jest-ctrf-json-reporter@0.0.9:
+    resolution: {integrity: sha512-mxuUPZ/npUEoPyjE/vHQhdNVhuxV3NzdIPIWjoreW4rMisaDKlD7x4oERU4HEC9mlI7dQkwcOHo9BJzGIgieKw==}
     dev: true
 
   /jest-diff@30.0.5:
@@ -5942,7 +5957,6 @@ packages:
   /lru-cache@11.1.0:
     resolution: {integrity: sha512-QIXZUBJUx+2zHUdQujWejBkcD9+cs94tLn0+YL8UrCh+D5sCXZ4c7LaEH48pNwRY3MLDgqUFyhlCyjJPf1WP0A==}
     engines: {node: 20 || >=22}
-    dev: false
 
   /lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
@@ -6104,7 +6118,6 @@ packages:
     engines: {node: 20 || >=22}
     dependencies:
       '@isaacs/brace-expansion': 5.0.0
-    dev: false
 
   /minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
@@ -6642,7 +6655,6 @@ packages:
     dependencies:
       lru-cache: 11.1.0
       minipass: 7.1.2
-    dev: false
 
   /path-to-regexp@8.2.0:
     resolution: {integrity: sha512-TdrF7fW9Rphjq4RjrW0Kp2AW0Ahwu9sRGTkS6bvDi0SCwZlEZYmcfDbEsTz8RVk0EHIS/Vd1bv3JhG+1xZuAyQ==}

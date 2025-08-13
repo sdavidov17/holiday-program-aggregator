@@ -77,6 +77,8 @@ jobs:
           path: |
             apps/web/coverage/junit.xml
             apps/web/coverage/coverage-summary.json
+            apps/web/coverage/ctrf-report.json
+            apps/web/coverage/ctrf-report.html
       
       # Upload coverage reports
       - name: Upload coverage reports
