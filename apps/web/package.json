@@ -11,7 +11,7 @@
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --passWithNoTests",
-    "test:ci": "jest --ci --coverage --passWithNoTests --reporters=default --reporters=jest-junit",
+    "test:ci": "jest --ci --coverage --passWithNoTests --reporters=default --reporters=jest-junit --reporters=jest-ctrf-json-reporter && node scripts/generate-test-report.js || true",
     "test:report": "node scripts/generate-test-summary.js || true",
     "test:ci:full": "npm run test:ci && npm run test:report",
     "test:e2e": "playwright test",

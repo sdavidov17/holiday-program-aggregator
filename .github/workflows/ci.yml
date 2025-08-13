@@ -78,7 +78,8 @@ jobs:
             apps/web/coverage/junit.xml
             apps/web/coverage/coverage-summary.json
             apps/web/coverage/ctrf-report.json
-            apps/web/coverage/ctrf-report.html
+            apps/web/coverage/test-report.html
+            apps/web/coverage/test-summary.md
       
       # Upload coverage reports
       - name: Upload coverage reports
@@ -114,6 +115,27 @@ jobs:
           NEXTAUTH_SECRET: "test-secret-for-ci"
           NEXTAUTH_URL: "http://localhost:3000"
           ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+
+  # CodeQL Security Analysis
+  security-checks:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+      
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
 
   # Optional: Claude Code Review (only if you have the GitHub App installed)
   claude-review:

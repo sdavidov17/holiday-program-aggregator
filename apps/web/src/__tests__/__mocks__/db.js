@@ -104,14 +104,44 @@ const mockPrismaClient = {
     }),
   },
   user: {
-    deleteMany: jest.fn(() => Promise.resolve({ count: 0 })),
+    deleteMany: jest.fn((args) => {
+      // Handle complex where clauses for test cleanup
+      if (args?.where?.email?.in) {
+        // Simulate deleting test users
+        return Promise.resolve({ count: args.where.email.in.length });
+      }
+      return Promise.resolve({ count: 0 });
+    }),
     findMany: jest.fn(() => Promise.resolve([])),
-    findUnique: jest.fn(() => Promise.resolve(null)),
-    create: jest.fn(() => Promise.resolve({
-      id: 'test-user-id',
-      email: 'test@example.com',
-      role: 'USER',
-    })),
+    findUnique: jest.fn((args) => {
+      // Return a mock user if searching for test users
+      if (args?.where?.email?.startsWith('test-')) {
+        return Promise.resolve({
+          id: `user-${Date.now()}`,
+          email: args.where.email,
+          role: args.where.email.includes('admin') ? 'ADMIN' : 'USER',
+          emailVerified: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      }
+      return Promise.resolve(null);
+    }),
+    create: jest.fn((args) => {
+      return Promise.resolve({
+        id: `user-${Date.now()}-${Math.random()}`,
+        ...args.data,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+    }),
+    update: jest.fn((args) => {
+      return Promise.resolve({
+        id: args.where.id || `user-${Date.now()}`,
+        ...args.data,
+        updatedAt: new Date(),
+      });
+    }),
   },
   session: {
     deleteMany: jest.fn(() => Promise.resolve({ count: 0 })),

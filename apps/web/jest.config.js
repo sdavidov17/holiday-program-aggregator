@@ -55,7 +55,7 @@ module.exports = {
       usePathForSuiteName: true,
     }],
     ['jest-ctrf-json-reporter', {
-      outputDir: 'coverage',
+      outputDir: './coverage',
       outputFile: 'ctrf-report.json',
       testType: 'unit',
       appName: 'Holiday Heroes Web',

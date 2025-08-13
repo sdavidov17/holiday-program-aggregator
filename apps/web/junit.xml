@@ -1,1489 +1,273 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="101" failures="4" errors="0" time="4.375">
-  <testsuite name="/api/stripe/webhook" errors="0" failures="0" skipped="0" timestamp="2025-08-13T03:08:29" time="0.625" tests="12">
-    <testcase classname="/api/stripe/webhook should reject non-POST requests" name="/api/stripe/webhook should reject non-POST requests" time="0.007">
+<testsuites name="jest tests" tests="113" failures="3" errors="0" time="2.651">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:47" time="0.986" tests="8">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.002">
     </testcase>
-    <testcase classname="/api/stripe/webhook should reject requests without stripe signature" name="/api/stripe/webhook should reject requests without stripe signature" time="0">
-    </testcase>
-    <testcase classname="/api/stripe/webhook checkout.session.completed should update subscription when checkout completes" name="/api/stripe/webhook checkout.session.completed should update subscription when checkout completes" time="0.016">
-    </testcase>
-    <testcase classname="/api/stripe/webhook checkout.session.completed should reject when userId is missing from metadata" name="/api/stripe/webhook checkout.session.completed should reject when userId is missing from metadata" time="0.003">
-    </testcase>
-    <testcase classname="/api/stripe/webhook customer.subscription.updated should update subscription details" name="/api/stripe/webhook customer.subscription.updated should update subscription details" time="0.001">
-    </testcase>
-    <testcase classname="/api/stripe/webhook customer.subscription.updated should handle past_due status" name="/api/stripe/webhook customer.subscription.updated should handle past_due status" time="0">
-    </testcase>
-    <testcase classname="/api/stripe/webhook customer.subscription.deleted should mark subscription as expired" name="/api/stripe/webhook customer.subscription.deleted should mark subscription as expired" time="0.001">
-    </testcase>
-    <testcase classname="/api/stripe/webhook invoice.payment_succeeded should activate subscription on payment success" name="/api/stripe/webhook invoice.payment_succeeded should activate subscription on payment success" time="0.002">
-    </testcase>
-    <testcase classname="/api/stripe/webhook invoice.payment_failed should mark subscription as past due on payment failure" name="/api/stripe/webhook invoice.payment_failed should mark subscription as past due on payment failure" time="0.002">
-    </testcase>
-    <testcase classname="/api/stripe/webhook should handle unhandled event types" name="/api/stripe/webhook should handle unhandled event types" time="0.001">
-    </testcase>
-    <testcase classname="/api/stripe/webhook should handle webhook signature verification failure" name="/api/stripe/webhook should handle webhook signature verification failure" time="0.001">
-    </testcase>
-    <testcase classname="/api/stripe/webhook should handle processing errors gracefully" name="/api/stripe/webhook should handle processing errors gracefully" time="0.003">
-    </testcase>
-  </testsuite>
-  <testsuite name="Rate Limiting Security" errors="0" failures="0" skipped="0" timestamp="2025-08-13T03:08:30" time="0.152" tests="5">
-    <testcase classname="Rate Limiting Security Authentication Endpoints should block after 5 failed signup attempts" name="Rate Limiting Security Authentication Endpoints should block after 5 failed signup attempts" time="0.012">
-    </testcase>
-    <testcase classname="Rate Limiting Security Authentication Endpoints should include proper rate limit headers" name="Rate Limiting Security Authentication Endpoints should include proper rate limit headers" time="0.014">
-    </testcase>
-    <testcase classname="Rate Limiting Security Authentication Endpoints should track rate limits per IP address" name="Rate Limiting Security Authentication Endpoints should track rate limits per IP address" time="0.008">
-    </testcase>
-    <testcase classname="Rate Limiting Security Rate Limiter Utility should properly calculate remaining requests" name="Rate Limiting Security Rate Limiter Utility should properly calculate remaining requests" time="0.002">
-    </testcase>
-    <testcase classname="Rate Limiting Security Rate Limiter Utility should reset after time window expires" name="Rate Limiting Security Rate Limiter Utility should reset after time window expires" time="0.004">
-    </testcase>
-  </testsuite>
-  <testsuite name="useSubscriptionStatus" errors="0" failures="0" skipped="0" timestamp="2025-08-13T03:08:29" time="0.767" tests="7">
-    <testcase classname="useSubscriptionStatus should return correct status for active subscription" name="useSubscriptionStatus should return correct status for active subscription" time="0.018">
+    <testcase classname="useSubscriptionStatus should return correct status for active subscription" name="useSubscriptionStatus should return correct status for active subscription" time="0.009">
     </testcase>
     <testcase classname="useSubscriptionStatus should return correct status for expired subscription" name="useSubscriptionStatus should return correct status for expired subscription" time="0.001">
     </testcase>
     <testcase classname="useSubscriptionStatus should return correct status for pending subscription" name="useSubscriptionStatus should return correct status for pending subscription" time="0.001">
     </testcase>
-    <testcase classname="useSubscriptionStatus should return correct status for canceled subscription" name="useSubscriptionStatus should return correct status for canceled subscription" time="0.018">
+    <testcase classname="useSubscriptionStatus should return correct status for canceled subscription" name="useSubscriptionStatus should return correct status for canceled subscription" time="0">
     </testcase>
-    <testcase classname="useSubscriptionStatus should not fetch when user is not authenticated" name="useSubscriptionStatus should not fetch when user is not authenticated" time="0.025">
+    <testcase classname="useSubscriptionStatus should not fetch when user is not authenticated" name="useSubscriptionStatus should not fetch when user is not authenticated" time="0">
     </testcase>
-    <testcase classname="useSubscriptionStatus should handle loading state" name="useSubscriptionStatus should handle loading state" time="0.025">
+    <testcase classname="useSubscriptionStatus should handle loading state" name="useSubscriptionStatus should handle loading state" time="0.001">
     </testcase>
     <testcase classname="useSubscriptionStatus should handle no subscription data" name="useSubscriptionStatus should handle no subscription data" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="providerRouter" errors="0" failures="0" skipped="0" timestamp="2025-08-13T03:08:29" time="0.912" tests="19">
-    <testcase classname="providerRouter getAll should require admin role" name="providerRouter getAll should require admin role" time="0.076">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:48" time="0.946" tests="6">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
     </testcase>
-    <testcase classname="providerRouter getAll should return all providers for admin" name="providerRouter getAll should return all providers for admin" time="0.002">
+    <testcase classname="Rate Limiting Security Authentication Endpoints should block after 5 failed signup attempts" name="Rate Limiting Security Authentication Endpoints should block after 5 failed signup attempts" time="0.01">
     </testcase>
-    <testcase classname="providerRouter getAll should filter providers based on parameters" name="providerRouter getAll should filter providers based on parameters" time="0.001">
+    <testcase classname="Rate Limiting Security Authentication Endpoints should include proper rate limit headers" name="Rate Limiting Security Authentication Endpoints should include proper rate limit headers" time="0">
     </testcase>
-    <testcase classname="providerRouter getPublished should return only published and vetted providers" name="providerRouter getPublished should return only published and vetted providers" time="0">
+    <testcase classname="Rate Limiting Security Authentication Endpoints should track rate limits per IP address" name="Rate Limiting Security Authentication Endpoints should track rate limits per IP address" time="0.001">
     </testcase>
-    <testcase classname="providerRouter getById should return provider by id" name="providerRouter getById should return provider by id" time="0.001">
+    <testcase classname="Rate Limiting Security Rate Limiter Utility should properly calculate remaining requests" name="Rate Limiting Security Rate Limiter Utility should properly calculate remaining requests" time="0">
     </testcase>
-    <testcase classname="providerRouter getById should throw error if provider not found" name="providerRouter getById should throw error if provider not found" time="0">
-    </testcase>
-    <testcase classname="providerRouter getById should prevent non-admin from viewing unpublished providers" name="providerRouter getById should prevent non-admin from viewing unpublished providers" time="0.001">
-    </testcase>
-    <testcase classname="providerRouter create should require admin role" name="providerRouter create should require admin role" time="0.002">
-    </testcase>
-    <testcase classname="providerRouter create should create a new provider" name="providerRouter create should create a new provider" time="0.006">
-    </testcase>
-    <testcase classname="providerRouter update should require admin role" name="providerRouter update should require admin role" time="0.002">
-    </testcase>
-    <testcase classname="providerRouter update should update provider" name="providerRouter update should update provider" time="0.018">
-    </testcase>
-    <testcase classname="providerRouter delete should require admin role" name="providerRouter delete should require admin role" time="0.001">
-    </testcase>
-    <testcase classname="providerRouter delete should delete provider" name="providerRouter delete should delete provider" time="0.002">
-    </testcase>
-    <testcase classname="providerRouter delete should throw error if provider not found" name="providerRouter delete should throw error if provider not found" time="0.002">
-    </testcase>
-    <testcase classname="providerRouter toggleVetting should toggle vetting status" name="providerRouter toggleVetting should toggle vetting status" time="0.001">
-    </testcase>
-    <testcase classname="providerRouter togglePublishing should toggle publishing status" name="providerRouter togglePublishing should toggle publishing status" time="0.001">
-    </testcase>
-    <testcase classname="providerRouter togglePublishing should prevent publishing unvetted providers" name="providerRouter togglePublishing should prevent publishing unvetted providers" time="0">
-    </testcase>
-    <testcase classname="providerRouter createProgram should require admin role" name="providerRouter createProgram should require admin role" time="0.003">
-    </testcase>
-    <testcase classname="providerRouter createProgram should create a new program" name="providerRouter createProgram should create a new program" time="0.006">
+    <testcase classname="Rate Limiting Security Rate Limiter Utility should reset after time window expires" name="Rate Limiting Security Rate Limiter Utility should reset after time window expires" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="PremiumFeatureGuard" errors="0" failures="0" skipped="0" timestamp="2025-08-13T03:08:29" time="0.943" tests="5">
-    <testcase classname="PremiumFeatureGuard should show loading spinner when loading" name="PremiumFeatureGuard should show loading spinner when loading" time="0.068">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:47" time="1.001" tests="13">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.002">
     </testcase>
-    <testcase classname="PremiumFeatureGuard should show children when user has active subscription" name="PremiumFeatureGuard should show children when user has active subscription" time="0.006">
+    <testcase classname="/api/stripe/webhook should reject non-POST requests" name="/api/stripe/webhook should reject non-POST requests" time="0.001">
     </testcase>
-    <testcase classname="PremiumFeatureGuard should show default fallback when no active subscription" name="PremiumFeatureGuard should show default fallback when no active subscription" time="0.011">
+    <testcase classname="/api/stripe/webhook should reject requests without stripe signature" name="/api/stripe/webhook should reject requests without stripe signature" time="0.001">
     </testcase>
-    <testcase classname="PremiumFeatureGuard should show custom fallback when provided" name="PremiumFeatureGuard should show custom fallback when provided" time="0.004">
+    <testcase classname="/api/stripe/webhook checkout.session.completed should update subscription when checkout completes" name="/api/stripe/webhook checkout.session.completed should update subscription when checkout completes" time="0.003">
     </testcase>
-    <testcase classname="PremiumFeatureGuard should handle canceled subscription as inactive" name="PremiumFeatureGuard should handle canceled subscription as inactive" time="0.004">
+    <testcase classname="/api/stripe/webhook checkout.session.completed should reject when userId is missing from metadata" name="/api/stripe/webhook checkout.session.completed should reject when userId is missing from metadata" time="0.001">
     </testcase>
-  </testsuite>
-  <testsuite name="ProvidersListPage" errors="0" failures="0" skipped="0" timestamp="2025-08-13T03:08:29" time="1.041" tests="13">
-    <testcase classname="ProvidersListPage should render provider list" name="ProvidersListPage should render provider list" time="0.062">
+    <testcase classname="/api/stripe/webhook customer.subscription.updated should update subscription details" name="/api/stripe/webhook customer.subscription.updated should update subscription details" time="0">
     </testcase>
-    <testcase classname="ProvidersListPage should display provider details correctly" name="ProvidersListPage should display provider details correctly" time="0.031">
+    <testcase classname="/api/stripe/webhook customer.subscription.updated should handle past_due status" name="/api/stripe/webhook customer.subscription.updated should handle past_due status" time="0.001">
     </testcase>
-    <testcase classname="ProvidersListPage should show loading state" name="ProvidersListPage should show loading state" time="0.004">
+    <testcase classname="/api/stripe/webhook customer.subscription.deleted should mark subscription as expired" name="/api/stripe/webhook customer.subscription.deleted should mark subscription as expired" time="0">
     </testcase>
-    <testcase classname="ProvidersListPage should handle filter toggles" name="ProvidersListPage should handle filter toggles" time="0.038">
+    <testcase classname="/api/stripe/webhook invoice.payment_succeeded should activate subscription on payment success" name="/api/stripe/webhook invoice.payment_succeeded should activate subscription on payment success" time="0">
     </testcase>
-    <testcase classname="ProvidersListPage should toggle vetting status when button clicked" name="ProvidersListPage should toggle vetting status when button clicked" time="0.023">
+    <testcase classname="/api/stripe/webhook invoice.payment_failed should mark subscription as past due on payment failure" name="/api/stripe/webhook invoice.payment_failed should mark subscription as past due on payment failure" time="0">
     </testcase>
-    <testcase classname="ProvidersListPage should toggle publishing status when button clicked" name="ProvidersListPage should toggle publishing status when button clicked" time="0.017">
+    <testcase classname="/api/stripe/webhook should handle unhandled event types" name="/api/stripe/webhook should handle unhandled event types" time="0">
     </testcase>
-    <testcase classname="ProvidersListPage should disable publish button for unvetted providers" name="ProvidersListPage should disable publish button for unvetted providers" time="0.024">
+    <testcase classname="/api/stripe/webhook should handle webhook signature verification failure" name="/api/stripe/webhook should handle webhook signature verification failure" time="0">
     </testcase>
-    <testcase classname="ProvidersListPage should handle delete with confirmation" name="ProvidersListPage should handle delete with confirmation" time="0.014">
-    </testcase>
-    <testcase classname="ProvidersListPage should not delete when confirmation cancelled" name="ProvidersListPage should not delete when confirmation cancelled" time="0.011">
-    </testcase>
-    <testcase classname="ProvidersListPage should show success message after operations" name="ProvidersListPage should show success message after operations" time="0.029">
-    </testcase>
-    <testcase classname="ProvidersListPage should show empty state when no providers" name="ProvidersListPage should show empty state when no providers" time="0.002">
-    </testcase>
-    <testcase classname="ProvidersListPage should have link to add new provider" name="ProvidersListPage should have link to add new provider" time="0.01">
-    </testcase>
-    <testcase classname="ProvidersListPage should have edit links for each provider" name="ProvidersListPage should have edit links for each provider" time="0.008">
+    <testcase classname="/api/stripe/webhook should handle processing errors gracefully" name="/api/stripe/webhook should handle processing errors gracefully" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="SearchPage" errors="0" failures="0" skipped="0" timestamp="2025-08-13T03:08:29" time="1.008" tests="7">
-    <testcase classname="SearchPage renders the search page with title" name="SearchPage renders the search page with title" time="0.085">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:49" time="0.061" tests="1">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0">
     </testcase>
-    <testcase classname="SearchPage displays welcome message with user name" name="SearchPage displays welcome message with user name" time="0.016">
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:49" time="0.07" tests="1">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
     </testcase>
-    <testcase classname="SearchPage renders search form fields" name="SearchPage renders search form fields" time="0.108">
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:47" time="1.141" tests="8">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.002">
     </testcase>
-    <testcase classname="SearchPage shows back to profile link" name="SearchPage shows back to profile link" time="0.008">
+    <testcase classname="SearchPage renders the search page with title" name="SearchPage renders the search page with title" time="0.034">
     </testcase>
-    <testcase classname="SearchPage displays demo interface notice" name="SearchPage displays demo interface notice" time="0.015">
+    <testcase classname="SearchPage displays welcome message with user name" name="SearchPage displays welcome message with user name" time="0.005">
     </testcase>
-    <testcase classname="SearchPage renders for unauthenticated users" name="SearchPage renders for unauthenticated users" time="0.022">
+    <testcase classname="SearchPage renders search form fields" name="SearchPage renders search form fields" time="0.096">
+    </testcase>
+    <testcase classname="SearchPage shows back to profile link" name="SearchPage shows back to profile link" time="0.021">
+    </testcase>
+    <testcase classname="SearchPage displays demo interface notice" name="SearchPage displays demo interface notice" time="0.043">
+    </testcase>
+    <testcase classname="SearchPage renders for unauthenticated users" name="SearchPage renders for unauthenticated users" time="0.013">
     </testcase>
     <testcase classname="SearchPage shows user email when name is not available" name="SearchPage shows user email when name is not available" time="0.006">
     </testcase>
   </testsuite>
-  <testsuite name="Provider CRUD Operations" errors="0" failures="0" skipped="0" timestamp="2025-08-13T03:08:29" time="1.149" tests="12">
-    <testcase classname="Provider CRUD Operations create should allow admin to create a provider" name="Provider CRUD Operations create should allow admin to create a provider" time="0.103">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:48" time="1.136" tests="6">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.006">
     </testcase>
-    <testcase classname="Provider CRUD Operations create should reject non-admin users from creating providers" name="Provider CRUD Operations create should reject non-admin users from creating providers" time="0.09">
+    <testcase classname="PremiumFeatureGuard should show loading spinner when loading" name="PremiumFeatureGuard should show loading spinner when loading" time="0.034">
     </testcase>
-    <testcase classname="Provider CRUD Operations create should validate required fields" name="Provider CRUD Operations create should validate required fields" time="0.012">
+    <testcase classname="PremiumFeatureGuard should show children when user has active subscription" name="PremiumFeatureGuard should show children when user has active subscription" time="0.011">
     </testcase>
-    <testcase classname="Provider CRUD Operations update should allow admin to update a provider" name="Provider CRUD Operations update should allow admin to update a provider" time="0.017">
+    <testcase classname="PremiumFeatureGuard should show default fallback when no active subscription" name="PremiumFeatureGuard should show default fallback when no active subscription" time="0.002">
     </testcase>
-    <testcase classname="Provider CRUD Operations update should reject non-admin users from updating providers" name="Provider CRUD Operations update should reject non-admin users from updating providers" time="0.008">
+    <testcase classname="PremiumFeatureGuard should show custom fallback when provided" name="PremiumFeatureGuard should show custom fallback when provided" time="0.001">
     </testcase>
-    <testcase classname="Provider CRUD Operations toggleVetting should toggle vetting status" name="Provider CRUD Operations toggleVetting should toggle vetting status" time="0.011">
-    </testcase>
-    <testcase classname="Provider CRUD Operations togglePublishing should toggle publishing status" name="Provider CRUD Operations togglePublishing should toggle publishing status" time="0.008">
-    </testcase>
-    <testcase classname="Provider CRUD Operations getAll should return all providers for admin with filters" name="Provider CRUD Operations getAll should return all providers for admin with filters" time="0.016">
-    </testcase>
-    <testcase classname="Provider CRUD Operations getAll should reject non-admin users from accessing getAll" name="Provider CRUD Operations getAll should reject non-admin users from accessing getAll" time="0.007">
-    </testcase>
-    <testcase classname="Provider CRUD Operations getPublished should return only published and vetted providers for users" name="Provider CRUD Operations getPublished should return only published and vetted providers for users" time="0.003">
-    </testcase>
-    <testcase classname="Provider CRUD Operations delete should allow admin to delete a provider" name="Provider CRUD Operations delete should allow admin to delete a provider" time="0.004">
-    </testcase>
-    <testcase classname="Provider CRUD Operations delete should reject non-admin users from deleting providers" name="Provider CRUD Operations delete should reject non-admin users from deleting providers" time="0.003">
+    <testcase classname="PremiumFeatureGuard should handle canceled subscription as inactive" name="PremiumFeatureGuard should handle canceled subscription as inactive" time="0.013">
     </testcase>
   </testsuite>
-  <testsuite name="/api/cron/subscription-lifecycle" errors="0" failures="0" skipped="0" timestamp="2025-08-13T03:08:29" time="1.342" tests="5">
-    <testcase classname="/api/cron/subscription-lifecycle should reject non-GET requests" name="/api/cron/subscription-lifecycle should reject non-GET requests" time="0.003">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:49" time="0.094" tests="1">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0">
     </testcase>
-    <testcase classname="/api/cron/subscription-lifecycle should require authorization header" name="/api/cron/subscription-lifecycle should require authorization header" time="0">
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:47" time="1.197" tests="14">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
+    </testcase>
+    <testcase classname="ProvidersListPage should render provider list" name="ProvidersListPage should render provider list" time="0.103">
+    </testcase>
+    <testcase classname="ProvidersListPage should display provider details correctly" name="ProvidersListPage should display provider details correctly" time="0.005">
+    </testcase>
+    <testcase classname="ProvidersListPage should show loading state" name="ProvidersListPage should show loading state" time="0.002">
+    </testcase>
+    <testcase classname="ProvidersListPage should handle filter toggles" name="ProvidersListPage should handle filter toggles" time="0.022">
+    </testcase>
+    <testcase classname="ProvidersListPage should toggle vetting status when button clicked" name="ProvidersListPage should toggle vetting status when button clicked" time="0.057">
+    </testcase>
+    <testcase classname="ProvidersListPage should toggle publishing status when button clicked" name="ProvidersListPage should toggle publishing status when button clicked" time="0.018">
+    </testcase>
+    <testcase classname="ProvidersListPage should disable publish button for unvetted providers" name="ProvidersListPage should disable publish button for unvetted providers" time="0.003">
+    </testcase>
+    <testcase classname="ProvidersListPage should handle delete with confirmation" name="ProvidersListPage should handle delete with confirmation" time="0.003">
+    </testcase>
+    <testcase classname="ProvidersListPage should not delete when confirmation cancelled" name="ProvidersListPage should not delete when confirmation cancelled" time="0.003">
+    </testcase>
+    <testcase classname="ProvidersListPage should show success message after operations" name="ProvidersListPage should show success message after operations" time="0.014">
+    </testcase>
+    <testcase classname="ProvidersListPage should show empty state when no providers" name="ProvidersListPage should show empty state when no providers" time="0.002">
+    </testcase>
+    <testcase classname="ProvidersListPage should have link to add new provider" name="ProvidersListPage should have link to add new provider" time="0.003">
+    </testcase>
+    <testcase classname="ProvidersListPage should have edit links for each provider" name="ProvidersListPage should have edit links for each provider" time="0.008">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:48" time="1.198" tests="20">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.002">
+    </testcase>
+    <testcase classname="providerRouter getAll should require admin role" name="providerRouter getAll should require admin role" time="0.024">
+    </testcase>
+    <testcase classname="providerRouter getAll should return all providers for admin" name="providerRouter getAll should return all providers for admin" time="0.005">
+    </testcase>
+    <testcase classname="providerRouter getAll should filter providers based on parameters" name="providerRouter getAll should filter providers based on parameters" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter getPublished should return only published and vetted providers" name="providerRouter getPublished should return only published and vetted providers" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter getById should return provider by id" name="providerRouter getById should return provider by id" time="0">
+    </testcase>
+    <testcase classname="providerRouter getById should throw error if provider not found" name="providerRouter getById should throw error if provider not found" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter getById should prevent non-admin from viewing unpublished providers" name="providerRouter getById should prevent non-admin from viewing unpublished providers" time="0">
+    </testcase>
+    <testcase classname="providerRouter create should require admin role" name="providerRouter create should require admin role" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter create should create a new provider" name="providerRouter create should create a new provider" time="0.003">
+    </testcase>
+    <testcase classname="providerRouter update should require admin role" name="providerRouter update should require admin role" time="0">
+    </testcase>
+    <testcase classname="providerRouter update should update provider" name="providerRouter update should update provider" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter delete should require admin role" name="providerRouter delete should require admin role" time="0">
+    </testcase>
+    <testcase classname="providerRouter delete should delete provider" name="providerRouter delete should delete provider" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter delete should throw error if provider not found" name="providerRouter delete should throw error if provider not found" time="0">
+    </testcase>
+    <testcase classname="providerRouter toggleVetting should toggle vetting status" name="providerRouter toggleVetting should toggle vetting status" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter togglePublishing should toggle publishing status" name="providerRouter togglePublishing should toggle publishing status" time="0">
+    </testcase>
+    <testcase classname="providerRouter togglePublishing should prevent publishing unvetted providers" name="providerRouter togglePublishing should prevent publishing unvetted providers" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter createProgram should require admin role" name="providerRouter createProgram should require admin role" time="0">
+    </testcase>
+    <testcase classname="providerRouter createProgram should create a new program" name="providerRouter createProgram should create a new program" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:48" time="1.232" tests="10">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.007">
+    </testcase>
+    <testcase classname="NewProviderPage should render the form with all required fields" name="NewProviderPage should render the form with all required fields" time="0.13">
+    </testcase>
+    <testcase classname="NewProviderPage should handle vetting and publishing checkboxes" name="NewProviderPage should handle vetting and publishing checkboxes" time="0.03">
+    </testcase>
+    <testcase classname="NewProviderPage should handle special needs fields" name="NewProviderPage should handle special needs fields" time="0.03">
+    </testcase>
+    <testcase classname="NewProviderPage should handle age groups input" name="NewProviderPage should handle age groups input" time="0.013">
+    </testcase>
+    <testcase classname="NewProviderPage should validate required fields" name="NewProviderPage should validate required fields" time="0.01">
+    </testcase>
+    <testcase classname="NewProviderPage should show loading state during submission" name="NewProviderPage should show loading state during submission" time="0.034">
+    </testcase>
+    <testcase classname="NewProviderPage should display error message on failure" name="NewProviderPage should display error message on failure" time="0.004">
+    </testcase>
+    <testcase classname="NewProviderPage should handle cancel button" name="NewProviderPage should handle cancel button" time="0.007">
+    </testcase>
+    <testcase classname="NewProviderPage should handle all Australian states" name="NewProviderPage should handle all Australian states" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:49" time="0.189" tests="13">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
+    </testcase>
+    <testcase classname="Provider CRUD Operations create should allow admin to create a provider" name="Provider CRUD Operations create should allow admin to create a provider" time="0.01">
+    </testcase>
+    <testcase classname="Provider CRUD Operations create should reject non-admin users from creating providers" name="Provider CRUD Operations create should reject non-admin users from creating providers" time="0.01">
+    </testcase>
+    <testcase classname="Provider CRUD Operations create should validate required fields" name="Provider CRUD Operations create should validate required fields" time="0.002">
+    </testcase>
+    <testcase classname="Provider CRUD Operations update should allow admin to update a provider" name="Provider CRUD Operations update should allow admin to update a provider" time="0.002">
+    </testcase>
+    <testcase classname="Provider CRUD Operations update should reject non-admin users from updating providers" name="Provider CRUD Operations update should reject non-admin users from updating providers" time="0">
+    </testcase>
+    <testcase classname="Provider CRUD Operations toggleVetting should toggle vetting status" name="Provider CRUD Operations toggleVetting should toggle vetting status" time="0.001">
+    </testcase>
+    <testcase classname="Provider CRUD Operations togglePublishing should toggle publishing status" name="Provider CRUD Operations togglePublishing should toggle publishing status" time="0.001">
+    </testcase>
+    <testcase classname="Provider CRUD Operations getAll should return all providers for admin with filters" name="Provider CRUD Operations getAll should return all providers for admin with filters" time="0.001">
+    </testcase>
+    <testcase classname="Provider CRUD Operations getAll should reject non-admin users from accessing getAll" name="Provider CRUD Operations getAll should reject non-admin users from accessing getAll" time="0.001">
+    </testcase>
+    <testcase classname="Provider CRUD Operations getPublished should return only published and vetted providers for users" name="Provider CRUD Operations getPublished should return only published and vetted providers for users" time="0">
+    </testcase>
+    <testcase classname="Provider CRUD Operations delete should allow admin to delete a provider" name="Provider CRUD Operations delete should allow admin to delete a provider" time="0.001">
+    </testcase>
+    <testcase classname="Provider CRUD Operations delete should reject non-admin users from deleting providers" name="Provider CRUD Operations delete should reject non-admin users from deleting providers" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="3" skipped="0" timestamp="2025-08-13T23:48:47" time="1.46" tests="6">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.002">
+    </testcase>
+    <testcase classname="Authentication with Test User Cleanup Admin User Tests should create and authenticate admin user" name="Authentication with Test User Cleanup Admin User Tests should create and authenticate admin user" time="0.178">
+    </testcase>
+    <testcase classname="Authentication with Test User Cleanup Admin User Tests should recreate admin user even if it already exists" name="Authentication with Test User Cleanup Admin User Tests should recreate admin user even if it already exists" time="0.256">
+      <failure>Error: expect(received).toHaveLength(expected)
+
+Expected length: 1
+Received length: 0
+Received array:  []
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/integration/auth-with-cleanup.test.ts:81:21)</failure>
+    </testcase>
+    <testcase classname="Authentication with Test User Cleanup Multiple User Types should create all test users and clean them up" name="Authentication with Test User Cleanup Multiple User Types should create all test users and clean them up" time="0.341">
+      <failure>Error: expect(received).toHaveLength(expected)
+
+Expected length: 3
+Received length: 0
+Received array:  []
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/integration/auth-with-cleanup.test.ts:104:23)</failure>
+    </testcase>
+    <testcase classname="Authentication with Test User Cleanup Test Isolation test 1: should start with no test users" name="Authentication with Test User Cleanup Test Isolation test 1: should start with no test users" time="0.068">
+    </testcase>
+    <testcase classname="Authentication with Test User Cleanup Test Isolation test 2: should also start with no test users (isolated from test 1)" name="Authentication with Test User Cleanup Test Isolation test 2: should also start with no test users (isolated from test 1)" time="0.098">
+      <failure>Error: expect(received).toBeNull()
+
+Received: {&quot;createdAt&quot;: 2025-08-13T23:48:49.446Z, &quot;email&quot;: &quot;test-admin@test.com&quot;, &quot;emailVerified&quot;: 2025-08-13T23:48:49.446Z, &quot;id&quot;: &quot;user-1755128929446&quot;, &quot;role&quot;: &quot;ADMIN&quot;, &quot;updatedAt&quot;: 2025-08-13T23:48:49.446Z}
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/integration/auth-with-cleanup.test.ts:167:25)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:48" time="1.552" tests="6">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
+    </testcase>
+    <testcase classname="/api/cron/subscription-lifecycle should reject non-GET requests" name="/api/cron/subscription-lifecycle should reject non-GET requests" time="0.001">
+    </testcase>
+    <testcase classname="/api/cron/subscription-lifecycle should require authorization header" name="/api/cron/subscription-lifecycle should require authorization header" time="0.001">
     </testcase>
     <testcase classname="/api/cron/subscription-lifecycle should reject invalid authorization" name="/api/cron/subscription-lifecycle should reject invalid authorization" time="0">
     </testcase>
-    <testcase classname="/api/cron/subscription-lifecycle should process lifecycle when authorized" name="/api/cron/subscription-lifecycle should process lifecycle when authorized" time="0.005">
+    <testcase classname="/api/cron/subscription-lifecycle should process lifecycle when authorized" name="/api/cron/subscription-lifecycle should process lifecycle when authorized" time="0.002">
     </testcase>
-    <testcase classname="/api/cron/subscription-lifecycle should handle errors gracefully" name="/api/cron/subscription-lifecycle should handle errors gracefully" time="0">
-    </testcase>
-  </testsuite>
-  <testsuite name="Authentication with Test User Cleanup" errors="0" failures="0" skipped="0" timestamp="2025-08-13T03:08:29" time="1.675" tests="5">
-    <testcase classname="Authentication with Test User Cleanup Admin User Tests should create and authenticate admin user" name="Authentication with Test User Cleanup Admin User Tests should create and authenticate admin user" time="0.465">
-    </testcase>
-    <testcase classname="Authentication with Test User Cleanup Admin User Tests should recreate admin user even if it already exists" name="Authentication with Test User Cleanup Admin User Tests should recreate admin user even if it already exists" time="0.149">
-    </testcase>
-    <testcase classname="Authentication with Test User Cleanup Multiple User Types should create all test users and clean them up" name="Authentication with Test User Cleanup Multiple User Types should create all test users and clean them up" time="0.241">
-    </testcase>
-    <testcase classname="Authentication with Test User Cleanup Test Isolation test 1: should start with no test users" name="Authentication with Test User Cleanup Test Isolation test 1: should start with no test users" time="0.07">
-    </testcase>
-    <testcase classname="Authentication with Test User Cleanup Test Isolation test 2: should also start with no test users (isolated from test 1)" name="Authentication with Test User Cleanup Test Isolation test 2: should also start with no test users (isolated from test 1)" time="0.078">
-    </testcase>
-  </testsuite>
-  <testsuite name="NewProviderPage" errors="0" failures="4" skipped="0" timestamp="2025-08-13T03:08:29" time="3.247" tests="11">
-    <testcase classname="NewProviderPage should render the form with all required fields" name="NewProviderPage should render the form with all required fields" time="0.186">
-    </testcase>
-    <testcase classname="NewProviderPage should handle form submission with valid data" name="NewProviderPage should handle form submission with valid data" time="1.106">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: ObjectContaining {&quot;address&quot;: &quot;123 Test St&quot;, &quot;businessName&quot;: &quot;Test Provider&quot;, &quot;contactName&quot;: &quot;John Doe&quot;, &quot;description&quot;: &quot;Test description&quot;, &quot;email&quot;: &quot;test@example.com&quot;, &quot;phone&quot;: &quot;0400000000&quot;, &quot;postcode&quot;: &quot;2000&quot;, &quot;state&quot;: &quot;NSW&quot;, &quot;suburb&quot;: &quot;Sydney&quot;}
-
-Number of calls: 0
-
-Ignored nodes: comments, script, style
-&lt;html&gt;
-  &lt;head /&gt;
-  &lt;body&gt;
-    &lt;div&gt;
-      &lt;div&gt;
-        &lt;h1&gt;
-          Add New Provider
-        &lt;/h1&gt;
-        &lt;div
-          class=&quot;mx-auto max-w-4xl&quot;
-        &gt;
-          &lt;form
-            class=&quot;space-y-6 rounded-lg bg-white p-6 shadow&quot;
-          &gt;
-            &lt;div&gt;
-              &lt;h3
-                class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-              &gt;
-                Basic Information
-              &lt;/h3&gt;
-              &lt;div
-                class=&quot;grid grid-cols-1 gap-4 md:grid-cols-2&quot;
-              &gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;businessName&quot;
-                  &gt;
-                    Business Name *
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;businessName&quot;
-                    name=&quot;businessName&quot;
-                    required=&quot;&quot;
-                    type=&quot;text&quot;
-                    value=&quot;Test Provider&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;contactName&quot;
-                  &gt;
-                    Contact Name *
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;contactName&quot;
-                    name=&quot;contactName&quot;
-                    required=&quot;&quot;
-                    type=&quot;text&quot;
-                    value=&quot;John Doe&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;email&quot;
-                  &gt;
-                    Email
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;email&quot;
-                    name=&quot;email&quot;
-                    type=&quot;email&quot;
-                    value=&quot;test@example.com&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;phone&quot;
-                  &gt;
-                    Phone
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;phone&quot;
-                    name=&quot;phone&quot;
-                    type=&quot;tel&quot;
-                    value=&quot;0400000000&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;website&quot;
-                  &gt;
-                    Website
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;website&quot;
-                    name=&quot;website&quot;
-                    type=&quot;url&quot;
-                    value=&quot;&quot;
-                  /&gt;
-                &lt;/div&gt;
-              &lt;/div&gt;
-              &lt;div
-                class=&quot;mt-4&quot;
-              &gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;description&quot;
-                &gt;
-                  Description
-                &lt;/label&gt;
-                &lt;textarea
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;description&quot;
-                  name=&quot;description&quot;
-                  rows=&quot;4&quot;
-                &gt;
-                  Test description
-                &lt;/textarea&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div&gt;
-              &lt;h3
-                class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-              &gt;
-                Location
-              &lt;/h3&gt;
-              &lt;div
-                class=&quot;grid grid-cols-1 gap-4 md:grid-cols-2&quot;
-              &gt;
-                &lt;div
-                  class=&quot;md:col-span-2&quot;
-                &gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;address&quot;
-                  &gt;
-                    Address
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;address&quot;
-                    name=&quot;address&quot;
-                    type=&quot;text&quot;
-                    value=&quot;123 Test St&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;suburb&quot;
-                  &gt;
-                    Suburb
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;suburb&quot;
-                    name=&quot;suburb&quot;
-                    type=&quot;text&quot;
-                    value=&quot;Sydney&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;state&quot;
-                  &gt;
-                    State
-                  &lt;/label&gt;
-                  &lt;select
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;state&quot;
-                    name=&quot;state&quot;
-                  &gt;
-                    &lt;option
-                      value=&quot;&quot;
-                    &gt;
-                      Select State
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;NSW&quot;
-                    &gt;
-                      New South Wales
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;VIC&quot;
-                    &gt;
-                      Victoria
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;QLD&quot;
-                    &gt;
-                      Queensland
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;WA&quot;
-                    &gt;
-                      Western Australia
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;SA&quot;
-                    &gt;
-                      South Australia
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;TAS&quot;
-                    &gt;
-                      Tasmania
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;ACT&quot;
-                    &gt;
-                      Australian Capital Territory
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;NT&quot;
-                    &gt;
-                      Northern Territory
-                    &lt;/option&gt;
-                  &lt;/select&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;postcode&quot;
-                  &gt;
-                    Postcode
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;postcode&quot;
-                    name=&quot;postcode&quot;
-                    type=&quot;text&quot;
-                    value=&quot;2000&quot;
-                  /&gt;
-                &lt;/div&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div&gt;
-              &lt;h3
-                class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-              &gt;
-                Media
-              &lt;/h3&gt;
-              &lt;div
-                class=&quot;grid grid-cols-1 gap-4 md:grid-cols-2&quot;
-              &gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;logoUrl&quot;
-                  &gt;
-                    Logo URL
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;logoUrl&quot;
-                    name=&quot;logoUrl&quot;
-                    type=&quot;url&quot;
-                    value=&quot;&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;bannerUrl&quot;
-                  &gt;
-                    Banner Image URL
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;bannerUrl&quot;
-                    name=&quot;bannerUrl&quot;
-                    type=&quot;url&quot;
-                    value=&quot;&quot;
-                  /&gt;
-                &lt;/div&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div&gt;
-              &lt;h3
-                class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-              &gt;
-                Additional Information
-              &lt;/h3&gt;
-              &lt;div
-                class=&quot;space-y-4&quot;
-              &gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;flex items-center&quot;
-                  &gt;
-                    &lt;input
-                      class=&quot;mr-2 rounded border-gray-300&quot;
-                      name=&quot;specialNeeds&quot;
-                      type=&quot;checkbox&quot;
-                    /&gt;
-                    &lt;span
-                      class=&quot;text-sm font-medium text-gray-700&quot;
-                    &gt;
-                      Special Needs Accommodation
-                    &lt;/span&gt;
-                  &lt;/label&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;capacity&quot;
-                  &gt;
-                    Capacity
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;capacity&quot;
-                    min=&quot;1&quot;
-                    name=&quot;capacity&quot;
-                    type=&quot;number&quot;
-                    value=&quot;0&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;ageGroups&quot;
-                  &gt;
-                    Age Groups (comma-separated)
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;ageGroups&quot;
-                    name=&quot;ageGroups&quot;
-                    placeholder=&quot;e.g., 5-7, 8-10, 11-13, 14-17&quot;
-                    type=&quot;text&quot;
-                    value=&quot;&quot;
-                  /&gt;
-                &lt;/div&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div&gt;
-              &lt;h3
-                class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-              &gt;
-                Status
-              &lt;/h3&gt;
-              &lt;div
-                class=&quot;space-y-2&quot;
-              &gt;
-                &lt;label
-                  class=&quot;flex items-center&quot;
-                &gt;
-                  &lt;input
-                    class=&quot;mr-2 rounded border-gray-300&quot;
-                    name=&quot;isVetted&quot;
-                    type=&quot;checkbox&quot;
-                  /&gt;
-                  &lt;span
-                    class=&quot;text-sm font-medium text-gray-700&quot;
-                  &gt;
-                    Mark as Vetted
-                  &lt;/span&gt;
-                &lt;/label&gt;
-                &lt;label
-                  class=&quot;flex items-center&quot;
-                &gt;
-                  &lt;input
-                    class=&quot;mr-2 rounded border-gray-300&quot;
-                    disabled=&quot;&quot;
-                    name=&quot;isPublished&quot;
-                    type=&quot;checkbox&quot;
-                  /&gt;
-                  &lt;span
-                    class=&quot;text-sm font-medium text-gray-700&quot;
-                  &gt;
-                    Publish Provider 
-                    (must be vetted first)
-                  &lt;/span&gt;
-                &lt;/label&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div
-              class=&quot;flex justify-end gap-3&quot;
-            &gt;
-              &lt;button
-                class=&quot;rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50&quot;
-                type=&quot;button&quot;
-              &gt;
-                Cancel
-              &lt;/button&gt;
-              &lt;button
-                class=&quot;rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50&quot;
-                type=&quot;submit&quot;
-              &gt;
-                Create Provider
-              &lt;/button&gt;
-            &lt;/div&gt;
-          &lt;/form&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-    at /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/pages/admin/providers/new.test.tsx:123:34
-    at runWithExpensiveErrorDiagnosticsDisabled (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12)
-    at checkCallback (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77)
-    at checkRealTimersCallback (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16)
-    at Timeout.task [as _onTimeout] (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jsdom@26.1.0/node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
-    at listOnTimeout (node:internal/timers:608:17)
-    at processTimers (node:internal/timers:543:7)</failure>
-    </testcase>
-    <testcase classname="NewProviderPage should handle vetting and publishing checkboxes" name="NewProviderPage should handle vetting and publishing checkboxes" time="0.019">
-      <failure>Error: expect(element).not.toBeChecked()
-
-Received element is checked:
-  &lt;input class=&quot;mr-2 rounded border-gray-300&quot; disabled=&quot;&quot; name=&quot;isPublished&quot; type=&quot;checkbox&quot; /&gt;
-    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/pages/admin/providers/new.test.tsx:162:35)
-    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
-    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
-    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
-    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
-    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
-    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
-    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
-    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
-    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
-    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
-    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
-    </testcase>
-    <testcase classname="NewProviderPage should handle special needs fields" name="NewProviderPage should handle special needs fields" time="0.008">
-      <failure>TestingLibraryElementError: Unable to find a label with the text of: /supports special needs/i
-
-Ignored nodes: comments, script, style
-&lt;body&gt;
-  &lt;div&gt;
-    &lt;div&gt;
-      &lt;h1&gt;
-        Add New Provider
-      &lt;/h1&gt;
-      &lt;div
-        class=&quot;mx-auto max-w-4xl&quot;
-      &gt;
-        &lt;form
-          class=&quot;space-y-6 rounded-lg bg-white p-6 shadow&quot;
-        &gt;
-          &lt;div&gt;
-            &lt;h3
-              class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-            &gt;
-              Basic Information
-            &lt;/h3&gt;
-            &lt;div
-              class=&quot;grid grid-cols-1 gap-4 md:grid-cols-2&quot;
-            &gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;businessName&quot;
-                &gt;
-                  Business Name *
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;businessName&quot;
-                  name=&quot;businessName&quot;
-                  required=&quot;&quot;
-                  type=&quot;text&quot;
-                  value=&quot;&quot;
-                /&gt;
-              &lt;/div&gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;contactName&quot;
-                &gt;
-                  Contact Name *
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;contactName&quot;
-                  name=&quot;contactName&quot;
-                  required=&quot;&quot;
-                  type=&quot;text&quot;
-                  value=&quot;&quot;
-                /&gt;
-              &lt;/div&gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;email&quot;
-                &gt;
-                  Email
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;email&quot;
-                  name=&quot;email&quot;
-                  type=&quot;email&quot;
-                  value=&quot;&quot;
-                /&gt;
-              &lt;/div&gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;phone&quot;
-                &gt;
-                  Phone
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;phone&quot;
-                  name=&quot;phone&quot;
-                  type=&quot;tel&quot;
-                  value=&quot;&quot;
-                /&gt;
-              &lt;/div&gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;website&quot;
-                &gt;
-                  Website
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;website&quot;
-                  name=&quot;website&quot;
-                  type=&quot;url&quot;
-                  value=&quot;&quot;
-                /&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div
-              class=&quot;mt-4&quot;
-            &gt;
-              &lt;label
-                class=&quot;block text-sm font-medium text-gray-700&quot;
-                for=&quot;description&quot;
-              &gt;
-                Description
-              &lt;/label&gt;
-              &lt;textarea
-                class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                id=&quot;description&quot;
-                name=&quot;description&quot;
-                rows=&quot;4&quot;
-              /&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;div&gt;
-            &lt;h3
-              class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-            &gt;
-              Location
-            &lt;/h3&gt;
-            &lt;div
-              class=&quot;grid grid-cols-1 gap-4 md:grid-cols-2&quot;
-            &gt;
-              &lt;div
-                class=&quot;md:col-span-2&quot;
-              &gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;address&quot;
-                &gt;
-                  Address
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;address&quot;
-                  name=&quot;address&quot;
-                  type=&quot;text&quot;
-                  value=&quot;&quot;
-                /&gt;
-              &lt;/div&gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;suburb&quot;
-                &gt;
-                  Suburb
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;suburb&quot;
-                  name=&quot;suburb&quot;
-                  type=&quot;text&quot;
-                  value=&quot;&quot;
-                /&gt;
-              &lt;/div&gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;state&quot;
-                &gt;
-                  State
-                &lt;/label&gt;
-                &lt;select
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;state&quot;
-                  name=&quot;state&quot;
-                &gt;
-                  &lt;option
-                    value=&quot;&quot;
-                  &gt;
-                    Select State
-                  &lt;/option&gt;
-                  &lt;option
-                    value=&quot;NSW&quot;
-                  &gt;
-                    New South Wales
-                  &lt;/option&gt;
-                  &lt;option
-                    value=&quot;VIC&quot;
-                  &gt;
-                    Victoria
-                  &lt;/option&gt;
-                  &lt;option
-                    value=&quot;QLD&quot;
-                  &gt;
-                    Queensland
-                  &lt;/option&gt;
-                  &lt;option
-                    value=&quot;WA&quot;
-                  &gt;
-                    Western Australia
-                  &lt;/option&gt;
-                  &lt;option
-                    value=&quot;SA&quot;
-                  &gt;
-                    South Australia
-                  &lt;/option&gt;
-                  &lt;option
-                    value=&quot;TAS&quot;
-                  &gt;
-                    Tasmania
-                  &lt;/option&gt;
-                  &lt;option
-                    value=&quot;ACT&quot;
-                  &gt;
-                    Australian Capital Territory
-                  &lt;/option&gt;
-                  &lt;option
-                    value=&quot;NT&quot;
-                  &gt;
-                    Northern Territory
-                  &lt;/option&gt;
-                &lt;/select&gt;
-              &lt;/div&gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;postcode&quot;
-                &gt;
-                  Postcode
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;postcode&quot;
-                  name=&quot;postcode&quot;
-                  type=&quot;text&quot;
-                  value=&quot;&quot;
-                /&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;div&gt;
-            &lt;h3
-              class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-            &gt;
-              Media
-            &lt;/h3&gt;
-            &lt;div
-              class=&quot;grid grid-cols-1 gap-4 md:grid-cols-2&quot;
-            &gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;logoUrl&quot;
-                &gt;
-                  Logo URL
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;logoUrl&quot;
-                  name=&quot;logoUrl&quot;
-                  type=&quot;url&quot;
-                  value=&quot;&quot;
-                /&gt;
-              &lt;/div&gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;bannerUrl&quot;
-                &gt;
-                  Banner Image URL
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;bannerUrl&quot;
-                  name=&quot;bannerUrl&quot;
-                  type=&quot;url&quot;
-                  value=&quot;&quot;
-                /&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;div&gt;
-            &lt;h3
-              class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-            &gt;
-              Additional Information
-            &lt;/h3&gt;
-            &lt;div
-              class=&quot;space-y-4&quot;
-            &gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;flex items-center&quot;
-                &gt;
-                  &lt;input
-                    class=&quot;mr-2 rounded border-gray-300&quot;
-                    name=&quot;specialNeeds&quot;
-                    type=&quot;checkbox&quot;
-                  /&gt;
-                  &lt;span
-                    class=&quot;text-sm font-medium text-gray-700&quot;
-                  &gt;
-                    Special Needs Accommodation
-                  &lt;/span&gt;
-                &lt;/label&gt;
-              &lt;/div&gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;capacity&quot;
-                &gt;
-                  Capacity
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;capacity&quot;
-                  min=&quot;1&quot;
-                  name=&quot;capacity&quot;
-                  type=&quot;number&quot;
-                  value=&quot;0&quot;
-                /&gt;
-              &lt;/div&gt;
-              &lt;div&gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;ageGroups&quot;
-                &gt;
-                  Age Groups (comma-separated)
-                &lt;/label&gt;
-                &lt;input
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;ageGroups&quot;
-                  name=&quot;ageGroups&quot;
-                  placeholder=&quot;e.g., 5-7, 8-10, 11-13, 14-17&quot;
-                  type=&quot;text&quot;
-                  value=&quot;&quot;
-                /&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;div&gt;
-            &lt;h3
-              class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-            &gt;
-              Status
-            &lt;/h3&gt;
-            &lt;div
-              class=&quot;space-y-2&quot;
-            &gt;
-              &lt;label
-                class=&quot;flex items-center&quot;
-              &gt;
-                &lt;input
-                  class=&quot;mr-2 rounded border-gray-300&quot;
-                  name=&quot;isVetted&quot;
-                  type=&quot;checkbox&quot;
-                /&gt;
-                &lt;span
-                  class=&quot;text-sm font-medium text-gray-700&quot;
-                &gt;
-                  Mark as Vetted
-                &lt;/span&gt;
-              &lt;/label&gt;
-              &lt;label
-                class=&quot;flex items-center&quot;
-              &gt;
-                &lt;input
-                  class=&quot;mr-2 rounded border-gray-300&quot;
-                  disabled=&quot;&quot;
-                  name=&quot;isPublished&quot;
-                  type=&quot;checkbox&quot;
-                /&gt;
-                &lt;span
-                  class=&quot;text-sm font-medium text-gray-700&quot;
-                &gt;
-                  Publish Provider 
-                  (must be vetted first)
-                &lt;/span&gt;
-              &lt;/label&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;div
-            class=&quot;flex justify-end gap-3&quot;
-          &gt;
-            &lt;button
-              class=&quot;rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50&quot;
-              type=&quot;button&quot;
-            &gt;
-              Cancel
-            &lt;/button&gt;
-            &lt;button
-              class=&quot;rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50&quot;
-              type=&quot;submit&quot;
-            &gt;
-              Create Provider
-            &lt;/button&gt;
-          &lt;/div&gt;
-        &lt;/form&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/body&gt;
-    at Object.getElementError (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19)
-    at getAllByLabelText (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/queries/label-text.js:111:38)
-    at /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
-    at /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
-    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/pages/admin/providers/new.test.tsx:169:41)
-    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
-    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
-    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
-    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
-    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
-    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
-    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
-    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
-    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
-    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
-    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
-    </testcase>
-    <testcase classname="NewProviderPage should handle age groups input" name="NewProviderPage should handle age groups input" time="0.009">
-    </testcase>
-    <testcase classname="NewProviderPage should validate required fields" name="NewProviderPage should validate required fields" time="0.009">
-    </testcase>
-    <testcase classname="NewProviderPage should show loading state during submission" name="NewProviderPage should show loading state during submission" time="0.029">
-    </testcase>
-    <testcase classname="NewProviderPage should display error message on failure" name="NewProviderPage should display error message on failure" time="0.005">
-    </testcase>
-    <testcase classname="NewProviderPage should redirect on successful creation" name="NewProviderPage should redirect on successful creation" time="1.045">
-      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
-
-Expected: &quot;/admin/providers/test-provider-id&quot;
-
-Number of calls: 0
-
-Ignored nodes: comments, script, style
-&lt;html&gt;
-  &lt;head /&gt;
-  &lt;body&gt;
-    &lt;div&gt;
-      &lt;div&gt;
-        &lt;h1&gt;
-          Add New Provider
-        &lt;/h1&gt;
-        &lt;div
-          class=&quot;mx-auto max-w-4xl&quot;
-        &gt;
-          &lt;form
-            class=&quot;space-y-6 rounded-lg bg-white p-6 shadow&quot;
-          &gt;
-            &lt;div&gt;
-              &lt;h3
-                class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-              &gt;
-                Basic Information
-              &lt;/h3&gt;
-              &lt;div
-                class=&quot;grid grid-cols-1 gap-4 md:grid-cols-2&quot;
-              &gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;businessName&quot;
-                  &gt;
-                    Business Name *
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;businessName&quot;
-                    name=&quot;businessName&quot;
-                    required=&quot;&quot;
-                    type=&quot;text&quot;
-                    value=&quot;Test&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;contactName&quot;
-                  &gt;
-                    Contact Name *
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;contactName&quot;
-                    name=&quot;contactName&quot;
-                    required=&quot;&quot;
-                    type=&quot;text&quot;
-                    value=&quot;Test&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;email&quot;
-                  &gt;
-                    Email
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;email&quot;
-                    name=&quot;email&quot;
-                    type=&quot;email&quot;
-                    value=&quot;test@test.com&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;phone&quot;
-                  &gt;
-                    Phone
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;phone&quot;
-                    name=&quot;phone&quot;
-                    type=&quot;tel&quot;
-                    value=&quot;0400000000&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;website&quot;
-                  &gt;
-                    Website
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;website&quot;
-                    name=&quot;website&quot;
-                    type=&quot;url&quot;
-                    value=&quot;&quot;
-                  /&gt;
-                &lt;/div&gt;
-              &lt;/div&gt;
-              &lt;div
-                class=&quot;mt-4&quot;
-              &gt;
-                &lt;label
-                  class=&quot;block text-sm font-medium text-gray-700&quot;
-                  for=&quot;description&quot;
-                &gt;
-                  Description
-                &lt;/label&gt;
-                &lt;textarea
-                  class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                  id=&quot;description&quot;
-                  name=&quot;description&quot;
-                  rows=&quot;4&quot;
-                &gt;
-                  Test
-                &lt;/textarea&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div&gt;
-              &lt;h3
-                class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-              &gt;
-                Location
-              &lt;/h3&gt;
-              &lt;div
-                class=&quot;grid grid-cols-1 gap-4 md:grid-cols-2&quot;
-              &gt;
-                &lt;div
-                  class=&quot;md:col-span-2&quot;
-                &gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;address&quot;
-                  &gt;
-                    Address
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;address&quot;
-                    name=&quot;address&quot;
-                    type=&quot;text&quot;
-                    value=&quot;Test&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;suburb&quot;
-                  &gt;
-                    Suburb
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;suburb&quot;
-                    name=&quot;suburb&quot;
-                    type=&quot;text&quot;
-                    value=&quot;Test&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;state&quot;
-                  &gt;
-                    State
-                  &lt;/label&gt;
-                  &lt;select
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;state&quot;
-                    name=&quot;state&quot;
-                  &gt;
-                    &lt;option
-                      value=&quot;&quot;
-                    &gt;
-                      Select State
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;NSW&quot;
-                    &gt;
-                      New South Wales
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;VIC&quot;
-                    &gt;
-                      Victoria
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;QLD&quot;
-                    &gt;
-                      Queensland
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;WA&quot;
-                    &gt;
-                      Western Australia
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;SA&quot;
-                    &gt;
-                      South Australia
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;TAS&quot;
-                    &gt;
-                      Tasmania
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;ACT&quot;
-                    &gt;
-                      Australian Capital Territory
-                    &lt;/option&gt;
-                    &lt;option
-                      value=&quot;NT&quot;
-                    &gt;
-                      Northern Territory
-                    &lt;/option&gt;
-                  &lt;/select&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;postcode&quot;
-                  &gt;
-                    Postcode
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;postcode&quot;
-                    name=&quot;postcode&quot;
-                    type=&quot;text&quot;
-                    value=&quot;2000&quot;
-                  /&gt;
-                &lt;/div&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div&gt;
-              &lt;h3
-                class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-              &gt;
-                Media
-              &lt;/h3&gt;
-              &lt;div
-                class=&quot;grid grid-cols-1 gap-4 md:grid-cols-2&quot;
-              &gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;logoUrl&quot;
-                  &gt;
-                    Logo URL
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;logoUrl&quot;
-                    name=&quot;logoUrl&quot;
-                    type=&quot;url&quot;
-                    value=&quot;&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;bannerUrl&quot;
-                  &gt;
-                    Banner Image URL
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;bannerUrl&quot;
-                    name=&quot;bannerUrl&quot;
-                    type=&quot;url&quot;
-                    value=&quot;&quot;
-                  /&gt;
-                &lt;/div&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div&gt;
-              &lt;h3
-                class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-              &gt;
-                Additional Information
-              &lt;/h3&gt;
-              &lt;div
-                class=&quot;space-y-4&quot;
-              &gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;flex items-center&quot;
-                  &gt;
-                    &lt;input
-                      class=&quot;mr-2 rounded border-gray-300&quot;
-                      name=&quot;specialNeeds&quot;
-                      type=&quot;checkbox&quot;
-                    /&gt;
-                    &lt;span
-                      class=&quot;text-sm font-medium text-gray-700&quot;
-                    &gt;
-                      Special Needs Accommodation
-                    &lt;/span&gt;
-                  &lt;/label&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;capacity&quot;
-                  &gt;
-                    Capacity
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;capacity&quot;
-                    min=&quot;1&quot;
-                    name=&quot;capacity&quot;
-                    type=&quot;number&quot;
-                    value=&quot;0&quot;
-                  /&gt;
-                &lt;/div&gt;
-                &lt;div&gt;
-                  &lt;label
-                    class=&quot;block text-sm font-medium text-gray-700&quot;
-                    for=&quot;ageGroups&quot;
-                  &gt;
-                    Age Groups (comma-separated)
-                  &lt;/label&gt;
-                  &lt;input
-                    class=&quot;mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500&quot;
-                    id=&quot;ageGroups&quot;
-                    name=&quot;ageGroups&quot;
-                    placeholder=&quot;e.g., 5-7, 8-10, 11-13, 14-17&quot;
-                    type=&quot;text&quot;
-                    value=&quot;&quot;
-                  /&gt;
-                &lt;/div&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div&gt;
-              &lt;h3
-                class=&quot;mb-4 text-lg font-medium text-gray-900&quot;
-              &gt;
-                Status
-              &lt;/h3&gt;
-              &lt;div
-                class=&quot;space-y-2&quot;
-              &gt;
-                &lt;label
-                  class=&quot;flex items-center&quot;
-                &gt;
-                  &lt;input
-                    class=&quot;mr-2 rounded border-gray-300&quot;
-                    name=&quot;isVetted&quot;
-                    type=&quot;checkbox&quot;
-                  /&gt;
-                  &lt;span
-                    class=&quot;text-sm font-medium text-gray-700&quot;
-                  &gt;
-                    Mark as Vetted
-                  &lt;/span&gt;
-                &lt;/label&gt;
-                &lt;label
-                  class=&quot;flex items-center&quot;
-                &gt;
-                  &lt;input
-                    class=&quot;mr-2 rounded border-gray-300&quot;
-                    disabled=&quot;&quot;
-                    name=&quot;isPublished&quot;
-                    type=&quot;checkbox&quot;
-                  /&gt;
-                  &lt;span
-                    class=&quot;text-sm font-medium text-gray-700&quot;
-                  &gt;
-                    Publish Provider 
-                    (must be vetted first)
-                  &lt;/span&gt;
-                &lt;/label&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div
-              class=&quot;flex justify-end gap-3&quot;
-            &gt;
-              &lt;button
-                class=&quot;rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50&quot;
-                type=&quot;button&quot;
-              &gt;
-                Cancel
-              &lt;/button&gt;
-              &lt;button
-                class=&quot;rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50&quot;
-                type=&quot;submit&quot;
-              &gt;
-                Create Provider
-              &lt;/button&gt;
-            &lt;/div&gt;
-          &lt;/form&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-    at /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/pages/admin/providers/new.test.tsx:304:24
-    at runWithExpensiveErrorDiagnosticsDisabled (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:47:12)
-    at checkCallback (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:124:77)
-    at checkRealTimersCallback (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:118:16)
-    at Timeout.task [as _onTimeout] (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jsdom@26.1.0/node_modules/jsdom/lib/jsdom/browser/Window.js:579:19)
-    at listOnTimeout (node:internal/timers:608:17)
-    at processTimers (node:internal/timers:543:7)</failure>
-    </testcase>
-    <testcase classname="NewProviderPage should handle cancel button" name="NewProviderPage should handle cancel button" time="0.005">
-    </testcase>
-    <testcase classname="NewProviderPage should handle all Australian states" name="NewProviderPage should handle all Australian states" time="0.007">
+    <testcase classname="/api/cron/subscription-lifecycle should handle errors gracefully" name="/api/cron/subscription-lifecycle should handle errors gracefully" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>
