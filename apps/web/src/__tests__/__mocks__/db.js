@@ -30,6 +30,9 @@ const ProgramStatus = {
   ARCHIVED: 'ARCHIVED',
 };
 
+// Store mock users
+let mockUsers = [];
+
 const mockPrismaClient = {
   provider: {
     deleteMany: jest.fn(() => {
@@ -107,44 +110,93 @@ const mockPrismaClient = {
     deleteMany: jest.fn((args) => {
       // Handle complex where clauses for test cleanup
       if (args?.where?.email?.in) {
-        // Simulate deleting test users
-        return Promise.resolve({ count: args.where.email.in.length });
+        // Filter and remove matching users
+        const emailsToDelete = args.where.email.in;
+        const toDelete = mockUsers.filter(u => emailsToDelete.includes(u.email));
+        mockUsers = mockUsers.filter(u => !emailsToDelete.includes(u.email));
+        return Promise.resolve({ count: toDelete.length });
       }
-      return Promise.resolve({ count: 0 });
+      if (args?.where?.email) {
+        // Delete single user by email
+        const initialCount = mockUsers.length;
+        mockUsers = mockUsers.filter(u => u.email !== args.where.email);
+        return Promise.resolve({ count: initialCount - mockUsers.length });
+      }
+      // Delete all if no filter
+      const count = mockUsers.length;
+      mockUsers = [];
+      return Promise.resolve({ count });
     }),
-    findMany: jest.fn(() => Promise.resolve([])),
+    findMany: jest.fn((args) => {
+      let results = [...mockUsers];
+      
+      // Apply where filters
+      if (args?.where) {
+        if (args.where.email) {
+          // Exact email match
+          if (typeof args.where.email === 'string') {
+            results = results.filter(u => u.email === args.where.email);
+          }
+          // Email in list
+          else if (args.where.email.in) {
+            results = results.filter(u => args.where.email.in.includes(u.email));
+          }
+        }
+        if (args.where.role) {
+          results = results.filter(u => u.role === args.where.role);
+        }
+      }
+      
+      return Promise.resolve(results);
+    }),
     findUnique: jest.fn((args) => {
-      // Return a mock user if searching for test users
-      if (args?.where?.email?.startsWith('test-')) {
-        return Promise.resolve({
-          id: `user-${Date.now()}`,
-          email: args.where.email,
-          role: args.where.email.includes('admin') ? 'ADMIN' : 'USER',
-          emailVerified: new Date(),
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        });
+      // Find user by email or id
+      if (args?.where?.email) {
+        const user = mockUsers.find(u => u.email === args.where.email);
+        return Promise.resolve(user || null);
+      }
+      if (args?.where?.id) {
+        const user = mockUsers.find(u => u.id === args.where.id);
+        return Promise.resolve(user || null);
       }
       return Promise.resolve(null);
     }),
     create: jest.fn((args) => {
-      return Promise.resolve({
+      const newUser = {
         id: `user-${Date.now()}-${Math.random()}`,
+        ...args.data,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      mockUsers.push(newUser);
+      return Promise.resolve(newUser);
+    }),
+    update: jest.fn((args) => {
+      const index = mockUsers.findIndex(u => 
+        (args.where.id && u.id === args.where.id) ||
+        (args.where.email && u.email === args.where.email)
+      );
+      if (index !== -1) {
+        mockUsers[index] = {
+          ...mockUsers[index],
+          ...args.data,
+          updatedAt: new Date(),
+        };
+        return Promise.resolve(mockUsers[index]);
+      }
+      return Promise.resolve(null);
+    }),
+  },
+  session: {
+    deleteMany: jest.fn(() => Promise.resolve({ count: 0 })),
+    create: jest.fn((args) => {
+      return Promise.resolve({
+        id: `session-${Date.now()}`,
         ...args.data,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
     }),
-    update: jest.fn((args) => {
-      return Promise.resolve({
-        id: args.where.id || `user-${Date.now()}`,
-        ...args.data,
-        updatedAt: new Date(),
-      });
-    }),
-  },
-  session: {
-    deleteMany: jest.fn(() => Promise.resolve({ count: 0 })),
   },
   subscription: {
     deleteMany: jest.fn(() => Promise.resolve({ count: 0 })),
@@ -167,6 +219,14 @@ const mockPrismaClient = {
   },
   account: {
     deleteMany: jest.fn(() => Promise.resolve({ count: 0 })),
+    create: jest.fn((args) => {
+      return Promise.resolve({
+        id: `account-${Date.now()}`,
+        ...args.data,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+    }),
   },
   program: {
     create: jest.fn(() => Promise.resolve({
