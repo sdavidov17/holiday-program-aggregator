@@ -97,6 +97,7 @@ jobs:
           path: apps/web/coverage/junit.xml
           reporter: jest-junit
           fail-on-error: false
+        continue-on-error: true
       
       # Security audit (non-blocking)
       - name: Security audit
