@@ -3,6 +3,7 @@
  * Epic 1, Story 5: Manual Provider Onboarding Tool
  */
 
+import '@testing-library/jest-dom';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import NewProviderPage from '~/pages/admin/providers/new';

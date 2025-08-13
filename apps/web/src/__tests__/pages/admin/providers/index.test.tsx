@@ -3,6 +3,7 @@
  * Epic 1, Story 5: Manual Provider Onboarding Tool
  */
 
+import '@testing-library/jest-dom';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import ProvidersListPage from '~/pages/admin/providers/index';
@@ -159,7 +160,7 @@ describe('ProvidersListPage', () => {
   it('should toggle vetting status when button clicked', () => {
     render(<ProvidersListPage />);
     
-    const vettedButton = screen.getAllByText('✓ Vetted')[0];
+    const vettedButton = screen.getAllByText('✓ Vetted')[0]!;
     fireEvent.click(vettedButton);
     
     expect(mockToggleVetting).toHaveBeenCalledWith({ id: '1' });
@@ -168,7 +169,7 @@ describe('ProvidersListPage', () => {
   it('should toggle publishing status when button clicked', () => {
     render(<ProvidersListPage />);
     
-    const publishedButton = screen.getAllByText('✓ Published')[0];
+    const publishedButton = screen.getAllByText('✓ Published')[0]!;
     fireEvent.click(publishedButton);
     
     expect(mockTogglePublishing).toHaveBeenCalledWith({ id: '1' });
@@ -180,7 +181,7 @@ describe('ProvidersListPage', () => {
     const draftButtons = screen.getAllByText('Draft');
     const unvettedProviderPublishButton = draftButtons[0];
     
-    expect(unvettedProviderPublishButton).toBeDisabled();
+    expect(unvettedProviderPublishButton!).toBeDisabled();
   });
 
   it('should handle delete with confirmation', () => {
@@ -189,7 +190,7 @@ describe('ProvidersListPage', () => {
     render(<ProvidersListPage />);
     
     const deleteButtons = screen.getAllByText('Delete');
-    fireEvent.click(deleteButtons[0]);
+    fireEvent.click(deleteButtons[0]!);
     
     expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to delete "Test Provider 1"?');
     expect(mockDeleteProvider).toHaveBeenCalledWith({ id: '1' });
@@ -201,7 +202,7 @@ describe('ProvidersListPage', () => {
     render(<ProvidersListPage />);
     
     const deleteButtons = screen.getAllByText('Delete');
-    fireEvent.click(deleteButtons[0]);
+    fireEvent.click(deleteButtons[0]!);
     
     expect(window.confirm).toHaveBeenCalled();
     expect(mockDeleteProvider).not.toHaveBeenCalled();
@@ -221,7 +222,7 @@ describe('ProvidersListPage', () => {
     
     rerender(<ProvidersListPage />);
     
-    const vettedButton = screen.getAllByText('✓ Vetted')[0];
+    const vettedButton = screen.getAllByText('✓ Vetted')[0]!;
     fireEvent.click(vettedButton);
     
     await waitFor(() => {
@@ -254,7 +255,7 @@ describe('ProvidersListPage', () => {
     
     const editLinks = screen.getAllByText('Edit');
     expect(editLinks).toHaveLength(2);
-    expect(editLinks[0]).toHaveAttribute('href', '/admin/providers/1');
-    expect(editLinks[1]).toHaveAttribute('href', '/admin/providers/2');
+    expect(editLinks[0]!).toHaveAttribute('href', '/admin/providers/1');
+    expect(editLinks[1]!).toHaveAttribute('href', '/admin/providers/2');
   });
 });

@@ -394,14 +394,3 @@ describe('Provider CRUD Operations', () => {
     });
   });
 });
-
-// Helper function to create mock context
-function createMockContext(overrides?: any) {
-  return {
-    session: overrides?.session || null,
-    db,
-    req: {} as any,
-    res: {} as any,
-    ...overrides,
-  };
-}

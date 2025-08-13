@@ -3,6 +3,9 @@ import '@testing-library/jest-dom';
 import 'whatwg-fetch';
 import { TextEncoder, TextDecoder } from 'util';
 
+// Import types
+/// <reference types="@testing-library/jest-dom" />
+
 // Polyfill TextEncoder/TextDecoder for jose library used by next-auth
 global.TextEncoder = TextEncoder as any;
 global.TextDecoder = TextDecoder as any;
