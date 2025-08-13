@@ -317,8 +317,6 @@ describe('NewProviderPage', () => {
   it('should handle all Australian states', () => {
     render(<NewProviderPage />);
     
-    const stateSelect = screen.getByLabelText(/state/i);
-    
     const expectedStates = [
       'New South Wales',
       'Victoria',
