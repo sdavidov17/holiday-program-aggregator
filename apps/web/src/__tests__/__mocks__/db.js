@@ -119,9 +119,44 @@ const mockPrismaClient = {
   subscription: {
     deleteMany: jest.fn(() => Promise.resolve({ count: 0 })),
     findUnique: jest.fn(() => Promise.resolve(null)),
+    create: jest.fn(() => Promise.resolve({ 
+      id: 'sub-test-id',
+      userId: 'user-test-id',
+      status: 'ACTIVE',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })),
+    update: jest.fn(() => Promise.resolve({
+      id: 'sub-test-id',
+      userId: 'user-test-id', 
+      status: 'ACTIVE',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })),
+    findFirst: jest.fn(() => Promise.resolve(null)),
   },
   account: {
     deleteMany: jest.fn(() => Promise.resolve({ count: 0 })),
+  },
+  program: {
+    create: jest.fn(() => Promise.resolve({
+      id: 'program-test-id',
+      providerId: 'provider-test-id',
+      name: 'Test Program',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })),
+    findMany: jest.fn(() => Promise.resolve([])),
+    update: jest.fn(() => Promise.resolve({
+      id: 'program-test-id',
+      providerId: 'provider-test-id',
+      name: 'Test Program',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })),
+    delete: jest.fn(() => Promise.resolve({
+      id: 'program-test-id',
+    })),
   },
   $connect: jest.fn(() => Promise.resolve(undefined)),
   $disconnect: jest.fn(() => Promise.resolve(undefined)),

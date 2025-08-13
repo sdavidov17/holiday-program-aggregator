@@ -1,5 +1,5 @@
 // This is a helper file, not a test suite
-import { PrismaClient } from "@prisma/client";
+import { db as prisma } from '~/server/db';
 import bcrypt from "bcryptjs";
 import { describe, it, expect } from '@jest/globals';
 
@@ -9,23 +9,6 @@ describe('Test Helper Module', () => {
     expect(true).toBe(true);
   });
 });
-
-// Use singleton pattern for PrismaClient in tests
-let prisma: PrismaClient;
-
-if (process.env.NODE_ENV === 'test') {
-  if (!global.prismaTestClient) {
-    global.prismaTestClient = new PrismaClient();
-  }
-  prisma = global.prismaTestClient;
-} else {
-  prisma = new PrismaClient();
-}
-
-// Declare global type
-declare global {
-  var prismaTestClient: PrismaClient | undefined;
-}
 
 export const TEST_USERS = {
   admin: {
