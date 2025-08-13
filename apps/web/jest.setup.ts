@@ -7,6 +7,9 @@ import { TextEncoder, TextDecoder } from 'util';
 global.TextEncoder = TextEncoder as any;
 global.TextDecoder = TextDecoder as any;
 
+// Polyfill setImmediate for Prisma
+global.setImmediate = global.setImmediate || ((fn: any, ...args: any[]) => global.setTimeout(fn, 0, ...args));
+
 // Mock env.mjs module
 jest.mock('~/env.mjs', () => ({
   env: {
