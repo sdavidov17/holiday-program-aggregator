@@ -29,15 +29,16 @@ Also known as **Foundations in Agentic Agile Driven Development**, BMAD establis
 
 | BMAD Role | Claude Code Implementation | Use Case |
 |-----------|---------------------------|----------|
-| 🧠 BMAD Master | Main Claude instance | Overall orchestration |
+| 🧠 BMAD Master | Main Claude instance | Overall orchestration, DoR/DoD enforcement |
 | 🎯 Task Orchestrator | Task tool (general-purpose) | Complex multi-step tasks |
-| 📊 Product Manager | Task tool for research | Requirements analysis |
-| 🔍 Business Analyst | Task tool for analysis | Data modeling, process flows |
-| 🏗️ Solution Architect | Task tool for design | Architecture decisions |
-| 💻 Developer | Direct Claude Code | Implementation |
-| 🧪 QA Engineer | Task tool for testing | Test planning & execution |
-| 🎨 UX Expert | Task tool for UX | Design research & analysis |
+| 📊 Product Manager | Task tool for research | Requirements analysis, BDD scenario collaboration |
+| 🔍 Business Analyst | Task tool for analysis | Data modeling, BDD scenario definition |
+| 🏗️ Solution Architect | Task tool for design | Architecture decisions, technical approach review |
+| 💻 Developer | Direct Claude Code | Implementation, BDD scenario collaboration |
+| 🧪 QA Engineer | Task tool for testing | BDD scenario leadership, test planning & execution |
+| 🎨 UX Expert | Task tool for UX | Design research & analysis, UI acceptance criteria |
 | 🔧 DevOps | Task tool for infra | CI/CD, monitoring setup |
+| 📝 Scrum Master | Task tool for process | DoR/DoD facilitation, Three Amigos sessions |
 
 ## Usage Examples
 
@@ -97,38 +98,66 @@ The BMAD Dashboard (`/admin/bmad-dashboard`) provides:
 - Provide clear, detailed prompts to subagents
 - Specify exactly what information to return
 - Use structured output formats
+- Include DoR/DoD requirements in agent prompts
 
 ### 3. Workflow Optimization
 ```
-Research (Subagent) → Design (Subagent) → Implement (Direct) → Test (Subagent)
+DoR Check → Research (Subagent) → BDD Scenarios (PM/BA+QA+Dev) → 
+Design (Subagent) → Implement (Direct) → Test (Subagent) → DoD Check
 ```
 
 ### 4. Parallel Processing
 - Launch multiple subagents concurrently when tasks are independent
 - Use single message with multiple Task tool invocations
 
+### 5. DoR/DoD Enforcement
+- **ALWAYS** check Definition of Ready before starting development
+- **NEVER** mark story complete without meeting all DoD criteria
+- Use story template for consistent formatting
+- Facilitate Three Amigos sessions for BDD scenario creation
+- Ensure 100% test pass rate before completion
+
 ## Implementation Workflow
 
-### Epic Development Flow
+### Epic Development Flow with DoR/DoD
+
+#### Phase 1: Story Preparation (Definition of Ready)
 1. **Requirements Gathering**
-   - PM subagent researches user needs
-   - Analyst subagent creates user stories
+   - PM subagent researches user needs and writes initial story
+   - Analyst subagent creates acceptance criteria
+   - **Three Amigos Session**: PM/BA + QA + Dev collaborate on BDD scenarios
 
-2. **Technical Design**
-   - Architect subagent designs solution
-   - DevOps subagent plans infrastructure
+2. **BDD Scenario Definition**
+   - QA subagent leads scenario creation in Given/When/Then format
+   - Developer validates technical feasibility
+   - PM/BA ensures business value alignment
+   - All scenarios documented in story template
 
-3. **Implementation**
-   - Developer (main Claude) writes code
-   - UX subagent reviews interface
+3. **Technical Design & Review**
+   - Architect subagent designs solution and reviews approach
+   - UX subagent provides designs and validates UI criteria
+   - DevOps subagent identifies infrastructure needs
+   - **DoR Checkpoint**: SM facilitates review that all criteria are met
 
-4. **Quality Assurance**
-   - QA subagent creates test plans
+#### Phase 2: Implementation & Testing
+4. **Development**
+   - Developer implements all acceptance criteria
+   - BDD scenarios are coded as tests (Unit/Integration/E2E)
+   - Code follows project standards
+
+5. **Quality Assurance**
+   - QA subagent verifies all BDD scenarios pass (100% pass rate)
+   - Test coverage validated (>80% for new code)
    - Security subagent reviews implementation
+   - Performance benchmarks verified
 
-5. **Deployment**
-   - DevOps subagent manages deployment
-   - Monitor subagent tracks metrics
+#### Phase 3: Completion (Definition of Done)
+6. **Verification & Deployment**
+   - All DoD criteria checked and verified
+   - Code review completed and approved
+   - Deployed to staging for UAT
+   - Product Owner sign-off obtained
+   - **DoD Checkpoint**: Story marked complete only when ALL criteria met
 
 ## Monitoring & Reporting
 
@@ -188,3 +217,13 @@ curl http://localhost:3000/api/admin/squad-report
 - [ ] Automated workflow triggers
 - [ ] Integration with GitHub Actions
 - [ ] Custom subagent templates
+- [ ] Automated DoR/DoD compliance checking
+- [ ] BDD scenario generation assistance
+
+## Related Documents
+
+- [Definition of Ready](../project/definition-of-ready.md)
+- [Definition of Done](../project/definition-of-done.md)
+- [Story Template](../project/story-template.md)
+- [Team Guidelines](../project/team-guidelines.md)
+- [Testing Strategy](./testing-strategy.md)
