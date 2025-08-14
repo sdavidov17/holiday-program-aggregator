@@ -5,7 +5,15 @@
 
 import { describe, it, expect, jest, beforeEach, afterEach } from '@jest/globals';
 import { SubscriptionService } from '../subscription.service';
-import { PrismaClient, SubscriptionStatus } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+
+// Define SubscriptionStatus enum for tests
+const SubscriptionStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+} as const;
 import { 
   createTestUser,
   createTestSubscription,

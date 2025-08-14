@@ -76,6 +76,7 @@ export const createTestSubscription = (overrides?: Partial<Subscription>): Parti
   currentPeriodStart: new Date(),
   currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
   cancelAtPeriodEnd: false,
+  expiresAt: null, // Only set when subscription is cancelled
   createdAt: new Date(),
   updatedAt: new Date(),
   ...overrides,

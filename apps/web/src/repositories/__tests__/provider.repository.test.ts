@@ -110,7 +110,7 @@ describe('ProviderRepository', () => {
         data: program as any,
       });
 
-      const result = await repository.findById(created.id, { includePrograms: true });
+      const result = await repository.findById(created.id, { programs: true });
 
       expect(result?.programs).toHaveLength(1);
       expect(result?.programs[0].providerId).toBe(created.id);

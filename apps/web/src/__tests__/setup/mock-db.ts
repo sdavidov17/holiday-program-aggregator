@@ -34,12 +34,20 @@ export class MockPrismaClient {
   $queryRawUnsafe = jest.fn().mockResolvedValue([]);
   
   $transaction = jest.fn(async (fn: any) => {
-    // Simple transaction simulation
+    // Create a snapshot of current state for rollback
+    const snapshot: Record<string, any[]> = {};
+    Object.keys(mockStorage).forEach(key => {
+      snapshot[key] = [...mockStorage[key]];
+    });
+    
     try {
       const result = await fn(this);
       return result;
     } catch (error) {
-      // Rollback by clearing any changes
+      // Rollback by restoring snapshot
+      Object.keys(snapshot).forEach(key => {
+        mockStorage[key] = snapshot[key];
+      });
       throw error;
     }
   });
@@ -47,10 +55,20 @@ export class MockPrismaClient {
 
 function createMockModel(modelName: string) {
   return {
-    findUnique: jest.fn(({ where }: any) => {
+    findUnique: jest.fn(({ where, include }: any) => {
       const item = mockStorage[modelName].find((item: any) => 
         Object.entries(where).every(([key, value]) => item[key] === value)
       );
+      
+      if (item && include) {
+        // Handle includes (e.g., programs for provider)
+        const result = { ...item };
+        if (include.programs) {
+          result.programs = mockStorage['program']?.filter((p: any) => p.providerId === item.id) || [];
+        }
+        return Promise.resolve(result);
+      }
+      
       return Promise.resolve(item || null);
     }),
     
@@ -65,8 +83,25 @@ function createMockModel(modelName: string) {
       let items = [...mockStorage[modelName]];
       
       if (options.where) {
-        items = items.filter((item: any) => 
-          Object.entries(options.where).every(([key, value]: [string, any]) => {
+        items = items.filter((item: any) => {
+          // Handle direct where conditions
+          const conditions = options.where;
+          return Object.entries(conditions).every(([key, value]: [string, any]) => {
+            // Handle OR conditions
+            if (key === 'OR' && Array.isArray(value)) {
+              return value.some((orCondition: any) => 
+                Object.entries(orCondition).every(([k, v]: [string, any]) => {
+                  if (typeof v === 'object' && v !== null) {
+                    if (v.contains) {
+                      return item[k]?.toLowerCase().includes(v.contains.toLowerCase());
+                    }
+                  }
+                  return item[k] === v;
+                })
+              );
+            }
+            
+            // Handle nested conditions
             if (typeof value === 'object' && value !== null) {
               if (value.contains) {
                 return item[key]?.toLowerCase().includes(value.contains.toLowerCase());
@@ -74,10 +109,26 @@ function createMockModel(modelName: string) {
               if (value.in) {
                 return value.in.includes(item[key]);
               }
+              if (value.some) {
+                // For relational filters like programs: { some: {...} }
+                return true; // Simplified for mock
+              }
             }
             return item[key] === value;
-          })
-        );
+          });
+        });
+      }
+      
+      if (options.orderBy) {
+        const sortKey = Object.keys(options.orderBy)[0];
+        const sortOrder = options.orderBy[sortKey];
+        items.sort((a, b) => {
+          const aVal = a[sortKey];
+          const bVal = b[sortKey];
+          if (aVal < bVal) return sortOrder === 'asc' ? -1 : 1;
+          if (aVal > bVal) return sortOrder === 'asc' ? 1 : -1;
+          return 0;
+        });
       }
       
       if (options.skip) {
@@ -88,10 +139,34 @@ function createMockModel(modelName: string) {
         items = items.slice(0, options.take);
       }
       
+      if (options.include) {
+        // Handle includes
+        items = items.map(item => {
+          const result = { ...item };
+          if (options.include.programs) {
+            result.programs = mockStorage['program']?.filter((p: any) => p.providerId === item.id) || [];
+          }
+          return result;
+        });
+      }
+      
       return Promise.resolve(items);
     }),
     
     create: jest.fn(({ data }: any) => {
+      // Check for unique constraints (e.g., email for providers and users)
+      if ((modelName === 'provider' || modelName === 'user') && data.email) {
+        const existing = mockStorage[modelName].find((item: any) => item.email === data.email);
+        if (existing) {
+          return Promise.reject(new Error('Unique constraint violation'));
+        }
+      }
+      
+      // Basic validation for required fields
+      if (modelName === 'program' && !data.name) {
+        return Promise.reject(new Error('Program name is required'));
+      }
+      
       const item = { 
         id: `mock-${modelName}-${Date.now()}-${Math.random()}`,
         ...data,
@@ -157,6 +232,15 @@ function createMockModel(modelName: string) {
       }
       
       const [deleted] = mockStorage[modelName].splice(index, 1);
+      
+      // Handle cascade deletes
+      if (modelName === 'provider' && deleted) {
+        // Delete related programs
+        mockStorage['program'] = mockStorage['program'].filter(
+          (p: any) => p.providerId !== deleted.id
+        );
+      }
+      
       return Promise.resolve(deleted);
     }),
     
