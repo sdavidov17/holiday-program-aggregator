@@ -171,9 +171,9 @@ export class ProviderRepository extends BaseRepository<Provider> {
   }
 
   /**
-   * Search providers by keyword
+   * Search providers by keyword (legacy method for backward compatibility)
    */
-  async search(keyword: string): Promise<Provider[]> {
+  async searchByKeyword(keyword: string): Promise<Provider[]> {
     return this.findMany({
       where: {
         OR: [
