@@ -12,11 +12,9 @@ import {
   createTestSubscription,
   createStripeCustomer,
   createStripeSubscription,
-  createStripeEvent,
-  createStripePaymentIntent
+  createStripeEvent
 } from '../../__tests__/factories';
 import { createMockPrismaClient } from '../../__tests__/setup/test-db';
-import { TRPCError } from '@trpc/server';
 
 // Mock Stripe
 jest.mock('stripe', () => {

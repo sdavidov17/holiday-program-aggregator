@@ -3,8 +3,6 @@
  * Provides in-memory database simulation for tests
  */
 
-import { PrismaClient } from '@prisma/client';
-
 // In-memory storage
 const mockStorage: Record<string, any[]> = {
   user: [],

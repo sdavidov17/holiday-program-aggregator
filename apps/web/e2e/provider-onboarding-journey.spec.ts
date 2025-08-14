@@ -3,7 +3,7 @@
  * Complete end-to-end test for provider onboarding and management
  */
 
-import { test, expect, Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 
 const testProvider = {

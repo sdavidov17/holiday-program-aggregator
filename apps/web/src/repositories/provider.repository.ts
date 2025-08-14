@@ -171,49 +171,11 @@ export class ProviderRepository extends BaseRepository<Provider> {
   }
 
   /**
-   * Search providers by keyword (legacy method for backward compatibility)
+   * Search providers by keyword (delegates to search method)
+   * @deprecated Use search() method instead
    */
   async searchByKeyword(keyword: string): Promise<Provider[]> {
-    return this.findMany({
-      where: {
-        OR: [
-          {
-            businessName: {
-              contains: keyword,
-              mode: 'insensitive',
-            },
-          },
-          {
-            description: {
-              contains: keyword,
-              mode: 'insensitive',
-            },
-          },
-          {
-            programs: {
-              some: {
-                OR: [
-                  {
-                    name: {
-                      contains: keyword,
-                      mode: 'insensitive',
-                    },
-                  },
-                  {
-                    description: {
-                      contains: keyword,
-                      mode: 'insensitive',
-                    },
-                  },
-                ],
-              },
-            },
-          },
-        ],
-        isPublished: true,
-        isVetted: true,
-      },
-    });
+    return this.search({ query: keyword, includePrograms: true });
   }
 
   /**
@@ -274,19 +236,40 @@ export class ProviderRepository extends BaseRepository<Provider> {
   }
 
   /**
-   * Search providers by query
+   * Search providers by query with optional filters
    */
-  async search(params: { query?: string; suburb?: string; state?: string } = {}): Promise<Provider[]> {
+  async search(params: { 
+    query?: string; 
+    suburb?: string; 
+    state?: string;
+    includePrograms?: boolean;
+  } = {}): Promise<Provider[]> {
     const where: any = {
       isPublished: true,
       isVetted: true,
     };
 
     if (params.query) {
-      where.OR = [
+      const searchConditions = [
         { businessName: { contains: params.query, mode: 'insensitive' } },
         { description: { contains: params.query, mode: 'insensitive' } },
       ];
+      
+      // Include program search if requested
+      if (params.includePrograms) {
+        searchConditions.push({
+          programs: {
+            some: {
+              OR: [
+                { name: { contains: params.query, mode: 'insensitive' } },
+                { description: { contains: params.query, mode: 'insensitive' } },
+              ],
+            },
+          },
+        });
+      }
+      
+      where.OR = searchConditions;
     }
 
     if (params.suburb) {

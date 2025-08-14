@@ -5,7 +5,6 @@
 
 import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { createMockContext } from '../helpers/test-context';
-import request from 'supertest';
 import { appRouter } from '~/server/api/root';
 import { db } from '~/server/db';
 import { createTestUser } from '../factories';
@@ -18,7 +17,6 @@ jest.mock('~/lib/rate-limiter', () => ({
 }));
 
 describe('OWASP Security Tests', () => {
-  let app: any;
   let testUser: any;
 
   beforeEach(async () => {

@@ -12,25 +12,30 @@ import type {
   SubscriptionTier 
 } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { SECURITY, MOCK_DATA } from '../constants';
 
 // Set faker seed for reproducible tests
-faker.seed(123);
+faker.seed(MOCK_DATA.FAKER_SEED);
 
 /**
  * User Factory
  */
-export const createTestUser = async (overrides?: Partial<User>): Promise<Partial<User>> => ({
-  id: faker.string.uuid(),
-  email: faker.internet.email().toLowerCase(),
-  name: faker.person.fullName(),
-  role: 'USER',
-  emailVerified: new Date(),
-  image: faker.image.avatar(),
-  hashedPassword: await bcrypt.hash('Test123!', 10),
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  ...overrides,
-});
+export const createTestUser = async (overrides?: Partial<User>): Promise<Partial<User>> => {
+  const hashedPassword = overrides?.hashedPassword || await bcrypt.hash(SECURITY.DEFAULT_PASSWORD, SECURITY.BCRYPT_ROUNDS);
+  
+  return {
+    id: faker.string.uuid(),
+    email: faker.internet.email().toLowerCase(),
+    name: faker.person.fullName(),
+    role: 'USER',
+    emailVerified: new Date(),
+    image: faker.image.avatar(),
+    hashedPassword,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ...overrides,
+  };
+};
 
 /**
  * Provider Factory
