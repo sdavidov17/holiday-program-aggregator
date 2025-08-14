@@ -19,8 +19,8 @@ export abstract class BaseRepository<T> {
   protected prisma: PrismaClient;
   protected modelName: string;
 
-  constructor(modelName: string) {
-    this.prisma = db;
+  constructor(modelName: string, prisma?: PrismaClient) {
+    this.prisma = prisma || db;
     this.modelName = modelName;
   }
 

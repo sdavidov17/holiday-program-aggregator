@@ -12,8 +12,9 @@ import { createTestUser } from '../factories';
 import bcrypt from 'bcryptjs';
 
 // Mock rate limiter for testing
-jest.mock('~/server/api/middleware/rateLimit', () => ({
+jest.mock('~/lib/rate-limiter', () => ({
   rateLimit: jest.fn(() => (req: any, res: any, next: any) => next()),
+  authRateLimit: jest.fn(() => (req: any, res: any, next: any) => next()),
 }));
 
 describe('OWASP Security Tests', () => {

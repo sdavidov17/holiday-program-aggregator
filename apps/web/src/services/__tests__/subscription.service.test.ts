@@ -67,7 +67,7 @@ describe('SubscriptionService', () => {
   beforeEach(() => {
     mockPrisma = createMockPrismaClient();
     mockStripe = new (Stripe as any)('test_key');
-    service = new SubscriptionService(mockPrisma as PrismaClient, mockStripe);
+    service = new SubscriptionService(mockPrisma as PrismaClient);
   });
 
   afterEach(() => {
