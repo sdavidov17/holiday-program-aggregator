@@ -3,9 +3,34 @@ import '@testing-library/jest-dom';
 import 'whatwg-fetch';
 import { TextEncoder, TextDecoder } from 'util';
 
+// Import types
+/// <reference types="@testing-library/jest-dom" />
+
 // Polyfill TextEncoder/TextDecoder for jose library used by next-auth
 global.TextEncoder = TextEncoder as any;
 global.TextDecoder = TextDecoder as any;
+
+// Polyfill setImmediate for Prisma
+global.setImmediate = global.setImmediate || ((fn: any, ...args: any[]) => global.setTimeout(fn, 0, ...args));
+
+// Mock database
+jest.mock('~/server/db', () => {
+  const { 
+    mockPrismaClient, 
+    SubscriptionStatus, 
+    UserRole, 
+    VettingStatus, 
+    ProgramStatus 
+  } = require('./src/__tests__/__mocks__/db.js');
+  return {
+    db: mockPrismaClient,
+    prisma: mockPrismaClient,
+    SubscriptionStatus,
+    UserRole,
+    VettingStatus,
+    ProgramStatus,
+  };
+});
 
 // Mock env.mjs module
 jest.mock('~/env.mjs', () => ({

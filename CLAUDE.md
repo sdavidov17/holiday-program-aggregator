@@ -76,11 +76,28 @@ pnpm build:web        # Build web app only
 - Use consistent naming: `[EPIC X] Title` or `[STORY X.Y] Title` in both places
 - Update implementation status in both locations when work is completed
 
+### Definition of Ready (DoR) Compliance
+**MANDATORY**: Before starting any story development:
+- Verify story meets ALL Definition of Ready criteria (see `/docs/project/definition-of-ready.md`)
+- Ensure BDD scenarios are defined in Given/When/Then format
+- Confirm Three Amigos session completed (PM/BA + QA + Dev collaboration)
+- Check test strategy is defined (Unit/Integration/E2E levels)
+- Use the story template (`/docs/project/story-template.md`) for new stories
+
+### Definition of Done (DoD) Compliance
+**MANDATORY**: Before marking any story as complete:
+- Verify ALL Definition of Done criteria are met (see `/docs/project/definition-of-done.md`)
+- Ensure ALL BDD scenarios are implemented as tests and passing (100% pass rate)
+- Confirm code coverage is >80% for new code
+- Run ALL quality checks: `pnpm test && pnpm lint && pnpm typecheck`
+- Obtain Product Owner sign-off
+
 ### Code Quality Standards
 - Always run `pnpm lint && pnpm typecheck` before committing
-- Ensure test coverage remains above 75%
+- Ensure test coverage remains above 80% (previously 75%, now updated)
 - Follow repository pattern for database operations
 - Use proper error handling with AppError classes
 - Never commit sensitive information or debug endpoints
+- Write tests FIRST or alongside code (TDD/BDD approach)
 
 Refer to documentation in `/docs/` for all implementation details, requirements, and architectural decisions.

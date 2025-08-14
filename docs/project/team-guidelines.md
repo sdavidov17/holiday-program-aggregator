@@ -92,25 +92,31 @@ graph LR
 
 ### Definition of Ready
 
-Story is ready for development when:
-- [ ] Acceptance criteria defined
-- [ ] UI/UX designs completed (if applicable)
-- [ ] Technical approach discussed
-- [ ] Dependencies identified
-- [ ] Estimated by team
-- [ ] Test scenarios documented
+Story is ready for development when ALL criteria are met.
+See comprehensive DoR: [Definition of Ready](./definition-of-ready.md)
+
+Key requirements:
+- [ ] User story in proper format with clear value
+- [ ] BDD scenarios defined (Given/When/Then)
+- [ ] Three Amigos session completed (PM/BA + QA + Dev)
+- [ ] Test strategy defined (Unit/Integration/E2E)
+- [ ] Technical approach reviewed
+- [ ] UI/UX designs approved (if applicable)
 
 ### Definition of Done
 
-Story is complete when:
-- [ ] Code complete and pushed
-- [ ] Unit tests written and passing
-- [ ] Integration tests passing
+Story is complete when ALL criteria are met.
+See comprehensive DoD: [Definition of Done](./definition-of-done.md)
+
+Key requirements:
+- [ ] All BDD scenarios implemented as tests
+- [ ] 100% test pass rate achieved
+- [ ] Code coverage >80% for new code
 - [ ] Code reviewed and approved
-- [ ] Documentation updated
-- [ ] Deployed to staging
-- [ ] QA tested and approved
-- [ ] Merged to main branch
+- [ ] Performance benchmarks met
+- [ ] Security scan passed
+- [ ] Deployed to staging and tested
+- [ ] Product Owner sign-off received
 
 ## Code Review Process
 

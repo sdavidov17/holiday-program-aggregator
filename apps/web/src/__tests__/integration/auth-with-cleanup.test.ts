@@ -6,10 +6,8 @@ import {
   getTestCredentials,
   TEST_USERS 
 } from '../helpers/test-users';
-import { PrismaClient } from '@prisma/client';
+import { db as prisma } from '~/server/db';
 import bcrypt from 'bcryptjs';
-
-const prisma = new PrismaClient();
 
 describe('Authentication with Test User Cleanup', () => {
   // Setup before all tests in this suite
