@@ -58,9 +58,9 @@ export abstract class BaseRepository<T> {
         prismaOptions.where = {};
         Object.keys(options).forEach(key => {
           if (!knownOptions.includes(key)) {
-            prismaOptions.where[key] = options[key];
+            prismaOptions.where[key] = (options as any)[key];
           } else {
-            prismaOptions[key] = options[key];
+            prismaOptions[key] = (options as any)[key];
           }
         });
       } else {
