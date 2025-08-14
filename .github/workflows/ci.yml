@@ -111,7 +111,7 @@ jobs:
         run: pnpm build
         env:
           SKIP_ENV_VALIDATION: true
-          DATABASE_URL: "file:./test.db"
+          DATABASE_URL: "postgresql://test:test@localhost:5432/test_db?schema=public"
           NEXTAUTH_SECRET: "test-secret-for-ci"
           NEXTAUTH_URL: "http://localhost:3000"
           ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
