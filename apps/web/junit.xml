@@ -1,219 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="113" failures="3" errors="0" time="2.651">
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:47" time="0.986" tests="8">
+<testsuites name="jest tests" tests="211" failures="52" errors="0" time="4.346">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:06" time="0.749" tests="8">
     <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.002">
     </testcase>
-    <testcase classname="useSubscriptionStatus should return correct status for active subscription" name="useSubscriptionStatus should return correct status for active subscription" time="0.009">
+    <testcase classname="SearchPage renders the search page with title" name="SearchPage renders the search page with title" time="0.037">
     </testcase>
-    <testcase classname="useSubscriptionStatus should return correct status for expired subscription" name="useSubscriptionStatus should return correct status for expired subscription" time="0.001">
+    <testcase classname="SearchPage displays welcome message with user name" name="SearchPage displays welcome message with user name" time="0.004">
     </testcase>
-    <testcase classname="useSubscriptionStatus should return correct status for pending subscription" name="useSubscriptionStatus should return correct status for pending subscription" time="0.001">
+    <testcase classname="SearchPage renders search form fields" name="SearchPage renders search form fields" time="0.064">
     </testcase>
-    <testcase classname="useSubscriptionStatus should return correct status for canceled subscription" name="useSubscriptionStatus should return correct status for canceled subscription" time="0">
+    <testcase classname="SearchPage shows back to profile link" name="SearchPage shows back to profile link" time="0.003">
     </testcase>
-    <testcase classname="useSubscriptionStatus should not fetch when user is not authenticated" name="useSubscriptionStatus should not fetch when user is not authenticated" time="0">
+    <testcase classname="SearchPage displays demo interface notice" name="SearchPage displays demo interface notice" time="0.006">
     </testcase>
-    <testcase classname="useSubscriptionStatus should handle loading state" name="useSubscriptionStatus should handle loading state" time="0.001">
+    <testcase classname="SearchPage renders for unauthenticated users" name="SearchPage renders for unauthenticated users" time="0.022">
     </testcase>
-    <testcase classname="useSubscriptionStatus should handle no subscription data" name="useSubscriptionStatus should handle no subscription data" time="0.001">
+    <testcase classname="SearchPage shows user email when name is not available" name="SearchPage shows user email when name is not available" time="0.009">
     </testcase>
   </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:48" time="0.946" tests="6">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:06" time="0.781" tests="14">
     <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
     </testcase>
-    <testcase classname="Rate Limiting Security Authentication Endpoints should block after 5 failed signup attempts" name="Rate Limiting Security Authentication Endpoints should block after 5 failed signup attempts" time="0.01">
+    <testcase classname="ProvidersListPage should render provider list" name="ProvidersListPage should render provider list" time="0.042">
     </testcase>
-    <testcase classname="Rate Limiting Security Authentication Endpoints should include proper rate limit headers" name="Rate Limiting Security Authentication Endpoints should include proper rate limit headers" time="0">
+    <testcase classname="ProvidersListPage should display provider details correctly" name="ProvidersListPage should display provider details correctly" time="0.015">
     </testcase>
-    <testcase classname="Rate Limiting Security Authentication Endpoints should track rate limits per IP address" name="Rate Limiting Security Authentication Endpoints should track rate limits per IP address" time="0.001">
+    <testcase classname="ProvidersListPage should show loading state" name="ProvidersListPage should show loading state" time="0.004">
     </testcase>
-    <testcase classname="Rate Limiting Security Rate Limiter Utility should properly calculate remaining requests" name="Rate Limiting Security Rate Limiter Utility should properly calculate remaining requests" time="0">
+    <testcase classname="ProvidersListPage should handle filter toggles" name="ProvidersListPage should handle filter toggles" time="0.034">
     </testcase>
-    <testcase classname="Rate Limiting Security Rate Limiter Utility should reset after time window expires" name="Rate Limiting Security Rate Limiter Utility should reset after time window expires" time="0.002">
+    <testcase classname="ProvidersListPage should toggle vetting status when button clicked" name="ProvidersListPage should toggle vetting status when button clicked" time="0.003">
     </testcase>
-  </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:47" time="1.001" tests="13">
-    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.002">
+    <testcase classname="ProvidersListPage should toggle publishing status when button clicked" name="ProvidersListPage should toggle publishing status when button clicked" time="0.009">
     </testcase>
-    <testcase classname="/api/stripe/webhook should reject non-POST requests" name="/api/stripe/webhook should reject non-POST requests" time="0.001">
+    <testcase classname="ProvidersListPage should disable publish button for unvetted providers" name="ProvidersListPage should disable publish button for unvetted providers" time="0.014">
     </testcase>
-    <testcase classname="/api/stripe/webhook should reject requests without stripe signature" name="/api/stripe/webhook should reject requests without stripe signature" time="0.001">
+    <testcase classname="ProvidersListPage should handle delete with confirmation" name="ProvidersListPage should handle delete with confirmation" time="0.008">
     </testcase>
-    <testcase classname="/api/stripe/webhook checkout.session.completed should update subscription when checkout completes" name="/api/stripe/webhook checkout.session.completed should update subscription when checkout completes" time="0.003">
+    <testcase classname="ProvidersListPage should not delete when confirmation cancelled" name="ProvidersListPage should not delete when confirmation cancelled" time="0.005">
     </testcase>
-    <testcase classname="/api/stripe/webhook checkout.session.completed should reject when userId is missing from metadata" name="/api/stripe/webhook checkout.session.completed should reject when userId is missing from metadata" time="0.001">
+    <testcase classname="ProvidersListPage should show success message after operations" name="ProvidersListPage should show success message after operations" time="0.016">
     </testcase>
-    <testcase classname="/api/stripe/webhook customer.subscription.updated should update subscription details" name="/api/stripe/webhook customer.subscription.updated should update subscription details" time="0">
-    </testcase>
-    <testcase classname="/api/stripe/webhook customer.subscription.updated should handle past_due status" name="/api/stripe/webhook customer.subscription.updated should handle past_due status" time="0.001">
-    </testcase>
-    <testcase classname="/api/stripe/webhook customer.subscription.deleted should mark subscription as expired" name="/api/stripe/webhook customer.subscription.deleted should mark subscription as expired" time="0">
-    </testcase>
-    <testcase classname="/api/stripe/webhook invoice.payment_succeeded should activate subscription on payment success" name="/api/stripe/webhook invoice.payment_succeeded should activate subscription on payment success" time="0">
-    </testcase>
-    <testcase classname="/api/stripe/webhook invoice.payment_failed should mark subscription as past due on payment failure" name="/api/stripe/webhook invoice.payment_failed should mark subscription as past due on payment failure" time="0">
-    </testcase>
-    <testcase classname="/api/stripe/webhook should handle unhandled event types" name="/api/stripe/webhook should handle unhandled event types" time="0">
-    </testcase>
-    <testcase classname="/api/stripe/webhook should handle webhook signature verification failure" name="/api/stripe/webhook should handle webhook signature verification failure" time="0">
-    </testcase>
-    <testcase classname="/api/stripe/webhook should handle processing errors gracefully" name="/api/stripe/webhook should handle processing errors gracefully" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:49" time="0.061" tests="1">
-    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0">
-    </testcase>
-  </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:49" time="0.07" tests="1">
-    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:47" time="1.141" tests="8">
-    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.002">
-    </testcase>
-    <testcase classname="SearchPage renders the search page with title" name="SearchPage renders the search page with title" time="0.034">
-    </testcase>
-    <testcase classname="SearchPage displays welcome message with user name" name="SearchPage displays welcome message with user name" time="0.005">
-    </testcase>
-    <testcase classname="SearchPage renders search form fields" name="SearchPage renders search form fields" time="0.096">
-    </testcase>
-    <testcase classname="SearchPage shows back to profile link" name="SearchPage shows back to profile link" time="0.021">
-    </testcase>
-    <testcase classname="SearchPage displays demo interface notice" name="SearchPage displays demo interface notice" time="0.043">
-    </testcase>
-    <testcase classname="SearchPage renders for unauthenticated users" name="SearchPage renders for unauthenticated users" time="0.013">
-    </testcase>
-    <testcase classname="SearchPage shows user email when name is not available" name="SearchPage shows user email when name is not available" time="0.006">
-    </testcase>
-  </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:48" time="1.136" tests="6">
-    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.006">
-    </testcase>
-    <testcase classname="PremiumFeatureGuard should show loading spinner when loading" name="PremiumFeatureGuard should show loading spinner when loading" time="0.034">
-    </testcase>
-    <testcase classname="PremiumFeatureGuard should show children when user has active subscription" name="PremiumFeatureGuard should show children when user has active subscription" time="0.011">
-    </testcase>
-    <testcase classname="PremiumFeatureGuard should show default fallback when no active subscription" name="PremiumFeatureGuard should show default fallback when no active subscription" time="0.002">
-    </testcase>
-    <testcase classname="PremiumFeatureGuard should show custom fallback when provided" name="PremiumFeatureGuard should show custom fallback when provided" time="0.001">
-    </testcase>
-    <testcase classname="PremiumFeatureGuard should handle canceled subscription as inactive" name="PremiumFeatureGuard should handle canceled subscription as inactive" time="0.013">
-    </testcase>
-  </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:49" time="0.094" tests="1">
-    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0">
-    </testcase>
-  </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:47" time="1.197" tests="14">
-    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
-    </testcase>
-    <testcase classname="ProvidersListPage should render provider list" name="ProvidersListPage should render provider list" time="0.103">
-    </testcase>
-    <testcase classname="ProvidersListPage should display provider details correctly" name="ProvidersListPage should display provider details correctly" time="0.005">
-    </testcase>
-    <testcase classname="ProvidersListPage should show loading state" name="ProvidersListPage should show loading state" time="0.002">
-    </testcase>
-    <testcase classname="ProvidersListPage should handle filter toggles" name="ProvidersListPage should handle filter toggles" time="0.022">
-    </testcase>
-    <testcase classname="ProvidersListPage should toggle vetting status when button clicked" name="ProvidersListPage should toggle vetting status when button clicked" time="0.057">
-    </testcase>
-    <testcase classname="ProvidersListPage should toggle publishing status when button clicked" name="ProvidersListPage should toggle publishing status when button clicked" time="0.018">
-    </testcase>
-    <testcase classname="ProvidersListPage should disable publish button for unvetted providers" name="ProvidersListPage should disable publish button for unvetted providers" time="0.003">
-    </testcase>
-    <testcase classname="ProvidersListPage should handle delete with confirmation" name="ProvidersListPage should handle delete with confirmation" time="0.003">
-    </testcase>
-    <testcase classname="ProvidersListPage should not delete when confirmation cancelled" name="ProvidersListPage should not delete when confirmation cancelled" time="0.003">
-    </testcase>
-    <testcase classname="ProvidersListPage should show success message after operations" name="ProvidersListPage should show success message after operations" time="0.014">
-    </testcase>
-    <testcase classname="ProvidersListPage should show empty state when no providers" name="ProvidersListPage should show empty state when no providers" time="0.002">
+    <testcase classname="ProvidersListPage should show empty state when no providers" name="ProvidersListPage should show empty state when no providers" time="0.006">
     </testcase>
     <testcase classname="ProvidersListPage should have link to add new provider" name="ProvidersListPage should have link to add new provider" time="0.003">
     </testcase>
-    <testcase classname="ProvidersListPage should have edit links for each provider" name="ProvidersListPage should have edit links for each provider" time="0.008">
+    <testcase classname="ProvidersListPage should have edit links for each provider" name="ProvidersListPage should have edit links for each provider" time="0.003">
     </testcase>
   </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:48" time="1.198" tests="20">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:06" time="0.797" tests="6">
     <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.002">
     </testcase>
-    <testcase classname="providerRouter getAll should require admin role" name="providerRouter getAll should require admin role" time="0.024">
+    <testcase classname="PremiumFeatureGuard should show loading spinner when loading" name="PremiumFeatureGuard should show loading spinner when loading" time="0.022">
     </testcase>
-    <testcase classname="providerRouter getAll should return all providers for admin" name="providerRouter getAll should return all providers for admin" time="0.005">
+    <testcase classname="PremiumFeatureGuard should show children when user has active subscription" name="PremiumFeatureGuard should show children when user has active subscription" time="0.004">
     </testcase>
-    <testcase classname="providerRouter getAll should filter providers based on parameters" name="providerRouter getAll should filter providers based on parameters" time="0.001">
+    <testcase classname="PremiumFeatureGuard should show default fallback when no active subscription" name="PremiumFeatureGuard should show default fallback when no active subscription" time="0.007">
     </testcase>
-    <testcase classname="providerRouter getPublished should return only published and vetted providers" name="providerRouter getPublished should return only published and vetted providers" time="0.001">
+    <testcase classname="PremiumFeatureGuard should show custom fallback when provided" name="PremiumFeatureGuard should show custom fallback when provided" time="0.001">
     </testcase>
-    <testcase classname="providerRouter getById should return provider by id" name="providerRouter getById should return provider by id" time="0">
-    </testcase>
-    <testcase classname="providerRouter getById should throw error if provider not found" name="providerRouter getById should throw error if provider not found" time="0.001">
-    </testcase>
-    <testcase classname="providerRouter getById should prevent non-admin from viewing unpublished providers" name="providerRouter getById should prevent non-admin from viewing unpublished providers" time="0">
-    </testcase>
-    <testcase classname="providerRouter create should require admin role" name="providerRouter create should require admin role" time="0.001">
-    </testcase>
-    <testcase classname="providerRouter create should create a new provider" name="providerRouter create should create a new provider" time="0.003">
-    </testcase>
-    <testcase classname="providerRouter update should require admin role" name="providerRouter update should require admin role" time="0">
-    </testcase>
-    <testcase classname="providerRouter update should update provider" name="providerRouter update should update provider" time="0.001">
-    </testcase>
-    <testcase classname="providerRouter delete should require admin role" name="providerRouter delete should require admin role" time="0">
-    </testcase>
-    <testcase classname="providerRouter delete should delete provider" name="providerRouter delete should delete provider" time="0.001">
-    </testcase>
-    <testcase classname="providerRouter delete should throw error if provider not found" name="providerRouter delete should throw error if provider not found" time="0">
-    </testcase>
-    <testcase classname="providerRouter toggleVetting should toggle vetting status" name="providerRouter toggleVetting should toggle vetting status" time="0.001">
-    </testcase>
-    <testcase classname="providerRouter togglePublishing should toggle publishing status" name="providerRouter togglePublishing should toggle publishing status" time="0">
-    </testcase>
-    <testcase classname="providerRouter togglePublishing should prevent publishing unvetted providers" name="providerRouter togglePublishing should prevent publishing unvetted providers" time="0.001">
-    </testcase>
-    <testcase classname="providerRouter createProgram should require admin role" name="providerRouter createProgram should require admin role" time="0">
-    </testcase>
-    <testcase classname="providerRouter createProgram should create a new program" name="providerRouter createProgram should create a new program" time="0.001">
+    <testcase classname="PremiumFeatureGuard should handle canceled subscription as inactive" name="PremiumFeatureGuard should handle canceled subscription as inactive" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:48" time="1.232" tests="10">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:06" time="0.943" tests="10">
     <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.007">
     </testcase>
-    <testcase classname="NewProviderPage should render the form with all required fields" name="NewProviderPage should render the form with all required fields" time="0.13">
+    <testcase classname="NewProviderPage should render the form with all required fields" name="NewProviderPage should render the form with all required fields" time="0.075">
     </testcase>
-    <testcase classname="NewProviderPage should handle vetting and publishing checkboxes" name="NewProviderPage should handle vetting and publishing checkboxes" time="0.03">
+    <testcase classname="NewProviderPage should handle vetting and publishing checkboxes" name="NewProviderPage should handle vetting and publishing checkboxes" time="0.056">
     </testcase>
-    <testcase classname="NewProviderPage should handle special needs fields" name="NewProviderPage should handle special needs fields" time="0.03">
+    <testcase classname="NewProviderPage should handle special needs fields" name="NewProviderPage should handle special needs fields" time="0.025">
     </testcase>
-    <testcase classname="NewProviderPage should handle age groups input" name="NewProviderPage should handle age groups input" time="0.013">
+    <testcase classname="NewProviderPage should handle age groups input" name="NewProviderPage should handle age groups input" time="0.015">
     </testcase>
-    <testcase classname="NewProviderPage should validate required fields" name="NewProviderPage should validate required fields" time="0.01">
+    <testcase classname="NewProviderPage should validate required fields" name="NewProviderPage should validate required fields" time="0.015">
     </testcase>
-    <testcase classname="NewProviderPage should show loading state during submission" name="NewProviderPage should show loading state during submission" time="0.034">
+    <testcase classname="NewProviderPage should show loading state during submission" name="NewProviderPage should show loading state during submission" time="0.064">
     </testcase>
-    <testcase classname="NewProviderPage should display error message on failure" name="NewProviderPage should display error message on failure" time="0.004">
+    <testcase classname="NewProviderPage should display error message on failure" name="NewProviderPage should display error message on failure" time="0.014">
     </testcase>
-    <testcase classname="NewProviderPage should handle cancel button" name="NewProviderPage should handle cancel button" time="0.007">
+    <testcase classname="NewProviderPage should handle cancel button" name="NewProviderPage should handle cancel button" time="0.021">
     </testcase>
     <testcase classname="NewProviderPage should handle all Australian states" name="NewProviderPage should handle all Australian states" time="0.01">
     </testcase>
   </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:49" time="0.189" tests="13">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:07" time="0.259" tests="13">
     <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
     </testcase>
-    <testcase classname="Provider CRUD Operations create should allow admin to create a provider" name="Provider CRUD Operations create should allow admin to create a provider" time="0.01">
+    <testcase classname="Provider CRUD Operations create should allow admin to create a provider" name="Provider CRUD Operations create should allow admin to create a provider" time="0.022">
     </testcase>
-    <testcase classname="Provider CRUD Operations create should reject non-admin users from creating providers" name="Provider CRUD Operations create should reject non-admin users from creating providers" time="0.01">
+    <testcase classname="Provider CRUD Operations create should reject non-admin users from creating providers" name="Provider CRUD Operations create should reject non-admin users from creating providers" time="0.016">
     </testcase>
-    <testcase classname="Provider CRUD Operations create should validate required fields" name="Provider CRUD Operations create should validate required fields" time="0.002">
+    <testcase classname="Provider CRUD Operations create should validate required fields" name="Provider CRUD Operations create should validate required fields" time="0.001">
     </testcase>
-    <testcase classname="Provider CRUD Operations update should allow admin to update a provider" name="Provider CRUD Operations update should allow admin to update a provider" time="0.002">
+    <testcase classname="Provider CRUD Operations update should allow admin to update a provider" name="Provider CRUD Operations update should allow admin to update a provider" time="0.003">
     </testcase>
-    <testcase classname="Provider CRUD Operations update should reject non-admin users from updating providers" name="Provider CRUD Operations update should reject non-admin users from updating providers" time="0">
+    <testcase classname="Provider CRUD Operations update should reject non-admin users from updating providers" name="Provider CRUD Operations update should reject non-admin users from updating providers" time="0.001">
     </testcase>
-    <testcase classname="Provider CRUD Operations toggleVetting should toggle vetting status" name="Provider CRUD Operations toggleVetting should toggle vetting status" time="0.001">
+    <testcase classname="Provider CRUD Operations toggleVetting should toggle vetting status" name="Provider CRUD Operations toggleVetting should toggle vetting status" time="0.002">
     </testcase>
-    <testcase classname="Provider CRUD Operations togglePublishing should toggle publishing status" name="Provider CRUD Operations togglePublishing should toggle publishing status" time="0.001">
+    <testcase classname="Provider CRUD Operations togglePublishing should toggle publishing status" name="Provider CRUD Operations togglePublishing should toggle publishing status" time="0">
     </testcase>
     <testcase classname="Provider CRUD Operations getAll should return all providers for admin with filters" name="Provider CRUD Operations getAll should return all providers for admin with filters" time="0.001">
     </testcase>
@@ -226,48 +112,1199 @@
     <testcase classname="Provider CRUD Operations delete should reject non-admin users from deleting providers" name="Provider CRUD Operations delete should reject non-admin users from deleting providers" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="3" skipped="0" timestamp="2025-08-13T23:48:47" time="1.46" tests="6">
-    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.002">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:07" time="0.165" tests="13">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
     </testcase>
-    <testcase classname="Authentication with Test User Cleanup Admin User Tests should create and authenticate admin user" name="Authentication with Test User Cleanup Admin User Tests should create and authenticate admin user" time="0.178">
+    <testcase classname="/api/stripe/webhook should reject non-POST requests" name="/api/stripe/webhook should reject non-POST requests" time="0.002">
     </testcase>
-    <testcase classname="Authentication with Test User Cleanup Admin User Tests should recreate admin user even if it already exists" name="Authentication with Test User Cleanup Admin User Tests should recreate admin user even if it already exists" time="0.256">
+    <testcase classname="/api/stripe/webhook should reject requests without stripe signature" name="/api/stripe/webhook should reject requests without stripe signature" time="0.001">
+    </testcase>
+    <testcase classname="/api/stripe/webhook checkout.session.completed should update subscription when checkout completes" name="/api/stripe/webhook checkout.session.completed should update subscription when checkout completes" time="0.032">
+    </testcase>
+    <testcase classname="/api/stripe/webhook checkout.session.completed should reject when userId is missing from metadata" name="/api/stripe/webhook checkout.session.completed should reject when userId is missing from metadata" time="0.001">
+    </testcase>
+    <testcase classname="/api/stripe/webhook customer.subscription.updated should update subscription details" name="/api/stripe/webhook customer.subscription.updated should update subscription details" time="0.001">
+    </testcase>
+    <testcase classname="/api/stripe/webhook customer.subscription.updated should handle past_due status" name="/api/stripe/webhook customer.subscription.updated should handle past_due status" time="0.002">
+    </testcase>
+    <testcase classname="/api/stripe/webhook customer.subscription.deleted should mark subscription as expired" name="/api/stripe/webhook customer.subscription.deleted should mark subscription as expired" time="0.003">
+    </testcase>
+    <testcase classname="/api/stripe/webhook invoice.payment_succeeded should activate subscription on payment success" name="/api/stripe/webhook invoice.payment_succeeded should activate subscription on payment success" time="0.001">
+    </testcase>
+    <testcase classname="/api/stripe/webhook invoice.payment_failed should mark subscription as past due on payment failure" name="/api/stripe/webhook invoice.payment_failed should mark subscription as past due on payment failure" time="0">
+    </testcase>
+    <testcase classname="/api/stripe/webhook should handle unhandled event types" name="/api/stripe/webhook should handle unhandled event types" time="0.001">
+    </testcase>
+    <testcase classname="/api/stripe/webhook should handle webhook signature verification failure" name="/api/stripe/webhook should handle webhook signature verification failure" time="0">
+    </testcase>
+    <testcase classname="/api/stripe/webhook should handle processing errors gracefully" name="/api/stripe/webhook should handle processing errors gracefully" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:07" time="0.221" tests="20">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0">
+    </testcase>
+    <testcase classname="providerRouter getAll should require admin role" name="providerRouter getAll should require admin role" time="0.031">
+    </testcase>
+    <testcase classname="providerRouter getAll should return all providers for admin" name="providerRouter getAll should return all providers for admin" time="0.003">
+    </testcase>
+    <testcase classname="providerRouter getAll should filter providers based on parameters" name="providerRouter getAll should filter providers based on parameters" time="0.002">
+    </testcase>
+    <testcase classname="providerRouter getPublished should return only published and vetted providers" name="providerRouter getPublished should return only published and vetted providers" time="0">
+    </testcase>
+    <testcase classname="providerRouter getById should return provider by id" name="providerRouter getById should return provider by id" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter getById should throw error if provider not found" name="providerRouter getById should throw error if provider not found" time="0">
+    </testcase>
+    <testcase classname="providerRouter getById should prevent non-admin from viewing unpublished providers" name="providerRouter getById should prevent non-admin from viewing unpublished providers" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter create should require admin role" name="providerRouter create should require admin role" time="0">
+    </testcase>
+    <testcase classname="providerRouter create should create a new provider" name="providerRouter create should create a new provider" time="0.006">
+    </testcase>
+    <testcase classname="providerRouter update should require admin role" name="providerRouter update should require admin role" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter update should update provider" name="providerRouter update should update provider" time="0.002">
+    </testcase>
+    <testcase classname="providerRouter delete should require admin role" name="providerRouter delete should require admin role" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter delete should delete provider" name="providerRouter delete should delete provider" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter delete should throw error if provider not found" name="providerRouter delete should throw error if provider not found" time="0">
+    </testcase>
+    <testcase classname="providerRouter toggleVetting should toggle vetting status" name="providerRouter toggleVetting should toggle vetting status" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter togglePublishing should toggle publishing status" name="providerRouter togglePublishing should toggle publishing status" time="0">
+    </testcase>
+    <testcase classname="providerRouter togglePublishing should prevent publishing unvetted providers" name="providerRouter togglePublishing should prevent publishing unvetted providers" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter createProgram should require admin role" name="providerRouter createProgram should require admin role" time="0.001">
+    </testcase>
+    <testcase classname="providerRouter createProgram should create a new program" name="providerRouter createProgram should create a new program" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:07" time="0.395" tests="1">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:07" time="0.068" tests="1">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:07" time="0.204" tests="6">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0">
+    </testcase>
+    <testcase classname="Rate Limiting Security Authentication Endpoints should block after 5 failed signup attempts" name="Rate Limiting Security Authentication Endpoints should block after 5 failed signup attempts" time="0.013">
+    </testcase>
+    <testcase classname="Rate Limiting Security Authentication Endpoints should include proper rate limit headers" name="Rate Limiting Security Authentication Endpoints should include proper rate limit headers" time="0.001">
+    </testcase>
+    <testcase classname="Rate Limiting Security Authentication Endpoints should track rate limits per IP address" name="Rate Limiting Security Authentication Endpoints should track rate limits per IP address" time="0">
+    </testcase>
+    <testcase classname="Rate Limiting Security Rate Limiter Utility should properly calculate remaining requests" name="Rate Limiting Security Rate Limiter Utility should properly calculate remaining requests" time="0">
+    </testcase>
+    <testcase classname="Rate Limiting Security Rate Limiter Utility should reset after time window expires" name="Rate Limiting Security Rate Limiter Utility should reset after time window expires" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:07" time="0.062" tests="1">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:07" time="0.159" tests="8">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
+    </testcase>
+    <testcase classname="useSubscriptionStatus should return correct status for active subscription" name="useSubscriptionStatus should return correct status for active subscription" time="0.004">
+    </testcase>
+    <testcase classname="useSubscriptionStatus should return correct status for expired subscription" name="useSubscriptionStatus should return correct status for expired subscription" time="0.001">
+    </testcase>
+    <testcase classname="useSubscriptionStatus should return correct status for pending subscription" name="useSubscriptionStatus should return correct status for pending subscription" time="0.001">
+    </testcase>
+    <testcase classname="useSubscriptionStatus should return correct status for canceled subscription" name="useSubscriptionStatus should return correct status for canceled subscription" time="0.001">
+    </testcase>
+    <testcase classname="useSubscriptionStatus should not fetch when user is not authenticated" name="useSubscriptionStatus should not fetch when user is not authenticated" time="0.001">
+    </testcase>
+    <testcase classname="useSubscriptionStatus should handle loading state" name="useSubscriptionStatus should handle loading state" time="0">
+    </testcase>
+    <testcase classname="useSubscriptionStatus should handle no subscription data" name="useSubscriptionStatus should handle no subscription data" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:07" time="0.104" tests="1">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:07" time="0.084" tests="1">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:07" time="0.091" tests="1">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="11" skipped="0" timestamp="2025-08-14T05:21:06" time="1.501" tests="31">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.005">
+    </testcase>
+    <testcase classname="ProviderRepository create should create a new provider" name="ProviderRepository create should create a new provider" time="0.01">
+    </testcase>
+    <testcase classname="ProviderRepository create should handle duplicate email gracefully" name="ProviderRepository create should handle duplicate email gracefully" time="0.002">
+      <failure>Error: expect(received).rejects.toThrow()
+
+Received promise resolved instead of rejected
+Resolved to value: {&quot;abn&quot;: &quot;89101345128&quot;, &quot;address&quot;: &quot;8059 DuBuque Rapids&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Botsford Inc&quot;, &quot;capacity&quot;: 48, &quot;contactName&quot;: &quot;Kerry Romaguera&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.571Z, &quot;description&quot;: &quot;Optional asymmetric moderator&quot;, &quot;email&quot;: &quot;duplicate@test.com&quot;, &quot;id&quot;: &quot;d6552d58-980f-4e34-98ef-49c6b29df163&quot;, &quot;isPublished&quot;: true, &quot;isVetted&quot;: true, &quot;logoUrl&quot;: &quot;https://picsum.photos/seed/HE3Nw/3984/3077&quot;, &quot;phone&quot;: &quot;1-268-744-7505 x8397&quot;, &quot;postcode&quot;: &quot;0741&quot;, &quot;specialNeeds&quot;: false, &quot;specialNeedsDetails&quot;: &quot;Denique attonbitus commemoro tutis audentia cur.&quot;, &quot;state&quot;: &quot;TAS&quot;, &quot;suburb&quot;: &quot;Lake Aletha&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.571Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.571Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://skeletal-bin.org&quot;}
+    at expect (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2116:15)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/repositories/__tests__/provider.repository.test.ts:52:19)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="ProviderRepository create should create provider with programs" name="ProviderRepository create should create provider with programs" time="0.005">
+    </testcase>
+    <testcase classname="ProviderRepository create should rollback on partial failure" name="ProviderRepository create should rollback on partial failure" time="0.004">
+      <failure>Error: expect(received).rejects.toThrow()
+
+Received promise resolved instead of rejected
+Resolved to value: {&quot;abn&quot;: &quot;61860610588&quot;, &quot;address&quot;: &quot;67292 Josiane Radial&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Konopelski Inc&quot;, &quot;capacity&quot;: 80, &quot;contactName&quot;: &quot;Ted Boyer&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.592Z, &quot;description&quot;: &quot;Seamless mobile instruction set&quot;, &quot;email&quot;: &quot;jazmin87@gmail.com&quot;, &quot;id&quot;: &quot;11fc23ac-c2f3-499f-8a98-c10f755c6c7d&quot;, &quot;isPublished&quot;: true, &quot;isVetted&quot;: true, &quot;logoUrl&quot;: &quot;https://picsum.photos/seed/WUKfnhEkK7/2388/3024&quot;, &quot;phone&quot;: &quot;689.470.8079&quot;, &quot;postcode&quot;: &quot;7225&quot;, &quot;programs&quot;: [{&quot;ageMax&quot;: 16, &quot;ageMin&quot;: 7, &quot;capacity&quot;: 20, &quot;category&quot;: &quot;Arts&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.592Z, &quot;daysOfWeek&quot;: &quot;[\&quot;Monday\&quot;,\&quot;Tuesday\&quot;,\&quot;Wednesday\&quot;,\&quot;Thursday\&quot;,\&quot;Friday\&quot;]&quot;, &quot;description&quot;: &quot;Conscendo sit carus calculus auxilium vitiosus depromo. Demitto ocer nulla volva sordeo capto accendo blanditiis defleo. Tonsor territo alii viridis et patior.&quot;, &quot;endDate&quot;: 2026-03-19T04:53:03.053Z, &quot;endTime&quot;: &quot;17:00&quot;, &quot;enrolledCount&quot;: 0, &quot;id&quot;: &quot;ae33dd54-2fde-4810-95ef-d2633a751856&quot;, &quot;isActive&quot;: true, &quot;isPublished&quot;: true, &quot;location&quot;: &quot;166 Roosevelt Parkways&quot;, &quot;name&quot;: &quot;Science Lab&quot;, &quot;price&quot;: 353.25, &quot;providerId&quot;: &quot;11fc23ac-c2f3-499f-8a98-c10f755c6c7d&quot;, &quot;startDate&quot;: 2025-09-19T02:42:23.151Z, &quot;startTime&quot;: &quot;09:00&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.592Z}, {&quot;ageMax&quot;: 12, &quot;ageMin&quot;: 8, &quot;capacity&quot;: 20, &quot;category&quot;: &quot;Sports&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.592Z, &quot;daysOfWeek&quot;: &quot;[\&quot;Monday\&quot;,\&quot;Tuesday\&quot;,\&quot;Wednesday\&quot;,\&quot;Thursday\&quot;,\&quot;Friday\&quot;]&quot;, &quot;description&quot;: &quot;Degenero accedo ascit taedium taceo tego consequuntur consequuntur thorax. Suscipio nobis convoco ager angelus valetudo. Vulgus convoco carus consequatur conicio repellendus.&quot;, &quot;endDate&quot;: 2025-08-20T09:49:10.622Z, &quot;endTime&quot;: &quot;17:00&quot;, &quot;enrolledCount&quot;: 0, &quot;id&quot;: &quot;305954cc-b188-4be5-86ba-853211d60e34&quot;, &quot;isActive&quot;: true, &quot;isPublished&quot;: true, &quot;location&quot;: &quot;4445 Flatley Mall&quot;, &quot;name&quot;: null, &quot;price&quot;: 244.59, &quot;providerId&quot;: &quot;11fc23ac-c2f3-499f-8a98-c10f755c6c7d&quot;, &quot;startDate&quot;: 2026-03-19T06:14:24.841Z, &quot;startTime&quot;: &quot;09:00&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.592Z}, {&quot;ageMax&quot;: 10, &quot;ageMin&quot;: 5, &quot;capacity&quot;: 11, &quot;category&quot;: &quot;Sports&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.592Z, &quot;daysOfWeek&quot;: &quot;[\&quot;Monday\&quot;,\&quot;Tuesday\&quot;,\&quot;Wednesday\&quot;,\&quot;Thursday\&quot;,\&quot;Friday\&quot;]&quot;, &quot;description&quot;: &quot;Excepturi spiculum cohibeo sortitus. Veniam utrum aequitas arcus sublime. Trado constans tam.&quot;, &quot;endDate&quot;: 2025-08-26T01:53:55.607Z, &quot;endTime&quot;: &quot;17:00&quot;, &quot;enrolledCount&quot;: 0, &quot;id&quot;: &quot;36d5704a-534f-4170-982a-4b504174a705&quot;, &quot;isActive&quot;: true, &quot;isPublished&quot;: true, &quot;location&quot;: &quot;670 Zachariah Mount&quot;, &quot;name&quot;: &quot;Summer Camp&quot;, &quot;price&quot;: 130.99, &quot;providerId&quot;: &quot;11fc23ac-c2f3-499f-8a98-c10f755c6c7d&quot;, &quot;startDate&quot;: 2026-05-28T18:37:58.384Z, &quot;startTime&quot;: &quot;09:00&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.592Z}], &quot;specialNeeds&quot;: false, &quot;specialNeedsDetails&quot;: &quot;Curvo quibusdam iste voluptates temeritas impedit atavus ventito basium.&quot;, &quot;state&quot;: &quot;NT&quot;, &quot;suburb&quot;: &quot;West Ken&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.592Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.591Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://dull-mythology.name&quot;}
+    at expect (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2116:15)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/repositories/__tests__/provider.repository.test.ts:72:19)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="ProviderRepository findById should find provider by id" name="ProviderRepository findById should find provider by id" time="0.001">
+    </testcase>
+    <testcase classname="ProviderRepository findById should return null for non-existent id" name="ProviderRepository findById should return null for non-existent id" time="0.001">
+    </testcase>
+    <testcase classname="ProviderRepository findById should include programs when requested" name="ProviderRepository findById should include programs when requested" time="0.002">
+      <failure>TypeError: expect(received).toHaveLength(expected)
+
+Matcher error: received value must have a length property whose value must be a number
+
+Received has value: undefined
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/repositories/__tests__/provider.repository.test.ts:115:32)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="ProviderRepository findMany should find all providers" name="ProviderRepository findMany should find all providers" time="0.013">
+    </testcase>
+    <testcase classname="ProviderRepository findMany should filter by published status" name="ProviderRepository findMany should filter by published status" time="0.004">
+      <failure>Error: expect(received).toHaveLength(expected)
+
+Expected length: 2
+Received length: 4
+Received array:  [{&quot;abn&quot;: &quot;99846924757&quot;, &quot;address&quot;: &quot;24656 Jensen Estate&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Active Provider&quot;, &quot;capacity&quot;: 87, &quot;contactName&quot;: &quot;Patti Hartmann DVM&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.615Z, &quot;description&quot;: &quot;Persevering contextually-based concept&quot;, &quot;email&quot;: &quot;wilford.terry4@gmail.com&quot;, &quot;id&quot;: &quot;be6a80ec-6158-43d4-932b-8b46e5ef0790&quot;, &quot;isPublished&quot;: true, &quot;isVetted&quot;: true, &quot;logoUrl&quot;: &quot;https://loremflickr.com/1301/694?lock=7422087117506437&quot;, &quot;phone&quot;: &quot;1-247-775-9299 x046&quot;, &quot;postcode&quot;: &quot;3042&quot;, &quot;specialNeeds&quot;: true, &quot;specialNeedsDetails&quot;: &quot;Placeat calamitas verto suffoco bos.&quot;, &quot;state&quot;: &quot;SA&quot;, &quot;suburb&quot;: &quot;MacGyverstead&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.615Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.614Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://wrong-perp.name&quot;}, {&quot;abn&quot;: &quot;24550354879&quot;, &quot;address&quot;: &quot;22626 Birch Close&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Unpublished Provider&quot;, &quot;capacity&quot;: 12, &quot;contactName&quot;: &quot;Margarita Ryan&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.615Z, &quot;description&quot;: &quot;Horizontal stable flexibility&quot;, &quot;email&quot;: &quot;althea_stamm17@yahoo.com&quot;, &quot;id&quot;: &quot;1136c20e-5586-44bc-9dcb-3b4b1660eaca&quot;, &quot;isPublished&quot;: false, &quot;isVetted&quot;: true, &quot;logoUrl&quot;: &quot;https://picsum.photos/seed/OFX18/3250/800&quot;, &quot;phone&quot;: &quot;872-525-5060 x0824&quot;, &quot;postcode&quot;: &quot;8662&quot;, &quot;specialNeeds&quot;: true, &quot;specialNeedsDetails&quot;: &quot;Quos sequi coruscus adnuo curvo ars victus utrimque coerceo.&quot;, &quot;state&quot;: &quot;QLD&quot;, &quot;suburb&quot;: &quot;Haleyburgh&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.615Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.614Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://potable-gastropod.org&quot;}, {&quot;abn&quot;: &quot;33947043102&quot;, &quot;address&quot;: &quot;385 York Street&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Unvetted Provider&quot;, &quot;capacity&quot;: 36, &quot;contactName&quot;: &quot;Miss Claire Goodwin&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.615Z, &quot;description&quot;: &quot;Robust zero defect monitoring&quot;, &quot;email&quot;: &quot;rebecca25@yahoo.com&quot;, &quot;id&quot;: &quot;008d5ada-082c-4674-8326-8e65db1bf77b&quot;, &quot;isPublished&quot;: true, &quot;isVetted&quot;: false, &quot;logoUrl&quot;: &quot;https://picsum.photos/seed/lRzvuGsz/99/1861&quot;, &quot;phone&quot;: &quot;(519) 790-1844 x2447&quot;, &quot;postcode&quot;: &quot;7524&quot;, &quot;specialNeeds&quot;: true, &quot;specialNeedsDetails&quot;: &quot;Comis antea audacia cupiditate circumvenio sub consectetur occaecati aspernatur.&quot;, &quot;state&quot;: &quot;NT&quot;, &quot;suburb&quot;: &quot;Heaneyborough&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.615Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.614Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://steel-scenario.info&quot;}, {&quot;abn&quot;: &quot;31150739002&quot;, &quot;address&quot;: &quot;8878 W 3rd Street&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Inactive Provider&quot;, &quot;capacity&quot;: 58, &quot;contactName&quot;: &quot;Candace Wiegand&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.615Z, &quot;description&quot;: &quot;Multi-tiered clear-thinking attitude&quot;, &quot;email&quot;: &quot;enos.mosciski@hotmail.com&quot;, &quot;id&quot;: &quot;2ede714e-6548-4756-b433-0ff116cd0482&quot;, &quot;isPublished&quot;: false, &quot;isVetted&quot;: false, &quot;logoUrl&quot;: &quot;https://loremflickr.com/3191/3416?lock=7060756408087108&quot;, &quot;phone&quot;: &quot;320.467.1940&quot;, &quot;postcode&quot;: &quot;0884&quot;, &quot;specialNeeds&quot;: true, &quot;specialNeedsDetails&quot;: &quot;Summisse abbas advenio turba vulpes carbo.&quot;, &quot;state&quot;: &quot;QLD&quot;, &quot;suburb&quot;: &quot;Douglasfurt&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.615Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.615Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://firm-expense.info&quot;}]
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/repositories/__tests__/provider.repository.test.ts:158:22)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="ProviderRepository findMany should filter by vetted status" name="ProviderRepository findMany should filter by vetted status" time="0.001">
+      <failure>Error: expect(received).toHaveLength(expected)
+
+Expected length: 2
+Received length: 4
+Received array:  [{&quot;abn&quot;: &quot;64466805666&quot;, &quot;address&quot;: &quot;1704 E Water Street&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Active Provider&quot;, &quot;capacity&quot;: 21, &quot;contactName&quot;: &quot;Cameron Ward&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.617Z, &quot;description&quot;: &quot;Advanced static approach&quot;, &quot;email&quot;: &quot;della.sauer60@yahoo.com&quot;, &quot;id&quot;: &quot;6bace482-fc2b-4c27-bd50-5c14d2682bca&quot;, &quot;isPublished&quot;: true, &quot;isVetted&quot;: true, &quot;logoUrl&quot;: &quot;https://picsum.photos/seed/1H0i37/3574/194&quot;, &quot;phone&quot;: &quot;228-245-2751 x400&quot;, &quot;postcode&quot;: &quot;9311&quot;, &quot;specialNeeds&quot;: false, &quot;specialNeedsDetails&quot;: &quot;Caries cubitum corrupti cauda summa cernuus doloribus aperio ubi stips.&quot;, &quot;state&quot;: &quot;TAS&quot;, &quot;suburb&quot;: &quot;North Broderickchester&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.617Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.617Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://decisive-video.info&quot;}, {&quot;abn&quot;: &quot;85080707845&quot;, &quot;address&quot;: &quot;901 S 7th Street&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Unpublished Provider&quot;, &quot;capacity&quot;: 54, &quot;contactName&quot;: &quot;Mr. Brendan Reichert&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.617Z, &quot;description&quot;: &quot;Focused heuristic core&quot;, &quot;email&quot;: &quot;floyd54@yahoo.com&quot;, &quot;id&quot;: &quot;893d1e9f-4ea0-4191-aba2-a93b4d67ae7a&quot;, &quot;isPublished&quot;: false, &quot;isVetted&quot;: true, &quot;logoUrl&quot;: &quot;https://loremflickr.com/2501/2548?lock=8422911427201961&quot;, &quot;phone&quot;: &quot;406-386-9093 x564&quot;, &quot;postcode&quot;: &quot;7768&quot;, &quot;specialNeeds&quot;: false, &quot;specialNeedsDetails&quot;: &quot;Vigilo templum caelestis strenuus capitulus clamo brevis derelinquo.&quot;, &quot;state&quot;: &quot;NSW&quot;, &quot;suburb&quot;: &quot;South Berry&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.617Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.617Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://inferior-conversation.org&quot;}, {&quot;abn&quot;: &quot;31524367427&quot;, &quot;address&quot;: &quot;527 VonRueden Fords&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Unvetted Provider&quot;, &quot;capacity&quot;: 27, &quot;contactName&quot;: &quot;Elsa Emard&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.617Z, &quot;description&quot;: &quot;Reduced stable parallelism&quot;, &quot;email&quot;: &quot;lacy0@yahoo.com&quot;, &quot;id&quot;: &quot;6e9595d1-31d4-4f25-aea7-2c5c99519b99&quot;, &quot;isPublished&quot;: true, &quot;isVetted&quot;: false, &quot;logoUrl&quot;: &quot;https://loremflickr.com/3252/2980?lock=6957185276696743&quot;, &quot;phone&quot;: &quot;815.251.8210&quot;, &quot;postcode&quot;: &quot;2654&quot;, &quot;specialNeeds&quot;: true, &quot;specialNeedsDetails&quot;: &quot;Patrocinor atqui repellat concedo ara thermae amo vivo ter summa.&quot;, &quot;state&quot;: &quot;ACT&quot;, &quot;suburb&quot;: &quot;Jefferson City&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.617Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.617Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://quintessential-taxicab.biz&quot;}, {&quot;abn&quot;: &quot;94427966642&quot;, &quot;address&quot;: &quot;66408 Kristian Road&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Inactive Provider&quot;, &quot;capacity&quot;: 45, &quot;contactName&quot;: &quot;Bryan Adams&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.617Z, &quot;description&quot;: &quot;Focused zero administration array&quot;, &quot;email&quot;: &quot;guillermo_orn@gmail.com&quot;, &quot;id&quot;: &quot;3c084dc7-713b-41cf-9179-d25d82debfe1&quot;, &quot;isPublished&quot;: false, &quot;isVetted&quot;: false, &quot;logoUrl&quot;: &quot;https://picsum.photos/seed/DXPNWCj6Hw/3023/2989&quot;, &quot;phone&quot;: &quot;880-495-1007 x2215&quot;, &quot;postcode&quot;: &quot;6840&quot;, &quot;specialNeeds&quot;: false, &quot;specialNeedsDetails&quot;: &quot;Crapula vinculum custodia basium quas alius argumentum torrens totus caput.&quot;, &quot;state&quot;: &quot;QLD&quot;, &quot;suburb&quot;: &quot;South Abbieton&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.617Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.617Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://fluffy-perfection.net&quot;}]
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/repositories/__tests__/provider.repository.test.ts:165:22)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="ProviderRepository findMany should filter by both published and vetted" name="ProviderRepository findMany should filter by both published and vetted" time="0.004">
+      <failure>Error: expect(received).toHaveLength(expected)
+
+Expected length: 1
+Received length: 4
+Received array:  [{&quot;abn&quot;: &quot;70997831156&quot;, &quot;address&quot;: &quot;1770 Kessler Center&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Active Provider&quot;, &quot;capacity&quot;: 64, &quot;contactName&quot;: &quot;Mr. Chad Corwin&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.621Z, &quot;description&quot;: &quot;Focused composite infrastructure&quot;, &quot;email&quot;: &quot;janice_nicolas56@hotmail.com&quot;, &quot;id&quot;: &quot;bff7d893-63ba-4c94-8fa7-c4c51c3a4a29&quot;, &quot;isPublished&quot;: true, &quot;isVetted&quot;: true, &quot;logoUrl&quot;: &quot;https://loremflickr.com/1242/3954?lock=2896143558093277&quot;, &quot;phone&quot;: &quot;1-344-948-1555 x571&quot;, &quot;postcode&quot;: &quot;8191&quot;, &quot;specialNeeds&quot;: true, &quot;specialNeedsDetails&quot;: &quot;Currus aiunt sodalitas trucido eum architecto.&quot;, &quot;state&quot;: &quot;WA&quot;, &quot;suburb&quot;: &quot;Port Kurtburgh&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.621Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.619Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://corny-mechanic.com/&quot;}, {&quot;abn&quot;: &quot;81895635815&quot;, &quot;address&quot;: &quot;8182 Hoeger Viaduct&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Unpublished Provider&quot;, &quot;capacity&quot;: 14, &quot;contactName&quot;: &quot;Erica VonRueden&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.621Z, &quot;description&quot;: &quot;Versatile next generation installation&quot;, &quot;email&quot;: &quot;kenyon50@yahoo.com&quot;, &quot;id&quot;: &quot;70e3e9fd-00b8-4c93-ac0c-aa037705f4aa&quot;, &quot;isPublished&quot;: false, &quot;isVetted&quot;: true, &quot;logoUrl&quot;: &quot;https://loremflickr.com/2416/444?lock=5754809224029906&quot;, &quot;phone&quot;: &quot;214-591-6948 x1125&quot;, &quot;postcode&quot;: &quot;9940&quot;, &quot;specialNeeds&quot;: false, &quot;specialNeedsDetails&quot;: &quot;Sui laudantium thalassinus tamisium officiis auxilium absens defluo caput calamitas.&quot;, &quot;state&quot;: &quot;QLD&quot;, &quot;suburb&quot;: &quot;New Dantefield&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.621Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.620Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://some-rubric.biz&quot;}, {&quot;abn&quot;: &quot;40640854789&quot;, &quot;address&quot;: &quot;23909 Altenwerth Terrace&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Unvetted Provider&quot;, &quot;capacity&quot;: 93, &quot;contactName&quot;: &quot;Wendy Simonis&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.621Z, &quot;description&quot;: &quot;Organic value-added help-desk&quot;, &quot;email&quot;: &quot;joany.wisoky-morar@gmail.com&quot;, &quot;id&quot;: &quot;86849939-7fb2-4e7d-9d03-ec23943f78a1&quot;, &quot;isPublished&quot;: true, &quot;isVetted&quot;: false, &quot;logoUrl&quot;: &quot;https://loremflickr.com/2225/3105?lock=4044760391974147&quot;, &quot;phone&quot;: &quot;480-244-0549 x011&quot;, &quot;postcode&quot;: &quot;7372&quot;, &quot;specialNeeds&quot;: false, &quot;specialNeedsDetails&quot;: &quot;Vivo odit usus vulgivagus spes stillicidium attollo delectatio.&quot;, &quot;state&quot;: &quot;ACT&quot;, &quot;suburb&quot;: &quot;Considineborough&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.621Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.620Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://ragged-vibration.org/&quot;}, {&quot;abn&quot;: &quot;49461243683&quot;, &quot;address&quot;: &quot;340 Bertha Neck&quot;, &quot;ageGroups&quot;: [&quot;5-7&quot;, &quot;8-12&quot;], &quot;businessName&quot;: &quot;Inactive Provider&quot;, &quot;capacity&quot;: 36, &quot;contactName&quot;: &quot;Freda Hyatt&quot;, &quot;createdAt&quot;: 2025-08-14T05:21:07.621Z, &quot;description&quot;: &quot;Polarised user-facing solution&quot;, &quot;email&quot;: &quot;ransom_schuster@yahoo.com&quot;, &quot;id&quot;: &quot;b510a07e-dbdb-4070-a837-3d250407069e&quot;, &quot;isPublished&quot;: false, &quot;isVetted&quot;: false, &quot;logoUrl&quot;: &quot;https://loremflickr.com/2951/3494?lock=6759505615143848&quot;, &quot;phone&quot;: &quot;(484) 636-5892 x13723&quot;, &quot;postcode&quot;: &quot;5463&quot;, &quot;specialNeeds&quot;: false, &quot;specialNeedsDetails&quot;: &quot;Adiuvo molestiae despecto earum addo corrumpo.&quot;, &quot;state&quot;: &quot;ACT&quot;, &quot;suburb&quot;: &quot;Bednarstad&quot;, &quot;updatedAt&quot;: 2025-08-14T05:21:07.621Z, &quot;vettingDate&quot;: 2025-08-14T05:21:07.621Z, &quot;vettingStatus&quot;: &quot;APPROVED&quot;, &quot;website&quot;: &quot;https://slight-validity.biz&quot;}]
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/repositories/__tests__/provider.repository.test.ts:175:22)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="ProviderRepository findMany should paginate results" name="ProviderRepository findMany should paginate results" time="0.008">
+    </testcase>
+    <testcase classname="ProviderRepository findMany should order results" name="ProviderRepository findMany should order results" time="0.015">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: &quot;Unvetted Provider&quot;
+Received: &quot;Inactive Provider&quot;
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/repositories/__tests__/provider.repository.test.ts:194:38)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="ProviderRepository update should update provider" name="ProviderRepository update should update provider" time="0.002">
+    </testcase>
+    <testcase classname="ProviderRepository update should throw error for non-existent provider" name="ProviderRepository update should throw error for non-existent provider" time="0.029">
+    </testcase>
+    <testcase classname="ProviderRepository update should handle partial updates" name="ProviderRepository update should handle partial updates" time="0.001">
+    </testcase>
+    <testcase classname="ProviderRepository delete should delete provider" name="ProviderRepository delete should delete provider" time="0.003">
+    </testcase>
+    <testcase classname="ProviderRepository delete should cascade delete programs" name="ProviderRepository delete should cascade delete programs" time="0.002">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 0
+Received: 1
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/repositories/__tests__/provider.repository.test.ts:266:28)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="ProviderRepository delete should throw error for non-existent provider" name="ProviderRepository delete should throw error for non-existent provider" time="0.003">
+    </testcase>
+    <testcase classname="ProviderRepository search should search by name" name="ProviderRepository search should search by name" time="0.003">
       <failure>Error: expect(received).toHaveLength(expected)
 
 Expected length: 1
 Received length: 0
 Received array:  []
-    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/integration/auth-with-cleanup.test.ts:81:21)</failure>
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/repositories/__tests__/provider.repository.test.ts:311:22)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Authentication with Test User Cleanup Multiple User Types should create all test users and clean them up" name="Authentication with Test User Cleanup Multiple User Types should create all test users and clean them up" time="0.341">
+    <testcase classname="ProviderRepository search should search by description" name="ProviderRepository search should search by description" time="0.001">
       <failure>Error: expect(received).toHaveLength(expected)
 
-Expected length: 3
+Expected length: 1
 Received length: 0
 Received array:  []
-    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/integration/auth-with-cleanup.test.ts:104:23)</failure>
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/repositories/__tests__/provider.repository.test.ts:318:22)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Authentication with Test User Cleanup Test Isolation test 1: should start with no test users" name="Authentication with Test User Cleanup Test Isolation test 1: should start with no test users" time="0.068">
+    <testcase classname="ProviderRepository search should search by location" name="ProviderRepository search should search by location" time="0.001">
     </testcase>
-    <testcase classname="Authentication with Test User Cleanup Test Isolation test 2: should also start with no test users (isolated from test 1)" name="Authentication with Test User Cleanup Test Isolation test 2: should also start with no test users (isolated from test 1)" time="0.098">
-      <failure>Error: expect(received).toBeNull()
+    <testcase classname="ProviderRepository search should combine search criteria" name="ProviderRepository search should combine search criteria" time="0.001">
+      <failure>Error: expect(received).toHaveLength(expected)
 
-Received: {&quot;createdAt&quot;: 2025-08-13T23:48:49.446Z, &quot;email&quot;: &quot;test-admin@test.com&quot;, &quot;emailVerified&quot;: 2025-08-13T23:48:49.446Z, &quot;id&quot;: &quot;user-1755128929446&quot;, &quot;role&quot;: &quot;ADMIN&quot;, &quot;updatedAt&quot;: 2025-08-13T23:48:49.446Z}
-    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/integration/auth-with-cleanup.test.ts:167:25)</failure>
+Expected length: 1
+Received length: 0
+Received array:  []
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/repositories/__tests__/provider.repository.test.ts:338:22)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="ProviderRepository search should return empty array for no matches" name="ProviderRepository search should return empty array for no matches" time="0.002">
+    </testcase>
+    <testcase classname="ProviderRepository search should only return published and vetted by default" name="ProviderRepository search should only return published and vetted by default" time="0.001">
+    </testcase>
+    <testcase classname="ProviderRepository transaction handling should execute multiple operations in transaction" name="ProviderRepository transaction handling should execute multiple operations in transaction" time="0.002">
+    </testcase>
+    <testcase classname="ProviderRepository transaction handling should handle transaction errors" name="ProviderRepository transaction handling should handle transaction errors" time="0.001">
+    </testcase>
+    <testcase classname="ProviderRepository bulk operations should create multiple providers" name="ProviderRepository bulk operations should create multiple providers" time="0.001">
+    </testcase>
+    <testcase classname="ProviderRepository bulk operations should update multiple providers" name="ProviderRepository bulk operations should update multiple providers" time="0.001">
+    </testcase>
+    <testcase classname="ProviderRepository bulk operations should delete multiple providers" name="ProviderRepository bulk operations should delete multiple providers" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-13T23:48:48" time="1.552" tests="6">
-    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.001">
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:06" time="1.379" tests="6">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.003">
     </testcase>
-    <testcase classname="/api/cron/subscription-lifecycle should reject non-GET requests" name="/api/cron/subscription-lifecycle should reject non-GET requests" time="0.001">
+    <testcase classname="/api/cron/subscription-lifecycle should reject non-GET requests" name="/api/cron/subscription-lifecycle should reject non-GET requests" time="0.002">
     </testcase>
-    <testcase classname="/api/cron/subscription-lifecycle should require authorization header" name="/api/cron/subscription-lifecycle should require authorization header" time="0.001">
+    <testcase classname="/api/cron/subscription-lifecycle should require authorization header" name="/api/cron/subscription-lifecycle should require authorization header" time="0">
     </testcase>
     <testcase classname="/api/cron/subscription-lifecycle should reject invalid authorization" name="/api/cron/subscription-lifecycle should reject invalid authorization" time="0">
     </testcase>
-    <testcase classname="/api/cron/subscription-lifecycle should process lifecycle when authorized" name="/api/cron/subscription-lifecycle should process lifecycle when authorized" time="0.002">
+    <testcase classname="/api/cron/subscription-lifecycle should process lifecycle when authorized" name="/api/cron/subscription-lifecycle should process lifecycle when authorized" time="0.005">
     </testcase>
-    <testcase classname="/api/cron/subscription-lifecycle should handle errors gracefully" name="/api/cron/subscription-lifecycle should handle errors gracefully" time="0.001">
+    <testcase classname="/api/cron/subscription-lifecycle should handle errors gracefully" name="/api/cron/subscription-lifecycle should handle errors gracefully" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="5" skipped="0" timestamp="2025-08-14T05:21:06" time="1.508" tests="14">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.003">
+    </testcase>
+    <testcase classname="SubscriptionService getSubscriptionStatus should return subscription status for active subscription" name="SubscriptionService getSubscriptionStatus should return subscription status for active subscription" time="0.011">
+      <failure>Error: expect(received).toEqual(expected) // deep equality
+
+- Expected  - 1
++ Received  + 1
+
+  Object {
+    &quot;cancelAtPeriodEnd&quot;: false,
+    &quot;currentPeriodEnd&quot;: 2025-09-13T05:21:07.459Z,
+-   &quot;expiresAt&quot;: undefined,
++   &quot;expiresAt&quot;: null,
+    &quot;hasSubscription&quot;: true,
+    &quot;status&quot;: &quot;ACTIVE&quot;,
+  }
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.simple.test.ts:76:22)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService getSubscriptionStatus should return no subscription status when subscription not found" name="SubscriptionService getSubscriptionStatus should return no subscription status when subscription not found" time="0.001">
+    </testcase>
+    <testcase classname="SubscriptionService getSubscription should return full subscription details" name="SubscriptionService getSubscription should return full subscription details" time="0.002">
+    </testcase>
+    <testcase classname="SubscriptionService getSubscription should return null when subscription not found" name="SubscriptionService getSubscription should return null when subscription not found" time="0.006">
+    </testcase>
+    <testcase classname="SubscriptionService createCheckoutSession should create checkout session for new subscription" name="SubscriptionService createCheckoutSession should create checkout session for new subscription" time="0.24">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;mockResolvedValue&apos;)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.simple.test.ts:130:38)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService createCheckoutSession should throw error if user already has active subscription" name="SubscriptionService createCheckoutSession should throw error if user already has active subscription" time="0.003">
+    </testcase>
+    <testcase classname="SubscriptionService cancelSubscription should cancel subscription at period end" name="SubscriptionService cancelSubscription should cancel subscription at period end" time="0">
+    </testcase>
+    <testcase classname="SubscriptionService cancelSubscription should throw error if no active subscription found" name="SubscriptionService cancelSubscription should throw error if no active subscription found" time="0.001">
+    </testcase>
+    <testcase classname="SubscriptionService resumeSubscription should resume a canceled subscription" name="SubscriptionService resumeSubscription should resume a canceled subscription" time="0">
+    </testcase>
+    <testcase classname="SubscriptionService resumeSubscription should throw error if subscription not scheduled for cancellation" name="SubscriptionService resumeSubscription should throw error if subscription not scheduled for cancellation" time="0.001">
+    </testcase>
+    <testcase classname="SubscriptionService handleCheckoutComplete should activate subscription after successful checkout" name="SubscriptionService handleCheckoutComplete should activate subscription after successful checkout" time="0">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;mockResolvedValue&apos;)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.simple.test.ts:265:38)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService updateSubscriptionFromWebhook should update subscription from webhook data" name="SubscriptionService updateSubscriptionFromWebhook should update subscription from webhook data" time="0">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;mockResolvedValue&apos;)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.simple.test.ts:304:41)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService updateSubscriptionFromWebhook should throw error if subscription not found" name="SubscriptionService updateSubscriptionFromWebhook should throw error if subscription not found" time="0">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;mockResolvedValue&apos;)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.simple.test.ts:321:41)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="21" skipped="0" timestamp="2025-08-14T05:21:06" time="1.563" tests="22">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.003">
+    </testcase>
+    <testcase classname="SubscriptionService createCheckoutSession should create a checkout session for new customer" name="SubscriptionService createCheckoutSession should create a checkout session for new customer" time="0.163">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;id&apos;)
+    at SubscriptionService.id [as createCheckoutSession] (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/subscription.service.ts:84:35)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:94:22)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService createCheckoutSession should use existing Stripe customer if available" name="SubscriptionService createCheckoutSession should use existing Stripe customer if available" time="0.095">
+      <failure>TRPCError: You already have an active subscription
+    at SubscriptionService.createCheckoutSession (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/subscription.service.ts:74:13)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:128:22)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService createCheckoutSession should throw error if user not found" name="SubscriptionService createCheckoutSession should throw error if user not found" time="0.01">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected substring: &quot;User not found&quot;
+Received message:   &quot;Cannot read properties of undefined (reading &apos;id&apos;)&quot;
+
+      82 |     if (!stripeCustomerId) {
+      83 |       const customer = await createStripeCustomer(email, userId);
+    &gt; 84 |       stripeCustomerId = customer.id;
+         |                                   ^
+      85 |       
+      86 |       // Store customer ID if we have a subscription record
+      87 |       if (existingSubscription) {
+
+      at SubscriptionService.id [as createCheckoutSession] (src/services/subscription.service.ts:84:35)
+      at Object.&lt;anonymous&gt; (src/services/__tests__/subscription.service.test.ts:147:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:154:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService createCheckoutSession should handle Stripe API errors gracefully" name="SubscriptionService createCheckoutSession should handle Stripe API errors gracefully" time="0.066">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected substring: &quot;Failed to create checkout session&quot;
+Received message:   &quot;Cannot read properties of undefined (reading &apos;id&apos;)&quot;
+
+      82 |     if (!stripeCustomerId) {
+      83 |       const customer = await createStripeCustomer(email, userId);
+    &gt; 84 |       stripeCustomerId = customer.id;
+         |                                   ^
+      85 |       
+      86 |       // Store customer ID if we have a subscription record
+      87 |       if (existingSubscription) {
+
+      at SubscriptionService.id [as createCheckoutSession] (src/services/subscription.service.ts:84:35)
+      at Object.&lt;anonymous&gt; (src/services/__tests__/subscription.service.test.ts:163:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:170:17)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService handleSubscriptionWebhook should handle customer.subscription.created event" name="SubscriptionService handleSubscriptionWebhook should handle customer.subscription.created event" time="0">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;mockResolvedValue&apos;)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:196:38)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService handleSubscriptionWebhook should handle customer.subscription.updated event" name="SubscriptionService handleSubscriptionWebhook should handle customer.subscription.updated event" time="0.001">
+      <failure>TypeError: service.handleSubscriptionWebhook is not a function
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:251:21)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService handleSubscriptionWebhook should handle customer.subscription.deleted event" name="SubscriptionService handleSubscriptionWebhook should handle customer.subscription.deleted event" time="0">
+      <failure>TypeError: service.handleSubscriptionWebhook is not a function
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:277:21)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService handleSubscriptionWebhook should handle invoice.payment_succeeded event" name="SubscriptionService handleSubscriptionWebhook should handle invoice.payment_succeeded event" time="0.001">
+      <failure>TypeError: service.handleSubscriptionWebhook is not a function
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:304:21)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService handleSubscriptionWebhook should handle invoice.payment_failed event" name="SubscriptionService handleSubscriptionWebhook should handle invoice.payment_failed event" time="0">
+      <failure>TypeError: service.handleSubscriptionWebhook is not a function
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:328:21)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService handleSubscriptionWebhook should handle unrecognized event types gracefully" name="SubscriptionService handleSubscriptionWebhook should handle unrecognized event types gracefully" time="0">
+      <failure>TypeError: service.handleSubscriptionWebhook is not a function
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:340:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService cancelSubscription should cancel subscription at period end" name="SubscriptionService cancelSubscription should cancel subscription at period end" time="0.001">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;cancel_at_period_end&apos;)
+    at SubscriptionService.cancel_at_period_end [as cancelSubscription] (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/subscription.service.ts:170:45)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:365:22)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService cancelSubscription should throw error if subscription not found" name="SubscriptionService cancelSubscription should throw error if subscription not found" time="0">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected substring: &quot;Subscription not found&quot;
+Received message:   &quot;No active subscription found&quot;
+
+      131 |     
+      132 |     if (!subscription || !subscription.stripeSubscriptionId) {
+    &gt; 133 |       throw new TRPCError({
+          |             ^
+      134 |         code: &quot;NOT_FOUND&quot;,
+      135 |         message: &quot;No active subscription found&quot;,
+      136 |       });
+
+      at SubscriptionService.cancelSubscription (src/services/subscription.service.ts:133:13)
+      at Object.&lt;anonymous&gt; (src/services/__tests__/subscription.service.test.ts:377:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:379:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService cancelSubscription should throw error if subscription already cancelled" name="SubscriptionService cancelSubscription should throw error if subscription already cancelled" time="0.001">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected substring: &quot;Subscription is already cancelled&quot;
+Received message:   &quot;Cannot read properties of undefined (reading &apos;cancel_at_period_end&apos;)&quot;
+
+      168 |     return {
+      169 |       success: true,
+    &gt; 170 |       cancelAtPeriodEnd: stripeSubscription.cancel_at_period_end,
+          |                                             ^
+      171 |       currentPeriodEnd: subscription.currentPeriodEnd,
+      172 |     };
+      173 |   }
+
+      at SubscriptionService.cancel_at_period_end [as cancelSubscription] (src/services/subscription.service.ts:170:45)
+      at Object.&lt;anonymous&gt; (src/services/__tests__/subscription.service.test.ts:390:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:392:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService updateSubscription should upgrade subscription tier" name="SubscriptionService updateSubscription should upgrade subscription tier" time="0">
+      <failure>TypeError: service.updateSubscription is not a function
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:433:36)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService updateSubscription should downgrade subscription tier" name="SubscriptionService updateSubscription should downgrade subscription tier" time="0.001">
+      <failure>TypeError: service.updateSubscription is not a function
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:484:36)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService updateSubscription should not update if same tier" name="SubscriptionService updateSubscription should not update if same tier" time="0">
+      <failure>TypeError: service.updateSubscription is not a function
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:500:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService getSubscriptionStatus should return active subscription status" name="SubscriptionService getSubscriptionStatus should return active subscription status" time="0.002">
+      <failure>Error: expect(received).toEqual(expected) // deep equality
+
+- Expected  - 2
++ Received  + 2
+
+  Object {
+    &quot;cancelAtPeriodEnd&quot;: false,
++   &quot;currentPeriodEnd&quot;: 2025-09-13T05:21:07.819Z,
++   &quot;expiresAt&quot;: null,
+    &quot;hasSubscription&quot;: true,
+-   &quot;isActive&quot;: true,
+    &quot;status&quot;: &quot;ACTIVE&quot;,
+-   &quot;tier&quot;: &quot;PREMIUM&quot;,
+  }
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:519:22)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService getSubscriptionStatus should return inactive subscription status" name="SubscriptionService getSubscriptionStatus should return inactive subscription status" time="0">
+      <failure>Error: expect(received).toEqual(expected) // deep equality
+
+- Expected  - 2
++ Received  + 2
+
+  Object {
+    &quot;cancelAtPeriodEnd&quot;: false,
++   &quot;currentPeriodEnd&quot;: 2025-09-13T05:21:07.821Z,
++   &quot;expiresAt&quot;: null,
+    &quot;hasSubscription&quot;: true,
+-   &quot;isActive&quot;: false,
+    &quot;status&quot;: &quot;CANCELLED&quot;,
+-   &quot;tier&quot;: &quot;BASIC&quot;,
+  }
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:539:22)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService getSubscriptionStatus should return no subscription status" name="SubscriptionService getSubscriptionStatus should return no subscription status" time="0">
+      <failure>Error: expect(received).toEqual(expected) // deep equality
+
+- Expected  - 2
++ Received  + 2
+
+  Object {
+    &quot;cancelAtPeriodEnd&quot;: false,
++   &quot;currentPeriodEnd&quot;: null,
++   &quot;expiresAt&quot;: null,
+    &quot;hasSubscription&quot;: false,
+-   &quot;isActive&quot;: false,
+    &quot;status&quot;: null,
+-   &quot;tier&quot;: null,
+  }
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:553:22)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService reactivateSubscription should reactivate cancelled subscription" name="SubscriptionService reactivateSubscription should reactivate cancelled subscription" time="0">
+      <failure>TypeError: service.reactivateSubscription is not a function
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:584:36)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="SubscriptionService reactivateSubscription should throw error if subscription not set to cancel" name="SubscriptionService reactivateSubscription should throw error if subscription not set to cancel" time="0.001">
+      <failure>TypeError: service.reactivateSubscription is not a function
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/services/__tests__/subscription.service.test.ts:602:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="0" skipped="0" timestamp="2025-08-14T05:21:06" time="1.595" tests="6">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.002">
+    </testcase>
+    <testcase classname="Authentication with Test User Cleanup Admin User Tests should create and authenticate admin user" name="Authentication with Test User Cleanup Admin User Tests should create and authenticate admin user" time="0.248">
+    </testcase>
+    <testcase classname="Authentication with Test User Cleanup Admin User Tests should recreate admin user even if it already exists" name="Authentication with Test User Cleanup Admin User Tests should recreate admin user even if it already exists" time="0.318">
+    </testcase>
+    <testcase classname="Authentication with Test User Cleanup Multiple User Types should create all test users and clean them up" name="Authentication with Test User Cleanup Multiple User Types should create all test users and clean them up" time="0.442">
+    </testcase>
+    <testcase classname="Authentication with Test User Cleanup Test Isolation test 1: should start with no test users" name="Authentication with Test User Cleanup Test Isolation test 1: should start with no test users" time="0.064">
+    </testcase>
+    <testcase classname="Authentication with Test User Cleanup Test Isolation test 2: should also start with no test users (isolated from test 1)" name="Authentication with Test User Cleanup Test Isolation test 2: should also start with no test users (isolated from test 1)" time="0.06">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Helper Module" errors="0" failures="15" skipped="0" timestamp="2025-08-14T05:21:06" time="3.209" tests="28">
+    <testcase classname="Test Helper Module should export test utilities" name="Test Helper Module should export test utilities" time="0.007">
+    </testcase>
+    <testcase classname="OWASP Security Tests A01: Broken Access Control should prevent unauthorized access to admin endpoints" name="OWASP Security Tests A01: Broken Access Control should prevent unauthorized access to admin endpoints" time="0.136">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected pattern: /unauthorized|forbidden/i
+Received message: &quot;No procedure found on path \&quot;admin,getProviders\&quot;&quot;
+
+      42 |       const caller = appRouter.createCaller(userContext);
+      43 |
+    &gt; 44 |       await expect(
+         |       ^
+      45 |         caller.admin.getProviders()
+      46 |       ).rejects.toThrow(/unauthorized|forbidden/i);
+      47 |     });
+
+      at ../../node_modules/.pnpm/@trpc+server@11.4.4_typescript@5.9.2/node_modules/@trpc/server/dist/tracked-CNYCUYl9.cjs:292:28
+      at Object.&lt;anonymous&gt; (src/__tests__/security/owasp-security.test.ts:44:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:46:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A01: Broken Access Control should prevent users from accessing other users data" name="OWASP Security Tests A01: Broken Access Control should prevent users from accessing other users data" time="0.062">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected pattern: /unauthorized|forbidden/i
+Received message: &quot;No procedure found on path \&quot;user,getProfile\&quot;&quot;
+
+      57 |       const caller = appRouter.createCaller(userContext);
+      58 |
+    &gt; 59 |       await expect(
+         |       ^
+      60 |         caller.user.getProfile({ userId: &apos;user2&apos; })
+      61 |       ).rejects.toThrow(/unauthorized|forbidden/i);
+      62 |     });
+
+      at ../../node_modules/.pnpm/@trpc+server@11.4.4_typescript@5.9.2/node_modules/@trpc/server/dist/tracked-CNYCUYl9.cjs:292:28
+      at Object.&lt;anonymous&gt; (src/__tests__/security/owasp-security.test.ts:59:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:61:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A01: Broken Access Control should enforce subscription tier access controls" name="OWASP Security Tests A01: Broken Access Control should enforce subscription tier access controls" time="0.06">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected pattern: /premium.*required/i
+Received message: &quot;No procedure found on path \&quot;provider,getPremiumInsights\&quot;&quot;
+
+      73 |
+      74 |       // Attempt to access premium feature
+    &gt; 75 |       await expect(
+         |       ^
+      76 |         caller.provider.getPremiumInsights({ providerId: &apos;provider1&apos; })
+      77 |       ).rejects.toThrow(/premium.*required/i);
+      78 |     });
+
+      at ../../node_modules/.pnpm/@trpc+server@11.4.4_typescript@5.9.2/node_modules/@trpc/server/dist/tracked-CNYCUYl9.cjs:292:28
+      at Object.&lt;anonymous&gt; (src/__tests__/security/owasp-security.test.ts:75:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:77:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A01: Broken Access Control should prevent parameter tampering" name="OWASP Security Tests A01: Broken Access Control should prevent parameter tampering" time="0.057">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected pattern: /unauthorized/i
+Received message: &quot;No procedure found on path \&quot;subscription,update\&quot;&quot;
+
+      89 |
+      90 |       // Attempt to modify another user&apos;s subscription via parameter tampering
+    &gt; 91 |       await expect(
+         |       ^
+      92 |         caller.subscription.update({ 
+      93 |           userId: &apos;otheruser&apos;, // Trying to modify another user&apos;s subscription
+      94 |           tier: &apos;PREMIUM&apos; 
+
+      at ../../node_modules/.pnpm/@trpc+server@11.4.4_typescript@5.9.2/node_modules/@trpc/server/dist/tracked-CNYCUYl9.cjs:292:28
+      at Object.&lt;anonymous&gt; (src/__tests__/security/owasp-security.test.ts:91:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:96:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A02: Cryptographic Failures should properly hash passwords" name="OWASP Security Tests A02: Cryptographic Failures should properly hash passwords" time="0.17">
+    </testcase>
+    <testcase classname="OWASP Security Tests A02: Cryptographic Failures should not expose sensitive data in API responses" name="OWASP Security Tests A02: Cryptographic Failures should not expose sensitive data in API responses" time="0.057">
+      <failure>TRPCError: No procedure found on path &quot;user,getProfile&quot;
+    at /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/@trpc+server@11.4.4_typescript@5.9.2/node_modules/@trpc/server/dist/tracked-CNYCUYl9.cjs:292:28
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:128:23)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A02: Cryptographic Failures should encrypt sensitive data at rest" name="OWASP Security Tests A02: Cryptographic Failures should encrypt sensitive data at rest" time="0.058">
+    </testcase>
+    <testcase classname="OWASP Security Tests A03: Injection should prevent SQL injection in search queries" name="OWASP Security Tests A03: Injection should prevent SQL injection in search queries" time="0.058">
+      <failure>Error: expect(received).resolves.not.toThrow()
+
+Received promise rejected instead of resolved
+Rejected to value: [TRPCError: No procedure found on path &quot;provider,search&quot;]
+    at expect (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2116:15)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:164:19)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A03: Injection should sanitize user input in forms" name="OWASP Security Tests A03: Injection should sanitize user input in forms" time="0.064">
+      <failure>Error: expect(received).not.toContain(expected) // indexOf
+
+Expected substring: not &quot;&lt;script&gt;&quot;
+Received string:        &quot;&lt;script&gt;alert(\&quot;XSS\&quot;)&lt;/script&gt;&quot;
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:198:39)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A03: Injection should prevent NoSQL injection" name="OWASP Security Tests A03: Injection should prevent NoSQL injection" time="0.06">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected pattern: /invalid.*input/i
+Received message: &quot;No procedure found on path \&quot;user,getProfile\&quot;&quot;
+
+      212 |       const caller = appRouter.createCaller(context);
+      213 |
+    &gt; 214 |       await expect(
+          |       ^
+      215 |         caller.user.getProfile({ userId: maliciousInput as any })
+      216 |       ).rejects.toThrow(/invalid.*input/i);
+      217 |     });
+
+      at ../../node_modules/.pnpm/@trpc+server@11.4.4_typescript@5.9.2/node_modules/@trpc/server/dist/tracked-CNYCUYl9.cjs:292:28
+      at Object.&lt;anonymous&gt; (src/__tests__/security/owasp-security.test.ts:214:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:216:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A03: Injection should prevent command injection" name="OWASP Security Tests A03: Injection should prevent command injection" time="0.057">
+      <failure>Error: expect(received).not.toContain(expected) // indexOf
+
+Expected substring: not &quot;rm&quot;
+Received string:        &quot;test.pdf__rm_-rf__&quot;
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:228:37)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A04: Insecure Design should enforce business logic constraints" name="OWASP Security Tests A04: Insecure Design should enforce business logic constraints" time="0.058">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected pattern: /invalid.*age/i
+Received message: &quot;No procedure found on path \&quot;program,create\&quot;&quot;
+
+      243 |
+      244 |       // Attempt to create program with invalid age range
+    &gt; 245 |       await expect(
+          |       ^
+      246 |         caller.program.create({
+      247 |           providerId: &apos;provider1&apos;,
+      248 |           name: &apos;Test Program&apos;,
+
+      at ../../node_modules/.pnpm/@trpc+server@11.4.4_typescript@5.9.2/node_modules/@trpc/server/dist/tracked-CNYCUYl9.cjs:292:28
+      at Object.&lt;anonymous&gt; (src/__tests__/security/owasp-security.test.ts:245:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:253:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A04: Insecure Design should prevent race conditions in bookings" name="OWASP Security Tests A04: Insecure Design should prevent race conditions in bookings" time="0.058">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;create&apos;)
+    at /Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:259:20
+    at Array.from (&lt;anonymous&gt;)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:258:37)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A04: Insecure Design should implement proper session timeout" name="OWASP Security Tests A04: Insecure Design should implement proper session timeout" time="0.061">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected pattern: /session.*expired/i
+Received message: &quot;No procedure found on path \&quot;user,getProfile\&quot;&quot;
+
+      283 |       const caller = appRouter.createCaller(expiredContext);
+      284 |
+    &gt; 285 |       await expect(
+          |       ^
+      286 |         caller.user.getProfile({ userId: &apos;user1&apos; })
+      287 |       ).rejects.toThrow(/session.*expired/i);
+      288 |     });
+
+      at ../../node_modules/.pnpm/@trpc+server@11.4.4_typescript@5.9.2/node_modules/@trpc/server/dist/tracked-CNYCUYl9.cjs:292:28
+      at Object.&lt;anonymous&gt; (src/__tests__/security/owasp-security.test.ts:285:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:287:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A05: Security Misconfiguration should not expose detailed error messages" name="OWASP Security Tests A05: Security Misconfiguration should not expose detailed error messages" time="0.06">
+    </testcase>
+    <testcase classname="OWASP Security Tests A05: Security Misconfiguration should have secure headers configured" name="OWASP Security Tests A05: Security Misconfiguration should have secure headers configured" time="0.058">
+    </testcase>
+    <testcase classname="OWASP Security Tests A05: Security Misconfiguration should disable unnecessary features" name="OWASP Security Tests A05: Security Misconfiguration should disable unnecessary features" time="0.057">
+    </testcase>
+    <testcase classname="OWASP Security Tests A06: Vulnerable Components should not use known vulnerable dependencies" name="OWASP Security Tests A06: Vulnerable Components should not use known vulnerable dependencies" time="0.058">
+    </testcase>
+    <testcase classname="OWASP Security Tests A07: Authentication Failures should enforce password complexity requirements" name="OWASP Security Tests A07: Authentication Failures should enforce password complexity requirements" time="0.059">
+    </testcase>
+    <testcase classname="OWASP Security Tests A07: Authentication Failures should implement account lockout after failed attempts" name="OWASP Security Tests A07: Authentication Failures should implement account lockout after failed attempts" time="0.058">
+    </testcase>
+    <testcase classname="OWASP Security Tests A07: Authentication Failures should implement secure session management" name="OWASP Security Tests A07: Authentication Failures should implement secure session management" time="0.06">
+      <failure>Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+Expected: &gt;= 32
+Received:    10
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:422:33)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A08: Software and Data Integrity should verify webhook signatures" name="OWASP Security Tests A08: Software and Data Integrity should verify webhook signatures" time="0.058">
+      <failure>RangeError: Input buffers must have the same byte length
+    at verifySignature (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:443:23)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:450:14)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
+    </testcase>
+    <testcase classname="OWASP Security Tests A08: Software and Data Integrity should validate file uploads" name="OWASP Security Tests A08: Software and Data Integrity should validate file uploads" time="0.057">
+    </testcase>
+    <testcase classname="OWASP Security Tests A09: Security Logging and Monitoring should log security events" name="OWASP Security Tests A09: Security Logging and Monitoring should log security events" time="0.057">
+    </testcase>
+    <testcase classname="OWASP Security Tests A09: Security Logging and Monitoring should detect and log suspicious patterns" name="OWASP Security Tests A09: Security Logging and Monitoring should detect and log suspicious patterns" time="0.057">
+    </testcase>
+    <testcase classname="OWASP Security Tests A10: Server-Side Request Forgery (SSRF) should validate and sanitize URLs" name="OWASP Security Tests A10: Server-Side Request Forgery (SSRF) should validate and sanitize URLs" time="0.059">
+    </testcase>
+    <testcase classname="OWASP Security Tests A10: Server-Side Request Forgery (SSRF) should prevent webhook URL manipulation" name="OWASP Security Tests A10: Server-Side Request Forgery (SSRF) should prevent webhook URL manipulation" time="0.064">
+      <failure>Error: expect(received).rejects.toThrow(expected)
+
+Expected pattern: /invalid.*url/i
+Received message: &quot;No procedure found on path \&quot;admin,configureWebhook\&quot;&quot;
+
+      563 |       const caller = appRouter.createCaller(context);
+      564 |
+    &gt; 565 |       await expect(
+          |       ^
+      566 |         caller.admin.configureWebhook({
+      567 |           url: &apos;http://localhost:3000/internal-endpoint&apos;,
+      568 |         })
+
+      at ../../node_modules/.pnpm/@trpc+server@11.4.4_typescript@5.9.2/node_modules/@trpc/server/dist/tracked-CNYCUYl9.cjs:292:28
+      at Object.&lt;anonymous&gt; (src/__tests__/security/owasp-security.test.ts:565:7)
+    at Object.toThrow (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/expect@30.0.5/node_modules/expect/build/index.js:2155:20)
+    at Object.&lt;anonymous&gt; (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/apps/web/src/__tests__/security/owasp-security.test.ts:569:17)
+    at Promise.finally.completed (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1559:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1499:10)
+    at _callCircusTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1009:40)
+    at _runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:949:3)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:839:13)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at _runTestsForDescribeBlock (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:829:11)
+    at run (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:757:3)
+    at runAndTransformResultsToJestFormat (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/jestAdapterInit.js:1920:21)
+    at jestAdapter (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-circus@30.0.5/node_modules/jest-circus/build/runner.js:101:19)
+    at runTestInternal (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:275:16)
+    at runTest (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:343:7)
+    at Object.worker (/Users/sergei.davidov@clearroute.io/Documents/holiday-program-aggregator/node_modules/.pnpm/jest-runner@30.0.5/node_modules/jest-runner/build/testWorker.js:497:12)</failure>
     </testcase>
   </testsuite>
 </testsuites>

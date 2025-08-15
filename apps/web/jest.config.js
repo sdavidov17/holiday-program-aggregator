@@ -36,10 +36,12 @@ module.exports = {
   ],
   coverageThreshold: {
     global: {
-      branches: 15,
-      functions: 10,
-      lines: 20,
-      statements: 20,
+      // Progressive thresholds - target is 80% as per DoD
+      // Current coverage: ~31% - will be improved in subsequent stories
+      branches: 25,
+      functions: 20,
+      lines: 25,
+      statements: 25,
     },
   },
   coverageReporters: ['text', 'text-summary', 'html', 'lcov', 'json-summary'],

@@ -127,6 +127,9 @@ importers:
         specifier: ^3.25.76
         version: 3.25.76
     devDependencies:
+      '@faker-js/faker':
+        specifier: ^9.9.0
+        version: 9.9.0
       '@jest/globals':
         specifier: ^30.0.5
         version: 30.0.5
@@ -943,6 +946,11 @@ packages:
     dependencies:
       '@eslint/core': 0.15.2
       levn: 0.4.1
+    dev: true
+
+  /@faker-js/faker@9.9.0:
+    resolution: {integrity: sha512-OEl393iCOoo/z8bMezRlJu+GlRGlsKbUAN7jKB6LhnKoqKve5DXRpalbItIIcwnCjs1k/FOPjFzcA6Qn+H+YbA==}
+    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
     dev: true
 
   /@humanfs/core@0.19.1:

@@ -19,8 +19,8 @@ export abstract class BaseRepository<T> {
   protected prisma: PrismaClient;
   protected modelName: string;
 
-  constructor(modelName: string) {
-    this.prisma = db;
+  constructor(modelName: string, prisma?: PrismaClient) {
+    this.prisma = prisma || db;
     this.modelName = modelName;
   }
 
@@ -46,7 +46,29 @@ export abstract class BaseRepository<T> {
    */
   async findMany(options: FindOptions = {}): Promise<T[]> {
     try {
-      const results = await (this.prisma as any)[this.modelName].findMany(options);
+      // Convert shorthand filters to proper Prisma format
+      const prismaOptions: any = {};
+      const knownOptions = ['where', 'orderBy', 'skip', 'take', 'include', 'select'];
+      
+      // Check if options contains direct filter properties
+      const hasDirectFilters = Object.keys(options).some(key => !knownOptions.includes(key));
+      
+      if (hasDirectFilters) {
+        // Extract direct filters into where clause
+        prismaOptions.where = {};
+        Object.keys(options).forEach(key => {
+          if (!knownOptions.includes(key)) {
+            prismaOptions.where[key] = (options as any)[key];
+          } else {
+            prismaOptions[key] = (options as any)[key];
+          }
+        });
+      } else {
+        // Use options as-is
+        Object.assign(prismaOptions, options);
+      }
+      
+      const results = await (this.prisma as any)[this.modelName].findMany(prismaOptions);
       return results;
     } catch (error) {
       console.error(`Error finding ${this.modelName} records`, { options, error });
