@@ -3,7 +3,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { env } from '~/env.mjs';
 import { db, SubscriptionStatus } from '~/server/db';
-import { SubscriptionService } from '~/services/subscription.service';
 import { logger } from '~/utils/logger';
 
 const stripe = env.STRIPE_SECRET_KEY

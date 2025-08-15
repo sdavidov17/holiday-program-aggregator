@@ -5,7 +5,7 @@
 
 import '@testing-library/jest-dom';
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import NewProviderPage from '~/pages/admin/providers/new';
 import { api } from '~/utils/api';
 

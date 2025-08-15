@@ -52,33 +52,11 @@ module.exports = {
     },
     // Target thresholds for critical paths - these are aspirational goals for new code
     // Currently set as guidance, will be enforced once existing code is refactored
-    // Uncomment these when ready to enforce:
-    /*
-    'src/services/**/*.ts': {
-      branches: 60,
-      functions: 60,
-      lines: 60,
-      statements: 60,
-    },
-    'src/repositories/**/*.ts': {
-      branches: 60,
-      functions: 60,
-      lines: 60,
-      statements: 60,
-    },
-    'src/server/api/routers/**/*.ts': {
-      branches: 50,
-      functions: 50,
-      lines: 50,
-      statements: 50,
-    },
-    'src/utils/**/*.ts': {
-      branches: 50,
-      functions: 50,
-      lines: 50,
-      statements: 50,
-    },
-    */
+    // Example of per-file thresholds to be enabled later:
+    // 'src/services/**/*.ts': { branches: 60, functions: 60, lines: 60, statements: 60 }
+    // 'src/repositories/**/*.ts': { branches: 60, functions: 60, lines: 60, statements: 60 }
+    // 'src/server/api/routers/**/*.ts': { branches: 50, functions: 50, lines: 50, statements: 50 }
+    // 'src/utils/**/*.ts': { branches: 50, functions: 50, lines: 50, statements: 50 }
   },
   coverageReporters: ['text', 'text-summary', 'html', 'lcov', 'json-summary'],
   reporters: [

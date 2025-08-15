@@ -1,4 +1,4 @@
-import { addDays, isBefore, startOfDay } from 'date-fns';
+import { addDays, startOfDay } from 'date-fns';
 import { db, SubscriptionStatus } from '~/server/db';
 import { SubscriptionMetricsCollector } from '~/utils/subscription-metrics';
 import { sendExpirationNotice, sendRenewalReminder } from './email';

@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { api } from '~/utils/api';
 
 const SubscriptionMonitor: NextPage = () => {
   const { data: session } = useSession();

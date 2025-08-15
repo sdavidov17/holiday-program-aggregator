@@ -135,7 +135,6 @@ export const protectedProcedure = t.procedure.use(loggingMiddleware).use(({ ctx,
 });
 
 // Import the subscription middleware
-import { requireActiveSubscriptionMiddleware } from './middleware/requireActiveSubscription';
 
 // Admin procedure that requires admin role
 export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
