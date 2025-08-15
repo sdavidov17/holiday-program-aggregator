@@ -15,8 +15,6 @@
     "db:studio": "turbo run db:studio"
   },
   "devDependencies": {
-    "@types/eslint": "^9.6.1",
-    "eslint": "^9.33.0",
     "turbo": "^1.13.4"
   },
   "packageManager": "pnpm@8.6.10",
