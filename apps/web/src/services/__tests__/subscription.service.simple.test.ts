@@ -15,6 +15,7 @@ const SubscriptionStatus = {
   EXPIRED: 'EXPIRED',
 } as const;
 
+import { TRPCError } from '@trpc/server';
 import { createTestSubscription, createTestUser } from '../../__tests__/factories';
 import { createMockPrismaClient } from '../../__tests__/setup/test-db';
 

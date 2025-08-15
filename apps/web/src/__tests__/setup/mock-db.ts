@@ -237,6 +237,7 @@ function createMockModel(modelName: string) {
       if (modelName === 'provider' && deleted) {
         // Delete related programs
         mockStorage.program = mockStorage.program.filter((p: any) => p.providerId !== deleted.id);
+>>>>>>> origin/main
       }
 
       return Promise.resolve(deleted);
