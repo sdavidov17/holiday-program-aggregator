@@ -6,7 +6,7 @@
     "build": "node scripts/setup-prisma.js && ./scripts/prepare-prod-build.sh && next build",
     "build:local": "next build",
     "dev": "next dev",
-    "lint": "biome check . || exit 0",
+    "lint": "biome check .",
     "lint:check": "biome check .",
     "format": "biome format --write .",
     "format:check": "biome format .",

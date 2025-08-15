@@ -22,7 +22,7 @@
       "recommended": true,
       "suspicious": {
         "noExplicitAny": "off",
-        "noConsole": "off"
+        "noConsole": "warn"
       },
       "complexity": {
         "noForEach": "off"
