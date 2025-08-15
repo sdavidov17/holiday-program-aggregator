@@ -1,4 +1,3 @@
-import { db } from '~/server/db';
 import { type LogContext, logger } from './logger';
 
 export type AuditEventType =
@@ -115,7 +114,7 @@ export class AuditLogger {
     identifier: { email?: string; ipAddress?: string },
     sinceMinutes: number = 30,
   ): Promise<number> {
-    const since = new Date(Date.now() - sinceMinutes * 60 * 1000);
+    const _since = new Date(Date.now() - sinceMinutes * 60 * 1000);
 
     // Placeholder - would query the audit log table
     logger.info(

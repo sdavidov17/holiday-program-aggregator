@@ -1,0 +1,15 @@
+# Ignore CSS files with Tailwind directives
+**/*.css
+
+# Ignore test helpers
+src/test-helpers/**
+
+# Ignore generated files
+coverage/**
+.next/**
+out/**
+dist/**
+
+# Ignore test database files
+test-provider-crud.js
+*.sqlite

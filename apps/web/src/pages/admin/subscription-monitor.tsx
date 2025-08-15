@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 const SubscriptionMonitor: NextPage = () => {
   const { data: session } = useSession();
-  const [lastRun, setLastRun] = useState<Date | null>(null);
+  const [_lastRun, setLastRun] = useState<Date | null>(null);
 
   // In a real app, this would fetch from a monitoring API
   // For now, we'll use mock data
@@ -32,7 +32,7 @@ const SubscriptionMonitor: NextPage = () => {
 
   useEffect(() => {
     refreshMetrics();
-  }, []);
+  }, [refreshMetrics]);
 
   // Only allow admin users - check email domain properly
   const userEmail = session?.user?.email || '';

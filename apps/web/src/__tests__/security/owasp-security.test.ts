@@ -12,16 +12,16 @@ import { createMockContext } from '../helpers/test-context';
 
 // Mock rate limiter for testing
 jest.mock('~/lib/rate-limiter', () => ({
-  rateLimit: jest.fn(() => (req: any, res: any, next: any) => next()),
-  authRateLimit: jest.fn(() => (req: any, res: any, next: any) => next()),
+  rateLimit: jest.fn(() => (_req: any, _res: any, next: any) => next()),
+  authRateLimit: jest.fn(() => (_req: any, _res: any, next: any) => next()),
 }));
 
 describe('OWASP Security Tests', () => {
-  let testUser: any;
+  let _testUser: any;
 
   beforeEach(async () => {
     // Setup test environment
-    testUser = await createTestUser({ email: 'security@test.com' });
+    _testUser = await createTestUser({ email: 'security@test.com' });
   });
 
   afterEach(async () => {
@@ -376,7 +376,7 @@ describe('OWASP Security Tests', () => {
       const maxAttempts = 5;
       let attempts = 0;
 
-      const attemptLogin = async (email: string, password: string) => {
+      const attemptLogin = async (_email: string, _password: string) => {
         attempts++;
         if (attempts >= maxAttempts) {
           throw new Error('Account locked');
@@ -393,7 +393,7 @@ describe('OWASP Security Tests', () => {
     });
 
     it('should implement secure session management', () => {
-      const crypto = require('crypto');
+      const crypto = require('node:crypto');
       const session = {
         id: 'sess_' + crypto.randomBytes(24).toString('hex'),
         userId: 'user1',
@@ -418,7 +418,7 @@ describe('OWASP Security Tests', () => {
     it('should verify webhook signatures', async () => {
       const payload = JSON.stringify({ event: 'test' });
       const secret = 'webhook_secret';
-      const crypto = require('crypto');
+      const crypto = require('node:crypto');
 
       const signature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
 

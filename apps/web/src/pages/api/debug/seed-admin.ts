@@ -52,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Create new admin
     const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
-    const admin = await db.user.create({
+    const _admin = await db.user.create({
       data: {
         email: adminEmail,
         name: adminName,

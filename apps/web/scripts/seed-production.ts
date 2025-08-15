@@ -79,7 +79,7 @@ async function main() {
       select: { email: true, role: true, password: true },
     });
 
-    if (verifyAdmin && verifyAdmin.password) {
+    if (verifyAdmin?.password) {
       console.log(`✅ Verified admin account exists with role: ${verifyAdmin.role}`);
 
       // Test password verification

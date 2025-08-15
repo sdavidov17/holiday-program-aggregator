@@ -86,7 +86,7 @@ export default async function handler(
 
     // Return 503 if not ready, 200 if ready
     res.status(isReady ? 200 : 503).json(response);
-  } catch (error) {
+  } catch (_error) {
     // If we can't even run the health checks, service is not ready
     const response: ReadinessResponse = {
       status: 'not_ready',

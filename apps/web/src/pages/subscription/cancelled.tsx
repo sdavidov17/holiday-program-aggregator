@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
 export default function SubscriptionCancelled() {
-  const router = useRouter();
+  const _router = useRouter();
   const { data: session } = useSession();
 
   return (

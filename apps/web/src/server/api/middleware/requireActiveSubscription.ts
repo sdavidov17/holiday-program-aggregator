@@ -34,8 +34,7 @@ export const requireActiveSubscriptionMiddleware = async ({
 
   // Check if subscription has expired and needs status update
   if (
-    subscription &&
-    subscription.expiresAt &&
+    subscription?.expiresAt &&
     subscription.expiresAt < new Date() &&
     subscription.status === SubscriptionStatus.ACTIVE
   ) {

@@ -215,7 +215,7 @@ describe('ProvidersListPage', () => {
 
     // Simulate successful vetting toggle
     (api.provider.toggleVetting.useMutation as jest.Mock).mockReturnValue({
-      mutate: (args: any) => {
+      mutate: (_args: any) => {
         const onSuccess = (api.provider.toggleVetting.useMutation as jest.Mock).mock.calls[0][0]
           .onSuccess;
         onSuccess();

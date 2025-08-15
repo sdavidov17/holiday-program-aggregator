@@ -44,7 +44,7 @@ const PII_PATTERNS: Array<{
   // Names in common fields (updated to handle JSON structure)
   {
     pattern: /"((?:[\w.]+\.)?(?:name|firstName|lastName|fullName))"\s*:\s*"[^"]+"/gi,
-    replacement: (match: string, field: string) => `"${field}":"[REDACTED_NAME]"`,
+    replacement: (_match: string, field: string) => `"${field}":"[REDACTED_NAME]"`,
   },
   // Addresses
   {
@@ -54,7 +54,7 @@ const PII_PATTERNS: Array<{
   // API keys and tokens (updated to handle JSON structure)
   {
     pattern: /"(api[_-]?key|apiKey|token|secret|password)"\s*:\s*"[^"]+"/gi,
-    replacement: (match: string, field: string) => `"${field}":"[REDACTED]"`,
+    replacement: (_match: string, field: string) => `"${field}":"[REDACTED]"`,
   },
 ];
 
@@ -202,7 +202,7 @@ export function generateCorrelationId(): string {
 
   // Server-side Node.js fallback
   if (typeof window === 'undefined') {
-    const { randomBytes } = require('crypto');
+    const { randomBytes } = require('node:crypto');
     return randomBytes(16).toString('hex');
   }
 

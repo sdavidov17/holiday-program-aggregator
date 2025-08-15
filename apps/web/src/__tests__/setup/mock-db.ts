@@ -62,8 +62,7 @@ function createMockModel(modelName: string) {
         // Handle includes (e.g., programs for provider)
         const result = { ...item };
         if (include.programs) {
-          result.programs =
-            mockStorage['program']?.filter((p: any) => p.providerId === item.id) || [];
+          result.programs = mockStorage.program?.filter((p: any) => p.providerId === item.id) || [];
         }
         return Promise.resolve(result);
       }
@@ -144,7 +143,7 @@ function createMockModel(modelName: string) {
           const result = { ...item };
           if (options.include.programs) {
             result.programs =
-              mockStorage['program']?.filter((p: any) => p.providerId === item.id) || [];
+              mockStorage.program?.filter((p: any) => p.providerId === item.id) || [];
           }
           return result;
         });
@@ -237,9 +236,7 @@ function createMockModel(modelName: string) {
       // Handle cascade deletes
       if (modelName === 'provider' && deleted) {
         // Delete related programs
-        mockStorage['program'] = mockStorage['program'].filter(
-          (p: any) => p.providerId !== deleted.id,
-        );
+        mockStorage.program = mockStorage.program.filter((p: any) => p.providerId !== deleted.id);
       }
 
       return Promise.resolve(deleted);

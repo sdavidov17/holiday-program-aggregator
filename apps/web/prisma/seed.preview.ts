@@ -22,7 +22,7 @@ async function main() {
 
   // Create admin user
   const adminPassword = await hash('PreviewAdmin123!', 12);
-  const admin = await prisma.user.create({
+  const _admin = await prisma.user.create({
     data: {
       email: 'admin@preview.test',
       name: 'Preview Admin',
