@@ -1,42 +1,39 @@
-import { AdminLayout } from "~/components/AdminLayout";
-import { api } from "~/utils/api";
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import type { FormEvent } from "react";
+import { useRouter } from 'next/router';
+import type { FormEvent } from 'react';
+import { useEffect, useState } from 'react';
+import { AdminLayout } from '~/components/AdminLayout';
+import { api } from '~/utils/api';
 
 export default function EditProviderPage() {
   const router = useRouter();
   const { id } = router.query as { id: string };
-  
-  const { data: provider, isLoading } = api.provider.getById.useQuery(
-    { id },
-    { enabled: !!id }
-  );
-  
+
+  const { data: provider, isLoading } = api.provider.getById.useQuery({ id }, { enabled: !!id });
+
   const updateProvider = api.provider.update.useMutation({
     onSuccess: () => {
-      void router.push("/admin/providers");
+      void router.push('/admin/providers');
     },
   });
 
   const [formData, setFormData] = useState({
-    businessName: "",
-    contactName: "",
-    description: "",
-    website: "",
-    email: "",
-    phone: "",
-    abn: "",
-    address: "",
-    suburb: "",
-    state: "",
-    postcode: "",
-    logoUrl: "",
-    bannerUrl: "",
+    businessName: '',
+    contactName: '',
+    description: '',
+    website: '',
+    email: '',
+    phone: '',
+    abn: '',
+    address: '',
+    suburb: '',
+    state: '',
+    postcode: '',
+    logoUrl: '',
+    bannerUrl: '',
     capacity: 0,
-    ageGroups: "",
+    ageGroups: '',
     specialNeeds: false,
-    specialNeedsDetails: "",
+    specialNeedsDetails: '',
     isVetted: false,
     isPublished: false,
   });
@@ -44,23 +41,23 @@ export default function EditProviderPage() {
   useEffect(() => {
     if (provider) {
       setFormData({
-        businessName: provider.businessName || "",
-        contactName: provider.contactName || "",
-        description: provider.description || "",
-        website: provider.website || "",
-        email: provider.email || "",
-        phone: provider.phone || "",
-        abn: provider.abn || "",
-        address: provider.address || "",
-        suburb: provider.suburb || "",
-        state: provider.state || "",
-        postcode: provider.postcode || "",
-        logoUrl: provider.logoUrl || "",
-        bannerUrl: provider.bannerUrl || "",
+        businessName: provider.businessName || '',
+        contactName: provider.contactName || '',
+        description: provider.description || '',
+        website: provider.website || '',
+        email: provider.email || '',
+        phone: provider.phone || '',
+        abn: provider.abn || '',
+        address: provider.address || '',
+        suburb: provider.suburb || '',
+        state: provider.state || '',
+        postcode: provider.postcode || '',
+        logoUrl: provider.logoUrl || '',
+        bannerUrl: provider.bannerUrl || '',
         capacity: provider.capacity || 0,
-        ageGroups: provider.ageGroups ? JSON.parse(provider.ageGroups).join(", ") : "",
+        ageGroups: provider.ageGroups ? JSON.parse(provider.ageGroups).join(', ') : '',
         specialNeeds: provider.specialNeeds || false,
-        specialNeedsDetails: provider.specialNeedsDetails || "",
+        specialNeedsDetails: provider.specialNeedsDetails || '',
         isVetted: provider.isVetted,
         isPublished: provider.isPublished,
       });
@@ -69,19 +66,23 @@ export default function EditProviderPage() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    
+
     updateProvider.mutate({
       id,
       ...formData,
-      ageGroups: formData.ageGroups ? formData.ageGroups.split(",").map((t: string) => t.trim()) : undefined,
+      ageGroups: formData.ageGroups
+        ? formData.ageGroups.split(',').map((t: string) => t.trim())
+        : undefined,
     });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
@@ -123,7 +124,7 @@ export default function EditProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Email
@@ -137,7 +138,7 @@ export default function EditProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                   Phone
@@ -151,7 +152,7 @@ export default function EditProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="website" className="block text-sm font-medium text-gray-700">
                   Website
@@ -166,7 +167,7 @@ export default function EditProviderPage() {
                 />
               </div>
             </div>
-            
+
             <div className="mt-4">
               <label htmlFor="description" className="block text-sm font-medium text-gray-700">
                 Description
@@ -199,7 +200,7 @@ export default function EditProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="suburb" className="block text-sm font-medium text-gray-700">
                   Suburb
@@ -213,7 +214,7 @@ export default function EditProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="state" className="block text-sm font-medium text-gray-700">
                   State
@@ -236,7 +237,7 @@ export default function EditProviderPage() {
                   <option value="NT">Northern Territory</option>
                 </select>
               </div>
-              
+
               <div>
                 <label htmlFor="postcode" className="block text-sm font-medium text-gray-700">
                   Postcode
@@ -270,7 +271,7 @@ export default function EditProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="bannerImageUrl" className="block text-sm font-medium text-gray-700">
                   Banner Image URL
@@ -291,7 +292,6 @@ export default function EditProviderPage() {
           <div>
             <h3 className="mb-4 text-lg font-medium text-gray-900">Additional Information</h3>
             <div className="space-y-4">
-              
               <div>
                 <label htmlFor="ageGroups" className="block text-sm font-medium text-gray-700">
                   Age Groups (comma-separated)
@@ -323,7 +323,7 @@ export default function EditProviderPage() {
                 />
                 <span className="text-sm font-medium text-gray-700">Mark as Vetted</span>
               </label>
-              
+
               <label className="flex items-center">
                 <input
                   type="checkbox"
@@ -334,11 +334,11 @@ export default function EditProviderPage() {
                   className="mr-2 rounded border-gray-300"
                 />
                 <span className="text-sm font-medium text-gray-700">
-                  Publish Provider {!formData.isVetted && "(must be vetted first)"}
+                  Publish Provider {!formData.isVetted && '(must be vetted first)'}
                 </span>
               </label>
             </div>
-            
+
             {provider.vettingDate && (
               <p className="mt-2 text-sm text-gray-500">
                 Vetted on {new Date(provider.vettingDate).toLocaleDateString()}
@@ -352,15 +352,22 @@ export default function EditProviderPage() {
             {provider.programs.length > 0 ? (
               <div className="space-y-2">
                 {provider.programs.map((program) => (
-                  <div key={program.id} className="flex items-center justify-between rounded border p-3">
+                  <div
+                    key={program.id}
+                    className="flex items-center justify-between rounded border p-3"
+                  >
                     <div>
                       <p className="font-medium">{program.name}</p>
                       <p className="text-sm text-gray-500">{program.category}</p>
                     </div>
-                    <span className={`rounded-full px-2 py-1 text-xs ${
-                      program.isActive ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
-                    }`}>
-                      {program.isActive ? "Active" : "Inactive"}
+                    <span
+                      className={`rounded-full px-2 py-1 text-xs ${
+                        program.isActive
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
+                      {program.isActive ? 'Active' : 'Inactive'}
                     </span>
                   </div>
                 ))}
@@ -384,7 +391,7 @@ export default function EditProviderPage() {
               disabled={updateProvider.isPending}
               className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
             >
-              {updateProvider.isPending ? "Saving..." : "Save Changes"}
+              {updateProvider.isPending ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
 

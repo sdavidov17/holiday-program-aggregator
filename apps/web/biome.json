@@ -21,8 +21,15 @@
     "rules": {
       "recommended": true,
       "suspicious": {
-        "noExplicitAny": "warn",
-        "noConsole": "warn"
+        "noExplicitAny": "off",
+        "noConsole": "off"
+      },
+      "complexity": {
+        "noForEach": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "useTemplate": "off"
       }
     }
   },

@@ -16,7 +16,7 @@ async function main() {
   const adminEmail = process.env.ADMIN_EMAIL;
   const adminPassword = process.env.ADMIN_PASSWORD;
   const adminName = process.env.ADMIN_NAME || 'Admin User';
-  
+
   if (!adminEmail || !adminPassword) {
     console.warn('⚠️  Admin credentials not found in environment variables');
     console.log('   Set ADMIN_EMAIL and ADMIN_PASSWORD in .env.local');
@@ -34,11 +34,11 @@ async function main() {
 
   if (existingAdmin) {
     console.log(`✅ Admin user already exists: ${adminEmail}`);
-    
+
     // Update to ensure they have admin role and password
     await prisma.user.update({
       where: { email: adminEmail },
-      data: { 
+      data: {
         role: UserRole.ADMIN,
         password: hashedPassword,
         emailVerified: new Date(),
@@ -70,7 +70,7 @@ async function main() {
     // Update password to match
     await prisma.user.update({
       where: { email: regularUserEmail },
-      data: { 
+      data: {
         password: hashedPassword,
         emailVerified: new Date(),
       },
@@ -108,7 +108,7 @@ async function main() {
     });
     console.log(`✅ Created test user: ${testUserEmail}`);
   } else {
-    console.log(`✅ Test user already exists: ${testUserEmail}`)
+    console.log(`✅ Test user already exists: ${testUserEmail}`);
   }
 
   console.log('🎉 Database seed completed!');

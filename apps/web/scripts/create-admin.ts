@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -8,7 +8,7 @@ async function main() {
   const password = process.argv[3];
 
   if (!email || !password) {
-    console.error("Usage: tsx scripts/create-admin.ts <email> <password>");
+    console.error('Usage: tsx scripts/create-admin.ts <email> <password>');
     process.exit(1);
   }
 
@@ -23,7 +23,7 @@ async function main() {
       const user = await prisma.user.update({
         where: { email },
         data: {
-          role: "ADMIN",
+          role: 'ADMIN',
         },
       });
       console.log(`✅ Updated existing user ${user.email} to ADMIN role`);
@@ -34,14 +34,14 @@ async function main() {
         data: {
           email,
           password: hashedPassword,
-          role: "ADMIN",
+          role: 'ADMIN',
           emailVerified: new Date(),
         },
       });
       console.log(`✅ Created admin user: ${user.email}`);
     }
   } catch (error) {
-    console.error("❌ Error:", error);
+    console.error('❌ Error:', error);
     process.exit(1);
   } finally {
     await prisma.$disconnect();

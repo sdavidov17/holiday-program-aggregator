@@ -4,8 +4,8 @@
  */
 
 import { createMocks } from 'node-mocks-http';
-import signupHandler from '../../pages/api/auth/signup';
 import { authRateLimit } from '../../lib/rate-limiter';
+import signupHandler from '../../pages/api/auth/signup';
 
 // Mock the database
 jest.mock('~/server/db', () => ({
@@ -107,7 +107,7 @@ describe('Rate Limiting Security', () => {
       });
 
       await signupHandler(req2, res2);
-      
+
       // Should not be rate limited since it's a different IP
       expect(res2._getStatusCode()).not.toBe(429);
     });
@@ -124,7 +124,7 @@ describe('Rate Limiting Security', () => {
       });
 
       const result = await authRateLimit(req, res);
-      
+
       expect(result.success).toBe(true);
       expect(result.remaining).toBe(4); // 5 total, 1 used
       expect(result.limit).toBe(5);
@@ -132,7 +132,7 @@ describe('Rate Limiting Security', () => {
 
     it('should reset after time window expires', async () => {
       jest.useFakeTimers();
-      
+
       const { req: req1, res: res1 } = createMocks({
         method: 'GET',
         url: '/api/test',

@@ -1,14 +1,14 @@
-import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { TRPCError } from "@trpc/server";
-import { logger } from "~/utils/logger";
+import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
+import { logger } from '~/utils/logger';
 
 // Admin-only procedure
 const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
-  if (ctx.session.user.role !== "ADMIN") {
+  if (ctx.session.user.role !== 'ADMIN') {
     throw new TRPCError({
-      code: "FORBIDDEN",
-      message: "Only admins can perform this action",
+      code: 'FORBIDDEN',
+      message: 'Only admins can perform this action',
     });
   }
   return next();
@@ -16,19 +16,19 @@ const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
 
 // Input schemas
 const createProviderSchema = z.object({
-  businessName: z.string().min(1, "Business name is required"),
-  contactName: z.string().min(1, "Contact name is required"),
-  email: z.string().email("Valid email required"),
-  phone: z.string().min(1, "Phone is required"),
-  website: z.string().url().optional().or(z.literal("")),
+  businessName: z.string().min(1, 'Business name is required'),
+  contactName: z.string().min(1, 'Contact name is required'),
+  email: z.string().email('Valid email required'),
+  phone: z.string().min(1, 'Phone is required'),
+  website: z.string().url().optional().or(z.literal('')),
   abn: z.string().optional(),
-  address: z.string().min(1, "Address is required"),
-  suburb: z.string().min(1, "Suburb is required"),
-  state: z.string().min(1, "State is required"),
-  postcode: z.string().min(1, "Postcode is required"),
-  description: z.string().min(1, "Description is required"),
-  logoUrl: z.string().url().optional().or(z.literal("")),
-  bannerUrl: z.string().url().optional().or(z.literal("")),
+  address: z.string().min(1, 'Address is required'),
+  suburb: z.string().min(1, 'Suburb is required'),
+  state: z.string().min(1, 'State is required'),
+  postcode: z.string().min(1, 'Postcode is required'),
+  description: z.string().min(1, 'Description is required'),
+  logoUrl: z.string().url().optional().or(z.literal('')),
+  bannerUrl: z.string().url().optional().or(z.literal('')),
   capacity: z.number().optional(),
   ageGroups: z.array(z.string()).optional(),
   specialNeeds: z.boolean().optional(),
@@ -43,21 +43,21 @@ const updateProviderSchema = createProviderSchema.partial().extend({
 
 const createProgramSchema = z.object({
   providerId: z.string(),
-  name: z.string().min(1, "Name is required"),
-  description: z.string().min(1, "Description is required"),
-  category: z.string().min(1, "Category is required"),
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().min(1, 'Description is required'),
+  category: z.string().min(1, 'Category is required'),
   ageMin: z.number().int().min(0),
   ageMax: z.number().int().min(0),
   price: z.number().min(0),
-  location: z.string().min(1, "Location is required"),
+  location: z.string().min(1, 'Location is required'),
   startDate: z.date(),
   endDate: z.date(),
-  startTime: z.string().regex(/^\d{2}:\d{2}$/, "Time must be in HH:MM format"),
-  endTime: z.string().regex(/^\d{2}:\d{2}$/, "Time must be in HH:MM format"),
+  startTime: z.string().regex(/^\d{2}:\d{2}$/, 'Time must be in HH:MM format'),
+  endTime: z.string().regex(/^\d{2}:\d{2}$/, 'Time must be in HH:MM format'),
   daysOfWeek: z.array(z.string()).optional(),
   capacity: z.number().int().min(0).optional(),
-  enrollmentUrl: z.string().url().optional().or(z.literal("")),
-  imageUrl: z.string().url().optional().or(z.literal("")),
+  enrollmentUrl: z.string().url().optional().or(z.literal('')),
+  imageUrl: z.string().url().optional().or(z.literal('')),
   isActive: z.boolean().optional(),
   isPublished: z.boolean().optional(),
 });
@@ -66,29 +66,31 @@ export const providerRouter = createTRPCRouter({
   // Get all providers (admin only)
   getAll: adminProcedure
     .input(
-      z.object({
-        includeUnpublished: z.boolean().optional(),
-        includeUnvetted: z.boolean().optional(),
-      }).optional()
+      z
+        .object({
+          includeUnpublished: z.boolean().optional(),
+          includeUnvetted: z.boolean().optional(),
+        })
+        .optional(),
     )
     .query(async ({ ctx, input }) => {
       const where: any = {};
-      
+
       if (!input?.includeUnpublished) {
         where.isPublished = true;
       }
-      
+
       if (!input?.includeUnvetted) {
         where.isVetted = true;
       }
-      
+
       return ctx.db.provider.findMany({
         where,
         include: {
           programs: true,
         },
         orderBy: {
-          createdAt: "desc",
+          createdAt: 'desc',
         },
       });
     }),
@@ -109,154 +111,158 @@ export const providerRouter = createTRPCRouter({
         },
       },
       orderBy: {
-        businessName: "asc",
+        businessName: 'asc',
       },
     });
   }),
 
   // Get single provider
-  getById: protectedProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const provider = await ctx.db.provider.findUnique({
-        where: { id: input.id },
-        include: {
-          programs: true,
-        },
+  getById: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
+    const provider = await ctx.db.provider.findUnique({
+      where: { id: input.id },
+      include: {
+        programs: true,
+      },
+    });
+
+    if (!provider) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Provider not found',
       });
+    }
 
-      if (!provider) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Provider not found",
-        });
-      }
+    // Check if user can view unpublished providers
+    if (!provider.isPublished && ctx.session.user.role !== 'ADMIN') {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'This provider is not published',
+      });
+    }
 
-      // Check if user can view unpublished providers
-      if (!provider.isPublished && ctx.session.user.role !== "ADMIN") {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message: "This provider is not published",
-        });
-      }
-
-      return provider;
-    }),
+    return provider;
+  }),
 
   // Create provider (admin only)
-  create: adminProcedure
-    .input(createProviderSchema)
-    .mutation(async ({ ctx, input }) => {
-      const { ageGroups, ...providerData } = input;
-      
-      const provider = await ctx.db.provider.create({
-        data: {
-          ...providerData,
-          ageGroups: ageGroups ? JSON.stringify(ageGroups) : "[]",
-          vettingDate: input.isVetted ? new Date() : null,
-          vettingStatus: input.isVetted ? "APPROVED" : "NOT_STARTED",
-        },
-      });
+  create: adminProcedure.input(createProviderSchema).mutation(async ({ ctx, input }) => {
+    const { ageGroups, ...providerData } = input;
 
-      // Audit log
-      logger.info("Provider created", {
+    const provider = await ctx.db.provider.create({
+      data: {
+        ...providerData,
+        ageGroups: ageGroups ? JSON.stringify(ageGroups) : '[]',
+        vettingDate: input.isVetted ? new Date() : null,
+        vettingStatus: input.isVetted ? 'APPROVED' : 'NOT_STARTED',
+      },
+    });
+
+    // Audit log
+    logger.info(
+      'Provider created',
+      {
         userId: ctx.session.user.id,
         correlationId: ctx.correlationId,
-      }, {
+      },
+      {
         providerId: provider.id,
-        action: "PROVIDER_CREATED",
-      });
+        action: 'PROVIDER_CREATED',
+      },
+    );
 
-      return provider;
-    }),
+    return provider;
+  }),
 
   // Update provider (admin only)
-  update: adminProcedure
-    .input(updateProviderSchema)
-    .mutation(async ({ ctx, input }) => {
-      const { id, ageGroups, ...updateData } = input;
-      
-      // Check if vetting status changed
-      const existingProvider = await ctx.db.provider.findUnique({
-        where: { id },
-        select: { isVetted: true, isPublished: true },
+  update: adminProcedure.input(updateProviderSchema).mutation(async ({ ctx, input }) => {
+    const { id, ageGroups, ...updateData } = input;
+
+    // Check if vetting status changed
+    const existingProvider = await ctx.db.provider.findUnique({
+      where: { id },
+      select: { isVetted: true, isPublished: true },
+    });
+
+    if (!existingProvider) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Provider not found',
       });
+    }
 
-      if (!existingProvider) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Provider not found",
-        });
-      }
+    const dataToUpdate: any = { ...updateData };
 
-      const dataToUpdate: any = { ...updateData };
-      
-      // Handle JSON fields
-      if (ageGroups !== undefined) {
-        dataToUpdate.ageGroups = ageGroups ? JSON.stringify(ageGroups) : "[]";
-      }
+    // Handle JSON fields
+    if (ageGroups !== undefined) {
+      dataToUpdate.ageGroups = ageGroups ? JSON.stringify(ageGroups) : '[]';
+    }
 
-      // Update vetting info if status changed
-      if (input.isVetted !== undefined && input.isVetted !== existingProvider.isVetted) {
-        dataToUpdate.vettingDate = input.isVetted ? new Date() : null;
-        dataToUpdate.vettingStatus = input.isVetted ? "APPROVED" : "NOT_STARTED";
-      }
+    // Update vetting info if status changed
+    if (input.isVetted !== undefined && input.isVetted !== existingProvider.isVetted) {
+      dataToUpdate.vettingDate = input.isVetted ? new Date() : null;
+      dataToUpdate.vettingStatus = input.isVetted ? 'APPROVED' : 'NOT_STARTED';
+    }
 
-      // Update publishing info if status changed
-      if (input.isPublished !== undefined && input.isPublished !== existingProvider.isPublished) {
-        // Just update the isPublished flag, no publishedAt field in schema
-      }
+    // Update publishing info if status changed
+    if (input.isPublished !== undefined && input.isPublished !== existingProvider.isPublished) {
+      // Just update the isPublished flag, no publishedAt field in schema
+    }
 
-      const provider = await ctx.db.provider.update({
-        where: { id },
-        data: dataToUpdate,
-      });
+    const provider = await ctx.db.provider.update({
+      where: { id },
+      data: dataToUpdate,
+    });
 
-      // Audit log
-      logger.info("Provider updated", {
+    // Audit log
+    logger.info(
+      'Provider updated',
+      {
         userId: ctx.session.user.id,
         correlationId: ctx.correlationId,
-      }, {
+      },
+      {
         providerId: id,
-        action: "PROVIDER_UPDATED",
-      });
+        action: 'PROVIDER_UPDATED',
+      },
+    );
 
-      return provider;
-    }),
+    return provider;
+  }),
 
   // Delete provider (admin only)
-  delete: adminProcedure
-    .input(z.object({ id: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      // Get provider name for audit log
-      const provider = await ctx.db.provider.findUnique({
-        where: { id: input.id },
-        select: { businessName: true },
-      });
+  delete: adminProcedure.input(z.object({ id: z.string() })).mutation(async ({ ctx, input }) => {
+    // Get provider name for audit log
+    const provider = await ctx.db.provider.findUnique({
+      where: { id: input.id },
+      select: { businessName: true },
+    });
 
-      if (!provider) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Provider not found",
-        });
-      }
-
-      await ctx.db.provider.delete({
-        where: { id: input.id },
+    if (!provider) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Provider not found',
       });
-      
-      // Audit log
-      logger.info("Provider deleted", {
+    }
+
+    await ctx.db.provider.delete({
+      where: { id: input.id },
+    });
+
+    // Audit log
+    logger.info(
+      'Provider deleted',
+      {
         userId: ctx.session.user.id,
         correlationId: ctx.correlationId,
-      }, {
+      },
+      {
         providerId: input.id,
         providerName: provider.businessName,
-        action: "PROVIDER_DELETED",
-      });
-      
-      return { success: true };
-    }),
+        action: 'PROVIDER_DELETED',
+      },
+    );
+
+    return { success: true };
+  }),
 
   // Toggle vetting status (admin only)
   toggleVetting: adminProcedure
@@ -269,8 +275,8 @@ export const providerRouter = createTRPCRouter({
 
       if (!provider) {
         throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Provider not found",
+          code: 'NOT_FOUND',
+          message: 'Provider not found',
         });
       }
 
@@ -279,19 +285,23 @@ export const providerRouter = createTRPCRouter({
         data: {
           isVetted: !provider.isVetted,
           vettingDate: !provider.isVetted ? new Date() : null,
-          vettingStatus: !provider.isVetted ? "APPROVED" : "NOT_STARTED",
+          vettingStatus: !provider.isVetted ? 'APPROVED' : 'NOT_STARTED',
         },
       });
 
       // Audit log
-      logger.info("Provider vetting status changed", {
-        userId: ctx.session.user.id,
-        correlationId: ctx.correlationId,
-      }, {
-        providerId: input.id,
-        isVetted: updated.isVetted,
-        action: "PROVIDER_VETTING_TOGGLED",
-      });
+      logger.info(
+        'Provider vetting status changed',
+        {
+          userId: ctx.session.user.id,
+          correlationId: ctx.correlationId,
+        },
+        {
+          providerId: input.id,
+          isVetted: updated.isVetted,
+          action: 'PROVIDER_VETTING_TOGGLED',
+        },
+      );
 
       return updated;
     }),
@@ -307,15 +317,15 @@ export const providerRouter = createTRPCRouter({
 
       if (!provider) {
         throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Provider not found",
+          code: 'NOT_FOUND',
+          message: 'Provider not found',
         });
       }
 
       if (!provider.isVetted && !provider.isPublished) {
         throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Provider must be vetted before publishing",
+          code: 'BAD_REQUEST',
+          message: 'Provider must be vetted before publishing',
         });
       }
 
@@ -327,31 +337,33 @@ export const providerRouter = createTRPCRouter({
       });
 
       // Audit log
-      logger.info("Provider publishing status changed", {
-        userId: ctx.session.user.id,
-        correlationId: ctx.correlationId,
-      }, {
-        providerId: input.id,
-        isPublished: updated.isPublished,
-        action: "PROVIDER_PUBLISHING_TOGGLED",
-      });
+      logger.info(
+        'Provider publishing status changed',
+        {
+          userId: ctx.session.user.id,
+          correlationId: ctx.correlationId,
+        },
+        {
+          providerId: input.id,
+          isPublished: updated.isPublished,
+          action: 'PROVIDER_PUBLISHING_TOGGLED',
+        },
+      );
 
       return updated;
     }),
 
   // Create program for a provider (admin only)
-  createProgram: adminProcedure
-    .input(createProgramSchema)
-    .mutation(async ({ ctx, input }) => {
-      const { daysOfWeek, ...programData } = input;
+  createProgram: adminProcedure.input(createProgramSchema).mutation(async ({ ctx, input }) => {
+    const { daysOfWeek, ...programData } = input;
 
-      const program = await ctx.db.program.create({
-        data: {
-          ...programData,
-          daysOfWeek: daysOfWeek ? JSON.stringify(daysOfWeek) : "[]",
-        },
-      });
+    const program = await ctx.db.program.create({
+      data: {
+        ...programData,
+        daysOfWeek: daysOfWeek ? JSON.stringify(daysOfWeek) : '[]',
+      },
+    });
 
-      return program;
-    }),
+    return program;
+  }),
 });

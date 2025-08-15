@@ -1,14 +1,14 @@
-import { initTRPC, TRPCError } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { type Session } from "next-auth";
-import superjson from "superjson";
-import { ZodError } from "zod";
-import { randomBytes } from "crypto";
+import { initTRPC, TRPCError } from '@trpc/server';
+import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
+import { randomBytes } from 'crypto';
+import type { Session } from 'next-auth';
+import superjson from 'superjson';
+import { ZodError } from 'zod';
 
-import { getServerAuthSession } from "~/server/auth";
-import { db } from "~/server/db";
-import { logger, type LogContext } from "~/utils/logger";
-import { withRequestContext, type RequestContext } from "~/utils/requestContext";
+import { getServerAuthSession } from '~/server/auth';
+import { db } from '~/server/db';
+import { type LogContext, logger } from '~/utils/logger';
+import { type RequestContext, withRequestContext } from '~/utils/requestContext';
 
 type CreateContextOptions = {
   session: Session | null;
@@ -34,11 +34,12 @@ export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
   const session = await getServerAuthSession({ req, res });
-  
+
   // Get correlation ID from headers (set by middleware) or generate secure one
-  const correlationId = req.headers['x-correlation-id'] as string || 
+  const correlationId =
+    (req.headers['x-correlation-id'] as string) ||
     `${Date.now()}-${randomBytes(6).toString('hex')}`;
-  
+
   // Get request path for logging
   const requestPath = req.url;
 
@@ -58,8 +59,7 @@ export const t = initTRPC.context<typeof createTRPCContext>().create({
       ...shape,
       data: {
         ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
+        zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
       },
     };
   },
@@ -88,7 +88,7 @@ const loggingMiddleware = t.middleware(async ({ path, next, ctx }) => {
   try {
     // Run the procedure with request context
     const result = await withRequestContext(requestContext, () => next({ ctx }));
-    
+
     // Log successful completion
     const duration = Date.now() - requestContext.startTime;
     logger.info(`tRPC request completed: ${path}`, logContext, {
@@ -96,7 +96,7 @@ const loggingMiddleware = t.middleware(async ({ path, next, ctx }) => {
       duration,
       success: true,
     });
-    
+
     return result;
   } catch (error) {
     // Log error
@@ -109,9 +109,9 @@ const loggingMiddleware = t.middleware(async ({ path, next, ctx }) => {
         path,
         duration,
         errorType: error instanceof TRPCError ? error.code : 'UNKNOWN',
-      }
+      },
     );
-    
+
     throw error;
   }
 });
@@ -122,79 +122,80 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure.use(loggingMiddleware);
 
 // Protected procedure with logging (for future use when auth is implemented)
-export const protectedProcedure = t.procedure
-  .use(loggingMiddleware)
-  .use(({ ctx, next }) => {
-    if (!ctx.session || !ctx.session.user) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
-    return next({
-      ctx: {
-        // infers the `session` as non-nullable
-        session: { ...ctx.session, user: ctx.session.user },
-      },
-    });
+export const protectedProcedure = t.procedure.use(loggingMiddleware).use(({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
+  }
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
   });
+});
 
 // Import the subscription middleware
-import { requireActiveSubscriptionMiddleware } from "./middleware/requireActiveSubscription";
+import { requireActiveSubscriptionMiddleware } from './middleware/requireActiveSubscription';
 
 // Admin procedure that requires admin role
-export const adminProcedure = protectedProcedure
-  .use(({ ctx, next }) => {
-    if (ctx.session.user.role !== "ADMIN") {
-      throw new TRPCError({ 
-        code: "FORBIDDEN",
-        message: "Only admins can perform this action" 
-      });
-    }
-    return next({ ctx });
-  });
+export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
+  if (ctx.session.user.role !== 'ADMIN') {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Only admins can perform this action',
+    });
+  }
+  return next({ ctx });
+});
 
 // Premium procedure that requires an active subscription
-export const premiumProcedure = protectedProcedure
-  .use(async ({ ctx, next }) => {
-    const { isSubscriptionActive } = await import("~/utils/subscription");
-    const { SubscriptionStatus } = await import("~/server/db");
-    
-    const subscription = await ctx.db.subscription.findUnique({
-      where: { userId: ctx.session.user.id }
-    });
+export const premiumProcedure = protectedProcedure.use(async ({ ctx, next }) => {
+  const { isSubscriptionActive } = await import('~/utils/subscription');
+  const { SubscriptionStatus } = await import('~/server/db');
 
-    if (!isSubscriptionActive(subscription)) {
-      logger.warn('Access denied - no active subscription', {
-        correlationId: ctx.correlationId,
-        userId: ctx.session.user.id,
-        subscriptionStatus: subscription?.status
-      });
-      
-      throw new TRPCError({ 
-        code: 'FORBIDDEN',
-        message: 'Active subscription required'
-      });
-    }
-
-    // Check if subscription has expired and needs status update
-    if (subscription && subscription.expiresAt && subscription.expiresAt < new Date() && subscription.status === SubscriptionStatus.ACTIVE) {
-      // Update status to expired
-      await ctx.db.subscription.update({
-        where: { id: subscription.id },
-        data: { status: SubscriptionStatus.EXPIRED }
-      });
-      
-      logger.info('Subscription expired and status updated', {
-        correlationId: ctx.correlationId,
-        subscriptionId: subscription.id,
-        userId: ctx.session.user.id
-      });
-      
-      throw new TRPCError({ 
-        code: 'FORBIDDEN',
-        message: 'Subscription has expired'
-      });
-    }
-
-    return next({
-      ctx,
-    });
+  const subscription = await ctx.db.subscription.findUnique({
+    where: { userId: ctx.session.user.id },
   });
+
+  if (!isSubscriptionActive(subscription)) {
+    logger.warn('Access denied - no active subscription', {
+      correlationId: ctx.correlationId,
+      userId: ctx.session.user.id,
+      subscriptionStatus: subscription?.status,
+    });
+
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Active subscription required',
+    });
+  }
+
+  // Check if subscription has expired and needs status update
+  if (
+    subscription &&
+    subscription.expiresAt &&
+    subscription.expiresAt < new Date() &&
+    subscription.status === SubscriptionStatus.ACTIVE
+  ) {
+    // Update status to expired
+    await ctx.db.subscription.update({
+      where: { id: subscription.id },
+      data: { status: SubscriptionStatus.EXPIRED },
+    });
+
+    logger.info('Subscription expired and status updated', {
+      correlationId: ctx.correlationId,
+      subscriptionId: subscription.id,
+      userId: ctx.session.user.id,
+    });
+
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Subscription has expired',
+    });
+  }
+
+  return next({
+    ctx,
+  });
+});

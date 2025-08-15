@@ -39,20 +39,19 @@ export default function RenewalReminderEmail({
               Renew Subscription
             </Button>
           </Section>
-          <Text style={text}>
-            Don't lose access to:
-          </Text>
+          <Text style={text}>Don't lose access to:</Text>
           <Text style={list}>
-            • Unlimited program searches<br />
-            • Advanced filters and maps<br />
-            • Email notifications<br />
-            • Saved preferences
+            • Unlimited program searches
+            <br />• Advanced filters and maps
+            <br />• Email notifications
+            <br />• Saved preferences
           </Text>
           <Text style={text}>
             If you have any questions, please don't hesitate to contact our support team.
           </Text>
           <Text style={text}>
-            Best regards,<br />
+            Best regards,
+            <br />
             The Holiday Programs Team
           </Text>
         </Container>

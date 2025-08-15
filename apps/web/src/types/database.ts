@@ -10,7 +10,7 @@ export const UserRole = {
   PROVIDER: 'PROVIDER',
 } as const;
 
-export type UserRole = typeof UserRole[keyof typeof UserRole];
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 
 // Subscription statuses
 export const SubscriptionStatus = {
@@ -22,7 +22,7 @@ export const SubscriptionStatus = {
   EXPIRED: 'EXPIRED',
 } as const;
 
-export type SubscriptionStatus = typeof SubscriptionStatus[keyof typeof SubscriptionStatus];
+export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus];
 
 // Vetting statuses
 export const VettingStatus = {
@@ -33,7 +33,7 @@ export const VettingStatus = {
   SUSPENDED: 'SUSPENDED',
 } as const;
 
-export type VettingStatus = typeof VettingStatus[keyof typeof VettingStatus];
+export type VettingStatus = (typeof VettingStatus)[keyof typeof VettingStatus];
 
 // Program statuses
 export const ProgramStatus = {
@@ -44,10 +44,10 @@ export const ProgramStatus = {
   COMPLETED: 'COMPLETED',
 } as const;
 
-export type ProgramStatus = typeof ProgramStatus[keyof typeof ProgramStatus];
+export type ProgramStatus = (typeof ProgramStatus)[keyof typeof ProgramStatus];
 
 // Re-export for compatibility with @prisma/client when using SQLite
-export { 
+export {
   UserRole as PrismaUserRole,
   SubscriptionStatus as PrismaSubscriptionStatus,
   VettingStatus as PrismaVettingStatus,

@@ -1,8 +1,8 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { PremiumFeatureGuard } from '../PremiumFeatureGuard';
+import type React from 'react';
 import { useSubscriptionStatus } from '~/hooks/useSubscriptionStatus';
 import { SubscriptionStatus } from '~/server/db';
+import { PremiumFeatureGuard } from '../PremiumFeatureGuard';
 
 // Mock the useSubscriptionStatus hook
 jest.mock('~/hooks/useSubscriptionStatus');
@@ -17,7 +17,9 @@ jest.mock('next/link', () => {
 });
 
 describe('PremiumFeatureGuard', () => {
-  const mockUseSubscriptionStatus = useSubscriptionStatus as jest.MockedFunction<typeof useSubscriptionStatus>;
+  const mockUseSubscriptionStatus = useSubscriptionStatus as jest.MockedFunction<
+    typeof useSubscriptionStatus
+  >;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -37,7 +39,7 @@ describe('PremiumFeatureGuard', () => {
     render(
       <PremiumFeatureGuard>
         <div>Premium Content</div>
-      </PremiumFeatureGuard>
+      </PremiumFeatureGuard>,
     );
 
     // Check for loading spinner
@@ -64,7 +66,7 @@ describe('PremiumFeatureGuard', () => {
     render(
       <PremiumFeatureGuard>
         <div>Premium Content</div>
-      </PremiumFeatureGuard>
+      </PremiumFeatureGuard>,
     );
 
     expect(screen.getByText('Premium Content')).toBeInTheDocument();
@@ -90,7 +92,7 @@ describe('PremiumFeatureGuard', () => {
     render(
       <PremiumFeatureGuard>
         <div>Premium Content</div>
-      </PremiumFeatureGuard>
+      </PremiumFeatureGuard>,
     );
 
     expect(screen.queryByText('Premium Content')).not.toBeInTheDocument();
@@ -120,7 +122,7 @@ describe('PremiumFeatureGuard', () => {
     render(
       <PremiumFeatureGuard fallback={<CustomFallback />}>
         <div>Premium Content</div>
-      </PremiumFeatureGuard>
+      </PremiumFeatureGuard>,
     );
 
     expect(screen.queryByText('Premium Content')).not.toBeInTheDocument();
@@ -146,7 +148,7 @@ describe('PremiumFeatureGuard', () => {
     render(
       <PremiumFeatureGuard>
         <div>Premium Content</div>
-      </PremiumFeatureGuard>
+      </PremiumFeatureGuard>,
     );
 
     expect(screen.queryByText('Premium Content')).not.toBeInTheDocument();

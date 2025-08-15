@@ -12,19 +12,19 @@ export enum MonitoringEvent {
   PAYMENT_INITIATED = 'payment_initiated',
   PAYMENT_COMPLETED = 'payment_completed',
   PAYMENT_FAILED = 'payment_failed',
-  
+
   // Admin Journey Events
   ADMIN_LOGIN = 'admin_login',
   PROVIDER_CREATED = 'provider_created',
   PROVIDER_VETTED = 'provider_vetted',
   PROVIDER_PUBLISHED = 'provider_published',
   PROVIDER_DELETED = 'provider_deleted',
-  
+
   // Performance Events
   PAGE_LOAD_TIME = 'page_load_time',
   API_RESPONSE_TIME = 'api_response_time',
   SEARCH_RESPONSE_TIME = 'search_response_time',
-  
+
   // Error Events
   API_ERROR = 'api_error',
   PAYMENT_ERROR = 'payment_error',
@@ -103,7 +103,7 @@ class MonitoringService {
 
     // Send to analytics service
     this.sendToAnalytics(data);
-    
+
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
       console.log('[Monitoring]', data);
@@ -122,27 +122,24 @@ class MonitoringService {
 
     // Send to error tracking service
     this.sendToErrorTracking(data);
-    
+
     // Log to console
     console.error('[Monitoring Error]', data, error);
   }
 
-  public async trackApiCall<T>(
-    operation: string,
-    apiCall: () => Promise<T>
-  ): Promise<T> {
+  public async trackApiCall<T>(operation: string, apiCall: () => Promise<T>): Promise<T> {
     const startTime = Date.now();
-    
+
     try {
       const result = await apiCall();
       const duration = Date.now() - startTime;
-      
+
       this.track(MonitoringEvent.API_RESPONSE_TIME, {
         operation,
         duration,
         success: true,
       });
-      
+
       // Alert if response time is slow
       if (duration > 3000) {
         this.sendAlert('Slow API Response', {
@@ -150,16 +147,16 @@ class MonitoringService {
           duration,
         });
       }
-      
+
       return result;
     } catch (error) {
       const duration = Date.now() - startTime;
-      
+
       this.trackError(MonitoringEvent.API_ERROR, error as Error, {
         operation,
         duration,
       });
-      
+
       throw error;
     }
   }
@@ -216,7 +213,7 @@ class MonitoringService {
 
   public startTimer(label: string): () => void {
     const startTime = Date.now();
-    
+
     return () => {
       const duration = Date.now() - startTime;
       this.track(MonitoringEvent.PAGE_LOAD_TIME, {
@@ -230,22 +227,22 @@ class MonitoringService {
 // Singleton instance
 export const monitoring = new MonitoringService();
 
+import { useRouter } from 'next/router';
 // React Hooks
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 
 export function usePageTracking() {
   const router = useRouter();
-  
+
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       monitoring.track(MonitoringEvent.PAGE_LOAD_TIME, {
         path: url,
       });
     };
-    
+
     router.events.on('routeChangeComplete', handleRouteChange);
-    
+
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
@@ -260,14 +257,14 @@ export function useSearchTracking() {
         filters,
       });
     },
-    
+
     trackSearchCompleted: (query: string, resultCount: number, duration: number) => {
       monitoring.track(MonitoringEvent.SEARCH_COMPLETED, {
         query,
         resultCount,
         duration,
       });
-      
+
       // Alert if search is slow
       if (duration > 2000) {
         monitoring.sendAlert('Slow Search', {
@@ -287,13 +284,13 @@ export function useProviderTracking() {
         providerName,
       });
     },
-    
+
     trackProviderCreated: (providerId: string) => {
       monitoring.track(MonitoringEvent.PROVIDER_CREATED, {
         providerId,
       });
     },
-    
+
     trackProviderVetted: (providerId: string, isVetted: boolean) => {
       monitoring.track(MonitoringEvent.PROVIDER_VETTED, {
         providerId,
@@ -311,7 +308,7 @@ export function usePaymentTracking() {
         plan,
       });
     },
-    
+
     trackPaymentCompleted: (amount: number, plan: string, paymentId: string) => {
       monitoring.track(MonitoringEvent.PAYMENT_COMPLETED, {
         amount,
@@ -319,13 +316,9 @@ export function usePaymentTracking() {
         paymentId,
       });
     },
-    
+
     trackPaymentFailed: (error: string, amount: number, plan: string) => {
-      monitoring.trackError(
-        MonitoringEvent.PAYMENT_FAILED,
-        new Error(error),
-        { amount, plan }
-      );
+      monitoring.trackError(MonitoringEvent.PAYMENT_FAILED, new Error(error), { amount, plan });
     },
   };
 }
@@ -340,7 +333,7 @@ export const healthChecks = {
       return false;
     }
   },
-  
+
   async checkPaymentAvailability(): Promise<boolean> {
     try {
       const response = await fetch('/api/health/payment');
@@ -349,7 +342,7 @@ export const healthChecks = {
       return false;
     }
   },
-  
+
   async checkDatabaseConnection(): Promise<boolean> {
     try {
       const response = await fetch('/api/health/database');
@@ -358,7 +351,7 @@ export const healthChecks = {
       return false;
     }
   },
-  
+
   async checkAuthService(): Promise<boolean> {
     try {
       const response = await fetch('/api/health/auth');
@@ -375,7 +368,7 @@ export function startHealthMonitoring() {
   setInterval(async () => {
     const searchHealthy = await healthChecks.checkSearchAvailability();
     const authHealthy = await healthChecks.checkAuthService();
-    
+
     if (!searchHealthy) {
       monitoring.sendAlert('Search Service Unavailable', {});
     }
@@ -383,19 +376,22 @@ export function startHealthMonitoring() {
       monitoring.sendAlert('Auth Service Unavailable', {});
     }
   }, 60 * 1000);
-  
+
   // Medium priority - every 5 minutes
-  setInterval(async () => {
-    const paymentHealthy = await healthChecks.checkPaymentAvailability();
-    const dbHealthy = await healthChecks.checkDatabaseConnection();
-    
-    if (!paymentHealthy) {
-      monitoring.sendAlert('Payment Service Unavailable', {});
-    }
-    if (!dbHealthy) {
-      monitoring.sendAlert('Database Connection Failed', {});
-    }
-  }, 5 * 60 * 1000);
+  setInterval(
+    async () => {
+      const paymentHealthy = await healthChecks.checkPaymentAvailability();
+      const dbHealthy = await healthChecks.checkDatabaseConnection();
+
+      if (!paymentHealthy) {
+        monitoring.sendAlert('Payment Service Unavailable', {});
+      }
+      if (!dbHealthy) {
+        monitoring.sendAlert('Database Connection Failed', {});
+      }
+    },
+    5 * 60 * 1000,
+  );
 }
 
 // Window type declarations

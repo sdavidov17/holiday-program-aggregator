@@ -1,63 +1,68 @@
-import Head from "next/head";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import Logo from "~/components/ui/Logo";
-import ActivityIcon from "~/components/ui/ActivityIcon";
-import ProviderCard from "~/components/ui/ProviderCard";
-import { Search, MapPin, Star, ChevronRight, Users, Shield, Clock, Heart } from "lucide-react";
+import { ChevronRight, Clock, Heart, MapPin, Search, Shield, Star, Users } from 'lucide-react';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
+import { useState } from 'react';
+import ActivityIcon from '~/components/ui/ActivityIcon';
+import Logo from '~/components/ui/Logo';
+import ProviderCard from '~/components/ui/ProviderCard';
 
 export default function Home() {
   const { data: session } = useSession();
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [location, setLocation] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [location, setLocation] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(`/search?q=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(location)}`);
+    router.push(
+      `/search?q=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(location)}`,
+    );
   };
 
   // Sample provider data for showcase
   const featuredProviders = [
     {
-      id: "1",
-      name: "Creative Kids Club",
-      description: "Fun and engaging arts & crafts activities for children aged 5-12",
+      id: '1',
+      name: 'Creative Kids Club',
+      description: 'Fun and engaging arts & crafts activities for children aged 5-12',
       rating: 4.8,
       reviewCount: 123,
-      location: "Sydney",
+      location: 'Sydney',
       isVetted: true,
-      tags: ["Arts & Crafts", "Indoor", "5-12 years"]
+      tags: ['Arts & Crafts', 'Indoor', '5-12 years'],
     },
     {
-      id: "2",
-      name: "Sports Academy",
-      description: "Professional sports coaching in multiple disciplines",
+      id: '2',
+      name: 'Sports Academy',
+      description: 'Professional sports coaching in multiple disciplines',
       rating: 4.9,
       reviewCount: 89,
-      location: "Melbourne",
+      location: 'Melbourne',
       isVetted: true,
-      tags: ["Sports", "Outdoor", "All ages"]
+      tags: ['Sports', 'Outdoor', 'All ages'],
     },
     {
-      id: "3",
-      name: "Tech Wizards",
-      description: "Coding and robotics workshops for future innovators",
+      id: '3',
+      name: 'Tech Wizards',
+      description: 'Coding and robotics workshops for future innovators',
       rating: 4.7,
       reviewCount: 67,
-      location: "Brisbane",
+      location: 'Brisbane',
       isVetted: true,
-      tags: ["Technology", "STEM", "8-16 years"]
-    }
+      tags: ['Technology', 'STEM', '8-16 years'],
+    },
   ];
 
   return (
     <>
       <Head>
         <title>HolidayHeroes - Find School Holiday Programs for Kids</title>
-        <meta name="description" content="Discover amazing school holiday activities and programs for your children. Trusted by thousands of Australian families." />
+        <meta
+          name="description"
+          content="Discover amazing school holiday activities and programs for your children. Trusted by thousands of Australian families."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -67,13 +72,22 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <Logo />
             <nav className="hidden md:flex items-center gap-8">
-              <Link href="/search" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
+              <Link
+                href="/search"
+                className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              >
                 Browse Activities
               </Link>
-              <Link href="/providers" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
+              <Link
+                href="/providers"
+                className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              >
                 Providers
               </Link>
-              <Link href="/about" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
+              <Link
+                href="/about"
+                className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              >
                 About
               </Link>
             </nav>
@@ -110,11 +124,11 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-in">
               <h1 className="text-5xl lg:text-6xl font-sans font-bold text-gray-900 mb-6">
-                Find providers for{" "}
-                <span className="text-gradient">school holidays</span>
+                Find providers for <span className="text-gradient">school holidays</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8">
-                Search through thousands of verified holiday programs and activities for your children
+                Search through thousands of verified holiday programs and activities for your
+                children
               </p>
 
               {/* Search Form */}
@@ -193,9 +207,7 @@ export default function Home() {
             <h2 className="text-3xl lg:text-4xl font-sans font-bold text-gray-900 mb-4">
               Popular Activities
             </h2>
-            <p className="text-lg text-gray-600">
-              Explore activities by category
-            </p>
+            <p className="text-lg text-gray-600">Explore activities by category</p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
@@ -219,9 +231,7 @@ export default function Home() {
               <h2 className="text-3xl lg:text-4xl font-sans font-bold text-gray-900 mb-4">
                 Featured Providers
               </h2>
-              <p className="text-lg text-gray-600">
-                Discover top-rated holiday program providers
-              </p>
+              <p className="text-lg text-gray-600">Discover top-rated holiday program providers</p>
             </div>
             <Link href="/providers" className="btn-secondary hidden md:flex items-center gap-2">
               View All <ChevronRight className="w-4 h-4" />
@@ -305,19 +315,29 @@ export default function Home() {
             Ready to Find the Perfect Holiday Program?
           </h2>
           <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
-            Join thousands of Australian families who trust HolidayHeroes to find amazing school holiday activities
+            Join thousands of Australian families who trust HolidayHeroes to find amazing school
+            holiday activities
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {session ? (
-              <Link href="/search" className="btn bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 text-lg">
+              <Link
+                href="/search"
+                className="btn bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 text-lg"
+              >
                 Start Searching
               </Link>
             ) : (
               <>
-                <Link href="/auth/signin?signup=true" className="btn bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 text-lg">
+                <Link
+                  href="/auth/signin?signup=true"
+                  className="btn bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 text-lg"
+                >
                   Get Started Free
                 </Link>
-                <Link href="/auth/signin" className="btn bg-primary-700 text-white hover:bg-primary-800 border-2 border-white/20 px-8 py-4 text-lg">
+                <Link
+                  href="/auth/signin"
+                  className="btn bg-primary-700 text-white hover:bg-primary-800 border-2 border-white/20 px-8 py-4 text-lg"
+                >
                   Sign In
                 </Link>
               </>
@@ -343,29 +363,82 @@ export default function Home() {
             <div>
               <h4 className="font-semibold text-white mb-4">Browse</h4>
               <ul className="space-y-2">
-                <li><Link href="/search" className="text-sm hover:text-white transition-colors">Search Programs</Link></li>
-                <li><Link href="/providers" className="text-sm hover:text-white transition-colors">All Providers</Link></li>
-                <li><Link href="/activities" className="text-sm hover:text-white transition-colors">Activities</Link></li>
-                <li><Link href="/locations" className="text-sm hover:text-white transition-colors">Locations</Link></li>
+                <li>
+                  <Link href="/search" className="text-sm hover:text-white transition-colors">
+                    Search Programs
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/providers" className="text-sm hover:text-white transition-colors">
+                    All Providers
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/activities" className="text-sm hover:text-white transition-colors">
+                    Activities
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/locations" className="text-sm hover:text-white transition-colors">
+                    Locations
+                  </Link>
+                </li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-semibold text-white mb-4">Company</h4>
               <ul className="space-y-2">
-                <li><Link href="/about" className="text-sm hover:text-white transition-colors">About Us</Link></li>
-                <li><Link href="/contact" className="text-sm hover:text-white transition-colors">Contact</Link></li>
-                <li><Link href="/privacy" className="text-sm hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="text-sm hover:text-white transition-colors">Terms of Service</Link></li>
+                <li>
+                  <Link href="/about" className="text-sm hover:text-white transition-colors">
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="text-sm hover:text-white transition-colors">
+                    Contact
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/privacy" className="text-sm hover:text-white transition-colors">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="text-sm hover:text-white transition-colors">
+                    Terms of Service
+                  </Link>
+                </li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-semibold text-white mb-4">For Providers</h4>
               <ul className="space-y-2">
-                <li><Link href="/providers/join" className="text-sm hover:text-white transition-colors">List Your Program</Link></li>
-                <li><Link href="/providers/resources" className="text-sm hover:text-white transition-colors">Resources</Link></li>
-                <li><Link href="/providers/support" className="text-sm hover:text-white transition-colors">Provider Support</Link></li>
+                <li>
+                  <Link
+                    href="/providers/join"
+                    className="text-sm hover:text-white transition-colors"
+                  >
+                    List Your Program
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/providers/resources"
+                    className="text-sm hover:text-white transition-colors"
+                  >
+                    Resources
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/providers/support"
+                    className="text-sm hover:text-white transition-colors"
+                  >
+                    Provider Support
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

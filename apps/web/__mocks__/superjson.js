@@ -8,5 +8,5 @@ module.exports = {
     parse: (data) => JSON.parse(data),
     serialize: (data) => ({ json: data, meta: {} }),
     deserialize: (data) => data.json || data,
-  }
+  },
 };

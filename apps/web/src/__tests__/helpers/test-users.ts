@@ -1,7 +1,8 @@
 // This is a helper file, not a test suite
+
+import { describe, expect, it } from '@jest/globals';
+import bcrypt from 'bcryptjs';
 import { db as prisma } from '~/server/db';
-import bcrypt from "bcryptjs";
-import { describe, it, expect } from '@jest/globals';
 
 // Add a dummy test to satisfy Jest
 describe('Test Helper Module', () => {
@@ -12,65 +13,65 @@ describe('Test Helper Module', () => {
 
 export const TEST_USERS = {
   admin: {
-    email: "test-admin@test.com",
-    password: "TestAdmin123!",
-    role: "ADMIN" as const,
+    email: 'test-admin@test.com',
+    password: 'TestAdmin123!',
+    role: 'ADMIN' as const,
   },
   user: {
-    email: "test-user@test.com", 
-    password: "TestUser123!",
-    role: "USER" as const,
+    email: 'test-user@test.com',
+    password: 'TestUser123!',
+    role: 'USER' as const,
   },
   provider: {
-    email: "test-provider@test.com",
-    password: "TestProvider123!",
-    role: "USER" as const, // Providers are users with associated provider records
-  }
+    email: 'test-provider@test.com',
+    password: 'TestProvider123!',
+    role: 'USER' as const, // Providers are users with associated provider records
+  },
 };
 
 /**
  * Clean up all test users from the database
  */
 export async function cleanupTestUsers() {
-  const testEmails = Object.values(TEST_USERS).map(u => u.email);
-  
+  const testEmails = Object.values(TEST_USERS).map((u) => u.email);
+
   try {
     // Delete in correct order to handle foreign key constraints
     // First delete related records
     await prisma.session.deleteMany({
       where: {
         user: {
-          email: { in: testEmails }
-        }
-      }
+          email: { in: testEmails },
+        },
+      },
     });
 
     await prisma.account.deleteMany({
       where: {
         user: {
-          email: { in: testEmails }
-        }
-      }
+          email: { in: testEmails },
+        },
+      },
     });
 
     await prisma.subscription.deleteMany({
       where: {
         user: {
-          email: { in: testEmails }
-        }
-      }
+          email: { in: testEmails },
+        },
+      },
     });
 
     // Then delete the users
     await prisma.user.deleteMany({
       where: {
-        email: { in: testEmails }
-      }
+        email: { in: testEmails },
+      },
     });
 
     console.log(`✅ Cleaned up ${testEmails.length} test users`);
   } catch (error) {
-    console.error("Error cleaning up test users:", error);
+    console.error('Error cleaning up test users:', error);
     throw error;
   }
 }
@@ -78,13 +79,13 @@ export async function cleanupTestUsers() {
 /**
  * Create a test user with the specified role
  */
-export async function createTestUser(type: keyof typeof TEST_USERS = "admin") {
+export async function createTestUser(type: keyof typeof TEST_USERS = 'admin') {
   const userData = TEST_USERS[type];
-  
+
   try {
     // First cleanup any existing user with this email
     await prisma.user.deleteMany({
-      where: { email: userData.email }
+      where: { email: userData.email },
     });
 
     // Create the new test user
@@ -112,11 +113,11 @@ export async function createTestUser(type: keyof typeof TEST_USERS = "admin") {
  */
 export async function createAllTestUsers() {
   await cleanupTestUsers();
-  
+
   const users = await Promise.all([
-    createTestUser("admin"),
-    createTestUser("user"),
-    createTestUser("provider"),
+    createTestUser('admin'),
+    createTestUser('user'),
+    createTestUser('provider'),
   ]);
 
   return {
@@ -133,10 +134,10 @@ export async function createAllTestUsers() {
 export async function setupTestDatabase() {
   // Ensure database connection
   await prisma.$connect();
-  
+
   // Create test users
   const users = await createAllTestUsers();
-  
+
   return users;
 }
 
@@ -155,7 +156,7 @@ export async function cleanupTestDatabase() {
 /**
  * Get a test user's credentials
  */
-export function getTestCredentials(type: keyof typeof TEST_USERS = "admin") {
+export function getTestCredentials(type: keyof typeof TEST_USERS = 'admin') {
   return {
     email: TEST_USERS[type].email,
     password: TEST_USERS[type].password,
@@ -167,7 +168,7 @@ export function getTestCredentials(type: keyof typeof TEST_USERS = "admin") {
  */
 export async function createTestSession(userEmail: string) {
   const user = await prisma.user.findUnique({
-    where: { email: userEmail }
+    where: { email: userEmail },
   });
 
   if (!user) {

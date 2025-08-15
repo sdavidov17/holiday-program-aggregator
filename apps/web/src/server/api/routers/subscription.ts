@@ -1,6 +1,6 @@
-import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { SubscriptionService } from "~/services/subscription.service";
+import { z } from 'zod';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
+import { SubscriptionService } from '~/services/subscription.service';
 
 export const subscriptionRouter = createTRPCRouter({
   getSubscriptionStatus: protectedProcedure.query(async ({ ctx }) => {
@@ -11,7 +11,7 @@ export const subscriptionRouter = createTRPCRouter({
   getStatus: protectedProcedure.query(async ({ ctx }) => {
     const service = new SubscriptionService(ctx.db);
     const subscription = await service.getSubscription(ctx.session.user.id);
-    
+
     if (!subscription) {
       return null;
     }
@@ -28,7 +28,7 @@ export const subscriptionRouter = createTRPCRouter({
     .input(
       z.object({
         priceId: z.string().optional(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const service = new SubscriptionService(ctx.db);
@@ -36,19 +36,14 @@ export const subscriptionRouter = createTRPCRouter({
       const { req } = ctx;
 
       // Build URLs for redirect
-      const host = req?.headers?.host ?? "localhost:3000";
-      const protocol = host.includes("localhost") ? "http" : "https";
+      const host = req?.headers?.host ?? 'localhost:3000';
+      const protocol = host.includes('localhost') ? 'http' : 'https';
       const baseUrl = `${protocol}://${host}`;
-      
+
       const successUrl = `${baseUrl}/subscription/success?session_id={CHECKOUT_SESSION_ID}`;
       const cancelUrl = `${baseUrl}/subscription/cancelled`;
 
-      return await service.createCheckoutSession(
-        user.id,
-        user.email!,
-        successUrl,
-        cancelUrl
-      );
+      return await service.createCheckoutSession(user.id, user.email!, successUrl, cancelUrl);
     }),
 
   cancelSubscription: protectedProcedure.mutation(async ({ ctx }) => {

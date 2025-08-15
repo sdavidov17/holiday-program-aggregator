@@ -4,7 +4,7 @@
  */
 
 import { LRUCache } from 'lru-cache';
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 interface RateLimitOptions {
   uniqueTokenPerInterval?: number;
@@ -28,7 +28,7 @@ const limiters = new Map<string, LRUCache<string, number[]>>();
 function getLimiter(
   endpoint: string,
   uniqueTokenPerInterval: number = 500,
-  interval: number = 60000 // 1 minute
+  interval: number = 60000, // 1 minute
 ): LRUCache<string, number[]> {
   if (!limiters.has(endpoint)) {
     limiters.set(
@@ -36,7 +36,7 @@ function getLimiter(
       new LRUCache<string, number[]>({
         max: uniqueTokenPerInterval,
         ttl: interval,
-      })
+      }),
     );
   }
   return limiters.get(endpoint)!;
@@ -49,7 +49,7 @@ function getClientId(req: NextApiRequest): string {
   // Try to get real IP from various headers (for proxied requests)
   const forwarded = req.headers['x-forwarded-for'];
   const real = req.headers['x-real-ip'];
-  
+
   let ip = 'unknown';
   if (forwarded) {
     const forwardedStr = Array.isArray(forwarded) ? forwarded[0] : forwarded;
@@ -64,10 +64,10 @@ function getClientId(req: NextApiRequest): string {
   } else if (req.socket?.remoteAddress) {
     ip = req.socket.remoteAddress;
   }
-  
+
   // For authenticated requests, use user ID as well
   const userId = (req as any).userId;
-  
+
   return userId ? `${ip}:${userId}` : ip || 'unknown';
 }
 
@@ -77,7 +77,7 @@ function getClientId(req: NextApiRequest): string {
 export async function rateLimit(
   req: NextApiRequest,
   res: NextApiResponse,
-  options: RateLimitOptions = {}
+  options: RateLimitOptions = {},
 ): Promise<RateLimitResult> {
   const {
     uniqueTokenPerInterval = 500,
@@ -88,16 +88,16 @@ export async function rateLimit(
   const endpoint = req.url || 'unknown';
   const clientId = getClientId(req);
   const limiter = getLimiter(endpoint, uniqueTokenPerInterval, interval);
-  
+
   const now = Date.now();
   const windowStart = now - interval;
-  
+
   // Get current request timestamps for this client
   let timestamps = limiter.get(clientId) || [];
-  
+
   // Remove old timestamps outside the current window
   timestamps = timestamps.filter((t: number) => t > windowStart);
-  
+
   // Check if limit exceeded
   if (timestamps.length >= maxRequests) {
     const firstTimestamp = timestamps[0];
@@ -105,7 +105,7 @@ export async function rateLimit(
       throw new Error('Invalid timestamp state');
     }
     const resetTime = new Date(firstTimestamp + interval);
-    
+
     // Log rate limit violation
     console.warn('Rate limit exceeded', {
       clientId,
@@ -113,13 +113,13 @@ export async function rateLimit(
       requests: timestamps.length,
       limit: maxRequests,
     });
-    
+
     // Set rate limit headers
     res.setHeader('X-RateLimit-Limit', maxRequests.toString());
     res.setHeader('X-RateLimit-Remaining', '0');
     res.setHeader('X-RateLimit-Reset', resetTime.toISOString());
     res.setHeader('Retry-After', Math.ceil((resetTime.getTime() - now) / 1000).toString());
-    
+
     return {
       success: false,
       limit: maxRequests,
@@ -127,19 +127,19 @@ export async function rateLimit(
       reset: resetTime,
     };
   }
-  
+
   // Add current timestamp
   timestamps.push(now);
   limiter.set(clientId, timestamps);
-  
+
   const remaining = maxRequests - timestamps.length;
   const resetTime = new Date(now + interval);
-  
+
   // Set rate limit headers
   res.setHeader('X-RateLimit-Limit', maxRequests.toString());
   res.setHeader('X-RateLimit-Remaining', remaining.toString());
   res.setHeader('X-RateLimit-Reset', resetTime.toISOString());
-  
+
   return {
     success: true,
     limit: maxRequests,
@@ -153,18 +153,18 @@ export async function rateLimit(
  */
 export function withRateLimit(
   handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>,
-  options?: RateLimitOptions
+  options?: RateLimitOptions,
 ) {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     const result = await rateLimit(req, res, options);
-    
+
     if (!result.success) {
       return res.status(429).json({
         error: 'Too many requests',
         message: `Rate limit exceeded. Please try again after ${result.reset.toISOString()}`,
       });
     }
-    
+
     return handler(req, res);
   };
 }

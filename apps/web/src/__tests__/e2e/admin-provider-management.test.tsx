@@ -1,6 +1,6 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { useSession } from 'next-auth/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import AdminProviders from '~/pages/admin/providers/index';
 import AdminProviderNew from '~/pages/admin/providers/new';
 
@@ -21,38 +21,38 @@ jest.mock('~/utils/api', () => ({
               postcode: '2000',
               isVetted: false,
               isPublished: false,
-              programs: []
-            }
+              programs: [],
+            },
           ],
           isLoading: false,
           error: null,
-          refetch: jest.fn()
-        }))
+          refetch: jest.fn(),
+        })),
       },
       create: {
         useMutation: jest.fn(() => ({
           mutate: jest.fn(),
-          isPending: false
-        }))
+          isPending: false,
+        })),
       },
       toggleVetting: {
         useMutation: jest.fn(() => ({
           mutate: jest.fn(),
-          isPending: false
-        }))
+          isPending: false,
+        })),
       },
       togglePublishing: {
         useMutation: jest.fn(() => ({
           mutate: jest.fn(),
-          isPending: false
-        }))
+          isPending: false,
+        })),
       },
       delete: {
         useMutation: jest.fn(() => ({
           mutate: jest.fn(),
-          isPending: false
-        }))
-      }
+          isPending: false,
+        })),
+      },
     },
     user: {
       me: {
@@ -60,35 +60,35 @@ jest.mock('~/utils/api', () => ({
           data: {
             id: '1',
             email: 'admin@test.com',
-            role: 'ADMIN'
-          }
-        }))
-      }
-    }
-  }
+            role: 'ADMIN',
+          },
+        })),
+      },
+    },
+  },
 }));
 
 describe('Admin Provider Management E2E', () => {
   const mockPush = jest.fn();
   const mockBack = jest.fn();
-  
+
   beforeEach(() => {
     jest.clearAllMocks();
     (useRouter as jest.Mock).mockReturnValue({
       push: mockPush,
       back: mockBack,
       query: {},
-      pathname: '/admin/providers'
+      pathname: '/admin/providers',
     });
-    
+
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: {
           id: '1',
           email: 'admin@test.com',
-          role: 'ADMIN'
-        }
-      }
+          role: 'ADMIN',
+        },
+      },
     });
   });
 
@@ -99,13 +99,13 @@ describe('Admin Provider Management E2E', () => {
           user: {
             id: '1',
             email: 'user@test.com',
-            role: 'USER'
-          }
-        }
+            role: 'USER',
+          },
+        },
       });
-      
+
       render(<AdminProviders />);
-      
+
       waitFor(() => {
         expect(mockPush).toHaveBeenCalledWith('/');
       });
@@ -113,7 +113,7 @@ describe('Admin Provider Management E2E', () => {
 
     it('should allow admin access to provider management', () => {
       render(<AdminProviders />);
-      
+
       expect(screen.getByText('Manage Providers')).toBeInTheDocument();
       expect(screen.getByText('Add New Provider')).toBeInTheDocument();
     });
@@ -122,7 +122,7 @@ describe('Admin Provider Management E2E', () => {
   describe('Provider List View', () => {
     it('should display all providers in a table', () => {
       render(<AdminProviders />);
-      
+
       expect(screen.getByText('Test Provider')).toBeInTheDocument();
       expect(screen.getByText('test@provider.com')).toBeInTheDocument();
       expect(screen.getByText('Sydney, NSW')).toBeInTheDocument();
@@ -130,21 +130,21 @@ describe('Admin Provider Management E2E', () => {
 
     it('should show provider status badges', () => {
       render(<AdminProviders />);
-      
+
       expect(screen.getByText('Not Vetted')).toBeInTheDocument();
       expect(screen.getByText('Draft')).toBeInTheDocument();
     });
 
     it('should filter providers by vetting status', () => {
       render(<AdminProviders />);
-      
+
       const vettedCheckbox = screen.getByLabelText(/Show unvetted/i);
       fireEvent.click(vettedCheckbox);
-      
+
       // Verify filter is applied
       const { api } = require('~/utils/api');
       expect(api.provider.getAll.useQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ includeUnvetted: false })
+        expect.objectContaining({ includeUnvetted: false }),
       );
     });
   });
@@ -152,19 +152,19 @@ describe('Admin Provider Management E2E', () => {
   describe('Add Provider Flow', () => {
     it('should navigate to add provider form', () => {
       render(<AdminProviders />);
-      
+
       const addButton = screen.getByText('Add New Provider');
       fireEvent.click(addButton);
-      
+
       expect(mockPush).toHaveBeenCalledWith('/admin/providers/new');
     });
 
     it('should validate required fields', async () => {
       render(<AdminProviderNew />);
-      
+
       const submitButton = screen.getByText('Create Provider');
       fireEvent.click(submitButton);
-      
+
       await waitFor(() => {
         expect(screen.getByText(/Name is required/i)).toBeInTheDocument();
       });
@@ -175,33 +175,33 @@ describe('Admin Provider Management E2E', () => {
       const mockCreate = jest.fn();
       api.provider.create.useMutation.mockReturnValue({
         mutate: mockCreate,
-        isPending: false
+        isPending: false,
       });
-      
+
       render(<AdminProviderNew />);
-      
+
       fireEvent.change(screen.getByLabelText(/Provider Name/i), {
-        target: { value: 'New Provider' }
+        target: { value: 'New Provider' },
       });
       fireEvent.change(screen.getByLabelText(/Email/i), {
-        target: { value: 'new@provider.com' }
+        target: { value: 'new@provider.com' },
       });
       fireEvent.change(screen.getByLabelText(/Phone/i), {
-        target: { value: '0400 123 456' }
+        target: { value: '0400 123 456' },
       });
       fireEvent.change(screen.getByLabelText(/Suburb/i), {
-        target: { value: 'Melbourne' }
+        target: { value: 'Melbourne' },
       });
       fireEvent.change(screen.getByLabelText(/State/i), {
-        target: { value: 'VIC' }
+        target: { value: 'VIC' },
       });
       fireEvent.change(screen.getByLabelText(/Postcode/i), {
-        target: { value: '3000' }
+        target: { value: '3000' },
       });
-      
+
       const submitButton = screen.getByText('Create Provider');
       fireEvent.click(submitButton);
-      
+
       await waitFor(() => {
         expect(mockCreate).toHaveBeenCalledWith({
           name: 'New Provider',
@@ -209,7 +209,7 @@ describe('Admin Provider Management E2E', () => {
           phone: '0400 123 456',
           suburb: 'Melbourne',
           state: 'VIC',
-          postcode: '3000'
+          postcode: '3000',
         });
       });
     });
@@ -221,14 +221,14 @@ describe('Admin Provider Management E2E', () => {
       const mockToggleVetting = jest.fn();
       api.provider.toggleVetting.useMutation.mockReturnValue({
         mutate: mockToggleVetting,
-        isPending: false
+        isPending: false,
       });
-      
+
       render(<AdminProviders />);
-      
+
       const vetButton = screen.getByText('Not Vetted');
       fireEvent.click(vetButton);
-      
+
       await waitFor(() => {
         expect(mockToggleVetting).toHaveBeenCalledWith({ id: '1' });
       });
@@ -238,14 +238,14 @@ describe('Admin Provider Management E2E', () => {
       const { api } = require('~/utils/api');
       api.provider.toggleVetting.useMutation.mockReturnValue({
         mutate: jest.fn((_, { onSuccess }) => onSuccess()),
-        isPending: false
+        isPending: false,
       });
-      
+
       render(<AdminProviders />);
-      
+
       const vetButton = screen.getByText('Not Vetted');
       fireEvent.click(vetButton);
-      
+
       await waitFor(() => {
         expect(screen.getByText(/Vetting status updated/i)).toBeInTheDocument();
       });
@@ -255,7 +255,7 @@ describe('Admin Provider Management E2E', () => {
   describe('Publishing Process', () => {
     it('should require vetting before publishing', () => {
       render(<AdminProviders />);
-      
+
       const publishButton = screen.getByText('Draft');
       expect(publishButton).toBeDisabled();
     });
@@ -263,29 +263,31 @@ describe('Admin Provider Management E2E', () => {
     it('should toggle publishing status for vetted providers', async () => {
       const { api } = require('~/utils/api');
       api.provider.getAll.useQuery.mockReturnValue({
-        data: [{
-          id: '1',
-          name: 'Test Provider',
-          isVetted: true,
-          isPublished: false,
-          programs: []
-        }],
+        data: [
+          {
+            id: '1',
+            name: 'Test Provider',
+            isVetted: true,
+            isPublished: false,
+            programs: [],
+          },
+        ],
         isLoading: false,
         error: null,
-        refetch: jest.fn()
+        refetch: jest.fn(),
       });
-      
+
       const mockTogglePublishing = jest.fn();
       api.provider.togglePublishing.useMutation.mockReturnValue({
         mutate: mockTogglePublishing,
-        isPending: false
+        isPending: false,
       });
-      
+
       render(<AdminProviders />);
-      
+
       const publishButton = screen.getByText('Draft');
       fireEvent.click(publishButton);
-      
+
       await waitFor(() => {
         expect(mockTogglePublishing).toHaveBeenCalledWith({ id: '1' });
       });
@@ -295,30 +297,32 @@ describe('Admin Provider Management E2E', () => {
   describe('Delete Provider', () => {
     it('should confirm before deleting', () => {
       window.confirm = jest.fn(() => false);
-      
+
       render(<AdminProviders />);
-      
+
       const deleteButton = screen.getByText('Delete');
       fireEvent.click(deleteButton);
-      
-      expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to delete "Test Provider"?');
+
+      expect(window.confirm).toHaveBeenCalledWith(
+        'Are you sure you want to delete "Test Provider"?',
+      );
     });
 
     it('should delete provider after confirmation', async () => {
       window.confirm = jest.fn(() => true);
-      
+
       const { api } = require('~/utils/api');
       const mockDelete = jest.fn();
       api.provider.delete.useMutation.mockReturnValue({
         mutate: mockDelete,
-        isPending: false
+        isPending: false,
       });
-      
+
       render(<AdminProviders />);
-      
+
       const deleteButton = screen.getByText('Delete');
       fireEvent.click(deleteButton);
-      
+
       await waitFor(() => {
         expect(mockDelete).toHaveBeenCalledWith({ id: '1' });
       });
@@ -328,13 +332,13 @@ describe('Admin Provider Management E2E', () => {
   describe('Performance Monitoring', () => {
     it('should track provider creation time', async () => {
       const startTime = Date.now();
-      
+
       render(<AdminProviderNew />);
-      
+
       // Fill form and submit
       const submitButton = screen.getByText('Create Provider');
       fireEvent.click(submitButton);
-      
+
       await waitFor(() => {
         const endTime = Date.now();
         const duration = endTime - startTime;
@@ -350,15 +354,15 @@ describe('Admin Provider Management E2E', () => {
           name: `Provider ${i}`,
           isVetted: false,
           isPublished: false,
-          programs: []
+          programs: [],
         })),
         isLoading: false,
         error: null,
-        refetch: jest.fn()
+        refetch: jest.fn(),
       });
-      
+
       render(<AdminProviders />);
-      
+
       await waitFor(() => {
         expect(screen.getByText('Provider 0')).toBeInTheDocument();
         expect(screen.getByText('Provider 49')).toBeInTheDocument();
@@ -371,14 +375,14 @@ describe('Admin Provider Management E2E', () => {
       const { api } = require('~/utils/api');
       api.provider.create.useMutation.mockReturnValue({
         mutate: jest.fn((_, { onError }) => onError(new Error('Network error'))),
-        isPending: false
+        isPending: false,
       });
-      
+
       render(<AdminProviderNew />);
-      
+
       const submitButton = screen.getByText('Create Provider');
       fireEvent.click(submitButton);
-      
+
       await waitFor(() => {
         expect(screen.getByText(/Network error/i)).toBeInTheDocument();
       });
@@ -391,14 +395,14 @@ describe('Admin Provider Management E2E', () => {
         data: null,
         isLoading: false,
         error: new Error('Failed to load'),
-        refetch: mockRefetch
+        refetch: mockRefetch,
       });
-      
+
       render(<AdminProviders />);
-      
+
       const retryButton = screen.getByText(/Retry/i);
       fireEvent.click(retryButton);
-      
+
       expect(mockRefetch).toHaveBeenCalled();
     });
   });

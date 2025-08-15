@@ -3,9 +3,9 @@
  * Tests for actual subscription service implementation
  */
 
-import { describe, it, expect, jest, beforeEach, afterEach } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
+import type { PrismaClient } from '@prisma/client';
 import { SubscriptionService } from '../subscription.service';
-import { PrismaClient } from '@prisma/client';
 
 // Define SubscriptionStatus enum for tests
 const SubscriptionStatus = {
@@ -14,12 +14,10 @@ const SubscriptionStatus = {
   CANCELLED: 'CANCELLED',
   EXPIRED: 'EXPIRED',
 } as const;
-import { 
-  createTestUser,
-  createTestSubscription,
-} from '../../__tests__/factories';
-import { createMockPrismaClient } from '../../__tests__/setup/test-db';
+
 import { TRPCError } from '@trpc/server';
+import { createTestSubscription, createTestUser } from '../../__tests__/factories';
+import { createMockPrismaClient } from '../../__tests__/setup/test-db';
 
 // Mock stripe utils
 jest.mock('~/utils/stripe', () => ({
@@ -139,7 +137,7 @@ describe('SubscriptionService', () => {
         createTestSubscription({
           userId: user.id!,
           status: 'PENDING',
-        })
+        }),
       );
 
       const { createStripeCustomer, createCheckoutSession } = require('~/utils/stripe');
@@ -153,7 +151,7 @@ describe('SubscriptionService', () => {
         user.id!,
         user.email!,
         'http://localhost:3000/success',
-        'http://localhost:3000/cancel'
+        'http://localhost:3000/cancel',
       );
 
       expect(result).toEqual({
@@ -176,8 +174,8 @@ describe('SubscriptionService', () => {
           'user123',
           'user@test.com',
           'http://localhost:3000/success',
-          'http://localhost:3000/cancel'
-        )
+          'http://localhost:3000/cancel',
+        ),
       ).rejects.toThrow('You already have an active subscription');
     });
   });
@@ -206,18 +204,17 @@ describe('SubscriptionService', () => {
 
       expect(result.success).toBe(true);
       expect(result.cancelAtPeriodEnd).toBe(true);
-      expect(stripe.subscriptions.update).toHaveBeenCalledWith(
-        'sub_test123',
-        { cancel_at_period_end: true }
-      );
+      expect(stripe.subscriptions.update).toHaveBeenCalledWith('sub_test123', {
+        cancel_at_period_end: true,
+      });
     });
 
     it('should throw error if no active subscription found', async () => {
       mockPrisma.subscription.findUnique.mockResolvedValue(null);
 
-      await expect(
-        service.cancelSubscription('user123')
-      ).rejects.toThrow('No active subscription found');
+      await expect(service.cancelSubscription('user123')).rejects.toThrow(
+        'No active subscription found',
+      );
     });
   });
 
@@ -245,10 +242,9 @@ describe('SubscriptionService', () => {
 
       expect(result.success).toBe(true);
       expect(result.cancelAtPeriodEnd).toBe(false);
-      expect(stripe.subscriptions.update).toHaveBeenCalledWith(
-        'sub_test123',
-        { cancel_at_period_end: false }
-      );
+      expect(stripe.subscriptions.update).toHaveBeenCalledWith('sub_test123', {
+        cancel_at_period_end: false,
+      });
     });
 
     it('should throw error if subscription not scheduled for cancellation', async () => {
@@ -259,9 +255,9 @@ describe('SubscriptionService', () => {
 
       mockPrisma.subscription.findUnique.mockResolvedValue(subscription);
 
-      await expect(
-        service.resumeSubscription('user123')
-      ).rejects.toThrow('Subscription is not scheduled for cancellation');
+      await expect(service.resumeSubscription('user123')).rejects.toThrow(
+        'Subscription is not scheduled for cancellation',
+      );
     });
   });
 
@@ -277,7 +273,7 @@ describe('SubscriptionService', () => {
           status: 'ACTIVE',
           currentPeriodStart,
           currentPeriodEnd,
-        })
+        }),
       );
 
       await service.handleCheckoutComplete(
@@ -285,7 +281,7 @@ describe('SubscriptionService', () => {
         'sub_test123',
         'price_test123',
         currentPeriodStart,
-        currentPeriodEnd
+        currentPeriodEnd,
       );
 
       expect(mockPrisma.subscription.upsert).toHaveBeenCalledWith({
@@ -331,7 +327,7 @@ describe('SubscriptionService', () => {
       await expect(
         service.updateSubscriptionFromWebhook('sub_invalid', {
           status: SubscriptionStatus.ACTIVE,
-        })
+        }),
       ).rejects.toThrow('Subscription not found');
     });
   });

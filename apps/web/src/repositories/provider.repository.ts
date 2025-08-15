@@ -3,7 +3,7 @@
  * Handles all database operations for providers with business logic
  */
 
-import { Provider, Program, Prisma } from '@prisma/client';
+import type { Prisma, Program, Provider } from '@prisma/client';
 import { BaseRepository } from './base.repository';
 
 export interface ProviderWithPrograms extends Provider {
@@ -105,7 +105,7 @@ export class ProviderRepository extends BaseRepository<Provider> {
     id: string,
     status: 'APPROVED' | 'REJECTED',
     notes: string,
-    userId: string
+    userId: string,
   ): Promise<Provider> {
     const updateData = {
       isVetted: status === 'APPROVED',
@@ -126,11 +126,7 @@ export class ProviderRepository extends BaseRepository<Provider> {
       throw new Error('Provider not found');
     }
 
-    return this.update(
-      id,
-      { isPublished: !provider.isPublished },
-      userId
-    );
+    return this.update(id, { isPublished: !provider.isPublished }, userId);
   }
 
   /**
@@ -224,8 +220,8 @@ export class ProviderRepository extends BaseRepository<Provider> {
               ...programData,
               providerId: provider.id,
             },
-          })
-        )
+          }),
+        ),
       );
 
       return {
@@ -238,12 +234,9 @@ export class ProviderRepository extends BaseRepository<Provider> {
   /**
    * Search providers by query with optional filters
    */
-  async search(params: { 
-    query?: string; 
-    suburb?: string; 
-    state?: string;
-    includePrograms?: boolean;
-  } = {}): Promise<Provider[]> {
+  async search(
+    params: { query?: string; suburb?: string; state?: string; includePrograms?: boolean } = {},
+  ): Promise<Provider[]> {
     const where: any = {
       isPublished: true,
       isVetted: true,
@@ -254,7 +247,7 @@ export class ProviderRepository extends BaseRepository<Provider> {
         { businessName: { contains: params.query, mode: 'insensitive' } },
         { description: { contains: params.query, mode: 'insensitive' } },
       ];
-      
+
       // Include program search if requested
       if (params.includePrograms) {
         searchConditions.push({
@@ -268,7 +261,7 @@ export class ProviderRepository extends BaseRepository<Provider> {
           },
         });
       }
-      
+
       where.OR = searchConditions;
     }
 

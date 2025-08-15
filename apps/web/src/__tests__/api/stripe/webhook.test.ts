@@ -1,6 +1,5 @@
 import { createMocks } from 'node-mocks-http';
-import { db } from '~/server/db';
-import { SubscriptionStatus } from '~/server/db';
+import { db, SubscriptionStatus } from '~/server/db';
 
 // Mock dependencies before imports
 jest.mock('micro', () => ({
@@ -147,7 +146,7 @@ describe('/api/stripe/webhook', () => {
             id: 'sub_test_123',
             status: 'active',
             current_period_start: 1704067200, // 2024-01-01
-            current_period_end: 1735689600,   // 2025-01-01
+            current_period_end: 1735689600, // 2025-01-01
             cancel_at_period_end: false,
             trial_end: null,
           },

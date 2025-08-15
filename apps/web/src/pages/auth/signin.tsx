@@ -1,60 +1,62 @@
-import { type GetServerSidePropsContext } from "next";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import { getServerAuthSession } from "~/server/auth";
-import Logo from "~/components/ui/Logo";
-import Link from "next/link";
+import type { GetServerSidePropsContext } from 'next';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import Logo from '~/components/ui/Logo';
+import { getServerAuthSession } from '~/server/auth';
 
 export default function SignIn() {
   const router = useRouter();
   const [loginType, setLoginType] = useState<'parent' | 'admin'>('parent');
   const [isSignUp, setIsSignUp] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Check for OAuth errors
   useEffect(() => {
     if (router.query.error === 'OAuthAccountNotLinked') {
-      setError('This email is already registered. Please sign in with your password or use the same method you used when signing up.');
+      setError(
+        'This email is already registered. Please sign in with your password or use the same method you used when signing up.',
+      );
     }
   }, [router.query.error]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setLoading(true);
 
     try {
       if (isSignUp) {
         if (password !== confirmPassword) {
-          setError("Passwords do not match");
+          setError('Passwords do not match');
           setLoading(false);
           return;
         }
 
-        const res = await fetch("/api/auth/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const res = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
         });
 
         if (!res.ok) {
-          let errorMessage = "Failed to create account";
+          let errorMessage = 'Failed to create account';
           try {
             const data = await res.json();
             errorMessage = data.error || errorMessage;
           } catch (e) {
-            console.error("Failed to parse error response:", e);
+            console.error('Failed to parse error response:', e);
           }
           throw new Error(errorMessage);
         }
 
         // Sign in after successful signup
-        const result = await signIn("credentials", {
+        const result = await signIn('credentials', {
           email,
           password,
           redirect: false,
@@ -63,24 +65,24 @@ export default function SignIn() {
         if (result?.error) {
           setError(result.error);
         } else {
-          await router.push(loginType === 'admin' ? "/admin" : "/");
+          await router.push(loginType === 'admin' ? '/admin' : '/');
         }
       } else {
-        const result = await signIn("credentials", {
+        const result = await signIn('credentials', {
           email,
           password,
           redirect: false,
         });
 
         if (result?.error) {
-          setError("Invalid email or password");
+          setError('Invalid email or password');
         } else {
-          await router.push(loginType === 'admin' ? "/admin" : "/");
+          await router.push(loginType === 'admin' ? '/admin' : '/');
         }
       }
     } catch (error) {
-      console.error("Form submission error:", error);
-      setError(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error('Form submission error:', error);
+      setError(error instanceof Error ? error.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -100,12 +102,12 @@ export default function SignIn() {
             {/* Title */}
             <div className="text-center mb-8">
               <h1 className="text-3xl font-sans font-bold text-gray-900 mb-2">
-                {isSignUp ? "Create Account" : "Welcome Back!"}
+                {isSignUp ? 'Create Account' : 'Welcome Back!'}
               </h1>
               <p className="text-gray-600">
-                {isSignUp 
-                  ? "Join HolidayHeroes to find amazing programs" 
-                  : "Sign in to find amazing holiday programs"}
+                {isSignUp
+                  ? 'Join HolidayHeroes to find amazing programs'
+                  : 'Sign in to find amazing holiday programs'}
               </p>
             </div>
 
@@ -122,7 +124,12 @@ export default function SignIn() {
                   }`}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
                   </svg>
                   Parent Login
                 </button>
@@ -136,13 +143,18 @@ export default function SignIn() {
                   }`}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
                   </svg>
                   Admin Login
                 </button>
               </div>
             )}
-      
+
             {/* Error Message */}
             {error && (
               <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
@@ -157,8 +169,18 @@ export default function SignIn() {
                   Email Address
                 </label>
                 <div className="relative">
-                  <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <svg
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
                   </svg>
                   <input
                     id="email"
@@ -177,8 +199,18 @@ export default function SignIn() {
                   Password
                 </label>
                 <div className="relative">
-                  <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  <svg
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
                   </svg>
                   <input
                     id="password"
@@ -199,8 +231,18 @@ export default function SignIn() {
                     Confirm Password
                   </label>
                   <div className="relative">
-                    <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    <svg
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                      />
                     </svg>
                     <input
                       id="confirmPassword"
@@ -226,12 +268,17 @@ export default function SignIn() {
                 ) : (
                   <>
                     <span>
-                      {isSignUp 
-                        ? "Create Account" 
+                      {isSignUp
+                        ? 'Create Account'
                         : `Sign In${!isSignUp && loginType === 'admin' ? ' as Admin' : ''}`}
                     </span>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
                     </svg>
                   </>
                 )}
@@ -251,7 +298,9 @@ export default function SignIn() {
             {/* OAuth Button */}
             <button
               type="button"
-              onClick={() => signIn("google", { callbackUrl: loginType === 'admin' ? "/admin" : "/" })}
+              onClick={() =>
+                signIn('google', { callbackUrl: loginType === 'admin' ? '/admin' : '/' })
+              }
               disabled={loading}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
             >
@@ -280,11 +329,11 @@ export default function SignIn() {
             <p className="text-center text-sm text-gray-600 mt-6">
               {isSignUp ? (
                 <>
-                  Already have an account?{" "}
+                  Already have an account?{' '}
                   <button
                     onClick={() => {
                       setIsSignUp(false);
-                      setError("");
+                      setError('');
                     }}
                     className="text-primary-600 hover:text-primary-700 font-medium"
                   >
@@ -293,11 +342,11 @@ export default function SignIn() {
                 </>
               ) : (
                 <>
-                  Don&apos;t have an account?{" "}
+                  Don&apos;t have an account?{' '}
                   <button
                     onClick={() => {
                       setIsSignUp(true);
-                      setError("");
+                      setError('');
                     }}
                     className="text-primary-600 hover:text-primary-700 font-medium"
                   >
@@ -320,7 +369,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (session) {
     return {
       redirect: {
-        destination: session.user.role === 'ADMIN' ? "/admin" : "/",
+        destination: session.user.role === 'ADMIN' ? '/admin' : '/',
         permanent: false,
       },
     };

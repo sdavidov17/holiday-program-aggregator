@@ -6,20 +6,26 @@ module.exports = {
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     '^~/(.*)$': '<rootDir>/src/$1',
-    'superjson': '<rootDir>/__mocks__/superjson.js',
+    superjson: '<rootDir>/__mocks__/superjson.js',
     '^~/env.mjs$': '<rootDir>/__mocks__/env.js',
   },
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: {
-        jsx: 'react-jsx',
+    '^.+\\.(ts|tsx)$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          jsx: 'react-jsx',
+        },
       },
-    }],
-    '^.+\\.mjs$': ['ts-jest', {
-      tsconfig: {
-        jsx: 'react-jsx',
+    ],
+    '^.+\\.mjs$': [
+      'ts-jest',
+      {
+        tsconfig: {
+          jsx: 'react-jsx',
+        },
       },
-    }],
+    ],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'mjs'],
   testMatch: ['**/__tests__/**/*.(ts|tsx|js|jsx)', '**/*.(test|spec).(ts|tsx|js|jsx)'],
@@ -48,31 +54,35 @@ module.exports = {
   coverageReporters: ['text', 'text-summary', 'html', 'lcov', 'json-summary'],
   reporters: [
     'default',
-    ['jest-junit', {
-      outputDirectory: 'coverage',
-      outputName: 'junit.xml',
-      suiteName: 'Holiday Program Aggregator Tests',
-      classNameTemplate: '{classname}',
-      titleTemplate: '{title}',
-      ancestorSeparator: ' › ',
-      usePathForSuiteName: true,
-    }],
-    ['jest-ctrf-json-reporter', {
-      outputDir: './coverage',
-      outputFile: 'ctrf-report.json',
-      testType: 'unit',
-      appName: 'Holiday Heroes Web',
-      appVersion: '0.1.0',
-      environment: process.env.NODE_ENV || 'test',
-      buildName: process.env.GITHUB_RUN_ID || 'local',
-      buildNumber: process.env.GITHUB_RUN_NUMBER || '0',
-    }],
+    [
+      'jest-junit',
+      {
+        outputDirectory: 'coverage',
+        outputName: 'junit.xml',
+        suiteName: 'Holiday Program Aggregator Tests',
+        classNameTemplate: '{classname}',
+        titleTemplate: '{title}',
+        ancestorSeparator: ' › ',
+        usePathForSuiteName: true,
+      },
+    ],
+    [
+      'jest-ctrf-json-reporter',
+      {
+        outputDir: './coverage',
+        outputFile: 'ctrf-report.json',
+        testType: 'unit',
+        appName: 'Holiday Heroes Web',
+        appVersion: '0.1.0',
+        environment: process.env.NODE_ENV || 'test',
+        buildName: process.env.GITHUB_RUN_ID || 'local',
+        buildNumber: process.env.GITHUB_RUN_NUMBER || '0',
+      },
+    ],
   ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
-  transformIgnorePatterns: [
-    'node_modules/(?!(@t3-oss/env-nextjs)/)',
-  ],
+  transformIgnorePatterns: ['node_modules/(?!(@t3-oss/env-nextjs)/)'],
 };

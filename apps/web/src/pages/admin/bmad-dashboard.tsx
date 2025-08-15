@@ -1,13 +1,13 @@
-import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { AdminLayout } from "~/components/AdminLayout";
+import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { AdminLayout } from '~/components/AdminLayout';
 
 interface AgentStatus {
   name: string;
   role: string;
-  status: "active" | "idle" | "error";
+  status: 'active' | 'idle' | 'error';
   lastActivity: string;
   currentTask?: string;
   icon: string;
@@ -39,9 +39,9 @@ const BMADDashboard: NextPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (status === "loading") return;
-    if (!session || session.user?.role !== "ADMIN") {
-      void router.push("/");
+    if (status === 'loading') return;
+    if (!session || session.user?.role !== 'ADMIN') {
+      void router.push('/');
     }
   }, [session, status, router]);
 
@@ -49,100 +49,100 @@ const BMADDashboard: NextPage = () => {
     // Initialize agent statuses
     const initialAgents: AgentStatus[] = [
       {
-        name: "BMAD Master",
-        role: "Project orchestrator and knowledge base manager",
-        status: "active",
+        name: 'BMAD Master',
+        role: 'Project orchestrator and knowledge base manager',
+        status: 'active',
         lastActivity: new Date().toISOString(),
-        currentTask: "Coordinating Epic 1 implementation",
-        icon: "🧠",
-        color: "text-green-600",
+        currentTask: 'Coordinating Epic 1 implementation',
+        icon: '🧠',
+        color: 'text-green-600',
       },
       {
-        name: "Orchestrator",
-        role: "Workflow coordinator and task distributor",
-        status: "active",
+        name: 'Orchestrator',
+        role: 'Workflow coordinator and task distributor',
+        status: 'active',
         lastActivity: new Date().toISOString(),
-        currentTask: "Managing sprint backlog",
-        icon: "🎯",
-        color: "text-blue-600",
+        currentTask: 'Managing sprint backlog',
+        icon: '🎯',
+        color: 'text-blue-600',
       },
       {
-        name: "Product Manager",
-        role: "Product strategy and roadmap management",
-        status: "active",
+        name: 'Product Manager',
+        role: 'Product strategy and roadmap management',
+        status: 'active',
         lastActivity: new Date().toISOString(),
-        currentTask: "Refining Epic 2 requirements",
-        icon: "📊",
-        color: "text-purple-600",
+        currentTask: 'Refining Epic 2 requirements',
+        icon: '📊',
+        color: 'text-purple-600',
       },
       {
-        name: "Business Analyst",
-        role: "Requirements analysis and business logic design",
-        status: "idle",
+        name: 'Business Analyst',
+        role: 'Requirements analysis and business logic design',
+        status: 'idle',
         lastActivity: new Date().toISOString(),
-        icon: "🔍",
-        color: "text-yellow-600",
+        icon: '🔍',
+        color: 'text-yellow-600',
       },
       {
-        name: "Solution Architect",
-        role: "System design and technical architecture",
-        status: "active",
+        name: 'Solution Architect',
+        role: 'System design and technical architecture',
+        status: 'active',
         lastActivity: new Date().toISOString(),
-        currentTask: "Reviewing PostgreSQL migration",
-        icon: "🏗️",
-        color: "text-cyan-600",
+        currentTask: 'Reviewing PostgreSQL migration',
+        icon: '🏗️',
+        color: 'text-cyan-600',
       },
       {
-        name: "Product Owner",
-        role: "Feature prioritization and acceptance criteria",
-        status: "idle",
+        name: 'Product Owner',
+        role: 'Feature prioritization and acceptance criteria',
+        status: 'idle',
         lastActivity: new Date().toISOString(),
-        icon: "👤",
-        color: "text-orange-600",
+        icon: '👤',
+        color: 'text-orange-600',
       },
       {
-        name: "Scrum Master",
-        role: "Agile process facilitation",
-        status: "active",
+        name: 'Scrum Master',
+        role: 'Agile process facilitation',
+        status: 'active',
         lastActivity: new Date().toISOString(),
-        currentTask: "Planning next sprint",
-        icon: "🏃",
-        color: "text-pink-600",
+        currentTask: 'Planning next sprint',
+        icon: '🏃',
+        color: 'text-pink-600',
       },
       {
-        name: "Developer",
-        role: "Implementation and coding",
-        status: "active",
+        name: 'Developer',
+        role: 'Implementation and coding',
+        status: 'active',
         lastActivity: new Date().toISOString(),
-        currentTask: "Implementing subscription features",
-        icon: "💻",
-        color: "text-green-600",
+        currentTask: 'Implementing subscription features',
+        icon: '💻',
+        color: 'text-green-600',
       },
       {
-        name: "QA Engineer",
-        role: "Quality assurance and testing",
-        status: "active",
+        name: 'QA Engineer',
+        role: 'Quality assurance and testing',
+        status: 'active',
         lastActivity: new Date().toISOString(),
-        currentTask: "Running E2E test suite",
-        icon: "🧪",
-        color: "text-red-600",
+        currentTask: 'Running E2E test suite',
+        icon: '🧪',
+        color: 'text-red-600',
       },
       {
-        name: "UX Expert",
-        role: "User experience design",
-        status: "idle",
+        name: 'UX Expert',
+        role: 'User experience design',
+        status: 'idle',
         lastActivity: new Date().toISOString(),
-        icon: "🎨",
-        color: "text-purple-600",
+        icon: '🎨',
+        color: 'text-purple-600',
       },
       {
-        name: "DevOps Engineer",
-        role: "Infrastructure and CI/CD",
-        status: "active",
+        name: 'DevOps Engineer',
+        role: 'Infrastructure and CI/CD',
+        status: 'active',
         lastActivity: new Date().toISOString(),
-        currentTask: "Monitoring Vercel deployments",
-        icon: "🔧",
-        color: "text-orange-600",
+        currentTask: 'Monitoring Vercel deployments',
+        icon: '🔧',
+        color: 'text-orange-600',
       },
     ];
 
@@ -163,25 +163,25 @@ const BMADDashboard: NextPage = () => {
     // Initialize subagent tasks (simulated for now)
     const tasks = [
       {
-        id: "task-1",
-        agent: "general-purpose",
-        description: "Research Epic 2 requirements",
-        status: "completed",
+        id: 'task-1',
+        agent: 'general-purpose',
+        description: 'Research Epic 2 requirements',
+        status: 'completed',
         startTime: new Date(Date.now() - 3600000).toISOString(),
         endTime: new Date(Date.now() - 1800000).toISOString(),
       },
       {
-        id: "task-2",
-        agent: "general-purpose",
-        description: "Analyze subscription lifecycle",
-        status: "in_progress",
+        id: 'task-2',
+        agent: 'general-purpose',
+        description: 'Analyze subscription lifecycle',
+        status: 'in_progress',
         startTime: new Date(Date.now() - 900000).toISOString(),
       },
       {
-        id: "task-3",
-        agent: "general-purpose",
-        description: "Review security headers implementation",
-        status: "pending",
+        id: 'task-3',
+        agent: 'general-purpose',
+        description: 'Review security headers implementation',
+        status: 'pending',
       },
     ];
     setSubagentTasks(tasks);
@@ -194,24 +194,24 @@ const BMADDashboard: NextPage = () => {
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
-      case "active":
-        return "bg-green-100 text-green-800";
-      case "idle":
-        return "bg-yellow-100 text-yellow-800";
-      case "error":
-        return "bg-red-100 text-red-800";
+      case 'active':
+        return 'bg-green-100 text-green-800';
+      case 'idle':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'error':
+        return 'bg-red-100 text-red-800';
       default:
-        return "bg-gray-100 text-gray-800";
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getHealthScoreColor = (score: number) => {
-    if (score >= 90) return "text-green-600";
-    if (score >= 70) return "text-yellow-600";
-    return "text-red-600";
+    if (score >= 90) return 'text-green-600';
+    if (score >= 70) return 'text-yellow-600';
+    return 'text-red-600';
   };
 
-  if (status === "loading" || isLoading) {
+  if (status === 'loading' || isLoading) {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center min-h-screen">
@@ -221,7 +221,7 @@ const BMADDashboard: NextPage = () => {
     );
   }
 
-  if (!session || session.user?.role !== "ADMIN") {
+  if (!session || session.user?.role !== 'ADMIN') {
     return null;
   }
 
@@ -230,9 +230,7 @@ const BMADDashboard: NextPage = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">BMAD Squad Dashboard</h1>
-          <p className="mt-2 text-gray-600">
-            Breakthrough Method of Agile AI-Driven Development
-          </p>
+          <p className="mt-2 text-gray-600">Breakthrough Method of Agile AI-Driven Development</p>
           <p className="text-sm text-gray-500">
             Foundations in Agentic Agile Driven Development - Autonomous Squad Status
           </p>
@@ -257,7 +255,7 @@ const BMADDashboard: NextPage = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Active Agents</p>
                 <p className="text-3xl font-bold text-gray-900">
-                  {agents.filter(a => a.status === "active").length}/{agents.length}
+                  {agents.filter((a) => a.status === 'active').length}/{agents.length}
                 </p>
               </div>
               <div className="text-4xl">🤖</div>
@@ -292,7 +290,9 @@ const BMADDashboard: NextPage = () => {
             <div>
               <div className="flex justify-between text-sm mb-1">
                 <span>Overall Progress</span>
-                <span>{metrics.completedTasks}/{metrics.totalTasks} tasks</span>
+                <span>
+                  {metrics.completedTasks}/{metrics.totalTasks} tasks
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2.5">
                 <div
@@ -339,7 +339,7 @@ const BMADDashboard: NextPage = () => {
                   </div>
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusBadgeColor(
-                      agent.status
+                      agent.status,
                     )}`}
                   >
                     {agent.status}
@@ -371,20 +371,21 @@ const BMADDashboard: NextPage = () => {
                     {task.startTime && (
                       <p className="text-xs text-gray-400 mt-1">
                         Started: {new Date(task.startTime).toLocaleTimeString()}
-                        {task.endTime && ` • Completed: ${new Date(task.endTime).toLocaleTimeString()}`}
+                        {task.endTime &&
+                          ` • Completed: ${new Date(task.endTime).toLocaleTimeString()}`}
                       </p>
                     )}
                   </div>
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      task.status === "completed"
-                        ? "bg-green-100 text-green-800"
-                        : task.status === "in_progress"
-                        ? "bg-blue-100 text-blue-800"
-                        : "bg-gray-100 text-gray-800"
+                      task.status === 'completed'
+                        ? 'bg-green-100 text-green-800'
+                        : task.status === 'in_progress'
+                          ? 'bg-blue-100 text-blue-800'
+                          : 'bg-gray-100 text-gray-800'
                     }`}
                   >
-                    {task.status === "in_progress" ? "In Progress" : task.status}
+                    {task.status === 'in_progress' ? 'In Progress' : task.status}
                   </span>
                 </div>
               </div>
@@ -395,7 +396,8 @@ const BMADDashboard: NextPage = () => {
           </div>
           <div className="mt-4 p-3 bg-blue-50 rounded-lg">
             <p className="text-sm text-blue-800">
-              💡 Tip: Use Claude Code&apos;s Task tool to delegate work to subagents for research, analysis, and complex tasks.
+              💡 Tip: Use Claude Code&apos;s Task tool to delegate work to subagents for research,
+              analysis, and complex tasks.
             </p>
           </div>
         </div>
@@ -403,7 +405,7 @@ const BMADDashboard: NextPage = () => {
         {/* Quick Actions */}
         <div className="mt-8 flex gap-4">
           <button
-            onClick={() => window.location.href = "/api/admin/squad-report"}
+            onClick={() => (window.location.href = '/api/admin/squad-report')}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             Generate Squad Report

@@ -1,15 +1,15 @@
-import { type Prisma, type PrismaClient } from "@prisma/client";
-import { SubscriptionStatus } from "~/server/db";
-import { TRPCError } from "@trpc/server";
+import type { Prisma, PrismaClient } from '@prisma/client';
+import { TRPCError } from '@trpc/server';
+import { env } from '~/env.mjs';
+import { SubscriptionStatus } from '~/server/db';
+import { logger } from '~/utils/logger';
 import {
-  createStripeCustomer,
-  createCheckoutSession,
   ANNUAL_SUBSCRIPTION_CONFIG,
+  createCheckoutSession,
+  createStripeCustomer,
   stripe,
-} from "~/utils/stripe";
-import { logger } from "~/utils/logger";
-import { env } from "~/env.mjs";
-import { isSubscriptionActive } from "~/utils/subscription";
+} from '~/utils/stripe';
+import { isSubscriptionActive } from '~/utils/subscription';
 
 export class SubscriptionService {
   constructor(private db: PrismaClient) {}
@@ -47,9 +47,9 @@ export class SubscriptionService {
     userId: string,
     email: string,
     successUrl: string,
-    cancelUrl: string
+    cancelUrl: string,
   ) {
-    logger.info("Creating checkout session", {
+    logger.info('Creating checkout session', {
       correlationId: 'checkout-' + Date.now(),
       userId,
       email,
@@ -62,9 +62,9 @@ export class SubscriptionService {
 
     if (!env.STRIPE_SECRET_KEY || !env.STRIPE_ANNUAL_PRICE_ID) {
       throw new Error(
-        "Stripe configuration is missing. Please set STRIPE_SECRET_KEY and STRIPE_ANNUAL_PRICE_ID in your .env file. " +
-        `Current config: STRIPE_SECRET_KEY=${env.STRIPE_SECRET_KEY ? 'set' : 'missing'}, ` +
-        `STRIPE_ANNUAL_PRICE_ID=${env.STRIPE_ANNUAL_PRICE_ID || 'missing'}`
+        'Stripe configuration is missing. Please set STRIPE_SECRET_KEY and STRIPE_ANNUAL_PRICE_ID in your .env file. ' +
+          `Current config: STRIPE_SECRET_KEY=${env.STRIPE_SECRET_KEY ? 'set' : 'missing'}, ` +
+          `STRIPE_ANNUAL_PRICE_ID=${env.STRIPE_ANNUAL_PRICE_ID || 'missing'}`,
       );
     }
 
@@ -72,8 +72,8 @@ export class SubscriptionService {
     const existingSubscription = await this.getSubscription(userId);
     if (isSubscriptionActive(existingSubscription)) {
       throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "You already have an active subscription",
+        code: 'BAD_REQUEST',
+        message: 'You already have an active subscription',
       });
     }
 
@@ -82,7 +82,7 @@ export class SubscriptionService {
     if (!stripeCustomerId) {
       const customer = await createStripeCustomer(email, userId);
       stripeCustomerId = customer.id;
-      
+
       // Store customer ID if we have a subscription record
       if (existingSubscription) {
         await this.db.subscription.update({
@@ -98,7 +98,7 @@ export class SubscriptionService {
       userId,
       env.STRIPE_ANNUAL_PRICE_ID,
       successUrl,
-      cancelUrl
+      cancelUrl,
     );
 
     // Create or update subscription record with pending status
@@ -128,25 +128,25 @@ export class SubscriptionService {
    */
   async cancelSubscription(userId: string) {
     const subscription = await this.getSubscription(userId);
-    
+
     if (!subscription || !subscription.stripeSubscriptionId) {
       throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "No active subscription found",
+        code: 'NOT_FOUND',
+        message: 'No active subscription found',
       });
     }
 
     if (!stripe) {
       throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Stripe is not configured",
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Stripe is not configured',
       });
     }
 
     // Cancel at period end in Stripe
     const stripeSubscription = await stripe.subscriptions.update(
       subscription.stripeSubscriptionId,
-      { cancel_at_period_end: true }
+      { cancel_at_period_end: true },
     );
 
     // Update database
@@ -158,7 +158,7 @@ export class SubscriptionService {
       },
     });
 
-    logger.info("Subscription canceled", {
+    logger.info('Subscription canceled', {
       correlationId: 'cancel-' + Date.now(),
       userId,
       subscriptionId: subscription.id,
@@ -177,32 +177,32 @@ export class SubscriptionService {
    */
   async resumeSubscription(userId: string) {
     const subscription = await this.getSubscription(userId);
-    
+
     if (!subscription || !subscription.stripeSubscriptionId) {
       throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "No subscription found",
+        code: 'NOT_FOUND',
+        message: 'No subscription found',
       });
     }
 
     if (!subscription.cancelAtPeriodEnd) {
       throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Subscription is not scheduled for cancellation",
+        code: 'BAD_REQUEST',
+        message: 'Subscription is not scheduled for cancellation',
       });
     }
 
     if (!stripe) {
       throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Stripe is not configured",
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Stripe is not configured',
       });
     }
 
     // Resume subscription in Stripe
     const stripeSubscription = await stripe.subscriptions.update(
       subscription.stripeSubscriptionId,
-      { cancel_at_period_end: false }
+      { cancel_at_period_end: false },
     );
 
     // Update database
@@ -214,7 +214,7 @@ export class SubscriptionService {
       },
     });
 
-    logger.info("Subscription resumed", {
+    logger.info('Subscription resumed', {
       correlationId: 'resume-' + Date.now(),
       userId,
       subscriptionId: subscription.id,
@@ -235,7 +235,7 @@ export class SubscriptionService {
     stripeSubscriptionId: string,
     stripePriceId: string,
     currentPeriodStart: Date,
-    currentPeriodEnd: Date
+    currentPeriodEnd: Date,
   ) {
     await this.db.subscription.upsert({
       where: { userId },
@@ -258,7 +258,7 @@ export class SubscriptionService {
       },
     });
 
-    logger.info("Checkout completed and subscription activated", {
+    logger.info('Checkout completed and subscription activated', {
       correlationId: 'checkout-complete-' + Date.now(),
       userId,
       stripeSubscriptionId,
@@ -270,18 +270,18 @@ export class SubscriptionService {
    */
   async updateSubscriptionFromWebhook(
     stripeSubscriptionId: string,
-    updates: Partial<Prisma.SubscriptionUpdateInput>
+    updates: Partial<Prisma.SubscriptionUpdateInput>,
   ) {
     const subscription = await this.db.subscription.findFirst({
       where: { stripeSubscriptionId },
     });
 
     if (!subscription) {
-      logger.error("Subscription not found for webhook update", {
+      logger.error('Subscription not found for webhook update', {
         correlationId: 'webhook-error-' + Date.now(),
         stripeSubscriptionId,
       });
-      throw new Error("Subscription not found");
+      throw new Error('Subscription not found');
     }
 
     await this.db.subscription.update({
@@ -289,7 +289,7 @@ export class SubscriptionService {
       data: updates,
     });
 
-    logger.info("Subscription updated from webhook", {
+    logger.info('Subscription updated from webhook', {
       correlationId: 'webhook-update-' + Date.now(),
       subscriptionId: subscription.id,
       stripeSubscriptionId,

@@ -4,7 +4,7 @@ export const UserRole = {
   ADMIN: 'ADMIN',
 } as const;
 
-export type UserRoleType = typeof UserRole[keyof typeof UserRole];
+export type UserRoleType = (typeof UserRole)[keyof typeof UserRole];
 
 // Validation helper
 export function isValidRole(role: string): role is UserRoleType {

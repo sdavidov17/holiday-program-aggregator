@@ -1,14 +1,14 @@
-import type { DefaultSession } from "next-auth";
+import type { DefaultSession } from 'next-auth';
 
-declare module "next-auth" {
+declare module 'next-auth' {
   /**
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface Session {
     user: {
       id: string;
-      role: "USER" | "ADMIN";
-    } & DefaultSession["user"];
+      role: 'USER' | 'ADMIN';
+    } & DefaultSession['user'];
   }
 
   interface User {
@@ -16,13 +16,13 @@ declare module "next-auth" {
     email: string | null;
     name: string | null;
     image: string | null;
-    role: "USER" | "ADMIN";
+    role: 'USER' | 'ADMIN';
   }
 }
 
-declare module "next-auth/jwt" {
+declare module 'next-auth/jwt' {
   interface JWT {
     id: string;
-    role: "USER" | "ADMIN";
+    role: 'USER' | 'ADMIN';
   }
 }

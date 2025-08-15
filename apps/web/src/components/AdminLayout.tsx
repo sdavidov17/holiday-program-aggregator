@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { signOut } from "next-auth/react";
-import { AdminGuard } from "./AdminGuard";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { signOut } from 'next-auth/react';
+import { AdminGuard } from './AdminGuard';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -10,17 +10,17 @@ interface AdminLayoutProps {
 
 export function AdminLayout({ children, title }: AdminLayoutProps) {
   const router = useRouter();
-  
+
   const navigation = [
-    { name: "Dashboard", href: "/admin" },
-    { name: "Providers", href: "/admin/providers" },
-    { name: "Programs", href: "/admin/programs" },
-    { name: "Users", href: "/admin/users" },
-    { name: "Subscriptions", href: "/admin/subscription-monitor" },
+    { name: 'Dashboard', href: '/admin' },
+    { name: 'Providers', href: '/admin/providers' },
+    { name: 'Programs', href: '/admin/programs' },
+    { name: 'Users', href: '/admin/users' },
+    { name: 'Subscriptions', href: '/admin/subscription-monitor' },
   ];
 
   const isActive = (href: string) => {
-    if (href === "/admin") {
+    if (href === '/admin') {
       return router.pathname === href;
     }
     return router.pathname.startsWith(href);
@@ -41,8 +41,8 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                 href={item.href}
                 className={`block px-6 py-3 text-sm font-medium transition-colors ${
                   isActive(item.href)
-                    ? "border-l-4 border-blue-500 bg-gray-800 text-white"
-                    : "text-gray-300 hover:bg-gray-800 hover:text-white"
+                    ? 'border-l-4 border-blue-500 bg-gray-800 text-white'
+                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                 }`}
               >
                 {item.name}
@@ -64,16 +64,12 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
           {/* Header */}
           <header className="bg-white shadow">
             <div className="px-8 py-6">
-              <h2 className="text-2xl font-bold text-gray-900">
-                {title || "Admin Dashboard"}
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-900">{title || 'Admin Dashboard'}</h2>
             </div>
           </header>
 
           {/* Page content */}
-          <main className="p-8">
-            {children}
-          </main>
+          <main className="p-8">{children}</main>
         </div>
       </div>
     </AdminGuard>

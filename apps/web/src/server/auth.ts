@@ -1,24 +1,24 @@
-import { type GetServerSidePropsContext } from "next";
-import { getServerSession, type NextAuthOptions, type DefaultSession } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import bcrypt from "bcryptjs";
-import { z } from "zod";
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import bcrypt from 'bcryptjs';
+import type { GetServerSidePropsContext } from 'next';
+import { type DefaultSession, getServerSession, type NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
+import { z } from 'zod';
 
-import { env } from "~/env.mjs";
-import { db } from "~/server/db";
+import { env } from '~/env.mjs';
+import { db } from '~/server/db';
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      role: "USER" | "ADMIN";
-    } & DefaultSession["user"];
+      role: 'USER' | 'ADMIN';
+    } & DefaultSession['user'];
   }
-  
+
   interface User {
-    role: "USER" | "ADMIN";
+    role: 'USER' | 'ADMIN';
   }
 }
 
@@ -36,13 +36,13 @@ export const authOptions: NextAuthOptions = {
           where: { id: token.sub },
           select: { role: true },
         });
-        
+
         return {
           ...session,
           user: {
             ...session.user,
             id: token.sub,
-            role: user?.role ?? "USER",
+            role: user?.role ?? 'USER',
           },
         };
       }
@@ -58,25 +58,25 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   providers: [
     GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: env.GOOGLE_CLIENT_SECRET ?? "",
+      clientId: env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: env.GOOGLE_CLIENT_SECRET ?? '',
       authorization: {
         params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code"
-        }
-      }
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
     }),
     CredentialsProvider({
-      name: "credentials",
+      name: 'credentials',
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         const parsed = credentialsSchema.safeParse(credentials);
-        
+
         if (!parsed.success) {
           return null;
         }
@@ -91,36 +91,36 @@ export const authOptions: NextAuthOptions = {
         if (!user || !user.password) {
           return null;
         }
-        
+
         // Verify password
         const passwordValid = await bcrypt.compare(password, user.password);
-        
+
         if (!passwordValid) {
           return null;
         }
-        
+
         return {
           id: user.id,
           email: user.email,
           name: user.name,
           image: user.image,
-          role: user.role as "USER" | "ADMIN",
+          role: user.role as 'USER' | 'ADMIN',
         };
       },
     }),
   ],
   pages: {
-    signIn: "/auth/signin",
-    error: "/auth/error",
+    signIn: '/auth/signin',
+    error: '/auth/error',
   },
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
 };
 
 export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext["req"];
-  res: GetServerSidePropsContext["res"];
+  req: GetServerSidePropsContext['req'];
+  res: GetServerSidePropsContext['res'];
 }) => {
   return getServerSession(ctx.req, ctx.res, authOptions);
 };
