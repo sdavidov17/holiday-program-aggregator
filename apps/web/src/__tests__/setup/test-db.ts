@@ -11,12 +11,12 @@ import { randomBytes } from 'crypto';
 export const generateTestDatabaseUrl = (): string => {
   const testId = randomBytes(4).toString('hex');
   const baseUrl = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/test';
-  
+
   // Parse and modify the database name
   const url = new URL(baseUrl);
   const originalDb = url.pathname.slice(1);
   url.pathname = `/${originalDb}_test_${testId}`;
-  
+
   return url.toString();
 };
 
@@ -44,7 +44,7 @@ export class TestDatabaseClient {
       execSync(`DATABASE_URL="${this.databaseUrl}" npx prisma db push --skip-generate`, {
         stdio: process.env.DEBUG_TESTS ? 'inherit' : 'ignore',
       });
-      
+
       await this.prisma.$connect();
     } catch (error) {
       console.error('Failed to setup test database:', error);
@@ -55,12 +55,12 @@ export class TestDatabaseClient {
   async teardown(): Promise<void> {
     try {
       await this.prisma.$disconnect();
-      
+
       // Drop test database
       const url = new URL(this.databaseUrl);
       const dbName = url.pathname.slice(1);
       const baseUrl = `${url.protocol}//${url.username}:${url.password}@${url.host}/postgres`;
-      
+
       execSync(`psql "${baseUrl}" -c "DROP DATABASE IF EXISTS ${dbName}"`, {
         stdio: process.env.DEBUG_TESTS ? 'inherit' : 'ignore',
       });
@@ -73,7 +73,7 @@ export class TestDatabaseClient {
     if (this.isTransactionOpen) {
       throw new Error('Transaction already open');
     }
-    
+
     await this.prisma.$executeRaw`BEGIN`;
     this.isTransactionOpen = true;
   }
@@ -82,21 +82,14 @@ export class TestDatabaseClient {
     if (!this.isTransactionOpen) {
       throw new Error('No transaction to rollback');
     }
-    
+
     await this.prisma.$executeRaw`ROLLBACK`;
     this.isTransactionOpen = false;
   }
 
   async clean(): Promise<void> {
     // Clean all tables in reverse dependency order
-    const tables = [
-      'Program',
-      'Subscription',
-      'Provider',
-      'Session',
-      'Account',
-      'User',
-    ];
+    const tables = ['Program', 'Subscription', 'Provider', 'Session', 'Account', 'User'];
 
     for (const table of tables) {
       try {
@@ -143,11 +136,11 @@ export const cleanupTestDatabase = async (): Promise<void> => {
 
 // Test transaction wrapper
 export const withTestTransaction = async <T>(
-  fn: (prisma: PrismaClient) => Promise<T>
+  fn: (prisma: PrismaClient) => Promise<T>,
 ): Promise<T> => {
   const testDb = await getTestDatabase();
   const prisma = testDb.getClient();
-  
+
   try {
     await testDb.beginTransaction();
     const result = await fn(prisma);

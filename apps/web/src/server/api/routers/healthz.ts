@@ -1,9 +1,9 @@
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 
 export const healthzRouter = createTRPCRouter({
   healthz: publicProcedure.query(() => {
     return {
-      status: "ok",
+      status: 'ok',
       timestamp: new Date().toISOString(),
     };
   }),

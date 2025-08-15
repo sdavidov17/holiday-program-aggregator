@@ -1,5 +1,5 @@
-import { SubscriptionStatus } from "~/types/database";
-import type { Subscription } from "@prisma/client";
+import type { Subscription } from '@prisma/client';
+import { SubscriptionStatus } from '~/types/database';
 
 // Minimal subscription data needed for status checks
 export interface SubscriptionData {
@@ -14,14 +14,16 @@ export interface SubscriptionData {
 // Partial subscription data (from API responses)
 export type PartialSubscriptionData = Partial<SubscriptionData> & {
   status?: SubscriptionStatus;
-}
+};
 
 /**
  * Check if a subscription is currently active
  */
-export function isSubscriptionActive(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): boolean {
+export function isSubscriptionActive(
+  subscription: PartialSubscriptionData | SubscriptionData | Subscription | null,
+): boolean {
   if (!subscription || !subscription.status) return false;
-  
+
   return (
     subscription.status === SubscriptionStatus.ACTIVE &&
     (!subscription.expiresAt || subscription.expiresAt > new Date())
@@ -31,9 +33,11 @@ export function isSubscriptionActive(subscription: PartialSubscriptionData | Sub
 /**
  * Check if a subscription is in trial period
  */
-export function isSubscriptionInTrial(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): boolean {
+export function isSubscriptionInTrial(
+  subscription: PartialSubscriptionData | SubscriptionData | Subscription | null,
+): boolean {
   if (!subscription || !subscription.status) return false;
-  
+
   // Check if subscription is active and has a trial end date in the future
   return (
     subscription.status === SubscriptionStatus.ACTIVE &&
@@ -46,81 +50,91 @@ export function isSubscriptionInTrial(subscription: PartialSubscriptionData | Su
 /**
  * Check if a subscription needs renewal
  */
-export function doesSubscriptionNeedRenewal(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): boolean {
+export function doesSubscriptionNeedRenewal(
+  subscription: PartialSubscriptionData | SubscriptionData | Subscription | null,
+): boolean {
   if (!subscription || !subscription.status) return false;
-  
-  const needsRenewal = 
+
+  const needsRenewal =
     subscription.status === SubscriptionStatus.PAST_DUE ||
     subscription.status === SubscriptionStatus.CANCELED ||
     subscription.status === SubscriptionStatus.EXPIRED ||
     subscription.status === SubscriptionStatus.PENDING;
-    
+
   return needsRenewal;
 }
 
 /**
  * Get human-readable subscription status
  */
-export function getSubscriptionStatusLabel(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): string {
-  if (!subscription || !subscription.status) return "No Subscription";
-  
+export function getSubscriptionStatusLabel(
+  subscription: PartialSubscriptionData | SubscriptionData | Subscription | null,
+): string {
+  if (!subscription || !subscription.status) return 'No Subscription';
+
   switch (subscription.status) {
     case SubscriptionStatus.ACTIVE:
-      return subscription.cancelAtPeriodEnd ? "Active (Canceling)" : "Active";
+      return subscription.cancelAtPeriodEnd ? 'Active (Canceling)' : 'Active';
     case SubscriptionStatus.PENDING:
-      return "Pending";
+      return 'Pending';
     case SubscriptionStatus.PAST_DUE:
-      return "Past Due";
+      return 'Past Due';
     case SubscriptionStatus.CANCELED:
-      return "Canceled";
+      return 'Canceled';
     case SubscriptionStatus.EXPIRED:
-      return "Expired";
+      return 'Expired';
     default:
-      return "Unknown";
+      return 'Unknown';
   }
 }
 
 /**
  * Get subscription status color for UI
  */
-export function getSubscriptionStatusColor(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): string {
-  if (!subscription || !subscription.status) return "gray";
-  
+export function getSubscriptionStatusColor(
+  subscription: PartialSubscriptionData | SubscriptionData | Subscription | null,
+): string {
+  if (!subscription || !subscription.status) return 'gray';
+
   switch (subscription.status) {
     case SubscriptionStatus.ACTIVE:
-      return subscription.cancelAtPeriodEnd ? "yellow" : "green";
+      return subscription.cancelAtPeriodEnd ? 'yellow' : 'green';
     case SubscriptionStatus.PENDING:
-      return "yellow";
+      return 'yellow';
     case SubscriptionStatus.PAST_DUE:
-      return "red";
+      return 'red';
     case SubscriptionStatus.CANCELED:
     case SubscriptionStatus.EXPIRED:
-      return "gray";
+      return 'gray';
     default:
-      return "gray";
+      return 'gray';
   }
 }
 
 /**
  * Calculate days until subscription expires
  */
-export function getDaysUntilExpiry(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): number | null {
+export function getDaysUntilExpiry(
+  subscription: PartialSubscriptionData | SubscriptionData | Subscription | null,
+): number | null {
   if (!subscription || !subscription.currentPeriodEnd) return null;
-  
+
   const now = new Date();
   const expiryDate = new Date(subscription.currentPeriodEnd);
   const diffTime = expiryDate.getTime() - now.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  
+
   return diffDays;
 }
 
 /**
  * Check if subscription can be canceled
  */
-export function canCancelSubscription(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): boolean {
+export function canCancelSubscription(
+  subscription: PartialSubscriptionData | SubscriptionData | Subscription | null,
+): boolean {
   if (!subscription || !subscription.status) return false;
-  
+
   return (
     subscription.status === SubscriptionStatus.ACTIVE &&
     !subscription.cancelAtPeriodEnd &&
@@ -132,9 +146,11 @@ export function canCancelSubscription(subscription: PartialSubscriptionData | Su
 /**
  * Check if subscription can be resumed (un-canceled)
  */
-export function canResumeSubscription(subscription: PartialSubscriptionData | SubscriptionData | Subscription | null): boolean {
+export function canResumeSubscription(
+  subscription: PartialSubscriptionData | SubscriptionData | Subscription | null,
+): boolean {
   if (!subscription || !subscription.status) return false;
-  
+
   return (
     subscription.status === SubscriptionStatus.ACTIVE &&
     subscription.cancelAtPeriodEnd === true &&

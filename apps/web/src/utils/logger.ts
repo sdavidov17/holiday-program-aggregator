@@ -1,4 +1,4 @@
-import { type NextApiRequest } from 'next';
+import type { NextApiRequest } from 'next';
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
@@ -26,9 +26,15 @@ export interface LogEntry {
 }
 
 // PII patterns to scrub from logs
-const PII_PATTERNS: Array<{ pattern: RegExp; replacement: string | ((match: string, ...args: string[]) => string) }> = [
+const PII_PATTERNS: Array<{
+  pattern: RegExp;
+  replacement: string | ((match: string, ...args: string[]) => string);
+}> = [
   // Email addresses
-  { pattern: /([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, replacement: '[REDACTED_EMAIL]' },
+  {
+    pattern: /([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
+    replacement: '[REDACTED_EMAIL]',
+  },
   // Phone numbers (Australian format)
   { pattern: /(\+?61|0)[2-9]\d{8}/g, replacement: '[REDACTED_PHONE]' },
   // Credit card numbers
@@ -36,16 +42,19 @@ const PII_PATTERNS: Array<{ pattern: RegExp; replacement: string | ((match: stri
   // Australian Tax File Numbers
   { pattern: /\b\d{3}[\s-]?\d{3}[\s-]?\d{3}\b/g, replacement: '[REDACTED_TFN]' },
   // Names in common fields (updated to handle JSON structure)
-  { 
-    pattern: /"((?:[\w.]+\.)?(?:name|firstName|lastName|fullName))"\s*:\s*"[^"]+"/gi, 
-    replacement: (match: string, field: string) => `"${field}":"[REDACTED_NAME]"`
+  {
+    pattern: /"((?:[\w.]+\.)?(?:name|firstName|lastName|fullName))"\s*:\s*"[^"]+"/gi,
+    replacement: (match: string, field: string) => `"${field}":"[REDACTED_NAME]"`,
   },
   // Addresses
-  { pattern: /\d+\s+[\w\s]+\s+(Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Court|Ct|Lane|Ln)/gi, replacement: '[REDACTED_ADDRESS]' },
+  {
+    pattern: /\d+\s+[\w\s]+\s+(Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Court|Ct|Lane|Ln)/gi,
+    replacement: '[REDACTED_ADDRESS]',
+  },
   // API keys and tokens (updated to handle JSON structure)
-  { 
-    pattern: /"(api[_-]?key|apiKey|token|secret|password)"\s*:\s*"[^"]+"/gi, 
-    replacement: (match: string, field: string) => `"${field}":"[REDACTED]"`
+  {
+    pattern: /"(api[_-]?key|apiKey|token|secret|password)"\s*:\s*"[^"]+"/gi,
+    replacement: (match: string, field: string) => `"${field}":"[REDACTED]"`,
   },
 ];
 
@@ -93,7 +102,7 @@ export class StructuredLogger {
     message: string,
     context: LogContext,
     data?: unknown,
-    error?: Error
+    error?: Error,
   ): LogEntry {
     const entry: LogEntry = {
       timestamp: new Date().toISOString(),
@@ -114,7 +123,10 @@ export class StructuredLogger {
       entry.error = {
         name: error.name,
         message: error.message,
-        stack: this.environment === 'development' || this.environment === 'test' ? error.stack : undefined,
+        stack:
+          this.environment === 'development' || this.environment === 'test'
+            ? error.stack
+            : undefined,
       };
     }
 
@@ -187,19 +199,19 @@ export function generateCorrelationId(): string {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
     return crypto.randomUUID();
   }
-  
+
   // Server-side Node.js fallback
   if (typeof window === 'undefined') {
     const { randomBytes } = require('crypto');
     return randomBytes(16).toString('hex');
   }
-  
+
   // Browser fallback using crypto.getRandomValues
   if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
     const array = new Uint8Array(16);
     crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
   }
-  
+
   throw new Error('No secure random number generator available');
 }

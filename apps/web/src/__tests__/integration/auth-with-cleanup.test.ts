@@ -1,13 +1,13 @@
-import { 
-  setupTestDatabase, 
-  cleanupTestDatabase,
-  createTestUser,
-  cleanupTestUsers,
-  getTestCredentials,
-  TEST_USERS 
-} from '../helpers/test-users';
-import { db as prisma } from '~/server/db';
 import bcrypt from 'bcryptjs';
+import { db as prisma } from '~/server/db';
+import {
+  cleanupTestDatabase,
+  cleanupTestUsers,
+  createTestUser,
+  getTestCredentials,
+  setupTestDatabase,
+  TEST_USERS,
+} from '../helpers/test-users';
 
 describe('Authentication with Test User Cleanup', () => {
   // Setup before all tests in this suite
@@ -40,7 +40,7 @@ describe('Authentication with Test User Cleanup', () => {
     it('should create and authenticate admin user', async () => {
       // Create test admin user
       const admin = await createTestUser('admin');
-      
+
       // Verify user was created with correct properties
       expect(admin.email).toBe(TEST_USERS.admin.email);
       expect(admin.role).toBe('ADMIN');
@@ -49,15 +49,12 @@ describe('Authentication with Test User Cleanup', () => {
       // Verify password is correctly hashed
       const credentials = getTestCredentials('admin');
       const user = await prisma.user.findUnique({
-        where: { email: credentials.email }
+        where: { email: credentials.email },
       });
-      
+
       expect(user).toBeTruthy();
       if (user?.password) {
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
+        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
         expect(isPasswordValid).toBe(true);
       }
     });
@@ -73,10 +70,10 @@ describe('Authentication with Test User Cleanup', () => {
 
       // IDs should be different (new user was created)
       expect(id1).not.toBe(id2);
-      
+
       // Should only have one user with this email
       const users = await prisma.user.findMany({
-        where: { email: TEST_USERS.admin.email }
+        where: { email: TEST_USERS.admin.email },
       });
       expect(users).toHaveLength(1);
       expect(users[0]?.id).toBe(id2);
@@ -87,7 +84,7 @@ describe('Authentication with Test User Cleanup', () => {
     it('should create all test users and clean them up', async () => {
       // Setup all test users
       const users = await setupTestDatabase();
-      
+
       // Verify all users were created
       expect(users.admin.email).toBe(TEST_USERS.admin.email);
       expect(users.user.email).toBe(TEST_USERS.user.email);
@@ -97,9 +94,9 @@ describe('Authentication with Test User Cleanup', () => {
       const dbUsers = await prisma.user.findMany({
         where: {
           email: {
-            in: [TEST_USERS.admin.email, TEST_USERS.user.email, TEST_USERS.provider.email]
-          }
-        }
+            in: [TEST_USERS.admin.email, TEST_USERS.user.email, TEST_USERS.provider.email],
+          },
+        },
       });
       expect(dbUsers).toHaveLength(3);
 
@@ -110,9 +107,9 @@ describe('Authentication with Test User Cleanup', () => {
       const remainingUsers = await prisma.user.findMany({
         where: {
           email: {
-            in: [TEST_USERS.admin.email, TEST_USERS.user.email, TEST_USERS.provider.email]
-          }
-        }
+            in: [TEST_USERS.admin.email, TEST_USERS.user.email, TEST_USERS.provider.email],
+          },
+        },
       });
       expect(remainingUsers).toHaveLength(0);
     });
@@ -124,18 +121,18 @@ describe('Authentication with Test User Cleanup', () => {
       const users = await prisma.user.findMany({
         where: {
           email: {
-            in: Object.values(TEST_USERS).map(u => u.email)
-          }
-        }
+            in: Object.values(TEST_USERS).map((u) => u.email),
+          },
+        },
       });
       expect(users).toHaveLength(0);
 
       // Create a test user
       await createTestUser('admin');
-      
+
       // User should exist now
       const adminUser = await prisma.user.findUnique({
-        where: { email: TEST_USERS.admin.email }
+        where: { email: TEST_USERS.admin.email },
       });
       expect(adminUser).toBeTruthy();
     });
@@ -145,24 +142,24 @@ describe('Authentication with Test User Cleanup', () => {
       const users = await prisma.user.findMany({
         where: {
           email: {
-            in: Object.values(TEST_USERS).map(u => u.email)
-          }
-        }
+            in: Object.values(TEST_USERS).map((u) => u.email),
+          },
+        },
       });
       expect(users).toHaveLength(0);
 
       // Create a different test user
       await createTestUser('user');
-      
+
       // Only the new user should exist
       const regularUser = await prisma.user.findUnique({
-        where: { email: TEST_USERS.user.email }
+        where: { email: TEST_USERS.user.email },
       });
       expect(regularUser).toBeTruthy();
-      
+
       // Admin from test 1 should not exist
       const adminUser = await prisma.user.findUnique({
-        where: { email: TEST_USERS.admin.email }
+        where: { email: TEST_USERS.admin.email },
       });
       expect(adminUser).toBeNull();
     });

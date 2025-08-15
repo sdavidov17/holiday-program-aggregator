@@ -3,11 +3,11 @@
  * Epic 1, Story 5: Manual Provider Onboarding Tool
  */
 
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
-import { createMockContext } from '../helpers/test-context';
-import { providerRouter } from '~/server/api/routers/provider';
+import { afterEach, beforeEach, describe, expect, it } from '@jest/globals';
 import { TRPCError } from '@trpc/server';
+import { providerRouter } from '~/server/api/routers/provider';
 import { db } from '~/server/db';
+import { createMockContext } from '../helpers/test-context';
 
 describe('Provider CRUD Operations', () => {
   let adminContext: any;
@@ -51,9 +51,11 @@ describe('Provider CRUD Operations', () => {
   afterEach(async () => {
     // Clean up created test data
     if (testProviderId) {
-      await db.provider.delete({
-        where: { id: testProviderId },
-      }).catch(() => {});
+      await db.provider
+        .delete({
+          where: { id: testProviderId },
+        })
+        .catch(() => {});
     }
   });
 
@@ -80,9 +82,7 @@ describe('Provider CRUD Operations', () => {
         isPublished: false,
       };
 
-      const result = await providerRouter
-        .createCaller(adminContext)
-        .create(providerData);
+      const result = await providerRouter.createCaller(adminContext).create(providerData);
 
       expect(result).toMatchObject({
         businessName: providerData.businessName,
@@ -107,9 +107,9 @@ describe('Provider CRUD Operations', () => {
         description: 'A test provider',
       };
 
-      await expect(
-        providerRouter.createCaller(userContext).create(providerData)
-      ).rejects.toThrow(TRPCError);
+      await expect(providerRouter.createCaller(userContext).create(providerData)).rejects.toThrow(
+        TRPCError,
+      );
     });
 
     it('should validate required fields', async () => {
@@ -125,9 +125,7 @@ describe('Provider CRUD Operations', () => {
         description: '',
       };
 
-      await expect(
-        providerRouter.createCaller(adminContext).create(invalidData)
-      ).rejects.toThrow();
+      await expect(providerRouter.createCaller(adminContext).create(invalidData)).rejects.toThrow();
     });
   });
 
@@ -158,9 +156,7 @@ describe('Provider CRUD Operations', () => {
         isPublished: true,
       };
 
-      const result = await providerRouter
-        .createCaller(adminContext)
-        .update(updateData);
+      const result = await providerRouter.createCaller(adminContext).update(updateData);
 
       expect(result.businessName).toBe('Updated Provider Name');
       expect(result.isVetted).toBe(true);
@@ -172,7 +168,7 @@ describe('Provider CRUD Operations', () => {
         providerRouter.createCaller(userContext).update({
           id: testProviderId,
           businessName: 'Hacked Name',
-        })
+        }),
       ).rejects.toThrow(TRPCError);
     });
   });
@@ -229,7 +225,7 @@ describe('Provider CRUD Operations', () => {
           state: 'WA',
           postcode: '6000',
           description: 'Provider for publishing test',
-          isVetted: true,  // Provider must be vetted before publishing
+          isVetted: true, // Provider must be vetted before publishing
           isPublished: false,
         },
       });
@@ -303,45 +299,35 @@ describe('Provider CRUD Operations', () => {
 
     it('should return all providers for admin with filters', async () => {
       // Get all providers
-      const allProviders = await providerRouter
-        .createCaller(adminContext)
-        .getAll({
-          includeUnpublished: true,
-          includeUnvetted: true,
-        });
+      const allProviders = await providerRouter.createCaller(adminContext).getAll({
+        includeUnpublished: true,
+        includeUnvetted: true,
+      });
 
       expect(allProviders.length).toBeGreaterThanOrEqual(3);
 
       // Get only published and vetted
-      const publishedVetted = await providerRouter
-        .createCaller(adminContext)
-        .getAll({
-          includeUnpublished: false,
-          includeUnvetted: false,
-        });
+      const publishedVetted = await providerRouter.createCaller(adminContext).getAll({
+        includeUnpublished: false,
+        includeUnvetted: false,
+      });
 
-      const filteredProviders = publishedVetted.filter(p => 
-        p.email?.startsWith('test-provider')
-      );
+      const filteredProviders = publishedVetted.filter((p) => p.email?.startsWith('test-provider'));
       expect(filteredProviders.length).toBe(1);
       expect(filteredProviders[0]?.businessName).toBe('Published Vetted Provider');
     });
 
     it('should reject non-admin users from accessing getAll', async () => {
-      await expect(
-        providerRouter.createCaller(userContext).getAll()
-      ).rejects.toThrow(TRPCError);
+      await expect(providerRouter.createCaller(userContext).getAll()).rejects.toThrow(TRPCError);
     });
   });
 
   describe('getPublished', () => {
     it('should return only published and vetted providers for users', async () => {
-      const publishedProviders = await providerRouter
-        .createCaller(userContext)
-        .getPublished();
+      const publishedProviders = await providerRouter.createCaller(userContext).getPublished();
 
       // Should only return providers that are both published AND vetted
-      publishedProviders.forEach(provider => {
+      publishedProviders.forEach((provider) => {
         expect(provider.isPublished).toBe(true);
         expect(provider.isVetted).toBe(true);
       });
@@ -367,9 +353,7 @@ describe('Provider CRUD Operations', () => {
     });
 
     it('should allow admin to delete a provider', async () => {
-      await providerRouter
-        .createCaller(adminContext)
-        .delete({ id: testProviderId });
+      await providerRouter.createCaller(adminContext).delete({ id: testProviderId });
 
       // Verify provider is deleted
       const deletedProvider = await db.provider.findUnique({
@@ -382,7 +366,7 @@ describe('Provider CRUD Operations', () => {
 
     it('should reject non-admin users from deleting providers', async () => {
       await expect(
-        providerRouter.createCaller(userContext).delete({ id: testProviderId })
+        providerRouter.createCaller(userContext).delete({ id: testProviderId }),
       ).rejects.toThrow(TRPCError);
 
       // Verify provider still exists

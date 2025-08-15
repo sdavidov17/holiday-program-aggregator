@@ -3,11 +3,11 @@
  * Epic 1, Story 5: Manual Provider Onboarding Tool
  */
 
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from '@jest/globals';
-import { db } from '~/server/db';
-import { providerRouter } from '~/server/api/routers/provider';
-import { createMockContext } from '../helpers/test-context';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from '@jest/globals';
 import type { Provider } from '@prisma/client';
+import { providerRouter } from '~/server/api/routers/provider';
+import { db } from '~/server/db';
+import { createMockContext } from '../helpers/test-context';
 
 describe('E2E: Provider Management Workflow', () => {
   let adminContext: any;
@@ -43,10 +43,7 @@ describe('E2E: Provider Management Workflow', () => {
     // Clean up test data
     await db.provider.deleteMany({
       where: {
-        OR: [
-          { email: { contains: 'e2e-test' } },
-          { businessName: { contains: 'E2E Test' } },
-        ],
+        OR: [{ email: { contains: 'e2e-test' } }, { businessName: { contains: 'E2E Test' } }],
       },
     });
     testProviders = [];
@@ -56,10 +53,7 @@ describe('E2E: Provider Management Workflow', () => {
     // Final cleanup
     await db.provider.deleteMany({
       where: {
-        OR: [
-          { email: { contains: 'e2e-test' } },
-          { businessName: { contains: 'E2E Test' } },
-        ],
+        OR: [{ email: { contains: 'e2e-test' } }, { businessName: { contains: 'E2E Test' } }],
       },
     });
   });
@@ -88,9 +82,7 @@ describe('E2E: Provider Management Workflow', () => {
         isPublished: false,
       };
 
-      const createdProvider = await providerRouter
-        .createCaller(adminContext)
-        .create(createData);
+      const createdProvider = await providerRouter.createCaller(adminContext).create(createData);
 
       expect(createdProvider).toMatchObject({
         businessName: createData.businessName,
@@ -107,16 +99,14 @@ describe('E2E: Provider Management Workflow', () => {
         .createCaller(adminContext)
         .getAll({ includeUnpublished: true, includeUnvetted: true });
 
-      const foundProvider = adminProviders.find(p => p.id === createdProvider.id);
+      const foundProvider = adminProviders.find((p) => p.id === createdProvider.id);
       expect(foundProvider).toBeDefined();
       expect(foundProvider?.businessName).toBe(createData.businessName);
 
       // Step 3: Verify unpublished provider is NOT visible to regular users
-      const userProviders = await providerRouter
-        .createCaller(userContext)
-        .getPublished();
+      const userProviders = await providerRouter.createCaller(userContext).getPublished();
 
-      const notFoundProvider = userProviders.find(p => p.id === createdProvider.id);
+      const notFoundProvider = userProviders.find((p) => p.id === createdProvider.id);
       expect(notFoundProvider).toBeUndefined();
 
       // Step 4: Update provider details
@@ -127,9 +117,7 @@ describe('E2E: Provider Management Workflow', () => {
         website: 'https://updated-e2e-camp.com',
       };
 
-      const updatedProvider = await providerRouter
-        .createCaller(adminContext)
-        .update(updateData);
+      const updatedProvider = await providerRouter.createCaller(adminContext).update(updateData);
 
       expect(updatedProvider.businessName).toBe(updateData.businessName);
       expect(updatedProvider.capacity).toBe(150);
@@ -152,11 +140,9 @@ describe('E2E: Provider Management Workflow', () => {
       expect(publishedProvider.isPublished).toBe(true);
 
       // Step 7: Verify published and vetted provider IS visible to regular users
-      const publicProviders = await providerRouter
-        .createCaller(userContext)
-        .getPublished();
+      const publicProviders = await providerRouter.createCaller(userContext).getPublished();
 
-      const nowFoundProvider = publicProviders.find(p => p.id === createdProvider.id);
+      const nowFoundProvider = publicProviders.find((p) => p.id === createdProvider.id);
       expect(nowFoundProvider).toBeDefined();
       expect(nowFoundProvider?.isVetted).toBe(true);
       expect(nowFoundProvider?.isPublished).toBe(true);
@@ -174,21 +160,19 @@ describe('E2E: Provider Management Workflow', () => {
         .getPublished();
 
       const noLongerFoundProvider = publicProvidersAfterUnpublish.find(
-        p => p.id === createdProvider.id
+        (p) => p.id === createdProvider.id,
       );
       expect(noLongerFoundProvider).toBeUndefined();
 
       // Step 10: Delete the provider
-      await providerRouter
-        .createCaller(adminContext)
-        .delete({ id: createdProvider.id });
+      await providerRouter.createCaller(adminContext).delete({ id: createdProvider.id });
 
       // Step 11: Verify provider is deleted
       const providersAfterDelete = await providerRouter
         .createCaller(adminContext)
         .getAll({ includeUnpublished: true, includeUnvetted: true });
 
-      const deletedProvider = providersAfterDelete.find(p => p.id === createdProvider.id);
+      const deletedProvider = providersAfterDelete.find((p) => p.id === createdProvider.id);
       expect(deletedProvider).toBeUndefined();
     });
   });
@@ -198,47 +182,53 @@ describe('E2E: Provider Management Workflow', () => {
       // Create multiple providers with different states
       const providers = await Promise.all([
         // Published and vetted provider
-        providerRouter.createCaller(adminContext).create({
-          businessName: 'E2E Test Provider 1',
-          contactName: 'Contact 1',
-          email: 'e2e-test-1@example.com',
-          phone: '0411111111',
-          address: '111 Test St',
-          suburb: 'Sydney',
-          state: 'NSW',
-          postcode: '2000',
-          description: 'Published and vetted provider',
-          isVetted: true,
-          isPublished: true,
-        }),
+        providerRouter
+          .createCaller(adminContext)
+          .create({
+            businessName: 'E2E Test Provider 1',
+            contactName: 'Contact 1',
+            email: 'e2e-test-1@example.com',
+            phone: '0411111111',
+            address: '111 Test St',
+            suburb: 'Sydney',
+            state: 'NSW',
+            postcode: '2000',
+            description: 'Published and vetted provider',
+            isVetted: true,
+            isPublished: true,
+          }),
         // Vetted but unpublished provider
-        providerRouter.createCaller(adminContext).create({
-          businessName: 'E2E Test Provider 2',
-          contactName: 'Contact 2',
-          email: 'e2e-test-2@example.com',
-          phone: '0422222222',
-          address: '222 Test St',
-          suburb: 'Melbourne',
-          state: 'VIC',
-          postcode: '3000',
-          description: 'Vetted but unpublished provider',
-          isVetted: true,
-          isPublished: false,
-        }),
+        providerRouter
+          .createCaller(adminContext)
+          .create({
+            businessName: 'E2E Test Provider 2',
+            contactName: 'Contact 2',
+            email: 'e2e-test-2@example.com',
+            phone: '0422222222',
+            address: '222 Test St',
+            suburb: 'Melbourne',
+            state: 'VIC',
+            postcode: '3000',
+            description: 'Vetted but unpublished provider',
+            isVetted: true,
+            isPublished: false,
+          }),
         // Unvetted and unpublished provider
-        providerRouter.createCaller(adminContext).create({
-          businessName: 'E2E Test Provider 3',
-          contactName: 'Contact 3',
-          email: 'e2e-test-3@example.com',
-          phone: '0433333333',
-          address: '333 Test St',
-          suburb: 'Brisbane',
-          state: 'QLD',
-          postcode: '4000',
-          description: 'Unvetted and unpublished provider',
-          isVetted: false,
-          isPublished: false,
-        }),
+        providerRouter
+          .createCaller(adminContext)
+          .create({
+            businessName: 'E2E Test Provider 3',
+            contactName: 'Contact 3',
+            email: 'e2e-test-3@example.com',
+            phone: '0433333333',
+            address: '333 Test St',
+            suburb: 'Brisbane',
+            state: 'QLD',
+            postcode: '4000',
+            description: 'Unvetted and unpublished provider',
+            isVetted: false,
+            isPublished: false,
+          }),
       ]);
 
       testProviders.push(...providers);
@@ -248,9 +238,7 @@ describe('E2E: Provider Management Workflow', () => {
         .createCaller(adminContext)
         .getAll({ includeUnpublished: true, includeUnvetted: true });
 
-      const e2eProviders = allProviders.filter(p => 
-        p.businessName.includes('E2E Test Provider')
-      );
+      const e2eProviders = allProviders.filter((p) => p.businessName.includes('E2E Test Provider'));
       expect(e2eProviders).toHaveLength(3);
 
       // Test filtering published only
@@ -258,20 +246,16 @@ describe('E2E: Provider Management Workflow', () => {
         .createCaller(adminContext)
         .getAll({ includeUnpublished: false, includeUnvetted: false });
 
-      const e2ePublished = publishedOnly.filter(p => 
-        p.businessName.includes('E2E Test Provider')
+      const e2ePublished = publishedOnly.filter((p) =>
+        p.businessName.includes('E2E Test Provider'),
       );
       expect(e2ePublished).toHaveLength(1);
       expect(e2ePublished[0]?.businessName).toBe('E2E Test Provider 1');
 
       // Test public view (should only see published and vetted)
-      const publicProviders = await providerRouter
-        .createCaller(userContext)
-        .getPublished();
+      const publicProviders = await providerRouter.createCaller(userContext).getPublished();
 
-      const e2ePublic = publicProviders.filter(p => 
-        p.businessName.includes('E2E Test Provider')
-      );
+      const e2ePublic = publicProviders.filter((p) => p.businessName.includes('E2E Test Provider'));
       expect(e2ePublic).toHaveLength(1);
       expect(e2ePublic[0]?.businessName).toBe('E2E Test Provider 1');
 
@@ -288,20 +272,16 @@ describe('E2E: Provider Management Workflow', () => {
       ]);
 
       // Verify changes
-      const updatedPublicProviders = await providerRouter
-        .createCaller(userContext)
-        .getPublished();
+      const updatedPublicProviders = await providerRouter.createCaller(userContext).getPublished();
 
-      const e2ePublicUpdated = updatedPublicProviders.filter(p => 
-        p.businessName.includes('E2E Test Provider')
+      const e2ePublicUpdated = updatedPublicProviders.filter((p) =>
+        p.businessName.includes('E2E Test Provider'),
       );
       expect(e2ePublicUpdated).toHaveLength(2); // Now providers 1 and 2 are public
 
       // Clean up
       await Promise.all(
-        providers.map(p => 
-          providerRouter.createCaller(adminContext).delete({ id: p.id })
-        )
+        providers.map((p) => providerRouter.createCaller(adminContext).delete({ id: p.id })),
       );
     });
   });
@@ -320,7 +300,7 @@ describe('E2E: Provider Management Workflow', () => {
           state: 'NSW',
           postcode: '2000',
           description: 'Test',
-        })
+        }),
       ).rejects.toThrow();
 
       // Try to update non-existent provider
@@ -328,32 +308,30 @@ describe('E2E: Provider Management Workflow', () => {
         providerRouter.createCaller(adminContext).update({
           id: 'non-existent-id',
           businessName: 'Updated Name',
-        })
+        }),
       ).rejects.toThrow();
 
       // Try to delete non-existent provider
       await expect(
         providerRouter.createCaller(adminContext).delete({
           id: 'non-existent-id',
-        })
+        }),
       ).rejects.toThrow();
     });
 
     it('should enforce authorization rules', async () => {
       // Create a provider as admin
-      const provider = await providerRouter
-        .createCaller(adminContext)
-        .create({
-          businessName: 'E2E Test Auth Provider',
-          contactName: 'Auth Test',
-          email: 'e2e-test-auth@example.com',
-          phone: '0499999999',
-          address: '999 Auth St',
-          suburb: 'Perth',
-          state: 'WA',
-          postcode: '6000',
-          description: 'Authorization test provider',
-        });
+      const provider = await providerRouter.createCaller(adminContext).create({
+        businessName: 'E2E Test Auth Provider',
+        contactName: 'Auth Test',
+        email: 'e2e-test-auth@example.com',
+        phone: '0499999999',
+        address: '999 Auth St',
+        suburb: 'Perth',
+        state: 'WA',
+        postcode: '6000',
+        description: 'Authorization test provider',
+      });
 
       testProviders.push(provider);
 
@@ -362,28 +340,28 @@ describe('E2E: Provider Management Workflow', () => {
         providerRouter.createCaller(userContext).update({
           id: provider.id,
           businessName: 'Hacked Name',
-        })
+        }),
       ).rejects.toThrow();
 
       // Try to delete as regular user (should fail)
       await expect(
         providerRouter.createCaller(userContext).delete({
           id: provider.id,
-        })
+        }),
       ).rejects.toThrow();
 
       // Try to toggle vetting as regular user (should fail)
       await expect(
         providerRouter.createCaller(userContext).toggleVetting({
           id: provider.id,
-        })
+        }),
       ).rejects.toThrow();
 
       // Try to toggle publishing as regular user (should fail)
       await expect(
         providerRouter.createCaller(userContext).togglePublishing({
           id: provider.id,
-        })
+        }),
       ).rejects.toThrow();
 
       // Clean up
@@ -395,29 +373,27 @@ describe('E2E: Provider Management Workflow', () => {
     it('should validate Australian postcodes', async () => {
       // Valid postcodes
       const validPostcodes = ['2000', '3000', '4000', '5000', '6000', '7000', '0800'];
-      
+
       for (const postcode of validPostcodes) {
-        const provider = await providerRouter
-          .createCaller(adminContext)
-          .create({
-            businessName: `E2E Test Postcode ${postcode}`,
-            contactName: 'Test',
-            email: `e2e-test-${postcode}@example.com`,
-            phone: '0400000000',
-            address: 'Test St',
-            suburb: 'Test',
-            state: 'NSW',
-            postcode,
-            description: 'Postcode validation test',
-          });
-        
+        const provider = await providerRouter.createCaller(adminContext).create({
+          businessName: `E2E Test Postcode ${postcode}`,
+          contactName: 'Test',
+          email: `e2e-test-${postcode}@example.com`,
+          phone: '0400000000',
+          address: 'Test St',
+          suburb: 'Test',
+          state: 'NSW',
+          postcode,
+          description: 'Postcode validation test',
+        });
+
         expect(provider.postcode).toBe(postcode);
         testProviders.push(provider);
       }
 
       // Invalid postcodes
       const invalidPostcodes = ['1234', '9999', 'ABCD', '12345', ''];
-      
+
       for (const postcode of invalidPostcodes) {
         await expect(
           providerRouter.createCaller(adminContext).create({
@@ -430,25 +406,23 @@ describe('E2E: Provider Management Workflow', () => {
             state: 'NSW',
             postcode,
             description: 'Invalid postcode test',
-          })
+          }),
         ).rejects.toThrow();
       }
     });
 
     it('should handle special characters in provider names', async () => {
-      const specialNameProvider = await providerRouter
-        .createCaller(adminContext)
-        .create({
-          businessName: "O'Brien's Holiday Camp & Co.",
-          contactName: 'John O\'Brien',
-          email: 'e2e-test-special@example.com',
-          phone: '0488888888',
-          address: '888 Special St',
-          suburb: 'Darwin',
-          state: 'NT',
-          postcode: '0800',
-          description: 'Provider with special characters in name',
-        });
+      const specialNameProvider = await providerRouter.createCaller(adminContext).create({
+        businessName: "O'Brien's Holiday Camp & Co.",
+        contactName: "John O'Brien",
+        email: 'e2e-test-special@example.com',
+        phone: '0488888888',
+        address: '888 Special St',
+        suburb: 'Darwin',
+        state: 'NT',
+        postcode: '0800',
+        description: 'Provider with special characters in name',
+      });
 
       expect(specialNameProvider.businessName).toBe("O'Brien's Holiday Camp & Co.");
       testProviders.push(specialNameProvider);

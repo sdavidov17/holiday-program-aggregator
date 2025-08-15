@@ -3,18 +3,15 @@
  * Tests for data persistence layer and complex queries
  */
 
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
-import { ProviderRepository } from '../provider.repository';
-import { PrismaClient } from '@prisma/client';
+import { afterEach, beforeEach, describe, expect, it } from '@jest/globals';
+import type { PrismaClient } from '@prisma/client';
 import {
-  createTestProvider,
-  createTestProgram,
   createProviderWithPrograms,
+  createTestProgram,
+  createTestProvider,
 } from '../../__tests__/factories';
-import { 
-  setupMockDatabase, 
-  cleanupMockDatabase
-} from '../../__tests__/setup/mock-db';
+import { cleanupMockDatabase, setupMockDatabase } from '../../__tests__/setup/mock-db';
+import { ProviderRepository } from '../provider.repository';
 
 describe('ProviderRepository', () => {
   let repository: ProviderRepository;
@@ -32,7 +29,7 @@ describe('ProviderRepository', () => {
   describe('create', () => {
     it('should create a new provider', async () => {
       const providerData = createTestProvider();
-      
+
       const result = await repository.create(providerData);
 
       expect(result).toMatchObject({
@@ -46,17 +43,15 @@ describe('ProviderRepository', () => {
 
     it('should handle duplicate email gracefully', async () => {
       const providerData = createTestProvider({ email: 'duplicate@test.com' });
-      
+
       await repository.create(providerData);
-      
-      await expect(
-        repository.create(providerData)
-      ).rejects.toThrow();
+
+      await expect(repository.create(providerData)).rejects.toThrow();
     });
 
     it('should create provider with programs', async () => {
       const { provider, programs } = createProviderWithPrograms(3);
-      
+
       const result = await repository.createWithPrograms(provider, programs);
 
       expect(result.id).toBeDefined();
@@ -69,9 +64,7 @@ describe('ProviderRepository', () => {
       // Make one program invalid
       programs[1].name = null as any; // Invalid data
 
-      await expect(
-        repository.createWithPrograms(provider, programs)
-      ).rejects.toThrow();
+      await expect(repository.createWithPrograms(provider, programs)).rejects.toThrow();
 
       // Verify nothing was created
       const count = await prisma.provider.count();
@@ -122,25 +115,25 @@ describe('ProviderRepository', () => {
       // Create test data
       await prisma.provider.createMany({
         data: [
-          createTestProvider({ 
+          createTestProvider({
             businessName: 'Active Provider',
-            isPublished: true, 
-            isVetted: true 
+            isPublished: true,
+            isVetted: true,
           }),
-          createTestProvider({ 
+          createTestProvider({
             businessName: 'Unpublished Provider',
-            isPublished: false, 
-            isVetted: true 
+            isPublished: false,
+            isVetted: true,
           }),
-          createTestProvider({ 
+          createTestProvider({
             businessName: 'Unvetted Provider',
-            isPublished: true, 
-            isVetted: false 
+            isPublished: true,
+            isVetted: false,
           }),
-          createTestProvider({ 
+          createTestProvider({
             businessName: 'Inactive Provider',
-            isPublished: false, 
-            isVetted: false 
+            isPublished: false,
+            isVetted: false,
           }),
         ] as any[],
       });
@@ -156,20 +149,20 @@ describe('ProviderRepository', () => {
       const result = await repository.findMany({ isPublished: true });
 
       expect(result).toHaveLength(2);
-      expect(result.every(p => p.isPublished)).toBe(true);
+      expect(result.every((p) => p.isPublished)).toBe(true);
     });
 
     it('should filter by vetted status', async () => {
       const result = await repository.findMany({ isVetted: true });
 
       expect(result).toHaveLength(2);
-      expect(result.every(p => p.isVetted)).toBe(true);
+      expect(result.every((p) => p.isVetted)).toBe(true);
     });
 
     it('should filter by both published and vetted', async () => {
-      const result = await repository.findMany({ 
-        isPublished: true, 
-        isVetted: true 
+      const result = await repository.findMany({
+        isPublished: true,
+        isVetted: true,
       });
 
       expect(result).toHaveLength(1);
@@ -186,8 +179,8 @@ describe('ProviderRepository', () => {
     });
 
     it('should order results', async () => {
-      const result = await repository.findMany({ 
-        orderBy: { businessName: 'asc' } 
+      const result = await repository.findMany({
+        orderBy: { businessName: 'asc' },
       });
 
       expect(result[0].businessName).toBe('Active Provider');
@@ -218,14 +211,12 @@ describe('ProviderRepository', () => {
     });
 
     it('should throw error for non-existent provider', async () => {
-      await expect(
-        repository.update('non-existent', { businessName: 'Test' })
-      ).rejects.toThrow();
+      await expect(repository.update('non-existent', { businessName: 'Test' })).rejects.toThrow();
     });
 
     it('should handle partial updates', async () => {
       const original = await repository.findById(providerId);
-      
+
       const result = await repository.update(providerId, {
         isPublished: true,
       });
@@ -267,9 +258,7 @@ describe('ProviderRepository', () => {
     });
 
     it('should throw error for non-existent provider', async () => {
-      await expect(
-        repository.delete('non-existent')
-      ).rejects.toThrow();
+      await expect(repository.delete('non-existent')).rejects.toThrow();
     });
   });
 
@@ -277,7 +266,7 @@ describe('ProviderRepository', () => {
     beforeEach(async () => {
       await prisma.provider.createMany({
         data: [
-          createTestProvider({ 
+          createTestProvider({
             businessName: 'Sydney Sports Academy',
             suburb: 'Sydney',
             state: 'NSW',
@@ -285,7 +274,7 @@ describe('ProviderRepository', () => {
             isPublished: true,
             isVetted: true,
           }),
-          createTestProvider({ 
+          createTestProvider({
             businessName: 'Melbourne Arts Studio',
             suburb: 'Melbourne',
             state: 'VIC',
@@ -293,7 +282,7 @@ describe('ProviderRepository', () => {
             isPublished: true,
             isVetted: true,
           }),
-          createTestProvider({ 
+          createTestProvider({
             businessName: 'Brisbane Science Lab',
             suburb: 'Brisbane',
             state: 'QLD',
@@ -320,7 +309,7 @@ describe('ProviderRepository', () => {
     });
 
     it('should search by location', async () => {
-      const result = await repository.search({ 
+      const result = await repository.search({
         suburb: 'Sydney',
         state: 'NSW',
       });
@@ -330,7 +319,7 @@ describe('ProviderRepository', () => {
     });
 
     it('should combine search criteria', async () => {
-      const result = await repository.search({ 
+      const result = await repository.search({
         query: 'Academy',
         state: 'NSW',
       });
@@ -347,7 +336,7 @@ describe('ProviderRepository', () => {
 
     it('should only return published and vetted by default', async () => {
       await prisma.provider.create({
-        data: createTestProvider({ 
+        data: createTestProvider({
           businessName: 'Unpublished Provider',
           isPublished: false,
           isVetted: true,
@@ -356,7 +345,7 @@ describe('ProviderRepository', () => {
 
       const result = await repository.search({});
 
-      expect(result.every(p => p.isPublished && p.isVetted)).toBe(true);
+      expect(result.every((p) => p.isPublished && p.isVetted)).toBe(true);
     });
   });
 
@@ -364,13 +353,13 @@ describe('ProviderRepository', () => {
     it('should execute multiple operations in transaction', async () => {
       await prisma.$transaction(async (tx) => {
         const repo = new ProviderRepository(tx);
-        
+
         const provider1 = await repo.create(createTestProvider());
         const provider2 = await repo.create(createTestProvider());
-        
+
         await repo.update(provider1.id, { isPublished: true });
         await repo.delete(provider2.id);
-        
+
         const remaining = await repo.findMany();
         expect(remaining).toHaveLength(1);
       });
@@ -383,12 +372,12 @@ describe('ProviderRepository', () => {
       await expect(
         prisma.$transaction(async (tx) => {
           const repo = new ProviderRepository(tx);
-          
+
           await repo.create(createTestProvider());
-          
+
           // Force an error
           throw new Error('Test error');
-        })
+        }),
       ).rejects.toThrow('Test error');
     });
   });
@@ -396,11 +385,11 @@ describe('ProviderRepository', () => {
   describe('bulk operations', () => {
     it('should create multiple providers', async () => {
       const providers = Array.from({ length: 5 }, () => createTestProvider());
-      
+
       const result = await repository.createMany(providers);
 
       expect(result.count).toBe(5);
-      
+
       const allProviders = await repository.findMany();
       expect(allProviders).toHaveLength(5);
     });
@@ -408,29 +397,29 @@ describe('ProviderRepository', () => {
     it('should update multiple providers', async () => {
       const providers = Array.from({ length: 3 }, () => createTestProvider());
       await repository.createMany(providers);
-      
+
       const toUpdate = await repository.findMany();
-      const ids = toUpdate.map(p => p.id);
-      
+      const ids = toUpdate.map((p) => p.id);
+
       const result = await repository.updateMany(ids, { isPublished: true });
 
       expect(result.count).toBe(3);
-      
+
       const updated = await repository.findMany();
-      expect(updated.every(p => p.isPublished)).toBe(true);
+      expect(updated.every((p) => p.isPublished)).toBe(true);
     });
 
     it('should delete multiple providers', async () => {
       const providers = Array.from({ length: 4 }, () => createTestProvider());
       await repository.createMany(providers);
-      
+
       const toDelete = await repository.findMany({ take: 2 });
-      const ids = toDelete.map(p => p.id);
-      
+      const ids = toDelete.map((p) => p.id);
+
       const result = await repository.deleteMany(ids);
 
       expect(result.count).toBe(2);
-      
+
       const remaining = await repository.findMany();
       expect(remaining).toHaveLength(2);
     });

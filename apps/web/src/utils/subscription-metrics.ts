@@ -65,20 +65,23 @@ export class SubscriptionMetricsCollector {
   logMetrics() {
     const metrics = this.getMetrics();
     console.log('Subscription Lifecycle Metrics:', JSON.stringify(metrics, null, 2));
-    
+
     // Alert conditions
     if (metrics.totalErrors > 0) {
-      console.error(`ALERT: ${metrics.totalErrors} errors occurred during subscription lifecycle processing`);
+      console.error(
+        `ALERT: ${metrics.totalErrors} errors occurred during subscription lifecycle processing`,
+      );
     }
-    
-    if (metrics.processingTimeMs > 30000) { // 30 seconds
+
+    if (metrics.processingTimeMs > 30000) {
+      // 30 seconds
       console.warn(`ALERT: Subscription lifecycle processing took ${metrics.processingTimeMs}ms`);
     }
-    
+
     if (metrics.remindersFailed > metrics.remindersSent) {
       console.error('ALERT: More reminder failures than successes');
     }
-    
+
     return metrics;
   }
 }

@@ -1,23 +1,20 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '~/server/db';
 import bcrypt from 'bcryptjs';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { env } from '~/env.mjs';
+import { db } from '~/server/db';
 
 /**
  * Admin Setup Endpoint
- * 
+ *
  * This endpoint creates the initial admin account in production.
  * It can only be run once and requires a setup key.
- * 
+ *
  * Usage:
  *   POST /api/admin/setup
  *   Headers: X-Setup-Key: your-setup-key
  *   Body: { email: "admin@example.com", password: "secure-password", name: "Admin Name" }
  */
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Only allow POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -30,7 +27,7 @@ export default async function handler(
     console.error('ADMIN_SETUP_KEY not configured');
     return res.status(500).json({ error: 'Server configuration error' });
   }
-  
+
   if (setupKey !== expectedKey) {
     return res.status(401).json({ error: 'Invalid setup key' });
   }
@@ -38,23 +35,23 @@ export default async function handler(
   try {
     // Check if any admin already exists
     const existingAdmin = await db.user.findFirst({
-      where: { role: 'ADMIN' }
+      where: { role: 'ADMIN' },
     });
 
     if (existingAdmin) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: 'Admin account already exists',
-        hint: 'Use the sign-in page with existing credentials'
+        hint: 'Use the sign-in page with existing credentials',
       });
     }
 
     // Get credentials from request or use defaults
     const email = req.body.email || env.ADMIN_EMAIL;
     const password = req.body.password || env.ADMIN_PASSWORD;
-    
+
     if (!email || !password) {
-      return res.status(400).json({ 
-        error: 'Admin credentials must be provided or configured' 
+      return res.status(400).json({
+        error: 'Admin credentials must be provided or configured',
       });
     }
     const name = req.body.name || env.ADMIN_NAME || 'Serge Admin';
@@ -95,18 +92,18 @@ export default async function handler(
       },
     });
 
-    res.status(200).json({ 
+    res.status(200).json({
       success: true,
       message: 'Admin account created successfully',
       adminEmail: adminUser.email,
       userEmail: userEmail,
-      hint: 'You can now sign in with these credentials'
+      hint: 'You can now sign in with these credentials',
     });
   } catch (error) {
     console.error('Admin setup error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to create admin account',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 }

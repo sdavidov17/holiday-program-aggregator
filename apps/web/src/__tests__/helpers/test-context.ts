@@ -1,5 +1,5 @@
-import { db } from '~/server/db';
 import type { Session } from 'next-auth';
+import { db } from '~/server/db';
 
 interface MockContextOptions {
   session?: Session | null;

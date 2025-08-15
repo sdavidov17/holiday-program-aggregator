@@ -4,15 +4,9 @@
  */
 
 import { faker } from '@faker-js/faker';
-import type { 
-  Provider, 
-  User, 
-  Subscription,
-  Program,
-  SubscriptionTier 
-} from '@prisma/client';
+import type { Program, Provider, Subscription, SubscriptionTier, User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { SECURITY, MOCK_DATA } from '../constants';
+import { MOCK_DATA, SECURITY } from '../constants';
 
 // Set faker seed for reproducible tests
 faker.seed(MOCK_DATA.FAKER_SEED);
@@ -21,8 +15,10 @@ faker.seed(MOCK_DATA.FAKER_SEED);
  * User Factory
  */
 export const createTestUser = async (overrides?: Partial<User>): Promise<Partial<User>> => {
-  const hashedPassword = overrides?.hashedPassword || await bcrypt.hash(SECURITY.DEFAULT_PASSWORD, SECURITY.BCRYPT_ROUNDS);
-  
+  const hashedPassword =
+    overrides?.hashedPassword ||
+    (await bcrypt.hash(SECURITY.DEFAULT_PASSWORD, SECURITY.BCRYPT_ROUNDS));
+
   return {
     id: faker.string.uuid(),
     email: faker.internet.email().toLowerCase(),
@@ -70,7 +66,9 @@ export const createTestProvider = (overrides?: Partial<Provider>): Partial<Provi
 /**
  * Subscription Factory
  */
-export const createTestSubscription = (overrides?: Partial<Subscription>): Partial<Subscription> => ({
+export const createTestSubscription = (
+  overrides?: Partial<Subscription>,
+): Partial<Subscription> => ({
   id: faker.string.uuid(),
   userId: faker.string.uuid(),
   stripeCustomerId: `cus_${faker.string.alphanumeric(14)}`,
@@ -159,15 +157,17 @@ export const createStripeSubscription = (overrides?: any) => ({
   current_period_start: Math.floor(Date.now() / 1000),
   current_period_end: Math.floor(Date.now() / 1000) + 2592000, // 30 days
   items: {
-    data: [{
-      id: `si_${faker.string.alphanumeric(14)}`,
-      price: {
-        id: `price_${faker.string.alphanumeric(14)}`,
-        product: `prod_${faker.string.alphanumeric(14)}`,
-        unit_amount: 2900,
-        currency: 'aud',
+    data: [
+      {
+        id: `si_${faker.string.alphanumeric(14)}`,
+        price: {
+          id: `price_${faker.string.alphanumeric(14)}`,
+          product: `prod_${faker.string.alphanumeric(14)}`,
+          unit_amount: 2900,
+          currency: 'aud',
+        },
       },
-    }],
+    ],
   },
   metadata: {
     tier: 'ESSENTIAL',
@@ -187,13 +187,15 @@ export const createStripePaymentIntent = (overrides?: any) => ({
   customer: `cus_${faker.string.alphanumeric(14)}`,
   status: 'succeeded',
   charges: {
-    data: [{
-      id: `ch_${faker.string.alphanumeric(24)}`,
-      amount: 2900,
-      currency: 'aud',
-      paid: true,
-      status: 'succeeded',
-    }],
+    data: [
+      {
+        id: `ch_${faker.string.alphanumeric(24)}`,
+        amount: 2900,
+        currency: 'aud',
+        paid: true,
+        status: 'succeeded',
+      },
+    ],
   },
   metadata: {},
   ...overrides,
@@ -202,7 +204,10 @@ export const createStripePaymentIntent = (overrides?: any) => ({
 /**
  * Batch Factory Utilities
  */
-export const createTestProviders = (count: number, overrides?: Partial<Provider>): Partial<Provider>[] => {
+export const createTestProviders = (
+  count: number,
+  overrides?: Partial<Provider>,
+): Partial<Provider>[] => {
   return Array.from({ length: count }, () => createTestProvider(overrides));
 };
 
@@ -241,7 +246,7 @@ export const seedTestDatabase = async (prisma: any) => {
 
   // Create test providers with programs
   const providersData = Array.from({ length: 5 }, () => createProviderWithPrograms(3));
-  
+
   // Create test subscriptions
   const subscriptions = [
     createTestSubscription({ userId: users[0].id, tier: 'BASIC' }),
@@ -250,8 +255,8 @@ export const seedTestDatabase = async (prisma: any) => {
 
   return {
     users,
-    providers: providersData.map(p => p.provider),
-    programs: providersData.flatMap(p => p.programs),
+    providers: providersData.map((p) => p.provider),
+    programs: providersData.flatMap((p) => p.programs),
     subscriptions,
   };
 };

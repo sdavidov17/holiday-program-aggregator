@@ -21,10 +21,10 @@ if (!process.env.DATABASE_URL) {
     process.exit(1);
   } else {
     // Default to local PostgreSQL (Docker or local installation)
-    const defaultUrl = isDocker 
+    const defaultUrl = isDocker
       ? 'postgresql://postgres:postgres@postgres:5432/holiday_aggregator?schema=public'
       : 'postgresql://postgres:postgres@localhost:5432/holiday_aggregator?schema=public';
-    
+
     process.env.DATABASE_URL = defaultUrl;
     console.log('⚠️  DATABASE_URL not set, using default local PostgreSQL connection');
     console.log(`   Set DATABASE_URL to: ${defaultUrl}`);
@@ -32,7 +32,10 @@ if (!process.env.DATABASE_URL) {
 }
 
 // Validate PostgreSQL connection string
-if (!process.env.DATABASE_URL.startsWith('postgresql://') && !process.env.DATABASE_URL.startsWith('postgres://')) {
+if (
+  !process.env.DATABASE_URL.startsWith('postgresql://') &&
+  !process.env.DATABASE_URL.startsWith('postgres://')
+) {
   console.error('❌ DATABASE_URL must be a PostgreSQL connection string');
   console.error('   Example: postgresql://user:password@localhost:5432/database');
   process.exit(1);

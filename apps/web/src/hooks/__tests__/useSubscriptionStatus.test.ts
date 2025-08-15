@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react';
-import { useSubscriptionStatus } from '../useSubscriptionStatus';
 import { useSession } from 'next-auth/react';
-import { api } from '~/utils/api';
 import { SubscriptionStatus } from '~/server/db';
+import { api } from '~/utils/api';
+import { useSubscriptionStatus } from '../useSubscriptionStatus';
 
 // Mock dependencies
 jest.mock('next-auth/react');
@@ -26,7 +26,7 @@ describe('useSubscriptionStatus', () => {
 
   it('should return correct status for active subscription', () => {
     mockUseSession.mockReturnValue({
-      data: { 
+      data: {
         user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },
@@ -64,7 +64,7 @@ describe('useSubscriptionStatus', () => {
 
   it('should return correct status for expired subscription', () => {
     mockUseSession.mockReturnValue({
-      data: { 
+      data: {
         user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },
@@ -99,7 +99,7 @@ describe('useSubscriptionStatus', () => {
 
   it('should return correct status for pending subscription', () => {
     mockUseSession.mockReturnValue({
-      data: { 
+      data: {
         user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },
@@ -134,7 +134,7 @@ describe('useSubscriptionStatus', () => {
 
   it('should return correct status for canceled subscription', () => {
     mockUseSession.mockReturnValue({
-      data: { 
+      data: {
         user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },
@@ -194,7 +194,7 @@ describe('useSubscriptionStatus', () => {
 
   it('should handle loading state', () => {
     mockUseSession.mockReturnValue({
-      data: { 
+      data: {
         user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },
@@ -221,7 +221,7 @@ describe('useSubscriptionStatus', () => {
 
   it('should handle no subscription data', () => {
     mockUseSession.mockReturnValue({
-      data: { 
+      data: {
         user: { id: '1', email: 'test@example.com', role: 'USER' as const },
         expires: new Date(Date.now() + 86400000).toISOString(),
       },

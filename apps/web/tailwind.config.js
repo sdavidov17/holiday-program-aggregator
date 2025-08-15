@@ -1,9 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -39,12 +39,12 @@ module.exports = {
         },
       },
       boxShadow: {
-        'soft': '0 2px 8px rgba(0, 0, 0, 0.08)',
-        'medium': '0 4px 16px rgba(0, 0, 0, 0.12)',
-        'large': '0 8px 32px rgba(0, 0, 0, 0.16)',
-        'card': '0 2px 12px rgba(0, 0, 0, 0.08)',
+        soft: '0 2px 8px rgba(0, 0, 0, 0.08)',
+        medium: '0 4px 16px rgba(0, 0, 0, 0.12)',
+        large: '0 8px 32px rgba(0, 0, 0, 0.16)',
+        card: '0 2px 12px rgba(0, 0, 0, 0.08)',
       },
     },
   },
   plugins: [],
-}
+};

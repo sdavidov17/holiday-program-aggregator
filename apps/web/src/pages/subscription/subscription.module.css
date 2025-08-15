@@ -47,7 +47,9 @@
   background: white;
   border-radius: 12px;
   padding: 32px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 .faq h2 {
@@ -85,7 +87,7 @@
 }
 
 .faqItem summary::after {
-  content: '+';
+  content: "+";
   font-size: 20px;
   color: #6b7280;
   transition: transform 0.2s;

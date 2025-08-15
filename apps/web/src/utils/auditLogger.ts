@@ -1,9 +1,9 @@
 import { db } from '~/server/db';
-import { logger, type LogContext } from './logger';
+import { type LogContext, logger } from './logger';
 
-export type AuditEventType = 
+export type AuditEventType =
   | 'AUTH_LOGIN_SUCCESS'
-  | 'AUTH_LOGIN_FAILED' 
+  | 'AUTH_LOGIN_FAILED'
   | 'AUTH_LOGOUT'
   | 'AUTH_SIGNUP'
   | 'AUTH_PASSWORD_RESET_REQUEST'
@@ -43,7 +43,7 @@ export class AuditLogger {
       result: 'success' | 'failure';
       metadata?: Record<string, any>;
       errorMessage?: string;
-    }
+    },
   ): Promise<void> {
     const auditEvent: Omit<AuditEvent, 'id'> = {
       timestamp: new Date(),
@@ -97,10 +97,14 @@ export class AuditLogger {
   }): Promise<AuditEvent[]> {
     // Placeholder for when we have the database table
     // This would query the audit log table with appropriate filters
-    logger.info('Audit log query requested', {
-      correlationId: `audit-query-${Date.now()}`,
-    } as LogContext, { filters });
-    
+    logger.info(
+      'Audit log query requested',
+      {
+        correlationId: `audit-query-${Date.now()}`,
+      } as LogContext,
+      { filters },
+    );
+
     return [];
   }
 
@@ -109,15 +113,19 @@ export class AuditLogger {
    */
   async getFailedLoginAttempts(
     identifier: { email?: string; ipAddress?: string },
-    sinceMinutes: number = 30
+    sinceMinutes: number = 30,
   ): Promise<number> {
     const since = new Date(Date.now() - sinceMinutes * 60 * 1000);
-    
+
     // Placeholder - would query the audit log table
-    logger.info('Failed login attempt check', {
-      correlationId: `login-check-${Date.now()}`,
-    } as LogContext, { identifier, sinceMinutes });
-    
+    logger.info(
+      'Failed login attempt check',
+      {
+        correlationId: `login-check-${Date.now()}`,
+      } as LogContext,
+      { identifier, sinceMinutes },
+    );
+
     return 0;
   }
 
@@ -129,7 +137,7 @@ export class AuditLogger {
     modelName: string,
     recordId: string,
     userId: string,
-    details?: Record<string, any>
+    details?: Record<string, any>,
   ): Promise<void> {
     const context: LogContext = {
       correlationId: `audit-${action.toLowerCase()}-${Date.now()}`,

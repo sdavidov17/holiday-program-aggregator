@@ -1,8 +1,8 @@
+import { render } from '@react-email/render';
 import { Resend } from 'resend';
 import { env } from '~/env.mjs';
-import RenewalReminderEmail from '../../emails/subscription-renewal-reminder';
 import ExpirationNoticeEmail from '../../emails/subscription-expiration-notice';
-import { render } from '@react-email/render';
+import RenewalReminderEmail from '../../emails/subscription-renewal-reminder';
 
 const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
 
@@ -18,17 +18,14 @@ export interface ExpirationNoticeData {
   renewalUrl: string;
 }
 
-export async function sendRenewalReminder(
-  email: string,
-  data: RenewalReminderData
-): Promise<void> {
+export async function sendRenewalReminder(email: string, data: RenewalReminderData): Promise<void> {
   if (!resend) {
     console.warn('Resend not configured, skipping email send');
     return;
   }
 
   const emailHtml = await render(RenewalReminderEmail(data));
-  
+
   const { data: result, error } = await resend.emails.send({
     from: 'Holiday Programs <noreply@holidayprograms.com.au>',
     to: email,
@@ -43,7 +40,7 @@ export async function sendRenewalReminder(
 
 export async function sendExpirationNotice(
   email: string,
-  data: ExpirationNoticeData
+  data: ExpirationNoticeData,
 ): Promise<void> {
   if (!resend) {
     console.warn('Resend not configured, skipping email send');
@@ -51,7 +48,7 @@ export async function sendExpirationNotice(
   }
 
   const emailHtml = await render(ExpirationNoticeEmail(data));
-  
+
   const { data: result, error } = await resend.emails.send({
     from: 'Holiday Programs <noreply@holidayprograms.com.au>',
     to: email,

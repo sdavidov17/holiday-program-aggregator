@@ -3,12 +3,12 @@
  * Comprehensive security tests based on OWASP Top 10
  */
 
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
-import { createMockContext } from '../helpers/test-context';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
+import bcrypt from 'bcryptjs';
 import { appRouter } from '~/server/api/root';
 import { db } from '~/server/db';
 import { createTestUser } from '../factories';
-import bcrypt from 'bcryptjs';
+import { createMockContext } from '../helpers/test-context';
 
 // Mock rate limiter for testing
 jest.mock('~/lib/rate-limiter', () => ({
@@ -39,9 +39,7 @@ describe('OWASP Security Tests', () => {
 
       const caller = appRouter.createCaller(userContext);
 
-      await expect(
-        caller.admin.getProviders()
-      ).rejects.toThrow(/unauthorized|forbidden/i);
+      await expect(caller.admin.getProviders()).rejects.toThrow(/unauthorized|forbidden/i);
     });
 
     it.skip('should prevent users from accessing other users data', async () => {
@@ -54,9 +52,9 @@ describe('OWASP Security Tests', () => {
 
       const caller = appRouter.createCaller(userContext);
 
-      await expect(
-        caller.user.getProfile({ userId: 'user2' })
-      ).rejects.toThrow(/unauthorized|forbidden/i);
+      await expect(caller.user.getProfile({ userId: 'user2' })).rejects.toThrow(
+        /unauthorized|forbidden/i,
+      );
     });
 
     it.skip('should enforce subscription tier access controls', async () => {
@@ -70,9 +68,9 @@ describe('OWASP Security Tests', () => {
       const caller = appRouter.createCaller(basicUserContext);
 
       // Attempt to access premium feature
-      await expect(
-        caller.provider.getPremiumInsights({ providerId: 'provider1' })
-      ).rejects.toThrow(/premium.*required/i);
+      await expect(caller.provider.getPremiumInsights({ providerId: 'provider1' })).rejects.toThrow(
+        /premium.*required/i,
+      );
     });
 
     it.skip('should prevent parameter tampering', async () => {
@@ -87,10 +85,10 @@ describe('OWASP Security Tests', () => {
 
       // Attempt to modify another user's subscription via parameter tampering
       await expect(
-        caller.subscription.update({ 
+        caller.subscription.update({
           userId: 'otheruser', // Trying to modify another user's subscription
-          tier: 'PREMIUM' 
-        })
+          tier: 'PREMIUM',
+        }),
       ).rejects.toThrow(/unauthorized/i);
     });
   });
@@ -114,7 +112,7 @@ describe('OWASP Security Tests', () => {
       });
 
       const caller = appRouter.createCaller(context);
-      
+
       // Mock implementation
       db.user.findUnique = jest.fn().mockResolvedValue({
         id: 'user1',
@@ -148,7 +146,7 @@ describe('OWASP Security Tests', () => {
   describe('A03: Injection', () => {
     it.skip('should prevent SQL injection in search queries', async () => {
       const maliciousInput = "'; DROP TABLE providers; --";
-      
+
       const context = createMockContext({
         session: {
           user: { id: 'user1', role: 'USER', email: 'user@test.com' },
@@ -159,9 +157,7 @@ describe('OWASP Security Tests', () => {
       const caller = appRouter.createCaller(context);
 
       // This should be safely parameterized
-      await expect(
-        caller.provider.search({ query: maliciousInput })
-      ).resolves.not.toThrow();
+      await expect(caller.provider.search({ query: maliciousInput })).resolves.not.toThrow();
 
       // Verify table still exists
       const providerCount = await db.provider.count();
@@ -170,7 +166,7 @@ describe('OWASP Security Tests', () => {
 
     it.skip('should sanitize user input in forms', async () => {
       const xssPayload = '<script>alert("XSS")</script>';
-      
+
       const context = createMockContext({
         session: {
           user: { id: 'admin1', role: 'ADMIN', email: 'admin@test.com' },
@@ -199,7 +195,7 @@ describe('OWASP Security Tests', () => {
 
     it.skip('should prevent NoSQL injection', async () => {
       const maliciousInput = { $ne: null }; // NoSQL injection attempt
-      
+
       const context = createMockContext({
         session: {
           user: { id: 'user1', role: 'USER', email: 'user@test.com' },
@@ -209,18 +205,16 @@ describe('OWASP Security Tests', () => {
 
       const caller = appRouter.createCaller(context);
 
-      await expect(
-        caller.user.getProfile({ userId: maliciousInput as any })
-      ).rejects.toThrow(/invalid.*input/i);
+      await expect(caller.user.getProfile({ userId: maliciousInput as any })).rejects.toThrow(
+        /invalid.*input/i,
+      );
     });
 
     it.skip('should prevent command injection', async () => {
       const maliciousFilename = 'test.pdf; rm -rf /';
-      
+
       // File upload endpoint should sanitize filenames
-      const sanitizedFilename = maliciousFilename
-        .replace(/[^a-zA-Z0-9.-]/g, '_')
-        .substring(0, 255);
+      const sanitizedFilename = maliciousFilename.replace(/[^a-zA-Z0-9.-]/g, '_').substring(0, 255);
 
       expect(sanitizedFilename).not.toContain(';');
       expect(sanitizedFilename).not.toContain('rm');
@@ -247,7 +241,7 @@ describe('OWASP Security Tests', () => {
           ageMin: 15,
           ageMax: 5, // Invalid: max < min
           price: 100,
-        })
+        }),
       ).rejects.toThrow(/invalid.*age/i);
     });
 
@@ -260,11 +254,11 @@ describe('OWASP Security Tests', () => {
             userId: 'user1',
             spotNumber: 1, // All trying to book same spot
           },
-        })
+        }),
       );
 
       const results = await Promise.allSettled(bookingPromises);
-      const successful = results.filter(r => r.status === 'fulfilled');
+      const successful = results.filter((r) => r.status === 'fulfilled');
 
       // Only one should succeed due to unique constraint
       expect(successful.length).toBe(1);
@@ -280,9 +274,9 @@ describe('OWASP Security Tests', () => {
 
       const caller = appRouter.createCaller(expiredContext);
 
-      await expect(
-        caller.user.getProfile({ userId: 'user1' })
-      ).rejects.toThrow(/session.*expired/i);
+      await expect(caller.user.getProfile({ userId: 'user1' })).rejects.toThrow(
+        /session.*expired/i,
+      );
     });
   });
 
@@ -319,7 +313,7 @@ describe('OWASP Security Tests', () => {
     it('should disable unnecessary features', () => {
       // Verify debug mode is disabled in production
       expect(process.env.NODE_ENV === 'production' ? process.env.DEBUG : undefined).toBeUndefined();
-      
+
       // Verify introspection is disabled for GraphQL (if applicable)
       // Verify directory listing is disabled
       // Verify default credentials are not used
@@ -338,7 +332,7 @@ describe('OWASP Security Tests', () => {
       const packageJson = require('../../../package.json');
       const dependencies = { ...packageJson.dependencies, ...packageJson.devDependencies };
 
-      vulnerableDependencies.forEach(vulnDep => {
+      vulnerableDependencies.forEach((vulnDep) => {
         const [name, version] = vulnDep.split('@');
         expect(dependencies[name]).not.toBe(version);
       });
@@ -371,7 +365,7 @@ describe('OWASP Security Tests', () => {
         );
       };
 
-      weakPasswords.forEach(password => {
+      weakPasswords.forEach((password) => {
         expect(validatePassword(password)).toBe(false);
       });
 
@@ -395,9 +389,7 @@ describe('OWASP Security Tests', () => {
         await attemptLogin('user@test.com', 'wrongpassword');
       }
 
-      await expect(
-        attemptLogin('user@test.com', 'wrongpassword')
-      ).rejects.toThrow(/locked/i);
+      await expect(attemptLogin('user@test.com', 'wrongpassword')).rejects.toThrow(/locked/i);
     });
 
     it('should implement secure session management', () => {
@@ -413,10 +405,10 @@ describe('OWASP Security Tests', () => {
 
       // Session should expire
       expect(session.expiresAt.getTime()).toBeGreaterThan(Date.now());
-      
+
       // Session should be tied to IP
       expect(session.ipAddress).toBeDefined();
-      
+
       // Session ID should be random and unpredictable
       expect(session.id.length).toBeGreaterThanOrEqual(32);
     });
@@ -427,26 +419,20 @@ describe('OWASP Security Tests', () => {
       const payload = JSON.stringify({ event: 'test' });
       const secret = 'webhook_secret';
       const crypto = require('crypto');
-      
-      const signature = crypto
-        .createHmac('sha256', secret)
-        .update(payload)
-        .digest('hex');
+
+      const signature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
 
       const verifySignature = (payload: string, signature: string, secret: string): boolean => {
-        const expectedSignature = crypto
-          .createHmac('sha256', secret)
-          .update(payload)
-          .digest('hex');
-        
+        const expectedSignature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
+
         // Use timing-safe comparison only for same-length strings
         if (signature.length !== expectedSignature.length) {
           return false;
         }
-        
+
         return crypto.timingSafeEqual(
           Buffer.from(signature, 'hex'),
-          Buffer.from(expectedSignature, 'hex')
+          Buffer.from(expectedSignature, 'hex'),
         );
       };
 
@@ -471,7 +457,7 @@ describe('OWASP Security Tests', () => {
   describe('A09: Security Logging and Monitoring', () => {
     it('should log security events', async () => {
       const securityEvents = [];
-      
+
       const logSecurityEvent = (event: any) => {
         securityEvents.push({
           ...event,
@@ -510,10 +496,12 @@ describe('OWASP Security Tests', () => {
         { ip: '192.168.1.1', endpoint: '/api/search', timestamp: Date.now() + 400 },
       ];
 
-      const detectRapidRequests = (logs: any[], threshold: number = 5, timeWindow: number = 1000) => {
-        const recentRequests = logs.filter(
-          log => log.timestamp > Date.now() - timeWindow
-        );
+      const detectRapidRequests = (
+        logs: any[],
+        threshold: number = 5,
+        timeWindow: number = 1000,
+      ) => {
+        const recentRequests = logs.filter((log) => log.timestamp > Date.now() - timeWindow);
         return recentRequests.length >= threshold;
       };
 
@@ -528,21 +516,21 @@ describe('OWASP Security Tests', () => {
           const parsed = new URL(url);
           const allowedProtocols = ['http:', 'https:'];
           const blockedHosts = ['localhost', '127.0.0.1', '0.0.0.0', '169.254.169.254'];
-          
+
           if (!allowedProtocols.includes(parsed.protocol)) {
             return false;
           }
-          
+
           if (blockedHosts.includes(parsed.hostname)) {
             return false;
           }
-          
+
           // Block private IP ranges
           const ipRegex = /^(10\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.)/;
           if (ipRegex.test(parsed.hostname)) {
             return false;
           }
-          
+
           return true;
         } catch {
           return false;
@@ -569,7 +557,7 @@ describe('OWASP Security Tests', () => {
       await expect(
         caller.admin.configureWebhook({
           url: 'http://localhost:3000/internal-endpoint',
-        })
+        }),
       ).rejects.toThrow(/invalid.*url/i);
     });
   });

@@ -1,6 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { SessionProvider } from 'next-auth/react';
+import type React from 'react';
 import SearchPage from '../../pages/search';
 import '@testing-library/jest-dom';
 
@@ -89,7 +89,7 @@ describe('SearchPage', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
-      </SessionProvider>
+      </SessionProvider>,
     );
 
     expect(screen.getByText('Program Search')).toBeInTheDocument();
@@ -99,7 +99,7 @@ describe('SearchPage', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
-      </SessionProvider>
+      </SessionProvider>,
     );
 
     expect(screen.getByText(/Welcome Test User!/)).toBeInTheDocument();
@@ -109,7 +109,7 @@ describe('SearchPage', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
-      </SessionProvider>
+      </SessionProvider>,
     );
 
     expect(screen.getByLabelText('Location')).toBeInTheDocument();
@@ -122,7 +122,7 @@ describe('SearchPage', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
-      </SessionProvider>
+      </SessionProvider>,
     );
 
     const backLink = screen.getByText('Back to Profile');
@@ -134,7 +134,7 @@ describe('SearchPage', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
-      </SessionProvider>
+      </SessionProvider>,
     );
 
     expect(screen.getByText(/This is a demo search interface/)).toBeInTheDocument();
@@ -150,7 +150,7 @@ describe('SearchPage', () => {
     render(
       <SessionProvider session={null}>
         <SearchPage />
-      </SessionProvider>
+      </SessionProvider>,
     );
 
     expect(screen.getByText('Program Search')).toBeInTheDocument();
@@ -172,7 +172,7 @@ describe('SearchPage', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
-      </SessionProvider>
+      </SessionProvider>,
     );
 
     expect(screen.getByText(/Welcome test@example.com!/)).toBeInTheDocument();

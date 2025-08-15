@@ -12,9 +12,9 @@ function generateHTMLReport() {
   const possiblePaths = [
     path.join(coverageDir, 'ctrf-report.json'),
     path.join(__dirname, '..', 'ctrf', 'ctrf-report.json'),
-    path.join(__dirname, '..', 'ctrf-report.json')
+    path.join(__dirname, '..', 'ctrf-report.json'),
   ];
-  
+
   let ctrfJsonPath;
   for (const p of possiblePaths) {
     if (fs.existsSync(p)) {
@@ -22,23 +22,21 @@ function generateHTMLReport() {
       break;
     }
   }
-  
+
   if (!ctrfJsonPath) {
     console.error('CTRF JSON report not found in any expected location. Run tests first.');
     console.error('Searched locations:', possiblePaths);
     process.exit(1);
   }
-  
+
   const htmlOutputPath = path.join(coverageDir, 'test-report.html');
-  
+
   const ctrf = JSON.parse(fs.readFileSync(ctrfJsonPath, 'utf8'));
   const summary = ctrf.summary || {};
-  
+
   // Calculate percentages
-  const passRate = summary.tests > 0 
-    ? ((summary.passed / summary.tests) * 100).toFixed(1)
-    : 0;
-  
+  const passRate = summary.tests > 0 ? ((summary.passed / summary.tests) * 100).toFixed(1) : 0;
+
   // Group tests by suite and categorize by test type
   const testsBySuite = {};
   const testsByType = {
@@ -47,24 +45,24 @@ function generateHTMLReport() {
     api: [],
     component: [],
     security: [],
-    helpers: []
+    helpers: [],
   };
-  
-  (ctrf.tests || []).forEach(test => {
+
+  (ctrf.tests || []).forEach((test) => {
     const suite = test.suite || 'Unknown Suite';
     if (!testsBySuite[suite]) {
       testsBySuite[suite] = {
         passed: 0,
         failed: 0,
         skipped: 0,
-        tests: []
+        tests: [],
       };
     }
     testsBySuite[suite].tests.push(test);
     if (test.status === 'passed') testsBySuite[suite].passed++;
     else if (test.status === 'failed') testsBySuite[suite].failed++;
     else if (test.status === 'skipped') testsBySuite[suite].skipped++;
-    
+
     // Categorize by test type based on file path
     const filePath = test.filePath || suite.toLowerCase();
     if (filePath.includes('integration')) {
@@ -81,7 +79,7 @@ function generateHTMLReport() {
       testsByType.unit.push(test);
     }
   });
-  
+
   // Generate HTML
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -273,7 +271,9 @@ function generateHTMLReport() {
       <div class="timestamp">Generated: ${new Date().toLocaleString()}</div>
     </div>
     
-    ${Object.entries(testsBySuite).map(([suiteName, suite]) => `
+    ${Object.entries(testsBySuite)
+      .map(
+        ([suiteName, suite]) => `
       <div class="suite" onclick="this.classList.toggle('expanded')">
         <div class="suite-header">
           <div class="suite-title">${suiteName}</div>
@@ -284,16 +284,22 @@ function generateHTMLReport() {
           </div>
         </div>
         <div class="test-list">
-          ${suite.tests.map(test => `
+          ${suite.tests
+            .map(
+              (test) => `
             <div class="test">
               <div class="test-status ${test.status}"></div>
               <div class="test-name">${test.name}</div>
               <div class="test-duration">${test.duration ? test.duration + 'ms' : ''}</div>
             </div>
-          `).join('')}
+          `,
+            )
+            .join('')}
         </div>
       </div>
-    `).join('')}
+    `,
+      )
+      .join('')}
     
     <div class="coverage-section">
       <h2>Test Coverage by Layer</h2>
@@ -301,35 +307,35 @@ function generateHTMLReport() {
         <div class="coverage-item">
           <div class="stat-label">Unit Tests</div>
           <div class="coverage-bar">
-            <div class="coverage-fill" style="width: ${testsByType.unit.length > 0 ? ((testsByType.unit.filter(t => t.status === 'passed').length / testsByType.unit.length) * 100).toFixed(0) : 0}%"></div>
+            <div class="coverage-fill" style="width: ${testsByType.unit.length > 0 ? ((testsByType.unit.filter((t) => t.status === 'passed').length / testsByType.unit.length) * 100).toFixed(0) : 0}%"></div>
           </div>
           <div>${testsByType.unit.length} tests</div>
         </div>
         <div class="coverage-item">
           <div class="stat-label">Integration</div>
           <div class="coverage-bar">
-            <div class="coverage-fill" style="width: ${testsByType.integration.length > 0 ? ((testsByType.integration.filter(t => t.status === 'passed').length / testsByType.integration.length) * 100).toFixed(0) : 0}%"></div>
+            <div class="coverage-fill" style="width: ${testsByType.integration.length > 0 ? ((testsByType.integration.filter((t) => t.status === 'passed').length / testsByType.integration.length) * 100).toFixed(0) : 0}%"></div>
           </div>
           <div>${testsByType.integration.length} tests</div>
         </div>
         <div class="coverage-item">
           <div class="stat-label">API Routes</div>
           <div class="coverage-bar">
-            <div class="coverage-fill" style="width: ${testsByType.api.length > 0 ? ((testsByType.api.filter(t => t.status === 'passed').length / testsByType.api.length) * 100).toFixed(0) : 0}%"></div>
+            <div class="coverage-fill" style="width: ${testsByType.api.length > 0 ? ((testsByType.api.filter((t) => t.status === 'passed').length / testsByType.api.length) * 100).toFixed(0) : 0}%"></div>
           </div>
           <div>${testsByType.api.length} tests</div>
         </div>
         <div class="coverage-item">
           <div class="stat-label">Components</div>
           <div class="coverage-bar">
-            <div class="coverage-fill" style="width: ${testsByType.component.length > 0 ? ((testsByType.component.filter(t => t.status === 'passed').length / testsByType.component.length) * 100).toFixed(0) : 0}%"></div>
+            <div class="coverage-fill" style="width: ${testsByType.component.length > 0 ? ((testsByType.component.filter((t) => t.status === 'passed').length / testsByType.component.length) * 100).toFixed(0) : 0}%"></div>
           </div>
           <div>${testsByType.component.length} tests</div>
         </div>
         <div class="coverage-item">
           <div class="stat-label">Security</div>
           <div class="coverage-bar">
-            <div class="coverage-fill" style="width: ${testsByType.security.length > 0 ? ((testsByType.security.filter(t => t.status === 'passed').length / testsByType.security.length) * 100).toFixed(0) : 0}%"></div>
+            <div class="coverage-fill" style="width: ${testsByType.security.length > 0 ? ((testsByType.security.filter((t) => t.status === 'passed').length / testsByType.security.length) * 100).toFixed(0) : 0}%"></div>
           </div>
           <div>${testsByType.security.length} tests</div>
         </div>
@@ -338,10 +344,10 @@ function generateHTMLReport() {
   </div>
 </body>
 </html>`;
-  
+
   fs.writeFileSync(htmlOutputPath, html);
   console.log(`✅ HTML test report generated: ${htmlOutputPath}`);
-  
+
   // Also generate a markdown summary for CI
   const markdown = `# Test Report Summary
 
@@ -354,20 +360,20 @@ function generateHTMLReport() {
 - **Duration**: ${((summary.stop - summary.start) / 1000).toFixed(2)}s
 
 ## 📦 Test Suites
-${Object.entries(testsBySuite).map(([suite, data]) => 
-  `- **${suite}**: ${data.passed}/${data.tests.length} passed`
-).join('\n')}
+${Object.entries(testsBySuite)
+  .map(([suite, data]) => `- **${suite}**: ${data.passed}/${data.tests.length} passed`)
+  .join('\n')}
 
 ## 🔍 Coverage Layers
-- Unit Tests: ${testsByType.unit.length} tests (${testsByType.unit.filter(t => t.status === 'passed').length} passed)
-- Integration Tests: ${testsByType.integration.length} tests (${testsByType.integration.filter(t => t.status === 'passed').length} passed)
-- API Routes: ${testsByType.api.length} tests (${testsByType.api.filter(t => t.status === 'passed').length} passed)
-- Components: ${testsByType.component.length} tests (${testsByType.component.filter(t => t.status === 'passed').length} passed)
-- Security: ${testsByType.security.length} tests (${testsByType.security.filter(t => t.status === 'passed').length} passed)
+- Unit Tests: ${testsByType.unit.length} tests (${testsByType.unit.filter((t) => t.status === 'passed').length} passed)
+- Integration Tests: ${testsByType.integration.length} tests (${testsByType.integration.filter((t) => t.status === 'passed').length} passed)
+- API Routes: ${testsByType.api.length} tests (${testsByType.api.filter((t) => t.status === 'passed').length} passed)
+- Components: ${testsByType.component.length} tests (${testsByType.component.filter((t) => t.status === 'passed').length} passed)
+- Security: ${testsByType.security.length} tests (${testsByType.security.filter((t) => t.status === 'passed').length} passed)
 
 _Generated at ${new Date().toISOString()}_
 `;
-  
+
   fs.writeFileSync(path.join(coverageDir, 'test-summary.md'), markdown);
   console.log('✅ Markdown summary generated');
 }

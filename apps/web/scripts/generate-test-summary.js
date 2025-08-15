@@ -7,10 +7,10 @@ function generateTestSummary() {
   try {
     // Read CTRF report if it exists
     const ctrfPath = path.join(__dirname, '../coverage/ctrf-report.json');
-    
+
     if (fs.existsSync(ctrfPath)) {
       const ctrf = JSON.parse(fs.readFileSync(ctrfPath, 'utf8'));
-      
+
       const summary = ctrf.results?.summary || {};
       const tests = summary.tests || 0;
       const passed = summary.passed || 0;
@@ -18,10 +18,10 @@ function generateTestSummary() {
       const skipped = summary.skipped || 0;
       const pending = summary.pending || 0;
       const duration = summary.duration || 0;
-      
+
       const passRate = tests > 0 ? ((passed / tests) * 100).toFixed(1) : 0;
       const status = failed === 0 ? '✅' : '❌';
-      
+
       const summaryMd = `## Test Results ${status}
 
 ### Summary
@@ -42,20 +42,20 @@ function generateTestSummary() {
       if (process.env.GITHUB_STEP_SUMMARY) {
         fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summaryMd);
       }
-      
+
       // Also write to stdout
       console.log(summaryMd);
     } else {
       console.log('No CTRF report found');
     }
-    
+
     // Read coverage summary if it exists
     const coveragePath = path.join(__dirname, '../coverage/coverage-summary.json');
-    
+
     if (fs.existsSync(coveragePath)) {
       const coverage = JSON.parse(fs.readFileSync(coveragePath, 'utf8'));
       const total = coverage.total;
-      
+
       const coverageMd = `
 ### Coverage Report
 - **Lines**: ${total.lines.pct}%
@@ -63,14 +63,13 @@ function generateTestSummary() {
 - **Functions**: ${total.functions.pct}%
 - **Branches**: ${total.branches.pct}%
 `;
-      
+
       if (process.env.GITHUB_STEP_SUMMARY) {
         fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, coverageMd);
       }
-      
+
       console.log(coverageMd);
     }
-    
   } catch (error) {
     console.error('Error generating test summary:', error);
   }

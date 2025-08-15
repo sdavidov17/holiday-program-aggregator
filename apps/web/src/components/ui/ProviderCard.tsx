@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Star } from "lucide-react";
+import { Star } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface ProviderCardProps {
   id: string;
@@ -23,7 +23,7 @@ export default function ProviderCard({
   imageUrl,
   location,
   isVetted,
-  tags = []
+  tags = [],
 }: ProviderCardProps) {
   return (
     <Link href={`/providers/${id}`}>
@@ -33,12 +33,12 @@ export default function ProviderCard({
           <div className="flex-shrink-0">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-xl overflow-hidden">
               {imageUrl ? (
-                <Image 
-                  src={imageUrl} 
-                  alt={name} 
-                  width={64} 
-                  height={64} 
-                  className="w-full h-full rounded-full object-cover" 
+                <Image
+                  src={imageUrl}
+                  alt={name}
+                  width={64}
+                  height={64}
+                  className="w-full h-full rounded-full object-cover"
                 />
               ) : (
                 name.charAt(0).toUpperCase()
@@ -53,21 +53,13 @@ export default function ProviderCard({
                 <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
                   {name}
                 </h3>
-                {location && (
-                  <p className="text-sm text-gray-500 mt-0.5">{location}</p>
-                )}
+                {location && <p className="text-sm text-gray-500 mt-0.5">{location}</p>}
               </div>
-              {isVetted && (
-                <span className="badge-success">
-                  ✓ Vetted
-                </span>
-              )}
+              {isVetted && <span className="badge-success">✓ Vetted</span>}
             </div>
 
             {description && (
-              <p className="text-sm text-gray-600 mt-2 line-clamp-2">
-                {description}
-              </p>
+              <p className="text-sm text-gray-600 mt-2 line-clamp-2">{description}</p>
             )}
 
             {/* Rating */}

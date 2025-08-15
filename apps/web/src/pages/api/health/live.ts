@@ -1,4 +1,4 @@
-import { type NextApiRequest, type NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 interface LivenessResponse {
   status: 'ok' | 'error';
@@ -9,10 +9,7 @@ interface LivenessResponse {
 }
 
 // Simple liveness check - just confirms the service is running
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<LivenessResponse>
-) {
+export default function handler(req: NextApiRequest, res: NextApiResponse<LivenessResponse>) {
   // Only allow GET requests
   if (req.method !== 'GET') {
     res.setHeader('Allow', ['GET']);

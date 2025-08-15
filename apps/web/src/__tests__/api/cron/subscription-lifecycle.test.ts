@@ -1,13 +1,13 @@
 import { createMocks } from 'node-mocks-http';
-import handler from '../../../pages/api/cron/subscription-lifecycle';
-import { processSubscriptionLifecycle } from '~/services/subscription-lifecycle';
 import { env } from '~/env.mjs';
+import { processSubscriptionLifecycle } from '~/services/subscription-lifecycle';
+import handler from '../../../pages/api/cron/subscription-lifecycle';
 
 jest.mock('~/services/subscription-lifecycle');
 jest.mock('~/env.mjs', () => ({
   env: {
-    CRON_SECRET: 'test-secret'
-  }
+    CRON_SECRET: 'test-secret',
+  },
 }));
 
 describe('/api/cron/subscription-lifecycle', () => {
@@ -79,9 +79,7 @@ describe('/api/cron/subscription-lifecycle', () => {
   });
 
   it('should handle errors gracefully', async () => {
-    (processSubscriptionLifecycle as jest.Mock).mockRejectedValue(
-      new Error('Processing failed')
-    );
+    (processSubscriptionLifecycle as jest.Mock).mockRejectedValue(new Error('Processing failed'));
 
     const { req, res } = createMocks({
       method: 'GET',

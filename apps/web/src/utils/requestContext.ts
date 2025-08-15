@@ -16,7 +16,7 @@ export const requestContextStorage = new AsyncLocalStorage<RequestContext>();
  */
 export function withRequestContext<T>(
   context: RequestContext,
-  fn: () => T | Promise<T>
+  fn: () => T | Promise<T>,
 ): T | Promise<T> {
   return requestContextStorage.run(context, fn);
 }

@@ -1,12 +1,12 @@
-import { TRPCError } from "@trpc/server";
-import { SubscriptionStatus } from "~/server/db";
-import { type Context } from "../trpc";
-import { isSubscriptionActive } from "~/utils/subscription";
-import { logger } from "~/utils/logger";
+import { TRPCError } from '@trpc/server';
+import { SubscriptionStatus } from '~/server/db';
+import { logger } from '~/utils/logger';
+import { isSubscriptionActive } from '~/utils/subscription';
+import type { Context } from '../trpc';
 
-export const requireActiveSubscriptionMiddleware = async ({ 
-  ctx, 
-  next 
+export const requireActiveSubscriptionMiddleware = async ({
+  ctx,
+  next,
 }: {
   ctx: Context;
   next: (opts?: { ctx: Context }) => Promise<unknown>;
@@ -16,39 +16,44 @@ export const requireActiveSubscriptionMiddleware = async ({
   }
 
   const subscription = await ctx.db.subscription.findUnique({
-    where: { userId: ctx.session.user.id }
+    where: { userId: ctx.session.user.id },
   });
 
   if (!isSubscriptionActive(subscription)) {
     logger.warn('Access denied - no active subscription', {
       correlationId: ctx.correlationId,
       userId: ctx.session.user.id,
-      subscriptionStatus: subscription?.status
+      subscriptionStatus: subscription?.status,
     });
-    
-    throw new TRPCError({ 
+
+    throw new TRPCError({
       code: 'FORBIDDEN',
-      message: 'Active subscription required'
+      message: 'Active subscription required',
     });
   }
 
   // Check if subscription has expired and needs status update
-  if (subscription && subscription.expiresAt && subscription.expiresAt < new Date() && subscription.status === SubscriptionStatus.ACTIVE) {
+  if (
+    subscription &&
+    subscription.expiresAt &&
+    subscription.expiresAt < new Date() &&
+    subscription.status === SubscriptionStatus.ACTIVE
+  ) {
     // Update status to expired
     await ctx.db.subscription.update({
       where: { id: subscription.id },
-      data: { status: SubscriptionStatus.EXPIRED }
+      data: { status: SubscriptionStatus.EXPIRED },
     });
-    
+
     logger.info('Subscription expired and status updated', {
       correlationId: ctx.correlationId,
       subscriptionId: subscription.id,
-      userId: ctx.session.user.id
+      userId: ctx.session.user.id,
     });
-    
-    throw new TRPCError({ 
+
+    throw new TRPCError({
       code: 'FORBIDDEN',
-      message: 'Subscription has expired'
+      message: 'Subscription has expired',
     });
   }
 

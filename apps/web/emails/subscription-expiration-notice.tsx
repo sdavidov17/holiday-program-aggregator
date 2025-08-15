@@ -5,7 +5,6 @@ import {
   Head,
   Heading,
   Html,
-  Link,
   Preview,
   Section,
   Text,
@@ -31,17 +30,14 @@ export default function ExpirationNoticeEmail({
           <Heading style={h1}>Subscription Expired</Heading>
           <Text style={text}>Hi {userName},</Text>
           <Text style={text}>
-            Your Holiday Program Aggregator subscription expired on{' '}
-            <strong>{expiredDate}</strong>.
+            Your Holiday Program Aggregator subscription expired on <strong>{expiredDate}</strong>.
           </Text>
-          <Text style={text}>
-            You no longer have access to premium features including:
-          </Text>
+          <Text style={text}>You no longer have access to premium features including:</Text>
           <Text style={list}>
-            • Program search and discovery<br />
-            • Advanced filters and maps<br />
-            • Email notifications<br />
-            • Saved preferences
+            • Program search and discovery
+            <br />• Advanced filters and maps
+            <br />• Email notifications
+            <br />• Saved preferences
           </Text>
           <Section style={buttonContainer}>
             <Button style={button} href={renewalUrl}>
@@ -49,10 +45,12 @@ export default function ExpirationNoticeEmail({
             </Button>
           </Section>
           <Text style={text}>
-            We'd love to have you back! Renew today to regain immediate access to all premium features.
+            We'd love to have you back! Renew today to regain immediate access to all premium
+            features.
           </Text>
           <Text style={text}>
-            Best regards,<br />
+            Best regards,
+            <br />
             The Holiday Programs Team
           </Text>
         </Container>

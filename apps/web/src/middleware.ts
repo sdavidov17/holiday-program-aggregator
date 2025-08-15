@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 /**
  * Generates a secure correlation ID
@@ -9,14 +9,14 @@ function generateCorrelationId(): string {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
     return crypto.randomUUID();
   }
-  
+
   // Fallback to crypto.getRandomValues for older environments
   if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
     const array = new Uint8Array(16);
     crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
   }
-  
+
   // This should not be reached in production but provides a clear error
   throw new Error('No secure random number generator available for correlation ID');
 }
@@ -80,58 +80,58 @@ function generateCSP(): string {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
+
   // CRITICAL SECURITY: Block debug endpoints in production completely
   if (process.env.NODE_ENV === 'production') {
     // Block all debug endpoints
     if (pathname.startsWith('/api/debug')) {
       return new NextResponse(null, { status: 404 });
     }
-    
+
     // Block admin setup endpoint in production
     if (pathname === '/api/admin/setup') {
       return new NextResponse(null, { status: 404 });
     }
-    
+
     // Block test endpoints
     if (pathname === '/api/test' || pathname === '/test-provider') {
       return new NextResponse(null, { status: 404 });
     }
   }
-  
+
   // Get or generate correlation ID
   const correlationId = request.headers.get('x-correlation-id') || generateCorrelationId();
-  
+
   // Clone the request headers
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-correlation-id', correlationId);
-  
+
   // Create response with correlation ID
   const response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
-  
+
   // Add correlation ID to response headers
   response.headers.set('x-correlation-id', correlationId);
-  
+
   // Add security headers
   Object.entries(securityHeaders).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
-  
+
   // Add CSP header
   response.headers.set('Content-Security-Policy', generateCSP());
-  
+
   // Add Strict-Transport-Security for production
   if (process.env.NODE_ENV === 'production') {
     response.headers.set(
       'Strict-Transport-Security',
-      'max-age=31536000; includeSubDomains; preload'
+      'max-age=31536000; includeSubDomains; preload',
     );
   }
-  
+
   return response;
 }
 

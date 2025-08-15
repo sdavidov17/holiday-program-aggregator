@@ -20,48 +20,48 @@ async function runQuery(sql, params = []) {
 
 async function testProviderCRUD() {
   console.log('🧪 Testing Provider CRUD Operations\n');
-  
+
   try {
     // 1. Check if Provider table exists
     console.log('1. Checking Provider table...');
     const tables = await runQuery(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name='Provider'"
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='Provider'",
     );
-    
+
     if (tables.length === 0) {
       console.error('❌ Provider table does not exist!');
       return;
     }
     console.log('✅ Provider table exists\n');
-    
+
     // 2. List existing providers
     console.log('2. Listing existing providers...');
     const providers = await runQuery('SELECT * FROM Provider');
     console.log(`   Found ${providers.length} providers`);
-    
+
     if (providers.length > 0) {
-      providers.forEach(p => {
-        console.log(`   - ${p.name} (${p.isPublished ? 'Published' : 'Draft'}, ${p.isVetted ? 'Vetted' : 'Unvetted'})`);
+      providers.forEach((p) => {
+        console.log(
+          `   - ${p.name} (${p.isPublished ? 'Published' : 'Draft'}, ${p.isVetted ? 'Vetted' : 'Unvetted'})`,
+        );
       });
     }
     console.log('');
-    
+
     // 3. Check admin user
     console.log('3. Checking admin users...');
-    const admins = await runQuery(
-      "SELECT * FROM User WHERE role = 'ADMIN'"
-    );
+    const admins = await runQuery("SELECT * FROM User WHERE role = 'ADMIN'");
     console.log(`   Found ${admins.length} admin users`);
-    
+
     if (admins.length > 0) {
-      admins.forEach(a => {
+      admins.forEach((a) => {
         console.log(`   - ${a.email} (${a.name})`);
       });
     } else {
       console.error('❌ No admin users found! Provider management requires admin role.');
     }
     console.log('');
-    
+
     // 4. Test creating a provider
     console.log('4. Testing provider creation...');
     const testId = 'test-' + Date.now();
@@ -77,19 +77,29 @@ async function testProviderCRUD() {
       isVetted: false,
       isPublished: false,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
-    
+
     await runQuery(
       `INSERT INTO Provider (id, name, description, email, phone, suburb, state, postcode, isVetted, isPublished, createdAt, updatedAt) 
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [testProvider.id, testProvider.name, testProvider.description, testProvider.email, 
-       testProvider.phone, testProvider.suburb, testProvider.state, testProvider.postcode,
-       testProvider.isVetted ? 1 : 0, testProvider.isPublished ? 1 : 0, 
-       testProvider.createdAt, testProvider.updatedAt]
+      [
+        testProvider.id,
+        testProvider.name,
+        testProvider.description,
+        testProvider.email,
+        testProvider.phone,
+        testProvider.suburb,
+        testProvider.state,
+        testProvider.postcode,
+        testProvider.isVetted ? 1 : 0,
+        testProvider.isPublished ? 1 : 0,
+        testProvider.createdAt,
+        testProvider.updatedAt,
+      ],
     );
     console.log('✅ Test provider created\n');
-    
+
     // 5. Verify creation
     console.log('5. Verifying provider was created...');
     const created = await runQuery('SELECT * FROM Provider WHERE id = ?', [testId]);
@@ -101,14 +111,14 @@ async function testProviderCRUD() {
       console.error('❌ Provider not found!');
     }
     console.log('');
-    
+
     // 6. Test updating
     console.log('6. Testing provider update...');
-    await runQuery(
-      'UPDATE Provider SET isVetted = 1, vettedAt = ? WHERE id = ?',
-      [new Date().toISOString(), testId]
-    );
-    
+    await runQuery('UPDATE Provider SET isVetted = 1, vettedAt = ? WHERE id = ?', [
+      new Date().toISOString(),
+      testId,
+    ]);
+
     const updated = await runQuery('SELECT * FROM Provider WHERE id = ?', [testId]);
     if (updated[0].isVetted === 1) {
       console.log('✅ Provider successfully vetted');
@@ -116,11 +126,11 @@ async function testProviderCRUD() {
       console.error('❌ Update failed!');
     }
     console.log('');
-    
+
     // 7. Test deletion
     console.log('7. Testing provider deletion...');
     await runQuery('DELETE FROM Provider WHERE id = ?', [testId]);
-    
+
     const deleted = await runQuery('SELECT * FROM Provider WHERE id = ?', [testId]);
     if (deleted.length === 0) {
       console.log('✅ Provider successfully deleted');
@@ -128,7 +138,7 @@ async function testProviderCRUD() {
       console.error('❌ Deletion failed!');
     }
     console.log('');
-    
+
     // 8. Summary
     console.log('📊 Test Summary:');
     console.log('   ✅ Database connection working');
@@ -145,7 +155,6 @@ async function testProviderCRUD() {
       console.log('   ⚠️  No admin user - UI will not work');
       console.log('\n⚠️  To fix: Run "npx tsx scripts/make-admin.ts <your-email>"');
     }
-    
   } catch (error) {
     console.error('❌ Error during test:', error);
   } finally {

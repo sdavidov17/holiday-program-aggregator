@@ -12,5 +12,5 @@ module.exports = {
     DISCORD_CLIENT_ID: 'test-discord-client-id',
     DISCORD_CLIENT_SECRET: 'test-discord-client-secret',
     ENCRYPTION_KEY: 'test-32-character-encryption-key',
-  }
+  },
 };

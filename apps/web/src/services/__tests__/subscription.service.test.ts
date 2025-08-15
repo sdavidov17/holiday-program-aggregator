@@ -3,18 +3,18 @@
  * Comprehensive tests for subscription lifecycle management
  */
 
-import { describe, it, expect, jest, beforeEach, afterEach } from '@jest/globals';
-import { SubscriptionService } from '../subscription.service';
-import { PrismaClient } from '@prisma/client';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
+import type { PrismaClient } from '@prisma/client';
 import Stripe from 'stripe';
-import { 
-  createTestUser,
-  createTestSubscription,
+import {
   createStripeCustomer,
+  createStripeEvent,
   createStripeSubscription,
-  createStripeEvent
+  createTestSubscription,
+  createTestUser,
 } from '../../__tests__/factories';
 import { createMockPrismaClient } from '../../__tests__/setup/test-db';
+import { SubscriptionService } from '../subscription.service';
 
 // Mock Stripe
 jest.mock('stripe', () => {
@@ -109,7 +109,7 @@ describe.skip('SubscriptionService', () => {
 
     it('should use existing Stripe customer if available', async () => {
       const user = await createTestUser();
-      const subscription = createTestSubscription({ 
+      const subscription = createTestSubscription({
         userId: user.id,
         stripeCustomerId: 'cus_existing',
       });
@@ -135,7 +135,7 @@ describe.skip('SubscriptionService', () => {
       expect(mockStripe.checkout.sessions.create).toHaveBeenCalledWith(
         expect.objectContaining({
           customer: 'cus_existing',
-        })
+        }),
       );
     });
 
@@ -148,7 +148,7 @@ describe.skip('SubscriptionService', () => {
           priceId: 'price_essential',
           successUrl: 'http://localhost:3000/success',
           cancelUrl: 'http://localhost:3000/cancel',
-        })
+        }),
       ).rejects.toThrow('User not found');
     });
 
@@ -164,7 +164,7 @@ describe.skip('SubscriptionService', () => {
           priceId: 'price_essential',
           successUrl: 'http://localhost:3000/success',
           cancelUrl: 'http://localhost:3000/cancel',
-        })
+        }),
       ).rejects.toThrow('Failed to create checkout session');
     });
   });
@@ -175,17 +175,19 @@ describe.skip('SubscriptionService', () => {
         customer: 'cus_test123',
         status: 'active',
         items: {
-          data: [{
-            price: {
-              id: 'price_essential',
-              metadata: { tier: 'ESSENTIAL' },
+          data: [
+            {
+              price: {
+                id: 'price_essential',
+                metadata: { tier: 'ESSENTIAL' },
+              },
             },
-          }],
+          ],
         },
       });
 
       const event = createStripeEvent('customer.subscription.created', stripeSubscription);
-      
+
       mockStripe.customers.retrieve.mockResolvedValue({
         id: 'cus_test123',
         metadata: { userId: 'user123' },
@@ -196,7 +198,7 @@ describe.skip('SubscriptionService', () => {
           userId: 'user123',
           stripeCustomerId: 'cus_test123',
           stripeSubscriptionId: stripeSubscription.id,
-        })
+        }),
       );
 
       await service.handleSubscriptionWebhook(event);
@@ -223,12 +225,14 @@ describe.skip('SubscriptionService', () => {
         customer: 'cus_test123',
         status: 'active',
         items: {
-          data: [{
-            price: {
-              id: 'price_premium',
-              metadata: { tier: 'PREMIUM' },
+          data: [
+            {
+              price: {
+                id: 'price_premium',
+                metadata: { tier: 'PREMIUM' },
+              },
             },
-          }],
+          ],
         },
       });
 
@@ -243,7 +247,7 @@ describe.skip('SubscriptionService', () => {
         createTestSubscription({
           userId: 'user123',
           tier: 'PREMIUM',
-        })
+        }),
       );
 
       await service.handleSubscriptionWebhook(event);
@@ -269,7 +273,7 @@ describe.skip('SubscriptionService', () => {
       mockPrisma.subscription.update.mockResolvedValue(
         createTestSubscription({
           status: 'CANCELLED',
-        })
+        }),
       );
 
       await service.handleSubscriptionWebhook(event);
@@ -296,7 +300,7 @@ describe.skip('SubscriptionService', () => {
       mockPrisma.subscription.update.mockResolvedValue(
         createTestSubscription({
           status: 'ACTIVE',
-        })
+        }),
       );
 
       await service.handleSubscriptionWebhook(event);
@@ -320,7 +324,7 @@ describe.skip('SubscriptionService', () => {
       mockPrisma.subscription.update.mockResolvedValue(
         createTestSubscription({
           status: 'PAST_DUE',
-        })
+        }),
       );
 
       await service.handleSubscriptionWebhook(event);
@@ -334,9 +338,7 @@ describe.skip('SubscriptionService', () => {
     it('should handle unrecognized event types gracefully', async () => {
       const event = createStripeEvent('unknown.event', {});
 
-      await expect(
-        service.handleSubscriptionWebhook(event)
-      ).resolves.not.toThrow();
+      await expect(service.handleSubscriptionWebhook(event)).resolves.not.toThrow();
     });
   });
 
@@ -353,7 +355,7 @@ describe.skip('SubscriptionService', () => {
         createStripeSubscription({
           id: 'sub_test123',
           cancel_at_period_end: true,
-        })
+        }),
       );
       mockPrisma.subscription.update.mockResolvedValue({
         ...subscription,
@@ -363,18 +365,17 @@ describe.skip('SubscriptionService', () => {
       const result = await service.cancelSubscription('user123');
 
       expect(result.cancelAtPeriodEnd).toBe(true);
-      expect(mockStripe.subscriptions.update).toHaveBeenCalledWith(
-        'sub_test123',
-        { cancel_at_period_end: true }
-      );
+      expect(mockStripe.subscriptions.update).toHaveBeenCalledWith('sub_test123', {
+        cancel_at_period_end: true,
+      });
     });
 
     it('should throw error if subscription not found', async () => {
       mockPrisma.subscription.findUnique.mockResolvedValue(null);
 
-      await expect(
-        service.cancelSubscription('invalid-user')
-      ).rejects.toThrow('Subscription not found');
+      await expect(service.cancelSubscription('invalid-user')).rejects.toThrow(
+        'Subscription not found',
+      );
     });
 
     it('should throw error if subscription already cancelled', async () => {
@@ -385,9 +386,9 @@ describe.skip('SubscriptionService', () => {
 
       mockPrisma.subscription.findUnique.mockResolvedValue(subscription);
 
-      await expect(
-        service.cancelSubscription('user123')
-      ).rejects.toThrow('Subscription is already cancelled');
+      await expect(service.cancelSubscription('user123')).rejects.toThrow(
+        'Subscription is already cancelled',
+      );
     });
   });
 
@@ -407,20 +408,22 @@ describe.skip('SubscriptionService', () => {
           items: {
             data: [{ id: 'si_test123' }],
           },
-        })
+        }),
       );
       mockStripe.subscriptions.update.mockResolvedValue(
         createStripeSubscription({
           id: 'sub_test123',
           items: {
-            data: [{
-              price: {
-                id: 'price_premium',
-                metadata: { tier: 'PREMIUM' },
+            data: [
+              {
+                price: {
+                  id: 'price_premium',
+                  metadata: { tier: 'PREMIUM' },
+                },
               },
-            }],
+            ],
           },
-        })
+        }),
       );
       mockPrisma.subscription.update.mockResolvedValue({
         ...subscription,
@@ -434,12 +437,14 @@ describe.skip('SubscriptionService', () => {
       expect(mockStripe.subscriptions.update).toHaveBeenCalledWith(
         'sub_test123',
         expect.objectContaining({
-          items: [{
-            id: 'si_test123',
-            price: 'price_premium',
-          }],
+          items: [
+            {
+              id: 'si_test123',
+              price: 'price_premium',
+            },
+          ],
           proration_behavior: 'create_prorations',
-        })
+        }),
       );
     });
 
@@ -458,20 +463,22 @@ describe.skip('SubscriptionService', () => {
           items: {
             data: [{ id: 'si_test123' }],
           },
-        })
+        }),
       );
       mockStripe.subscriptions.update.mockResolvedValue(
         createStripeSubscription({
           id: 'sub_test123',
           items: {
-            data: [{
-              price: {
-                id: 'price_basic',
-                metadata: { tier: 'BASIC' },
+            data: [
+              {
+                price: {
+                  id: 'price_basic',
+                  metadata: { tier: 'BASIC' },
+                },
               },
-            }],
+            ],
           },
-        })
+        }),
       );
       mockPrisma.subscription.update.mockResolvedValue({
         ...subscription,
@@ -494,9 +501,9 @@ describe.skip('SubscriptionService', () => {
 
       mockPrisma.subscription.findUnique.mockResolvedValue(subscription);
 
-      await expect(
-        service.updateSubscription('user123', 'price_essential')
-      ).rejects.toThrow('Already subscribed to this plan');
+      await expect(service.updateSubscription('user123', 'price_essential')).rejects.toThrow(
+        'Already subscribed to this plan',
+      );
 
       expect(mockStripe.subscriptions.update).not.toHaveBeenCalled();
     });
@@ -572,7 +579,7 @@ describe.skip('SubscriptionService', () => {
         createStripeSubscription({
           id: 'sub_test123',
           cancel_at_period_end: false,
-        })
+        }),
       );
       mockPrisma.subscription.update.mockResolvedValue({
         ...subscription,
@@ -582,10 +589,9 @@ describe.skip('SubscriptionService', () => {
       const result = await service.reactivateSubscription('user123');
 
       expect(result.cancelAtPeriodEnd).toBe(false);
-      expect(mockStripe.subscriptions.update).toHaveBeenCalledWith(
-        'sub_test123',
-        { cancel_at_period_end: false }
-      );
+      expect(mockStripe.subscriptions.update).toHaveBeenCalledWith('sub_test123', {
+        cancel_at_period_end: false,
+      });
     });
 
     it('should throw error if subscription not set to cancel', async () => {
@@ -596,9 +602,9 @@ describe.skip('SubscriptionService', () => {
 
       mockPrisma.subscription.findUnique.mockResolvedValue(subscription);
 
-      await expect(
-        service.reactivateSubscription('user123')
-      ).rejects.toThrow('Subscription is not set to cancel');
+      await expect(service.reactivateSubscription('user123')).rejects.toThrow(
+        'Subscription is not set to cancel',
+      );
     });
   });
 });

@@ -2,7 +2,7 @@
 
 /**
  * Enhanced Database Setup Script
- * 
+ *
  * Intelligently configures the database based on environment:
  * - Local: SQLite for fast development
  * - Preview: PostgreSQL branch database
@@ -21,7 +21,7 @@ function detectEnvironment() {
   if (process.env.APP_ENV) {
     return process.env.APP_ENV;
   }
-  
+
   // Vercel deployment
   if (process.env.VERCEL) {
     if (process.env.VERCEL_ENV === 'production') {
@@ -31,21 +31,21 @@ function detectEnvironment() {
       return 'preview';
     }
   }
-  
+
   // GitHub Actions CI
   if (process.env.CI && process.env.GITHUB_ACTIONS) {
     return 'ci';
   }
-  
+
   // Node environment
   if (process.env.NODE_ENV === 'production') {
     return 'production';
   }
-  
+
   if (process.env.NODE_ENV === 'test') {
     return 'test';
   }
-  
+
   // Default to local development
   return 'development';
 }
@@ -83,7 +83,7 @@ function getSchemaConfig() {
       seedScript: 'db:seed:production',
     },
   };
-  
+
   return configs[ENV] || configs.development;
 }
 
@@ -92,30 +92,30 @@ function setupSchema() {
   const prismaDir = path.join(__dirname, '..', 'prisma');
   const targetSchema = path.join(prismaDir, 'schema.prisma');
   const sourceSchema = path.join(prismaDir, config.schema);
-  
+
   console.log('🔧 Database Configuration');
   console.log('   Environment:', ENV);
   console.log('   Provider:', config.provider);
   console.log('   Schema:', config.schema);
-  
+
   // Ensure source schema exists
   if (!fs.existsSync(sourceSchema)) {
     console.error(`❌ Schema file not found: ${config.schema}`);
     console.log('   Creating from template...');
     createSchemaFromTemplate(config);
   }
-  
+
   // Copy schema to active location
   const schemaContent = fs.readFileSync(sourceSchema, 'utf8');
   fs.writeFileSync(targetSchema, schemaContent);
   console.log('✅ Schema configured successfully');
-  
+
   // Set DATABASE_URL if not present
   if (!process.env.DATABASE_URL && config.defaultUrl) {
     process.env.DATABASE_URL = config.defaultUrl;
     console.log(`   DATABASE_URL set to: ${config.defaultUrl}`);
   }
-  
+
   return config;
 }
 
@@ -123,30 +123,24 @@ function createSchemaFromTemplate(config) {
   const prismaDir = path.join(__dirname, '..', 'prisma');
   const templateSchema = path.join(prismaDir, 'schema.prisma');
   const targetSchema = path.join(prismaDir, config.schema);
-  
+
   if (!fs.existsSync(templateSchema)) {
     console.error('❌ No template schema found');
     process.exit(1);
   }
-  
+
   let content = fs.readFileSync(templateSchema, 'utf8');
-  
+
   // Update provider
   if (config.provider === 'sqlite') {
-    content = content.replace(
-      /provider\s*=\s*"postgresql"/g,
-      'provider = "sqlite"'
-    );
+    content = content.replace(/provider\s*=\s*"postgresql"/g, 'provider = "sqlite"');
     // Convert array types to JSON strings
     content = content.replace(/String\[\]/g, 'String   @default("[]")');
     content = content.replace(/DateTime\[\]/g, 'String   @default("[]")');
   } else {
-    content = content.replace(
-      /provider\s*=\s*"sqlite"/g,
-      'provider = "postgresql"'
-    );
+    content = content.replace(/provider\s*=\s*"sqlite"/g, 'provider = "postgresql"');
   }
-  
+
   fs.writeFileSync(targetSchema, content);
   console.log(`   Created ${config.schema}`);
 }
@@ -156,15 +150,15 @@ function runMigrations(config) {
     console.log('⏭️  Skipping migrations in CI environment');
     return;
   }
-  
+
   if (ENV === 'production' && !process.env.RUN_MIGRATIONS) {
     console.log('⏭️  Skipping automatic migrations in production');
     console.log('   Run with RUN_MIGRATIONS=true to apply migrations');
     return;
   }
-  
+
   console.log('🔄 Running database migrations...');
-  
+
   try {
     if (ENV === 'development' || ENV === 'test') {
       // Push schema for development
@@ -193,20 +187,20 @@ function runSeed(config) {
     console.log('⏭️  No seed script for this environment');
     return;
   }
-  
+
   if (ENV === 'production' && !process.env.RUN_SEED) {
     console.log('⏭️  Skipping automatic seed in production');
     console.log('   Run with RUN_SEED=true to seed database');
     return;
   }
-  
+
   if (process.env.SKIP_SEED === 'true') {
     console.log('⏭️  Skipping seed (SKIP_SEED=true)');
     return;
   }
-  
+
   console.log('🌱 Seeding database...');
-  
+
   try {
     execSync(`pnpm ${config.seedScript}`, {
       stdio: 'inherit',
@@ -221,7 +215,7 @@ function runSeed(config) {
 
 function generateClient() {
   console.log('📦 Generating Prisma Client...');
-  
+
   try {
     execSync('npx prisma generate', {
       stdio: 'inherit',
@@ -239,21 +233,21 @@ function main() {
   console.log('========================================');
   console.log('🚀 Database Setup Starting');
   console.log('========================================\n');
-  
+
   const config = setupSchema();
-  
+
   // Only run migrations and seed if requested
   if (process.argv.includes('--migrate')) {
     runMigrations(config);
   }
-  
+
   if (process.argv.includes('--seed')) {
     runSeed(config);
   }
-  
+
   // Always generate client
   generateClient();
-  
+
   console.log('\n========================================');
   console.log('✨ Database Setup Complete');
   console.log('========================================');

@@ -1,5 +1,5 @@
-import { createEnv } from "@t3-oss/env-nextjs";
-import { z } from "zod";
+import { createEnv } from '@t3-oss/env-nextjs';
+import { z } from 'zod';
 
 export const env = createEnv({
   /**
@@ -9,38 +9,33 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z
       .string()
+      .refine((str) => {
+        // Allow both standard URLs and PostgreSQL connection strings
+        try {
+          new URL(str);
+          return true;
+        } catch {
+          // Check if it's a valid PostgreSQL connection string
+          return (
+            str.startsWith('postgresql://') ||
+            str.startsWith('postgres://') ||
+            str.startsWith('file:')
+          ); // SQLite
+        }
+      }, 'Invalid database URL')
       .refine(
-        (str) => {
-          // Allow both standard URLs and PostgreSQL connection strings
-          try {
-            new URL(str);
-            return true;
-          } catch {
-            // Check if it's a valid PostgreSQL connection string
-            return str.startsWith("postgresql://") || 
-                   str.startsWith("postgres://") ||
-                   str.startsWith("file:"); // SQLite
-          }
-        },
-        "Invalid database URL"
-      )
-      .refine(
-        (str) => !str.includes("YOUR_MYSQL_URL_HERE"),
-        "You forgot to change the default URL"
+        (str) => !str.includes('YOUR_MYSQL_URL_HERE'),
+        'You forgot to change the default URL',
       ),
-    NODE_ENV: z
-      .enum(["development", "test", "production"])
-      .default("development"),
+    NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
     NEXTAUTH_SECRET:
-      process.env.NODE_ENV === "production"
-        ? z.string().min(1)
-        : z.string().min(1).optional(),
+      process.env.NODE_ENV === 'production' ? z.string().min(1) : z.string().min(1).optional(),
     NEXTAUTH_URL: z.preprocess(
       // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
       // Since NextAuth.js automatically uses the VERCEL_URL if present.
       (str) => process.env.VERCEL_URL ?? str,
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
-      process.env.VERCEL ? z.string().min(1) : z.string().url()
+      process.env.VERCEL ? z.string().min(1) : z.string().url(),
     ),
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     DISCORD_CLIENT_ID: z.string().optional(),

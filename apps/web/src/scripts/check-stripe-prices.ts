@@ -1,9 +1,9 @@
-import { env } from "../env.mjs";
-import Stripe from "stripe";
+import Stripe from 'stripe';
+import { env } from '../env.mjs';
 
-const stripe = env.STRIPE_SECRET_KEY 
+const stripe = env.STRIPE_SECRET_KEY
   ? new Stripe(env.STRIPE_SECRET_KEY, {
-      apiVersion: "2025-07-30.basil",
+      apiVersion: '2025-07-30.basil',
     })
   : null;
 
@@ -41,15 +41,18 @@ async function checkPrices() {
     // Display each price
     prices.data.forEach((price, index) => {
       const product = price.product;
-      const productName = typeof product === 'object' && 'name' in product ? product.name : 'Unknown Product';
+      const productName =
+        typeof product === 'object' && 'name' in product ? product.name : 'Unknown Product';
       const amount = price.unit_amount ? (price.unit_amount / 100).toFixed(2) : 'Custom';
       const interval = price.recurring ? price.recurring.interval : 'one-time';
       const intervalCount = price.recurring?.interval_count || 1;
-      
+
       console.log(`${index + 1}. ${productName}`);
       console.log(`   Price ID: ${price.id}`);
       console.log(`   Amount: $${amount} ${price.currency.toUpperCase()}`);
-      console.log(`   Billing: ${intervalCount > 1 ? `Every ${intervalCount} ${interval}s` : interval}`);
+      console.log(
+        `   Billing: ${intervalCount > 1 ? `Every ${intervalCount} ${interval}s` : interval}`,
+      );
       console.log(`   Active: ${price.active ? '✅' : '❌'}`);
       console.log(`   Created: ${new Date(price.created * 1000).toLocaleDateString()}`);
       console.log('');
@@ -64,19 +67,18 @@ async function checkPrices() {
     const currentPriceId = env.STRIPE_ANNUAL_PRICE_ID;
     if (currentPriceId) {
       console.log(`\n🔍 Current STRIPE_ANNUAL_PRICE_ID: ${currentPriceId}`);
-      const priceExists = prices.data.some(p => p.id === currentPriceId);
+      const priceExists = prices.data.some((p) => p.id === currentPriceId);
       if (!priceExists) {
         console.log('❌ This price ID does not exist in your Stripe account!');
       } else {
         console.log('✅ This price ID exists in your Stripe account');
       }
     }
-
   } catch (error) {
     console.error('❌ Error fetching prices:', error);
     if (error instanceof Error && error.message.includes('Invalid API Key')) {
       console.error('\nPlease check that your STRIPE_SECRET_KEY is correct');
-      console.error('Make sure you\'re using the test mode secret key (starts with sk_test_)');
+      console.error("Make sure you're using the test mode secret key (starts with sk_test_)");
     }
   }
 }

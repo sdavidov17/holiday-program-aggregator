@@ -1,7 +1,7 @@
 // Jest setup file with TypeScript
 import '@testing-library/jest-dom';
 import 'whatwg-fetch';
-import { TextEncoder, TextDecoder } from 'util';
+import { TextDecoder, TextEncoder } from 'util';
 
 // Import types
 /// <reference types="@testing-library/jest-dom" />
@@ -11,16 +11,17 @@ global.TextEncoder = TextEncoder as any;
 global.TextDecoder = TextDecoder as any;
 
 // Polyfill setImmediate for Prisma
-global.setImmediate = global.setImmediate || ((fn: any, ...args: any[]) => global.setTimeout(fn, 0, ...args));
+global.setImmediate =
+  global.setImmediate || ((fn: any, ...args: any[]) => global.setTimeout(fn, 0, ...args));
 
 // Mock database
 jest.mock('~/server/db', () => {
-  const { 
-    mockPrismaClient, 
-    SubscriptionStatus, 
-    UserRole, 
-    VettingStatus, 
-    ProgramStatus 
+  const {
+    mockPrismaClient,
+    SubscriptionStatus,
+    UserRole,
+    VettingStatus,
+    ProgramStatus,
   } = require('./src/__tests__/__mocks__/db.js');
   return {
     db: mockPrismaClient,
@@ -33,25 +34,29 @@ jest.mock('~/server/db', () => {
 });
 
 // Mock env.mjs module
-jest.mock('~/env.mjs', () => ({
-  env: {
-    NODE_ENV: 'test',
-    NEXTAUTH_URL: 'http://localhost:3000',
-    NEXTAUTH_SECRET: 'test-secret',
-    DATABASE_URL: process.env.TEST_DATABASE_URL || 'file:./test.db',
-    GOOGLE_CLIENT_ID: 'test-google-client-id',
-    GOOGLE_CLIENT_SECRET: 'test-google-client-secret',
-    APPLE_ID: 'test-apple-id',
-    APPLE_SECRET: 'test-apple-secret',
-    DISCORD_CLIENT_ID: 'test-discord-client-id',
-    DISCORD_CLIENT_SECRET: 'test-discord-client-secret',
-    ENCRYPTION_KEY: 'test-32-character-encryption-key',
-    STRIPE_SECRET_KEY: 'sk_test_123',
-    STRIPE_WEBHOOK_SECRET: 'whsec_test_123',
-    STRIPE_ANNUAL_PRICE_ID: 'price_test_123',
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_test_123',
-  }
-}), { virtual: true });
+jest.mock(
+  '~/env.mjs',
+  () => ({
+    env: {
+      NODE_ENV: 'test',
+      NEXTAUTH_URL: 'http://localhost:3000',
+      NEXTAUTH_SECRET: 'test-secret',
+      DATABASE_URL: process.env.TEST_DATABASE_URL || 'file:./test.db',
+      GOOGLE_CLIENT_ID: 'test-google-client-id',
+      GOOGLE_CLIENT_SECRET: 'test-google-client-secret',
+      APPLE_ID: 'test-apple-id',
+      APPLE_SECRET: 'test-apple-secret',
+      DISCORD_CLIENT_ID: 'test-discord-client-id',
+      DISCORD_CLIENT_SECRET: 'test-discord-client-secret',
+      ENCRYPTION_KEY: 'test-32-character-encryption-key',
+      STRIPE_SECRET_KEY: 'sk_test_123',
+      STRIPE_WEBHOOK_SECRET: 'whsec_test_123',
+      STRIPE_ANNUAL_PRICE_ID: 'price_test_123',
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_test_123',
+    },
+  }),
+  { virtual: true },
+);
 
 // Mock Next.js router
 jest.mock('next/router', () => ({
@@ -72,7 +77,7 @@ import { cleanupTestUsers } from './src/__tests__/helpers/test-users';
 beforeAll(async () => {
   // Test environment is already set by Jest
   process.env.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL || 'file:./test.db';
-  
+
   // Clean up any existing test users before all tests
   if (process.env.TEST_DATABASE_URL?.includes('postgresql')) {
     try {

@@ -1,16 +1,17 @@
-import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { encryptPII } from "~/utils/encryption";
+import { z } from 'zod';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 
 export const userRouter = createTRPCRouter({
   me: protectedProcedure.query(async ({ ctx }) => {
     return ctx.session.user;
   }),
-  
+
   updateProfile: protectedProcedure
-    .input(z.object({
-      name: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        name: z.string().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const { name } = input;
 

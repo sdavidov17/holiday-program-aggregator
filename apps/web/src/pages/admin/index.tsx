@@ -1,6 +1,6 @@
-import { AdminLayout } from "~/components/AdminLayout";
-import { api } from "~/utils/api";
-import Link from "next/link";
+import Link from 'next/link';
+import { AdminLayout } from '~/components/AdminLayout';
+import { api } from '~/utils/api';
 
 export default function AdminDashboard() {
   const { data: providers } = api.provider.getAll.useQuery();
@@ -13,23 +13,15 @@ export default function AdminDashboard() {
         {/* Welcome Card */}
         <div className="rounded-lg bg-white p-6 shadow">
           <h3 className="text-lg font-semibold text-gray-900">Welcome Back!</h3>
-          <p className="mt-2 text-gray-600">
-            Logged in as: {session?.email}
-          </p>
-          <p className="text-sm text-gray-500">
-            Role: {session?.role}
-          </p>
+          <p className="mt-2 text-gray-600">Logged in as: {session?.email}</p>
+          <p className="text-sm text-gray-500">Role: {session?.role}</p>
         </div>
 
         {/* Providers Stats */}
         <div className="rounded-lg bg-white p-6 shadow">
           <h3 className="text-lg font-semibold text-gray-900">Providers</h3>
-          <p className="mt-2 text-3xl font-bold text-blue-600">
-            {providers?.length || 0}
-          </p>
-          <p className="text-sm text-gray-500">
-            Total providers in system
-          </p>
+          <p className="mt-2 text-3xl font-bold text-blue-600">{providers?.length || 0}</p>
+          <p className="text-sm text-gray-500">Total providers in system</p>
           <Link
             href="/admin/providers"
             className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-800"
@@ -41,12 +33,8 @@ export default function AdminDashboard() {
         {/* Users Stats */}
         <div className="rounded-lg bg-white p-6 shadow">
           <h3 className="text-lg font-semibold text-gray-900">Users</h3>
-          <p className="mt-2 text-3xl font-bold text-green-600">
-            {userStats?.totalUsers || 0}
-          </p>
-          <p className="text-sm text-gray-500">
-            Total users ({userStats?.adminUsers || 0} admins)
-          </p>
+          <p className="mt-2 text-3xl font-bold text-green-600">{userStats?.totalUsers || 0}</p>
+          <p className="text-sm text-gray-500">Total users ({userStats?.adminUsers || 0} admins)</p>
           <Link
             href="/admin/users"
             className="mt-4 inline-block text-sm font-medium text-green-600 hover:text-green-800"
@@ -109,12 +97,14 @@ export default function AdminDashboard() {
                     {provider.businessName}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                    <span className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
-                      provider.isPublished 
-                        ? "bg-green-100 text-green-800"
-                        : "bg-yellow-100 text-yellow-800"
-                    }`}>
-                      {provider.isPublished ? "Published" : "Draft"}
+                    <span
+                      className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
+                        provider.isPublished
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}
+                    >
+                      {provider.isPublished ? 'Published' : 'Draft'}
                     </span>
                     {provider.isVetted && (
                       <span className="ml-2 inline-flex rounded-full bg-blue-100 px-2 text-xs font-semibold leading-5 text-blue-800">
@@ -139,7 +129,10 @@ export default function AdminDashboard() {
           </table>
           {(!providers || providers.length === 0) && (
             <div className="px-6 py-8 text-center text-gray-500">
-              No providers yet. <Link href="/admin/providers/new" className="text-blue-600 hover:text-blue-800">Add your first provider</Link>
+              No providers yet.{' '}
+              <Link href="/admin/providers/new" className="text-blue-600 hover:text-blue-800">
+                Add your first provider
+              </Link>
             </div>
           )}
         </div>

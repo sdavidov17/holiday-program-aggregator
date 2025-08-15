@@ -1,4 +1,4 @@
-import { type NextApiRequest, type NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '~/server/db';
 
 interface HealthCheckResult {
@@ -20,11 +20,7 @@ interface ReadinessResponse {
 }
 
 // Timeout wrapper for health checks
-async function withTimeout<T>(
-  promise: Promise<T>,
-  timeoutMs: number,
-  name: string
-): Promise<T> {
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number, name: string): Promise<T> {
   const timeout = new Promise<never>((_, reject) => {
     setTimeout(() => {
       reject(new Error(`${name} health check timed out after ${timeoutMs}ms`));
@@ -55,7 +51,7 @@ async function checkDatabase(): Promise<HealthCheckResult> {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ReadinessResponse>
+  res: NextApiResponse<ReadinessResponse>,
 ) {
   // Only allow GET requests
   if (req.method !== 'GET') {

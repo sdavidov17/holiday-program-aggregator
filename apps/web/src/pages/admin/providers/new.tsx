@@ -1,8 +1,8 @@
-import { AdminLayout } from "~/components/AdminLayout";
-import { api } from "~/utils/api";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import type { FormEvent } from "react";
+import { useRouter } from 'next/router';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
+import { AdminLayout } from '~/components/AdminLayout';
+import { api } from '~/utils/api';
 
 export default function NewProviderPage() {
   const router = useRouter();
@@ -13,96 +13,101 @@ export default function NewProviderPage() {
   });
 
   const [formData, setFormData] = useState({
-    businessName: "",
-    contactName: "",
-    description: "",
-    website: "",
-    email: "",
-    phone: "",
-    abn: "",
-    address: "",
-    suburb: "",
-    state: "",
-    postcode: "",
-    logoUrl: "",
-    bannerUrl: "",
+    businessName: '',
+    contactName: '',
+    description: '',
+    website: '',
+    email: '',
+    phone: '',
+    abn: '',
+    address: '',
+    suburb: '',
+    state: '',
+    postcode: '',
+    logoUrl: '',
+    bannerUrl: '',
     capacity: 0,
-    ageGroups: "",
+    ageGroups: '',
     specialNeeds: false,
-    specialNeedsDetails: "",
+    specialNeedsDetails: '',
     isVetted: false,
     isPublished: false,
   });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    
+
     // Basic validation
     if (!formData.businessName.trim()) {
-      alert("Business name is required");
+      alert('Business name is required');
       return;
     }
-    
+
     if (!formData.contactName.trim()) {
-      alert("Contact name is required");
+      alert('Contact name is required');
       return;
     }
-    
+
     if (!formData.description.trim()) {
-      alert("Description is required");
+      alert('Description is required');
       return;
     }
-    
+
     if (!formData.address.trim()) {
-      alert("Address is required");
+      alert('Address is required');
       return;
     }
-    
+
     if (!formData.suburb.trim()) {
-      alert("Suburb is required");
+      alert('Suburb is required');
       return;
     }
-    
+
     if (!formData.state.trim()) {
-      alert("State is required");
+      alert('State is required');
       return;
     }
-    
+
     if (!formData.postcode.trim()) {
-      alert("Postcode is required");
+      alert('Postcode is required');
       return;
     }
-    
+
     // Email validation - required field
     if (!formData.email || !formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-      alert("Please enter a valid email address");
+      alert('Please enter a valid email address');
       return;
     }
-    
+
     // Phone validation (Australian format) - required field
-    if (!formData.phone || !formData.phone.match(/^[0-9\s\-\+\(\)]+$/)) {
-      alert("Please enter a valid phone number");
+    if (!formData.phone || !formData.phone.match(/^[0-9\s\-+()]+$/)) {
+      alert('Please enter a valid phone number');
       return;
     }
-    
+
     // Postcode validation (Australian)
     if (formData.postcode && !formData.postcode.match(/^\d{4}$/)) {
-      alert("Please enter a valid 4-digit postcode");
+      alert('Please enter a valid 4-digit postcode');
       return;
     }
-    
+
     createProvider.mutate({
       ...formData,
       capacity: formData.capacity || undefined,
-      ageGroups: formData.ageGroups ? formData.ageGroups.split(",").map(t => t.trim()).filter(Boolean) : undefined,
+      ageGroups: formData.ageGroups
+        ? formData.ageGroups
+            .split(',')
+            .map((t) => t.trim())
+            .filter(Boolean)
+        : undefined,
     });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
@@ -128,7 +133,7 @@ export default function NewProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="contactName" className="block text-sm font-medium text-gray-700">
                   Contact Name *
@@ -143,7 +148,7 @@ export default function NewProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Email
@@ -157,7 +162,7 @@ export default function NewProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                   Phone
@@ -171,7 +176,7 @@ export default function NewProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="website" className="block text-sm font-medium text-gray-700">
                   Website
@@ -186,7 +191,7 @@ export default function NewProviderPage() {
                 />
               </div>
             </div>
-            
+
             <div className="mt-4">
               <label htmlFor="description" className="block text-sm font-medium text-gray-700">
                 Description
@@ -219,7 +224,7 @@ export default function NewProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="suburb" className="block text-sm font-medium text-gray-700">
                   Suburb
@@ -233,7 +238,7 @@ export default function NewProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="state" className="block text-sm font-medium text-gray-700">
                   State
@@ -256,7 +261,7 @@ export default function NewProviderPage() {
                   <option value="NT">Northern Territory</option>
                 </select>
               </div>
-              
+
               <div>
                 <label htmlFor="postcode" className="block text-sm font-medium text-gray-700">
                   Postcode
@@ -290,7 +295,7 @@ export default function NewProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="bannerUrl" className="block text-sm font-medium text-gray-700">
                   Banner Image URL
@@ -320,13 +325,18 @@ export default function NewProviderPage() {
                     onChange={handleChange}
                     className="mr-2 rounded border-gray-300"
                   />
-                  <span className="text-sm font-medium text-gray-700">Special Needs Accommodation</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    Special Needs Accommodation
+                  </span>
                 </label>
               </div>
-              
+
               {formData.specialNeeds && (
                 <div>
-                  <label htmlFor="specialNeedsDetails" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="specialNeedsDetails"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Special Needs Details
                   </label>
                   <textarea
@@ -340,7 +350,7 @@ export default function NewProviderPage() {
                   />
                 </div>
               )}
-              
+
               <div>
                 <label htmlFor="capacity" className="block text-sm font-medium text-gray-700">
                   Capacity
@@ -355,7 +365,7 @@ export default function NewProviderPage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="ageGroups" className="block text-sm font-medium text-gray-700">
                   Age Groups (comma-separated)
@@ -387,7 +397,7 @@ export default function NewProviderPage() {
                 />
                 <span className="text-sm font-medium text-gray-700">Mark as Vetted</span>
               </label>
-              
+
               <label className="flex items-center">
                 <input
                   type="checkbox"
@@ -398,7 +408,7 @@ export default function NewProviderPage() {
                   className="mr-2 rounded border-gray-300"
                 />
                 <span className="text-sm font-medium text-gray-700">
-                  Publish Provider {!formData.isVetted && "(must be vetted first)"}
+                  Publish Provider {!formData.isVetted && '(must be vetted first)'}
                 </span>
               </label>
             </div>
@@ -418,7 +428,7 @@ export default function NewProviderPage() {
               disabled={createProvider.isPending}
               className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
             >
-              {createProvider.isPending ? "Creating..." : "Create Provider"}
+              {createProvider.isPending ? 'Creating...' : 'Create Provider'}
             </button>
           </div>
 
