@@ -9,9 +9,9 @@
  * - Production: PostgreSQL production database
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+const fs = require('node:fs');
+const path = require('node:path');
+const { execSync } = require('node:child_process');
 
 // Environment detection
 const ENV = detectEnvironment();
@@ -145,7 +145,7 @@ function createSchemaFromTemplate(config) {
   console.log(`   Created ${config.schema}`);
 }
 
-function runMigrations(config) {
+function runMigrations(_config) {
   if (ENV === 'ci') {
     console.log('⏭️  Skipping migrations in CI environment');
     return;

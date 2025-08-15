@@ -3,9 +3,9 @@
  * Provides isolated test database configuration and utilities
  */
 
+import { execSync } from 'node:child_process';
+import { randomBytes } from 'node:crypto';
 import { PrismaClient } from '@prisma/client';
-import { execSync } from 'child_process';
-import { randomBytes } from 'crypto';
 
 // Generate unique test database URL for isolation
 export const generateTestDatabaseUrl = (): string => {
@@ -94,7 +94,7 @@ export class TestDatabaseClient {
     for (const table of tables) {
       try {
         await this.prisma.$executeRawUnsafe(`DELETE FROM "${table}"`);
-      } catch (error) {
+      } catch (_error) {
         // Table might not exist, ignore
       }
     }

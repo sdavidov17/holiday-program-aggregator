@@ -1,5 +1,4 @@
-const { pathsToModuleNameMapper } = require('ts-jest');
-const { compilerOptions } = require('./tsconfig.json');
+// Config for Jest testing framework
 
 module.exports = {
   preset: 'ts-jest',

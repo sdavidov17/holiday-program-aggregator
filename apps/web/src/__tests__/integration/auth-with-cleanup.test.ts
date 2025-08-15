@@ -7,7 +7,7 @@ import {
   getTestCredentials,
   setupTestDatabase,
   TEST_USERS,
-} from '../helpers/test-users';
+} from '../../test-helpers/test-users';
 
 describe('Authentication with Test User Cleanup', () => {
   // Setup before all tests in this suite

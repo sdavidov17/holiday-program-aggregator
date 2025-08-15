@@ -236,7 +236,7 @@ export const createUserWithSubscription = async (tier: SubscriptionTier = 'ESSEN
 /**
  * Database Seeding Utilities
  */
-export const seedTestDatabase = async (prisma: any) => {
+export const seedTestDatabase = async (_prisma: any) => {
   // Create test users
   const users = await Promise.all([
     createTestUser({ email: 'parent1@test.com', role: 'USER' }),

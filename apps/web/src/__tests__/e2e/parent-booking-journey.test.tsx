@@ -98,7 +98,7 @@ describe('Parent Booking Journey E2E', () => {
         pathname: '/search',
       });
 
-      const { container } = render(<Search />);
+      render(<Search />);
 
       waitFor(() => {
         expect(screen.getByText('Creative Kids Club')).toBeInTheDocument();

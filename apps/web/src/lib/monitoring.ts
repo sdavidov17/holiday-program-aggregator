@@ -64,7 +64,7 @@ class MonitoringService {
     }
     // Server-side Node.js environment
     if (typeof window === 'undefined') {
-      const { randomBytes } = require('crypto');
+      const { randomBytes } = require('node:crypto');
       return `session_${randomBytes(16).toString('hex')}`;
     }
     // Last resort fallback (should not reach here in modern environments)

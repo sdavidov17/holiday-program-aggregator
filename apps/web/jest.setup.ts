@@ -1,7 +1,7 @@
 // Jest setup file with TypeScript
 import '@testing-library/jest-dom';
 import 'whatwg-fetch';
-import { TextDecoder, TextEncoder } from 'util';
+import { TextDecoder, TextEncoder } from 'node:util';
 
 // Import types
 /// <reference types="@testing-library/jest-dom" />
@@ -71,7 +71,7 @@ jest.mock('next/router', () => ({
 }));
 
 // Import test helpers
-import { cleanupTestUsers } from './src/__tests__/helpers/test-users';
+import { cleanupTestUsers } from './src/test-helpers/test-users';
 
 // Global test setup
 beforeAll(async () => {

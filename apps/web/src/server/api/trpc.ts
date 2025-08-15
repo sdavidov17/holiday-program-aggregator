@@ -1,6 +1,6 @@
+import { randomBytes } from 'node:crypto';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
-import { randomBytes } from 'crypto';
 import type { Session } from 'next-auth';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
@@ -171,8 +171,7 @@ export const premiumProcedure = protectedProcedure.use(async ({ ctx, next }) => 
 
   // Check if subscription has expired and needs status update
   if (
-    subscription &&
-    subscription.expiresAt &&
+    subscription?.expiresAt &&
     subscription.expiresAt < new Date() &&
     subscription.status === SubscriptionStatus.ACTIVE
   ) {

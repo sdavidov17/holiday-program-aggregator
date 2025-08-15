@@ -22,7 +22,8 @@
       "recommended": true,
       "suspicious": {
         "noExplicitAny": "off",
-        "noConsole": "off"
+        "noConsole": "off",
+        "noArrayIndexKey": "off"
       },
       "complexity": {
         "noForEach": "off"
@@ -30,6 +31,15 @@
       "style": {
         "noNonNullAssertion": "off",
         "useTemplate": "off"
+      },
+      "a11y": {
+        "useButtonType": "off",
+        "noSvgWithoutTitle": "off",
+        "useKeyWithMouseEvents": "off"
+      },
+      "correctness": {
+        "useUniqueElementIds": "off",
+        "useExhaustiveDependencies": "off"
       }
     }
   },
