@@ -36,8 +36,9 @@ module.exports = {
   ],
   coverageThreshold: {
     global: {
-      // Progressive thresholds - target is 80% as per DoD
-      // Current coverage: ~31% - will be improved in subsequent stories
+      // Progressive thresholds - target is 80% as per DoD requirement
+      // Current coverage: ~31% lines, ~24% branches, ~22% functions
+      // Will be increased to 80% once all features are implemented
       branches: 25,
       functions: 20,
       lines: 25,
