@@ -250,7 +250,7 @@ export class ProviderRepository extends BaseRepository<Provider> {
     };
 
     if (params.query) {
-      const searchConditions = [
+      const searchConditions: any[] = [
         { businessName: { contains: params.query, mode: 'insensitive' } },
         { description: { contains: params.query, mode: 'insensitive' } },
       ];
