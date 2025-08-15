@@ -116,7 +116,6 @@ export class AuditLogger {
     sinceMinutes: number = 30,
   ): Promise<number> {
     const _since = new Date(Date.now() - sinceMinutes * 60 * 1000);
->>>>>>> origin/main
 
     // Placeholder - would query the audit log table
     logger.info(

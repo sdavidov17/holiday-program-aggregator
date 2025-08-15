@@ -1,5 +1,4 @@
 import { createMocks } from 'node-mocks-http';
-import { env } from '~/env.mjs';
 import { processSubscriptionLifecycle } from '~/services/subscription-lifecycle';
 import handler from '../../../pages/api/cron/subscription-lifecycle';
 
