@@ -6,7 +6,7 @@
 As a developer working with payment functionality, I need a centralized and reusable Stripe mock module to ensure consistent testing across all payment-related features and reduce code duplication.
 
 ### Milestone
-**Phase 2: Core Admin** - Due: August 31, 2025
+**Phase 3: User Experience** - Due: September 30, 2025
 
 ### Acceptance Criteria
 - [ ] Stripe mocks extracted to dedicated module

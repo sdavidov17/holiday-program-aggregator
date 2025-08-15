@@ -6,7 +6,7 @@
 As a user searching for holiday programs, I need to find providers within a specific radius of my location, so that I can discover nearby options using geographic search capabilities.
 
 ### Milestone
-**Phase 2: Core Admin** - Due: August 31, 2025
+**Phase 3: User Experience** - Due: September 30, 2025
 
 ### Acceptance Criteria
 - [ ] PostGIS extension enabled in database

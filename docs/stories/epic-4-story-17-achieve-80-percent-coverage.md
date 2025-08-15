@@ -6,7 +6,7 @@
 As a development team, we need to improve our test coverage from the current ~31% to meet the 80% target as defined in our Definition of Done, ensuring comprehensive testing of all implemented features.
 
 ### Milestone
-**Phase 2: Core Admin** - Due: August 31, 2025
+**Phase 3: User Experience** - Due: September 30, 2025
 
 ### Acceptance Criteria
 - [ ] Line coverage reaches 80% or higher

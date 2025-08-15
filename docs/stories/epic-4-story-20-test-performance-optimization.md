@@ -6,7 +6,7 @@
 As a development team, we need to optimize our test suite performance to reduce CI/CD pipeline execution time, enabling faster feedback cycles and more efficient deployments.
 
 ### Milestone
-**Phase 2: Core Admin** - Due: August 31, 2025
+**Phase 3: User Experience** - Due: September 30, 2025
 
 ### Acceptance Criteria
 - [ ] Test suite runs in under 2 minutes (currently ~4 minutes)
