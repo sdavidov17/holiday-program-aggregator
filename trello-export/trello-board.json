@@ -1,0 +1,634 @@
+{
+  "name": "Holiday Heroes - Project Management",
+  "desc": "Complete project tracking with Epics and Milestones",
+  "lists": [
+    {
+      "name": "Backlog"
+    },
+    {
+      "name": "Sprint Planning"
+    },
+    {
+      "name": "In Progress"
+    },
+    {
+      "name": "In Review"
+    },
+    {
+      "name": "Testing"
+    },
+    {
+      "name": "Done"
+    }
+  ],
+  "labels": [
+    {
+      "name": "Epic 1: Core MVP",
+      "color": "green"
+    },
+    {
+      "name": "Epic 2: Provider Exp",
+      "color": "blue"
+    },
+    {
+      "name": "Epic 3: Parent Exp",
+      "color": "purple"
+    },
+    {
+      "name": "Epic 4: Post-MVP",
+      "color": "orange"
+    },
+    {
+      "name": "M1: Foundation",
+      "color": "red"
+    },
+    {
+      "name": "M2: Core Features",
+      "color": "yellow"
+    },
+    {
+      "name": "M3: Enhanced UX",
+      "color": "lime"
+    },
+    {
+      "name": "M4: Scale & Optimize",
+      "color": "pink"
+    },
+    {
+      "name": "Bug",
+      "color": "red"
+    },
+    {
+      "name": "Enhancement",
+      "color": "sky"
+    }
+  ],
+  "cards": [
+    {
+      "name": "Epic 0, Story 1: Repository & Development Environment Setup",
+      "desc": "**Story:** *As a developer, I want a properly configured development environment so that the team can start building features efficiently.*\n\n**File:** epic-0-story-1-repository-setup.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 0"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 0, Story 2: CI/CD Pipeline Configuration",
+      "desc": "**Story:** *As a developer, I want automated testing and deployment so that code quality is maintained and deployments are reliable.*\n\n**File:** epic-0-story-2-cicd-pipeline.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 0"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 0, Story 3: Database Schema & Initial Models",
+      "desc": "**Story:** *As a developer, I want a well-designed database schema so that we can efficiently store and query application data.*\n\n**File:** epic-0-story-3-database-schema.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 0"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 0, Story 4: Deployment Infrastructure Setup",
+      "desc": "**Story:** *As a DevOps engineer, I want a reliable deployment infrastructure so that the application can be deployed and scaled efficiently.*\n\n**File:** epic-0-story-4-deployment-infrastructure.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 0"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 1: Foundation, Provider Management & Subscriptions",
+      "desc": "\n\n**File:** epic-1-story-1-initial-project-setup.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 1"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 1: Foundation, Provider Management & Subscriptions",
+      "desc": "\n\n**File:** epic-1-story-2-user-account-system.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 1"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 1: Foundation, Provider Management & Subscriptions",
+      "desc": "\n\n**File:** epic-1-story-3-subscription-payment-integration.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 1"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 1: Foundation, Provider Management & Subscriptions",
+      "desc": "\n\n**File:** epic-1-story-4-subscription-lifecycle-management.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 1"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 1: Foundation, Provider Management & Subscriptions",
+      "desc": "\n\n**File:** epic-1-story-5-manual-provider-onboarding.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 1"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 1: Foundation, Provider Management & Subscriptions",
+      "desc": "\n\n**File:** epic-1-story-6-crawler-assisted-data-entry.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 1"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 1: Foundation, Provider Management & Subscriptions",
+      "desc": "\n\n**File:** epic-1-story-7-automated-data-refresh.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 1"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 2, Story 2.1: Search & Filter Interface",
+      "desc": "## User Story\n\n**File:** epic-2-story-1-search-filter-interface.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 2",
+        "M2: Core Features"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "Date ranges (school holiday periods)",
+          "Activity type (sports, arts, educational, etc.)",
+          "Child's age or age range",
+          "Search results list view",
+          "Interactive map view",
+          "Filter sidebar/drawer"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 2, Story 2.2: Display Program Search Results",
+      "desc": "## User Story\n\n**File:** epic-2-story-2-display-search-results.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 2",
+        "M2: Core Features"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "Provider name and vetted badge",
+          "Program title and brief description",
+          "Age range",
+          "Dates/schedule",
+          "Price range",
+          "Location/distance",
+          "Activity type icons",
+          "Distance (default)",
+          "Price (low to high, high to low)",
+          "Age suitability",
+          "Dates"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 2, Story 2.3: Interactive Map View",
+      "desc": "## User Story\n\n**File:** epic-2-story-3-interactive-map-view.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 2",
+        "M2: Core Features"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "Default state",
+          "Hover state with preview",
+          "Selected/active state",
+          "Highlights the corresponding program in the list view",
+          "Shows a popup with key program details",
+          "Provides link to full details",
+          "Zoom in/out",
+          "Reset to results view",
+          "Toggle to fullscreen",
+          "Current location button"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 2, Story 2.4: Detailed Provider Profile Page",
+      "desc": "## User Story\n\n**File:** epic-2-story-4-provider-profile-page.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 2",
+        "M2: Core Features"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "Provider name and logo",
+          "\"Vetted by Holiday Programs\" badge prominently displayed",
+          "Full program description",
+          "Age ranges and requirements",
+          "Dates, times, and duration",
+          "Pricing details (including any discounts)",
+          "Location with embedded mini-map",
+          "Photos/gallery if available",
+          "What to bring/prepare",
+          "Cancellation policy",
+          "Contact information"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 3, Story 3.1: User Preference Center",
+      "desc": "## User Story\n\n**File:** epic-3-story-1-user-preference-center.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 3",
+        "M3: Enhanced UX"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "Set and save their preferred search radius (km from location)",
+          "Enter multiple locations (home, work, grandparents)",
+          "Select preferred activity types with multi-select",
+          "Enter children's details (name/nickname, age/DOB)",
+          "Set communication preferences (email frequency)",
+          "Choose preferred days of the week",
+          "Set budget preferences (optional)"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 3, Story 3.2: Proactive Email Generation",
+      "desc": "## User Story\n\n**File:** epic-3-story-2-proactive-email-generation.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 3",
+        "M3: Enhanced UX"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "Retrieves the user's saved preferences",
+          "Identifies the upcoming school holiday period",
+          "Queries for matching programs within preferences",
+          "Applies smart ranking algorithm considering:",
+          "Distance from preferred locations",
+          "Match with activity preferences",
+          "Age appropriateness",
+          "Previous engagement (if available)",
+          "Program popularity",
+          "No preferences set (use defaults)",
+          "No matches found (expand search criteria)",
+          "Insufficient matches (include \"similar\" programs)"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 3, Story 3.3: Email Delivery & Scheduling",
+      "desc": "## User Story\n\n**File:** epic-3-story-3-email-delivery-scheduling.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 3",
+        "M3: Enhanced UX"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "Personalized greeting with child names",
+          "Clear \"Your Holiday Program Suggestions\" header",
+          "5-10 program cards with key details",
+          "CTA buttons for each program",
+          "Unsubscribe and preference update links",
+          "Company branding and footer",
+          "4 weeks before each school holiday period",
+          "Reminder email 2 weeks before (if enabled)",
+          "Respects user timezone for sending time",
+          "Bounce handling",
+          "Open/click tracking",
+          "Unsubscribe handling",
+          "Suppression list management",
+          "Sending progress and stats",
+          "Open/click rates",
+          "Failed deliveries",
+          "Manual re-send options"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-1-security-headers-csp.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "Content Security Policy (CSP) with strict directives",
+          "X-Frame-Options: DENY",
+          "X-Content-Type-Options: nosniff",
+          "Strict-Transport-Security with preload",
+          "Referrer-Policy: strict-origin-when-cross-origin"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "## Incident Summary\n\n**File:** epic-4-story-10-incident-response.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "Database outage",
+          "Payment processing failures",
+          "Authentication service issues",
+          "High error rates",
+          "Performance degradation"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-11-vulnerability-scanning.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-12-performance-testing.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4, Story 13: Basic Alerting System (Free Tier Addition)",
+      "desc": "**Story:** *As an on-call engineer, I want simple alerting without paid services, so that I'm notified of critical issues immediately.*\n\n**File:** epic-4-story-13-basic-alerting.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4, Story 14: Log Rotation & Retention (Free Tier Addition)",
+      "desc": "**Story:** *As a developer, I want cost-effective log management, so that we can debug issues without expensive log services.*\n\n**File:** epic-4-story-14-log-rotation.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4, Story 15: Simple Monitoring Dashboard (Free Tier Addition)",
+      "desc": "**Story:** *As a team member, I want a basic monitoring dashboard, so that I can see system health at a glance.*\n\n**File:** epic-4-story-15-monitoring-dashboard.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-16-comprehensive-test-coverage.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "[ ] Overall test coverage increased from 23.42% to minimum 80%",
+          "[ ] Critical paths (payments, auth, search) achieve 95% coverage",
+          "[ ] All new code requires 90% coverage to pass CI",
+          "[ ] 100% test coverage for subscription service layer",
+          "[ ] 100% test coverage for payment processing (Stripe integration)",
+          "[ ] 100% test coverage for repository layer (data persistence)",
+          "[ ] 90% test coverage for authentication flows",
+          "[ ] 90% test coverage for admin operations",
+          "[ ] Complete parent subscription purchase flow tested",
+          "[ ] Provider onboarding workflow tested",
+          "[ ] Search to booking journey tested",
+          "[ ] Admin provider vetting process tested",
+          "[ ] All tests passing with <3s response time",
+          "[ ] SQL injection protection validated",
+          "[ ] XSS prevention tested",
+          "[ ] Authentication bypass attempts tested",
+          "[ ] Rate limiting validation implemented",
+          "[ ] OWASP Top 10 coverage achieved",
+          "[ ] Search API response < 200ms p95",
+          "[ ] Database queries < 100ms p95",
+          "[ ] Page load < 3s on 3G connection",
+          "[ ] Load tests handle 100 concurrent users"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "EPIC 4: Technical Excellence / Observability",
+      "desc": "## STORY 4.17: Achieve 80% Test Coverage Target\n\n**File:** epic-4-story-17-achieve-80-percent-coverage.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "[ ] Line coverage reaches 80% or higher",
+          "[ ] Branch coverage reaches 80% or higher  ",
+          "[ ] Function coverage reaches 80% or higher",
+          "[ ] Statement coverage reaches 80% or higher",
+          "[ ] All critical business logic has corresponding tests",
+          "[ ] No reduction in existing test quality",
+          "[ ] Jest configuration updated to enforce 80% thresholds"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "EPIC 4: Technical Excellence / Observability",
+      "desc": "## STORY 4.18: Implement Missing Service Methods\n\n**File:** epic-4-story-18-implement-missing-services.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "[ ] All service methods have implementations",
+          "[ ] Each service method has corresponding unit tests",
+          "[ ] Service methods follow repository pattern",
+          "[ ] Error handling implemented consistently",
+          "[ ] All service tests passing",
+          "[ ] Documentation updated for new methods"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "EPIC 4: Technical Excellence / Observability",
+      "desc": "## STORY 4.19: Implement PostGIS Spatial Queries\n\n**File:** epic-4-story-19-postgis-spatial-queries.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "[ ] PostGIS extension enabled in database",
+          "[ ] Provider table has geographic location columns",
+          "[ ] Spatial indexes created for performance",
+          "[ ] Repository methods support radius search",
+          "[ ] API endpoints accept lat/lng parameters",
+          "[ ] Results sorted by distance",
+          "[ ] Distance included in search results",
+          "[ ] Fallback to suburb/state search if no coordinates"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-2-structured-logging.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "EPIC 4: Technical Excellence / Observability",
+      "desc": "## STORY 4.20: Optimize Test Performance for CI/CD Pipeline\n\n**File:** epic-4-story-20-test-performance-optimization.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "[ ] Test suite runs in under 2 minutes (currently ~4 minutes)",
+          "[ ] Parallel test execution implemented",
+          "[ ] Database connection pooling optimized",
+          "[ ] Test data setup minimized",
+          "[ ] Unnecessary test reruns eliminated",
+          "[ ] CI cache strategy implemented",
+          "[ ] Performance metrics tracked"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "EPIC 4: Technical Excellence / Observability",
+      "desc": "## STORY 4.21: Extract Stripe Mocks to Dedicated Module\n\n**File:** epic-4-story-21-stripe-mocks-extraction.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "[ ] Stripe mocks extracted to dedicated module",
+          "[ ] All payment tests use centralized mocks",
+          "[ ] Mock data matches Stripe API structure",
+          "[ ] Common scenarios pre-configured",
+          "[ ] TypeScript types fully supported",
+          "[ ] Documentation includes usage examples",
+          "[ ] Existing tests migrated to new mocks"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-3-opentelemetry-tracing.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-4-error-tracking.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-5-health-checks.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": {
+        "name": "Acceptance Criteria",
+        "items": [
+          "Database connectivity",
+          "Stripe API availability",
+          "Email service status"
+        ]
+      },
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-6-audit-logging.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-7-rate-limiting.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-8-slo-monitoring.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    },
+    {
+      "name": "Epic 4: Security, SRE & Observability",
+      "desc": "\n\n**File:** epic-4-story-9-synthetic-monitoring.md\n**Effort:** \n**Priority:** ",
+      "labels": [
+        "Epic 4"
+      ],
+      "checklist": [],
+      "list": "Backlog"
+    }
+  ]
+}
