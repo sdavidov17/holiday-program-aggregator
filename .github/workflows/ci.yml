@@ -137,18 +137,70 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
-  # Optional: Claude Code Review (only if you have the GitHub App installed)
+  # Claude Code Review - Automated quality checks
   claude-review:
-    name: Claude Review
+    name: Claude AI Review
     if: |
       github.event_name == 'pull_request' && 
       github.event.pull_request.draft == false &&
-      contains(github.event.pull_request.labels.*.name, 'claude-review')
+      !contains(github.event.pull_request.title, '[skip-review]') &&
+      !contains(github.event.pull_request.title, '[WIP]')
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+      id-token: write
     
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Get full history for better context
       
       - name: Claude Code Review
         uses: anthropics/claude-code-action@beta
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          
+          # Use sticky comments to avoid duplicate reviews
+          use_sticky_comment: true
+          
+          # Comprehensive review prompt
+          direct_prompt: |
+            Please review this pull request comprehensively:
+            
+            ## Code Quality
+            - Check for best practices and clean code principles
+            - Identify code smells or anti-patterns
+            - Suggest improvements for readability and maintainability
+            
+            ## Security
+            - Identify potential security vulnerabilities
+            - Check for SQL injection, XSS, or authentication issues
+            - Verify no secrets or sensitive data are exposed
+            
+            ## Performance
+            - Identify potential performance bottlenecks
+            - Check for inefficient queries or algorithms
+            - Suggest optimizations where applicable
+            
+            ## Testing
+            - Verify test coverage for new code
+            - Check if tests follow BDD patterns where applicable
+            - Ensure critical paths are tested
+            
+            ## TypeScript & React
+            - Verify proper TypeScript usage and type safety
+            - Check React best practices and hooks usage
+            - Identify potential memory leaks or side effects
+            
+            ## Documentation
+            - Check if complex logic is properly documented
+            - Verify API changes are documented
+            
+            Be constructive and prioritize critical issues. Mark security issues as "🔴 Critical".
+          
+          # Allow Claude to run tests and checks
+          allowed_tools: "Bash(pnpm lint),Bash(pnpm type-check),Bash(pnpm test:ci)"
         continue-on-error: true  # Don't block PR if review fails

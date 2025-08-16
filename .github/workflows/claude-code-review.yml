@@ -3,56 +3,93 @@ name: Claude Code Review
 on:
   pull_request:
     types: [opened, synchronize]
-    # Optional: Only run on specific file changes
-    # paths:
-    #   - "src/**/*.ts"
-    #   - "src/**/*.tsx"
-    #   - "src/**/*.js"
-    #   - "src/**/*.jsx"
+    paths:
+      - "apps/**/*.ts"
+      - "apps/**/*.tsx"
+      - "packages/**/*.ts"
+      - "packages/**/*.tsx"
+      - "!**/*.test.ts"
+      - "!**/*.spec.ts"
 
 jobs:
   claude-review:
-    # Optional: Filter by PR author
-    # if: |
-    #   github.event.pull_request.user.login == 'external-contributor' ||
-    #   github.event.pull_request.user.login == 'new-developer' ||
-    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
+    # Skip for dependabot and draft PRs
+    if: |
+      github.event.pull_request.draft == false &&
+      !contains(github.event.pull_request.title, '[skip-review]') &&
+      !contains(github.event.pull_request.title, '[WIP]') &&
+      github.actor != 'dependabot[bot]'
     
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write  # For posting comments
       issues: read
+      checks: write  # For creating check runs
       id-token: write
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0  # Full history for better context
 
       - name: Run Claude Code Review
         id: claude-review
         uses: anthropics/claude-code-action@beta
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Add GitHub token for API access
 
-          # Optional: Specify model (defaults to Claude Sonnet 4, uncomment for Claude Opus 4.1)
+          # Optional: Use Claude Opus 4.1 for critical PRs (uncomment if needed)
           # model: "claude-opus-4-1-20250805"
 
-          # Direct prompt for automated review (no @claude mention needed)
+          # Comprehensive review prompt based on Story 4.16 requirements
           direct_prompt: |
-            Please review this pull request and provide feedback on:
-            - Code quality and best practices
-            - Potential bugs or issues
-            - Performance considerations
-            - Security concerns
-            - Test coverage
+            Please perform a comprehensive code review focusing on our critical requirements:
             
-            Be constructive and helpful in your feedback.
+            ## Priority 1: Security (🔴 Mark critical issues)
+            - SQL injection vulnerabilities
+            - XSS prevention
+            - Authentication/authorization issues
+            - Exposed secrets or sensitive data
+            - OWASP Top 10 compliance
+            
+            ## Priority 2: Business Critical Components
+            - Payment processing (Stripe) - must be 100% reliable
+            - Subscription management - verify all edge cases
+            - Authentication flows - check for bypass vulnerabilities
+            - Data persistence (Repository pattern) - verify transactions
+            
+            ## Priority 3: Code Quality
+            - TypeScript type safety and proper interface usage
+            - React best practices and performance (memo, useMemo, useCallback)
+            - Clean code principles and maintainability
+            - Proper error handling with AppError classes
+            - Repository pattern adherence
+            
+            ## Priority 4: Testing
+            - Verify test coverage meets our 80% minimum requirement
+            - Check BDD scenarios for business logic
+            - Ensure critical paths have 95% coverage
+            - Validate E2E tests for customer journeys
+            
+            ## Priority 5: Performance
+            - Database query optimization (< 100ms p95)
+            - API response times (< 200ms p95)
+            - Frontend bundle size and lazy loading
+            - Memory leaks in React components
+            
+            Please:
+            1. Prioritize security and payment-related issues
+            2. Use "🔴 CRITICAL" for security vulnerabilities
+            3. Use "⚠️ WARNING" for performance issues
+            4. Use "💡 SUGGESTION" for improvements
+            5. Provide code examples for suggested fixes
+            6. Reference our coding standards in CLAUDE.md
 
-          # Optional: Use sticky comments to make Claude reuse the same comment on subsequent pushes to the same PR
-          # use_sticky_comment: true
+          # Use sticky comments to avoid duplicate reviews on force pushes
+          use_sticky_comment: true
           
           # Optional: Customize review based on file types
           # direct_prompt: |
@@ -68,11 +105,31 @@ jobs:
           #   'Welcome! Please review this PR from a first-time contributor. Be encouraging and provide detailed explanations for any suggestions.' ||
           #   'Please provide a thorough code review focusing on our coding standards and best practices.' }}
           
-          # Optional: Add specific tools for running tests or linting
-          # allowed_tools: "Bash(npm run test),Bash(npm run lint),Bash(npm run typecheck)"
+          # Allow Claude to run our quality checks
+          allowed_tools: "Bash(pnpm lint),Bash(pnpm type-check),Bash(pnpm test:ci),Read,Grep"
           
-          # Optional: Skip review for certain conditions
-          # if: |
-          #   !contains(github.event.pull_request.title, '[skip-review]') &&
-          #   !contains(github.event.pull_request.title, '[WIP]')
+      # Post review summary as a check
+      - name: Post Review Status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const conclusion = '${{ steps.claude-review.outcome }}' === 'success' ? 'success' : 'neutral';
+            const summary = conclusion === 'success' 
+              ? 'Claude review completed successfully' 
+              : 'Claude review encountered issues or was skipped';
+            
+            await github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Claude AI Review',
+              head_sha: context.payload.pull_request.head.sha,
+              status: 'completed',
+              conclusion: conclusion,
+              output: {
+                title: 'Claude Code Review',
+                summary: summary
+              }
+            });
+        continue-on-error: true
 

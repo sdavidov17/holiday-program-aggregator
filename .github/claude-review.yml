@@ -1,0 +1,143 @@
+# Claude Code Review Configuration
+# This file configures automated AI code reviews for pull requests
+
+# Review triggers
+triggers:
+  # Automatically review all PRs except drafts and WIP
+  auto_review: true
+  
+  # Skip review for these conditions
+  skip_conditions:
+    - draft_pr: true
+    - title_contains: ["[skip-review]", "[WIP]", "[ci skip]"]
+    - author: ["dependabot[bot]", "renovate[bot]"]
+  
+  # Use enhanced review for critical changes
+  enhanced_review:
+    labels: ["critical", "security", "payment", "authentication"]
+    paths:
+      - "apps/web/src/server/api/routers/subscription.ts"
+      - "apps/web/src/server/api/routers/payment.ts"
+      - "apps/web/src/server/auth.ts"
+      - "packages/auth/**"
+      - "packages/payments/**"
+
+# Review focus areas based on Story 4.16 requirements
+review_priorities:
+  - name: "Security"
+    level: "CRITICAL"
+    checks:
+      - sql_injection
+      - xss_prevention
+      - authentication_bypass
+      - exposed_secrets
+      - owasp_top_10
+    
+  - name: "Payment Processing"
+    level: "CRITICAL"
+    checks:
+      - stripe_integration
+      - webhook_handling
+      - transaction_integrity
+      - error_handling
+    
+  - name: "Test Coverage"
+    level: "HIGH"
+    requirements:
+      overall_coverage: 80
+      critical_path_coverage: 95
+      new_code_coverage: 90
+    
+  - name: "Performance"
+    level: "MEDIUM"
+    thresholds:
+      api_response_p95: "200ms"
+      db_query_p95: "100ms"
+      page_load_3g: "3s"
+
+# Code quality standards
+quality_standards:
+  typescript:
+    strict_mode: true
+    no_any: true
+    explicit_return_types: true
+  
+  react:
+    hooks_deps: true
+    memo_optimization: true
+    accessibility: true
+  
+  testing:
+    bdd_scenarios: true
+    unit_tests_required: true
+    e2e_critical_paths: true
+
+# Review output format
+output:
+  use_emoji: true
+  priority_markers:
+    critical: "🔴 CRITICAL"
+    high: "⚠️ WARNING"
+    medium: "💡 SUGGESTION"
+    low: "ℹ️ INFO"
+  
+  group_by: "priority"  # Group issues by priority
+  include_examples: true  # Include code fix examples
+  reference_docs: true   # Reference CLAUDE.md and other docs
+
+# Integration settings
+integrations:
+  # Post review as GitHub check
+  github_check:
+    enabled: true
+    blocking: false  # Don't block merge on review
+    
+  # Link to test results
+  test_results:
+    enabled: true
+    coverage_report: "apps/web/coverage/coverage-summary.json"
+    
+  # Notify on critical issues
+  notifications:
+    slack: false  # Set to true and configure webhook if needed
+    email: false
+
+# Custom prompts for specific file types
+file_specific_prompts:
+  "*.test.ts":
+    prompt: "Focus on test quality, coverage, and BDD scenarios"
+  
+  "**/api/routers/*.ts":
+    prompt: "Priority on security, input validation, and error handling"
+  
+  "**/components/*.tsx":
+    prompt: "Check React best practices, performance, and accessibility"
+  
+  "**/repositories/*.ts":
+    prompt: "Verify transaction handling, query optimization, and data integrity"
+
+# Allowed tools for Claude to use during review
+allowed_tools:
+  - "Bash(pnpm lint)"
+  - "Bash(pnpm type-check)"
+  - "Bash(pnpm test:ci)"
+  - "Read"
+  - "Grep"
+  - "Glob"
+
+# Review models
+models:
+  default: "claude-sonnet-4"
+  enhanced: "claude-opus-4-1-20250805"  # For critical reviews
+  
+# Performance settings
+performance:
+  timeout_seconds: 300
+  max_file_size_kb: 500
+  max_files_per_review: 50
+  
+# Experimental features
+experimental:
+  suggest_refactors: true
+  generate_tests: false
+  auto_fix_simple_issues: false
