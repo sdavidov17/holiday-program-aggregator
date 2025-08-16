@@ -175,17 +175,37 @@ export const premiumProcedure = protectedProcedure.use(async ({ ctx, next }) => 
     subscription.expiresAt < new Date() &&
     subscription.status === SubscriptionStatus.ACTIVE
   ) {
-    // Update status to expired
-    await ctx.db.subscription.update({
-      where: { id: subscription.id },
-      data: { status: SubscriptionStatus.EXPIRED },
-    });
+    // Use transaction to prevent race conditions
+    try {
+      await ctx.db.$transaction(async (tx) => {
+        // Re-check status within transaction to prevent race condition
+        const currentSub = await tx.subscription.findUnique({
+          where: { id: subscription.id },
+        });
+        
+        if (currentSub?.status === SubscriptionStatus.ACTIVE) {
+          await tx.subscription.update({
+            where: { 
+              id: subscription.id,
+              status: SubscriptionStatus.ACTIVE // Optimistic lock on status
+            },
+            data: { status: SubscriptionStatus.EXPIRED },
+          });
+        }
+      });
 
-    logger.info('Subscription expired and status updated', {
-      correlationId: ctx.correlationId,
-      subscriptionId: subscription.id,
-      userId: ctx.session.user.id,
-    });
+      logger.info('Subscription expired and status updated', {
+        correlationId: ctx.correlationId,
+        subscriptionId: subscription.id,
+        userId: ctx.session.user.id,
+      });
+    } catch (error) {
+      // If update fails due to concurrent modification, that's ok
+      logger.debug('Subscription status already updated by another request', {
+        correlationId: ctx.correlationId,
+        subscriptionId: subscription.id,
+      });
+    }
 
     throw new TRPCError({
       code: 'FORBIDDEN',
