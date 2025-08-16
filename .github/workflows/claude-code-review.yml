@@ -23,8 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write  # For posting comments
       issues: read
+      checks: write  # For creating check runs
       id-token: write
     
     steps:
@@ -38,6 +39,7 @@ jobs:
         uses: anthropics/claude-code-action@beta
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Add GitHub token for API access
 
           # Optional: Use Claude Opus 4.1 for critical PRs (uncomment if needed)
           # model: "claude-opus-4-1-20250805"
