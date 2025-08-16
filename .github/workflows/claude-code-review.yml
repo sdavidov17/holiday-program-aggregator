@@ -39,8 +39,8 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
-          # Use Claude Opus 4.1 for more thorough reviews on critical code
-          model: ${{ contains(github.event.pull_request.labels.*.name, 'critical') && 'claude-opus-4-1-20250805' || 'claude-sonnet-4' }}
+          # Optional: Use Claude Opus 4.1 for critical PRs (uncomment if needed)
+          # model: "claude-opus-4-1-20250805"
 
           # Comprehensive review prompt based on Story 4.16 requirements
           direct_prompt: |

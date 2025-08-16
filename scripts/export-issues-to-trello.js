@@ -8,6 +8,16 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
+// Configure logging based on environment
+const isVerbose = process.env.VERBOSE === 'true' || process.argv.includes('--verbose');
+const isSilent = process.env.SILENT === 'true' || process.argv.includes('--silent');
+
+const log = {
+  info: (...args) => !isSilent && console.log(...args),
+  error: (...args) => console.error(...args), // Always show errors
+  verbose: (...args) => isVerbose && console.log(...args)
+};
+
 // Trello Board Structure Recommendation
 const TRELLO_STRUCTURE = {
   // Option 1: Epic-based Board Structure
@@ -66,17 +76,29 @@ function readStoryDocuments() {
   const stories = [];
   
   try {
+    // Check if directory exists first
+    if (!fs.existsSync(storiesDir)) {
+      log.error(`Stories directory not found: ${storiesDir}`);
+      return stories;
+    }
+    
     const files = fs.readdirSync(storiesDir);
     
     files.forEach(file => {
       if (file.endsWith('.md')) {
-        const content = fs.readFileSync(path.join(storiesDir, file), 'utf8');
-        const story = parseStoryDocument(file, content);
-        stories.push(story);
+        try {
+          const content = fs.readFileSync(path.join(storiesDir, file), 'utf8');
+          const story = parseStoryDocument(file, content);
+          stories.push(story);
+        } catch (fileError) {
+          log.error(`Error reading file ${file}:`, fileError.message);
+          // Continue processing other files
+        }
       }
     });
   } catch (error) {
-    console.error('Error reading story documents:', error);
+    log.error('Error accessing stories directory:', error.message);
+    process.exit(1); // Exit with error code if can't read directory
   }
   
   return stories;
@@ -183,6 +205,9 @@ function generateTrelloCard(story) {
 
 // Generate CSV for Trello import
 function generateTrelloCSV(stories) {
+  const timestamp = new Date().toISOString();
+  const csvHeader = `# Generated on: ${timestamp}\n# Total stories: ${stories.length}\n`;
+  
   const headers = ['Card Name', 'Card Description', 'Labels', 'List Name', 'Checklist Items'];
   const rows = [headers];
   
@@ -198,14 +223,18 @@ function generateTrelloCSV(stories) {
     rows.push(row);
   });
   
-  return rows.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+  const csvContent = rows.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+  return csvHeader + csvContent;
 }
 
 // Generate JSON for manual import or API
 function generateTrelloJSON(stories) {
+  const timestamp = new Date().toISOString();
   const board = {
     name: "Holiday Heroes - Project Management",
     desc: "Complete project tracking with Epics and Milestones",
+    generatedAt: timestamp,
+    totalStories: stories.length,
     lists: TRELLO_STRUCTURE.epicBasedBoard.lists.map(name => ({ name })),
     labels: TRELLO_STRUCTURE.epicBasedBoard.labels,
     cards: stories.map(story => {
@@ -222,6 +251,7 @@ function generateTrelloJSON(stories) {
 
 // Generate markdown summary for verification
 function generateSummary(stories) {
+  const timestamp = new Date().toISOString();
   const epicGroups = {};
   const milestoneGroups = {};
   
@@ -235,7 +265,9 @@ function generateSummary(stories) {
     milestoneGroups[story.milestone].push(story);
   });
   
-  let summary = '# Project Structure Summary\n\n';
+  let summary = `# Project Structure Summary\n\n`;
+  summary += `_Generated on: ${timestamp}_\n`;
+  summary += `_Total stories: ${stories.length}_\n\n`;
   
   summary += '## Stories by Epic\n\n';
   Object.keys(epicGroups).sort().forEach(epic => {
@@ -260,9 +292,9 @@ function generateSummary(stories) {
 
 // Main execution
 function main() {
-  console.log('📋 Reading story documents...');
+  log.info('📋 Reading story documents...');
   const stories = readStoryDocuments();
-  console.log(`✅ Found ${stories.length} stories\n`);
+  log.info(`✅ Found ${stories.length} stories\n`);
   
   // Generate outputs
   const outputDir = path.join(__dirname, '../trello-export');
@@ -271,22 +303,22 @@ function main() {
   }
   
   // Generate CSV for Trello import
-  console.log('📝 Generating Trello CSV...');
+  log.info('📝 Generating Trello CSV...');
   const csv = generateTrelloCSV(stories);
   fs.writeFileSync(path.join(outputDir, 'trello-import.csv'), csv);
-  console.log('✅ Created: trello-import.csv');
+  log.info('✅ Created: trello-import.csv');
   
   // Generate JSON for API import
-  console.log('📝 Generating Trello JSON...');
+  log.info('📝 Generating Trello JSON...');
   const json = generateTrelloJSON(stories);
   fs.writeFileSync(path.join(outputDir, 'trello-board.json'), json);
-  console.log('✅ Created: trello-board.json');
+  log.info('✅ Created: trello-board.json');
   
   // Generate summary
-  console.log('📝 Generating summary...');
+  log.info('📝 Generating summary...');
   const summary = generateSummary(stories);
   fs.writeFileSync(path.join(outputDir, 'project-summary.md'), summary);
-  console.log('✅ Created: project-summary.md');
+  log.info('✅ Created: project-summary.md');
   
   // Generate Trello setup instructions
   const instructions = `# Trello Setup Instructions
@@ -364,12 +396,18 @@ This keeps everything in one place and auto-syncs with PRs.
 `;
   
   fs.writeFileSync(path.join(outputDir, 'TRELLO_SETUP.md'), instructions);
-  console.log('✅ Created: TRELLO_SETUP.md\n');
+  log.info('✅ Created: TRELLO_SETUP.md\n');
   
-  console.log('📊 Summary:');
-  console.log(`- Total Stories: ${stories.length}`);
-  console.log(`- Output directory: ${outputDir}`);
-  console.log('\n✨ Export complete! Check the trello-export directory for files.');
+  log.info('📊 Summary:');
+  log.info(`- Total Stories: ${stories.length}`);
+  log.info(`- Output directory: ${outputDir}`);
+  log.info('\n✨ Export complete! Check the trello-export directory for files.');
+  
+  // Verbose output
+  log.verbose('\nDetailed breakdown:');
+  log.verbose(`- Files processed: ${stories.filter(s => s.title).length}`);
+  log.verbose(`- Stories with milestones: ${stories.filter(s => s.milestone).length}`);
+  log.verbose(`- Stories with epics: ${stories.filter(s => s.epic).length}`);
 }
 
 // Run the script
