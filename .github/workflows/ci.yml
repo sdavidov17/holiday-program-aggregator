@@ -92,7 +92,7 @@ jobs:
       # Add test summary to PR (only on pull requests)
       - name: Test Report Summary
         if: always() && github.event_name == 'pull_request'
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         with:
           name: Jest Tests
           path: apps/web/coverage/junit.xml
