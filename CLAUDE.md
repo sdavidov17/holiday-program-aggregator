@@ -2,6 +2,49 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Quick Reference (Actual Stack Versions)
+
+> **IMPORTANT**: Keep these versions synchronized with actual package.json
+
+| Package | Actual Version | Notes |
+|---------|---------------|-------|
+| Next.js | 15.4.6 | App Router + Pages Router |
+| React | 19.1.1 | Latest stable |
+| Prisma | 6.13.0 | PostgreSQL ORM |
+| NextAuth | 4.24.11 | NOT v5 - uses JWT sessions |
+| tRPC | 11.4.4 | Type-safe API layer |
+| Jest | 30.0.5 | NOT Vitest |
+| Playwright | 1.54.2 | E2E testing |
+| Biome | 1.9.4 | Linting + formatting |
+
+## Critical Path Warnings
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| PostGIS geospatial search | NOT IMPLEMENTED | Documented but missing from codebase |
+| Web Crawler system | NOT IMPLEMENTED | FR2/FR3 not built |
+| Email suggestions | NOT IMPLEMENTED | Proactive suggestion system missing |
+| Test coverage | 23% ACTUAL | Target is 80% - critical gap |
+| OpenTelemetry | NOT CONFIGURED | Observability stack incomplete |
+
+## BMAD Agent Commands
+
+Access specialized AI team members via slash commands:
+
+| Command | Agent | Role |
+|---------|-------|------|
+| `/bmad-orchestrator` | BMad Orchestrator | Master coordinator, workflow guidance |
+| `/dev` | James | Full Stack Developer |
+| `/qa` | QA Engineer | Quality Assurance |
+| `/pm` | Product Manager | Product planning |
+| `/architect` | System Architect | Architecture decisions |
+| `/analyst` | Business Analyst | Requirements analysis |
+| `/po` | Product Owner | Backlog management |
+| `/sm` | Scrum Master | Process facilitation |
+| `/ux-expert` | UX Designer | User experience |
+| `/devops` | Morgan | DevOps/SRE Engineer |
+| `/security` | Alex | Application Security |
+
 ## Documentation Reference
 
 All project documentation is organized in `/docs/` with the following structure:
@@ -40,7 +83,7 @@ All project documentation is organized in `/docs/` with the following structure:
 
 ## Development Commands
 
-Based on T3 Stack + Turborepo (see `/docs/architecture/tech-stack.md` for versions):
+Based on T3 Stack + Turborepo:
 
 ```bash
 # Development
@@ -54,6 +97,12 @@ pnpm db:push          # Push schema changes
 pnpm db:migrate       # Run migrations
 pnpm db:studio        # Open Prisma Studio
 
+# Testing
+pnpm test             # Run Jest tests
+pnpm test:coverage    # Generate coverage report
+pnpm test:ci          # CI mode with reporters
+pnpm test:e2e         # Run Playwright E2E tests
+
 # Monorepo
 pnpm dev:web          # Web app only
 pnpm build:web        # Build web app only
@@ -61,11 +110,46 @@ pnpm build:web        # Build web app only
 
 ## Project Structure
 
-- **Monorepo**: Turborepo with `/apps/web` (Next.js) and `/packages` (shared code)
-- **Architecture**: Serverless on Vercel, PostgreSQL with PostGIS, Sydney region
-- **Key Features**: Provider vetting, geospatial search, subscription management, automated suggestions
+```
+/holiday-program-aggregator/
+├── /apps/web/                 # Next.js application
+│   ├── /src/
+│   │   ├── /pages/           # Next.js pages
+│   │   ├── /server/          # tRPC API, auth, db
+│   │   ├── /repositories/    # Data access layer
+│   │   ├── /services/        # Business logic
+│   │   ├── /components/      # React components
+│   │   ├── /hooks/           # Custom React hooks
+│   │   ├── /utils/           # Utilities
+│   │   ├── /lib/             # Shared libs (rate-limiter, monitoring)
+│   │   └── /__tests__/       # Test files
+│   └── /prisma/              # Database schema
+├── /docs/                     # All documentation (101 files)
+├── /.claude/commands/BMad/   # BMAD agent definitions
+└── /.github/workflows/       # CI/CD pipelines
+```
+
+## Key File Locations
+
+| Purpose | Location |
+|---------|----------|
+| tRPC procedures | `apps/web/src/server/api/trpc.ts` |
+| API routers | `apps/web/src/server/api/routers/` |
+| Authentication | `apps/web/src/server/auth.ts` |
+| Security middleware | `apps/web/src/middleware.ts` |
+| Rate limiting | `apps/web/src/lib/rate-limiter.ts` |
+| Database schema | `apps/web/prisma/schema.prisma` |
+| Environment validation | `apps/web/src/env.mjs` |
+| Test factories | `apps/web/src/__tests__/factories/` |
+| Security tests | `apps/web/src/__tests__/security/` |
 
 ## Development Rules
+
+### Pre-Commit Checklist
+Before every commit, run:
+```bash
+pnpm lint && pnpm typecheck && pnpm test
+```
 
 ### Story & Issue Management
 **IMPORTANT**: Always keep `/docs/stories/` and GitHub Issues synchronized:
@@ -94,10 +178,52 @@ pnpm build:web        # Build web app only
 
 ### Code Quality Standards
 - Always run `pnpm lint && pnpm typecheck` before committing
-- Ensure test coverage remains above 80% (previously 75%, now updated)
+- Ensure test coverage remains above 80% (current: 23% - needs improvement)
 - Follow repository pattern for database operations
 - Use proper error handling with AppError classes
 - Never commit sensitive information or debug endpoints
 - Write tests FIRST or alongside code (TDD/BDD approach)
+
+### Security Standards
+- All user input must be validated with Zod schemas
+- Use parameterized queries (Prisma handles this)
+- Never log PII or sensitive data
+- All secrets must be in environment variables
+- Review OWASP Top 10 for any auth/input changes
+- Rate limiting required on auth endpoints
+
+## Common Troubleshooting
+
+### Prisma Issues
+```bash
+# Reset database
+pnpm db:push --force-reset
+
+# Generate client after schema changes
+npx prisma generate
+```
+
+### Test Issues
+```bash
+# Clear Jest cache
+pnpm test --clearCache
+
+# Run specific test file
+pnpm test -- path/to/test.ts
+```
+
+### Type Errors
+```bash
+# Regenerate types
+npx prisma generate
+pnpm typecheck
+```
+
+## Architecture Patterns
+
+- **Repository Pattern**: All database operations go through repositories (`/repositories/`)
+- **Service Layer**: Business logic in services (`/services/`)
+- **tRPC Procedures**: API layer with progressive auth (public → protected → admin → premium)
+- **Middleware Chain**: Logging → Auth → Rate Limiting → Business Logic
 
 Refer to documentation in `/docs/` for all implementation details, requirements, and architectural decisions.

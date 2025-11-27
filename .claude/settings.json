@@ -1,0 +1,71 @@
+{
+  "$schema": "https://claude.ai/code/settings-schema.json",
+  "project": {
+    "name": "Holiday Program Aggregator",
+    "description": "T3 Stack application for aggregating holiday programs in Australia"
+  },
+  "hooks": {
+    "preCommit": {
+      "command": "pnpm lint && pnpm typecheck",
+      "description": "Run linting and type checking before commits",
+      "enabled": true
+    },
+    "prePush": {
+      "command": "pnpm test",
+      "description": "Run tests before pushing",
+      "enabled": true
+    }
+  },
+  "codeQuality": {
+    "linter": "biome",
+    "formatter": "biome",
+    "typeChecker": "typescript",
+    "testRunner": "jest",
+    "e2eRunner": "playwright"
+  },
+  "conventions": {
+    "commitMessageFormat": "conventional",
+    "branchNaming": "feature/*, bugfix/*, hotfix/*, epic-*",
+    "testFileNaming": "*.test.ts, *.spec.ts",
+    "componentNaming": "PascalCase"
+  },
+  "security": {
+    "scanSecrets": true,
+    "requireSecurityReview": ["apps/web/src/server/auth.ts", "apps/web/src/middleware.ts", "apps/web/src/lib/rate-limiter.ts"],
+    "sensitivePatterns": [".env", "*.pem", "*.key", "credentials*"]
+  },
+  "testing": {
+    "coverageThreshold": 80,
+    "requiredTestTypes": ["unit", "integration"],
+    "criticalPaths": ["apps/web/src/server/api/routers/", "apps/web/src/services/", "apps/web/src/repositories/"]
+  },
+  "documentation": {
+    "requireDocsUpdate": ["apps/web/src/server/api/routers/", "apps/web/prisma/schema.prisma"],
+    "storyTemplate": "docs/project/story-template.md",
+    "definitionOfReady": "docs/project/definition-of-ready.md",
+    "definitionOfDone": "docs/project/definition-of-done.md"
+  },
+  "agents": {
+    "bmadPath": ".claude/commands/BMad/agents/",
+    "defaultAgent": "bmad-orchestrator",
+    "availableAgents": [
+      "bmad-orchestrator",
+      "dev",
+      "qa",
+      "pm",
+      "architect",
+      "analyst",
+      "po",
+      "sm",
+      "ux-expert",
+      "devops",
+      "security"
+    ]
+  },
+  "preferences": {
+    "preferEditOverWrite": true,
+    "useParallelToolCalls": true,
+    "verboseLogging": false,
+    "autoRunTests": true
+  }
+}
