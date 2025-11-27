@@ -70,6 +70,9 @@ model Provider {
     suburb              String
     state               String
     postcode            String
+    // Geospatial fields for location-based search
+    latitude            Float?   @db.DoublePrecision
+    longitude           Float?   @db.DoublePrecision
     description         String
     logoUrl             String?
     bannerUrl           String?
@@ -89,6 +92,7 @@ model Provider {
 
     @@index([suburb, state])
     @@index([isPublished, isVetted])
+    @@index([latitude, longitude])
 }
 
 model Program {

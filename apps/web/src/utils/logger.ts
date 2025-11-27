@@ -2,14 +2,23 @@ import type { NextApiRequest } from 'next';
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
+// Log level priority for filtering
+const LOG_LEVEL_PRIORITY: Record<LogLevel, number> = {
+  debug: 0,
+  info: 1,
+  warn: 2,
+  error: 3,
+};
+
 export interface LogContext {
-  correlationId: string;
+  correlationId?: string;
   userId?: string;
   sessionId?: string;
   journey?: string;
   traceId?: string;
   spanId?: string;
-  [key: string]: unknown; // Allow additional properties
+  service?: string;
+  [key: string]: unknown;
 }
 
 export interface LogEntry {
@@ -58,13 +67,51 @@ const PII_PATTERNS: Array<{
   },
 ];
 
+export interface LoggerOptions {
+  environment?: string;
+  service?: string;
+  minLevel?: LogLevel;
+  format?: 'json' | 'pretty';
+  defaultContext?: Partial<LogContext>;
+}
+
 export class StructuredLogger {
   private environment: string;
   private service: string;
+  private minLevel: LogLevel;
+  private format: 'json' | 'pretty';
+  private defaultContext: Partial<LogContext>;
 
-  constructor(environment = process.env.NODE_ENV || 'development', service = 'holiday-aggregator') {
-    this.environment = environment;
-    this.service = service;
+  constructor(options: LoggerOptions = {}) {
+    this.environment = options.environment || process.env.NODE_ENV || 'development';
+    this.service = options.service || 'holiday-aggregator';
+    this.minLevel = options.minLevel || (process.env.LOG_LEVEL as LogLevel) || 'info';
+    this.format = options.format || (process.env.LOG_FORMAT as 'json' | 'pretty') || 'json';
+    this.defaultContext = options.defaultContext || {};
+  }
+
+  /**
+   * Creates a child logger with additional default context
+   */
+  child(serviceName: string, additionalContext?: Partial<LogContext>): StructuredLogger {
+    return new StructuredLogger({
+      environment: this.environment,
+      service: serviceName,
+      minLevel: this.minLevel,
+      format: this.format,
+      defaultContext: {
+        ...this.defaultContext,
+        ...additionalContext,
+        parentService: this.service,
+      },
+    });
+  }
+
+  /**
+   * Checks if a log level should be output based on minimum level
+   */
+  private shouldLog(level: LogLevel): boolean {
+    return LOG_LEVEL_PRIORITY[level] >= LOG_LEVEL_PRIORITY[this.minLevel];
   }
 
   /**
@@ -87,9 +134,6 @@ export class StructuredLogger {
     try {
       return JSON.parse(scrubbed);
     } catch {
-      // If we can't parse it back, return the original data
-      // but log a warning
-      console.warn('Failed to parse scrubbed data, returning original');
       return data;
     }
   }
@@ -100,19 +144,23 @@ export class StructuredLogger {
   private createLogEntry(
     level: LogLevel,
     message: string,
-    context: LogContext,
+    context: Partial<LogContext>,
     data?: unknown,
     error?: Error,
   ): LogEntry {
+    const fullContext: LogContext = {
+      ...this.defaultContext,
+      ...context,
+      correlationId: context.correlationId || generateCorrelationId(),
+      environment: this.environment,
+      service: this.service,
+    };
+
     const entry: LogEntry = {
       timestamp: new Date().toISOString(),
       level,
       message,
-      context: {
-        ...context,
-        environment: this.environment,
-        service: this.service,
-      } as LogContext,
+      context: fullContext,
     };
 
     if (data) {
@@ -134,54 +182,130 @@ export class StructuredLogger {
   }
 
   /**
+   * Formats log entry for pretty printing (development)
+   */
+  private formatPretty(entry: LogEntry): string {
+    const levelColors: Record<LogLevel, string> = {
+      debug: '\x1b[36m', // cyan
+      info: '\x1b[32m', // green
+      warn: '\x1b[33m', // yellow
+      error: '\x1b[31m', // red
+    };
+    const reset = '\x1b[0m';
+    const color = levelColors[entry.level];
+
+    let output = `${color}[${entry.level.toUpperCase()}]${reset} ${entry.timestamp} [${entry.context.service}] ${entry.message}`;
+
+    if (entry.context.correlationId) {
+      output += ` (${entry.context.correlationId.substring(0, 8)})`;
+    }
+
+    if (entry.data) {
+      output += `\n  Data: ${JSON.stringify(entry.data, null, 2)}`;
+    }
+
+    if (entry.error) {
+      output += `\n  Error: ${entry.error.name}: ${entry.error.message}`;
+      if (entry.error.stack) {
+        output += `\n  ${entry.error.stack}`;
+      }
+    }
+
+    return output;
+  }
+
+  /**
    * Outputs the log entry
    */
   private output(entry: LogEntry): void {
-    const json = JSON.stringify(entry);
+    if (!this.shouldLog(entry.level)) {
+      return;
+    }
 
-    // In production, we'd send this to a log aggregation service
-    // For now, we'll use console methods based on level
+    const output = this.format === 'pretty' ? this.formatPretty(entry) : JSON.stringify(entry);
+
     switch (entry.level) {
       case 'debug':
-        if (this.environment === 'development') {
-          console.debug(json);
-        }
+        console.debug(output);
         break;
       case 'info':
-        console.info(json);
+        console.info(output);
         break;
       case 'warn':
-        console.warn(json);
+        console.warn(output);
         break;
       case 'error':
-        console.error(json);
+        console.error(output);
         break;
     }
   }
 
-  debug(message: string, context: LogContext, data?: unknown): void {
+  debug(message: string, context: Partial<LogContext> = {}, data?: unknown): void {
     const entry = this.createLogEntry('debug', message, context, data);
     this.output(entry);
   }
 
-  info(message: string, context: LogContext, data?: unknown): void {
+  info(message: string, context: Partial<LogContext> = {}, data?: unknown): void {
     const entry = this.createLogEntry('info', message, context, data);
     this.output(entry);
   }
 
-  warn(message: string, context: LogContext, data?: unknown): void {
+  warn(message: string, context: Partial<LogContext> = {}, data?: unknown): void {
     const entry = this.createLogEntry('warn', message, context, data);
     this.output(entry);
   }
 
-  error(message: string, context: LogContext, error?: Error, data?: unknown): void {
+  error(message: string, context: Partial<LogContext> = {}, error?: Error, data?: unknown): void {
     const entry = this.createLogEntry('error', message, context, data, error);
     this.output(entry);
+  }
+
+  /**
+   * Log a security event (always logged regardless of level)
+   */
+  security(
+    event: string,
+    context: Partial<LogContext> = {},
+    data?: Record<string, unknown>,
+  ): void {
+    const entry = this.createLogEntry('warn', `[SECURITY] ${event}`, context, {
+      ...data,
+      securityEvent: true,
+      eventType: event,
+    });
+    // Security events always output regardless of log level
+    const output = this.format === 'pretty' ? this.formatPretty(entry) : JSON.stringify(entry);
+    console.warn(output);
+  }
+
+  /**
+   * Log an audit event (always logged regardless of level)
+   */
+  audit(
+    action: string,
+    context: Partial<LogContext> = {},
+    data?: Record<string, unknown>,
+  ): void {
+    const entry = this.createLogEntry('info', `[AUDIT] ${action}`, context, {
+      ...data,
+      auditEvent: true,
+      action,
+    });
+    // Audit events always output regardless of log level
+    const output = this.format === 'pretty' ? this.formatPretty(entry) : JSON.stringify(entry);
+    console.info(output);
   }
 }
 
 // Default logger instance
 export const logger = new StructuredLogger();
+
+/**
+ * Creates a child logger for a specific service/module
+ */
+export function createLogger(serviceName: string, defaultContext?: Partial<LogContext>): StructuredLogger {
+  return logger.child(serviceName, defaultContext);
+}
 
 /**
  * Extracts or generates a correlation ID from a request

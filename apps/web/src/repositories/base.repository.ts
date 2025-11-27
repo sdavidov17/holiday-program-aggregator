@@ -6,6 +6,10 @@
 import type { PrismaClient } from '@prisma/client';
 import { db } from '~/server/db';
 import { auditLogger } from '~/utils/auditLogger';
+import { createLogger } from '~/utils/logger';
+
+// Create a child logger for the repository layer
+const repositoryLogger = createLogger('repository');
 
 export interface FindOptions {
   where?: Record<string, any>;
@@ -36,7 +40,7 @@ export abstract class BaseRepository<T> {
 
       return result;
     } catch (error) {
-      console.error(`Error finding ${this.modelName} by ID`, { id, error });
+      repositoryLogger.error(`Error finding ${this.modelName} by ID`, {}, error as Error, { id, model: this.modelName });
       throw error;
     }
   }
@@ -71,7 +75,7 @@ export abstract class BaseRepository<T> {
       const results = await (this.prisma as any)[this.modelName].findMany(prismaOptions);
       return results;
     } catch (error) {
-      console.error(`Error finding ${this.modelName} records`, { options, error });
+      repositoryLogger.error(`Error finding ${this.modelName} records`, {}, error as Error, { options, model: this.modelName });
       throw error;
     }
   }
@@ -84,7 +88,7 @@ export abstract class BaseRepository<T> {
       const result = await (this.prisma as any)[this.modelName].findFirst({ where });
       return result;
     } catch (error) {
-      console.error(`Error finding first ${this.modelName}`, { where, error });
+      repositoryLogger.error(`Error finding first ${this.modelName}`, {}, error as Error, { where, model: this.modelName });
       throw error;
     }
   }
@@ -107,7 +111,7 @@ export abstract class BaseRepository<T> {
 
       return result;
     } catch (error) {
-      console.error(`Error creating ${this.modelName}`, { data, error });
+      repositoryLogger.error(`Error creating ${this.modelName}`, {}, error as Error, { model: this.modelName });
       throw error;
     }
   }
@@ -133,7 +137,7 @@ export abstract class BaseRepository<T> {
 
       return result;
     } catch (error) {
-      console.error(`Error updating ${this.modelName}`, { id, data, error });
+      repositoryLogger.error(`Error updating ${this.modelName}`, {}, error as Error, { id, model: this.modelName });
       throw error;
     }
   }
@@ -157,7 +161,7 @@ export abstract class BaseRepository<T> {
 
       return result;
     } catch (error) {
-      console.error(`Error deleting ${this.modelName}`, { id, error });
+      repositoryLogger.error(`Error deleting ${this.modelName}`, {}, error as Error, { id, model: this.modelName });
       throw error;
     }
   }
@@ -170,7 +174,7 @@ export abstract class BaseRepository<T> {
       const count = await (this.prisma as any)[this.modelName].count({ where });
       return count;
     } catch (error) {
-      console.error(`Error counting ${this.modelName}`, { where, error });
+      repositoryLogger.error(`Error counting ${this.modelName}`, {}, error as Error, { where, model: this.modelName });
       throw error;
     }
   }
@@ -197,7 +201,7 @@ export abstract class BaseRepository<T> {
     try {
       return await this.prisma.$transaction(fn);
     } catch (error) {
-      console.error(`Transaction failed for ${this.modelName}`, { error });
+      repositoryLogger.error(`Transaction failed for ${this.modelName}`, {}, error as Error, { model: this.modelName });
       throw error;
     }
   }

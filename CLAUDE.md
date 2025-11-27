@@ -21,7 +21,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| PostGIS geospatial search | NOT IMPLEMENTED | Documented but missing from codebase |
+| PostGIS geospatial search | IMPLEMENTED | Schema + repository + router endpoints ready |
 | Web Crawler system | NOT IMPLEMENTED | FR2/FR3 not built |
 | Email suggestions | NOT IMPLEMENTED | Proactive suggestion system missing |
 | Test coverage | 23% ACTUAL | Target is 80% - critical gap |

@@ -2,6 +2,10 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { logger } from '~/utils/logger';
+import { ProviderRepository } from '~/repositories/provider.repository';
+
+// Create repository instance
+const providerRepository = new ProviderRepository();
 
 // Admin-only procedure
 const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
@@ -26,6 +30,8 @@ const createProviderSchema = z.object({
   suburb: z.string().min(1, 'Suburb is required'),
   state: z.string().min(1, 'State is required'),
   postcode: z.string().min(1, 'Postcode is required'),
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
   description: z.string().min(1, 'Description is required'),
   logoUrl: z.string().url().optional().or(z.literal('')),
   bannerUrl: z.string().url().optional().or(z.literal('')),
@@ -35,6 +41,18 @@ const createProviderSchema = z.object({
   specialNeedsDetails: z.string().optional(),
   isVetted: z.boolean().optional(),
   isPublished: z.boolean().optional(),
+});
+
+// Search input schema for geospatial search
+const searchProviderSchema = z.object({
+  latitude: z.number().min(-90).max(90).optional().describe('Latitude for distance search'),
+  longitude: z.number().min(-180).max(180).optional().describe('Longitude for distance search'),
+  radius: z.number().min(1).max(500).optional().describe('Search radius in kilometers'),
+  suburb: z.string().optional().describe('Filter by suburb'),
+  state: z.string().optional().describe('Filter by state'),
+  ageGroup: z.string().optional().describe('Filter by age group'),
+  category: z.string().optional().describe('Filter by program category'),
+  query: z.string().optional().describe('Search query for text search'),
 });
 
 const updateProviderSchema = createProviderSchema.partial().extend({
@@ -115,6 +133,67 @@ export const providerRouter = createTRPCRouter({
       },
     });
   }),
+
+  // Search providers by location and filters
+  search: protectedProcedure
+    .input(searchProviderSchema)
+    .query(async ({ ctx, input }) => {
+      logger.info(
+        'Provider search initiated',
+        {
+          userId: ctx.session.user.id,
+          correlationId: ctx.correlationId,
+        },
+        {
+          hasCoordinates: !!(input.latitude && input.longitude),
+          radius: input.radius,
+          suburb: input.suburb,
+          state: input.state,
+        },
+      );
+
+      const providers = await providerRepository.findByLocation({
+        latitude: input.latitude,
+        longitude: input.longitude,
+        radius: input.radius || 25, // Default 25km radius
+        suburb: input.suburb,
+        state: input.state,
+        ageGroup: input.ageGroup,
+        category: input.category,
+        isPublished: true,
+        isVetted: true,
+      });
+
+      logger.info(
+        'Provider search completed',
+        {
+          userId: ctx.session.user.id,
+          correlationId: ctx.correlationId,
+        },
+        {
+          resultsCount: providers.length,
+        },
+      );
+
+      return providers;
+    }),
+
+  // Search by coordinates (convenience endpoint)
+  searchByCoordinates: protectedProcedure
+    .input(
+      z.object({
+        latitude: z.number().min(-90).max(90),
+        longitude: z.number().min(-180).max(180),
+        radius: z.number().min(1).max(500).default(25),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return providerRepository.findByCoordinates(
+        input.latitude,
+        input.longitude,
+        input.radius,
+      );
+    }),
 
   // Get single provider
   getById: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
