@@ -24,8 +24,9 @@ export interface Provider {
   postcode: string | null;
   description: string | null;
   logoUrl: string | null;
+  bannerUrl: string | null;
   capacity: number | null;
-  ageGroups: string[];
+  ageGroups: string; // JSON array stored as text in Prisma
   specialNeeds: boolean;
   specialNeedsDetails: string | null;
   isVetted: boolean;
