@@ -2,6 +2,13 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { api } from '~/utils/api';
 
+// Local Provider type for TypeScript
+interface ProviderType {
+  id: string;
+  businessName: string;
+  isPublished: boolean;
+}
+
 export default function TestProviderPage() {
   const { data: session, status } = useSession();
   const {
@@ -40,7 +47,7 @@ export default function TestProviderPage() {
             <div>
               <p>Total providers: {providers.length}</p>
               <ul className="list-disc pl-5">
-                {providers.map((p) => (
+                {providers.map((p: ProviderType) => (
                   <li key={p.id}>
                     {p.businessName} - {p.isPublished ? 'Published' : 'Draft'}
                   </li>

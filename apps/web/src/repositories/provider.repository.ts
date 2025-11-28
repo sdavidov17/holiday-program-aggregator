@@ -3,12 +3,64 @@
  * Handles all database operations for providers with business logic
  */
 
-import type { Prisma, Program, Provider } from '@prisma/client';
 import { BaseRepository } from './base.repository';
 import { createLogger } from '~/utils/logger';
 
 // Create a child logger for the provider repository
 const providerLogger = createLogger('provider-repository');
+
+// Define Provider type locally to avoid Prisma client generation timing issues
+export interface Provider {
+  id: string;
+  businessName: string;
+  contactName: string | null;
+  email: string;
+  phone: string | null;
+  website: string | null;
+  abn: string | null;
+  address: string | null;
+  suburb: string | null;
+  state: string | null;
+  postcode: string | null;
+  description: string | null;
+  logoUrl: string | null;
+  capacity: number | null;
+  ageGroups: string[];
+  specialNeeds: boolean;
+  specialNeedsDetails: string | null;
+  isVetted: boolean;
+  isPublished: boolean;
+  vettingStatus: string | null;
+  vettingNotes: string | null;
+  vettingDate: Date | null;
+  latitude: number | null;
+  longitude: number | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Program {
+  id: string;
+  providerId: string;
+  name: string;
+  description: string | null;
+  category: string | null;
+  ageMin: number | null;
+  ageMax: number | null;
+  price: number | null;
+  location: string | null;
+  startDate: Date | null;
+  endDate: Date | null;
+  startTime: string | null;
+  endTime: string | null;
+  daysOfWeek: string | null;
+  capacity: number | null;
+  enrolledCount: number;
+  isActive: boolean;
+  isPublished: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export interface ProviderWithPrograms extends Provider {
   programs: Program[];
@@ -48,7 +100,7 @@ export class ProviderRepository extends BaseRepository<Provider> {
       }
 
       // Otherwise fall back to text-based search
-      const where: Prisma.ProviderWhereInput = {
+      const where: Record<string, unknown> = {
         isPublished: params.isPublished ?? true,
         isVetted: params.isVetted ?? true,
       };
@@ -129,7 +181,7 @@ export class ProviderRepository extends BaseRepository<Provider> {
         });
 
         // Load programs for each provider
-        const providerIds = providers.map(p => p.id);
+        const providerIds = providers.map((p: ProviderWithPrograms) => p.id);
         const programs = await this.prisma.program.findMany({
           where: {
             providerId: { in: providerIds },
@@ -139,15 +191,19 @@ export class ProviderRepository extends BaseRepository<Provider> {
         });
 
         // Map programs to providers
-        const programsByProvider = programs.reduce((acc, program) => {
-          if (!acc[program.providerId]) {
-            acc[program.providerId] = [];
-          }
-          acc[program.providerId].push(program);
-          return acc;
-        }, {} as Record<string, Program[]>);
+        const programsByProvider = (programs as Program[]).reduce(
+          (acc: Record<string, Program[]>, program: Program) => {
+            const providerId = program.providerId;
+            if (!acc[providerId]) {
+              acc[providerId] = [];
+            }
+            acc[providerId]!.push(program);
+            return acc;
+          },
+          {} as Record<string, Program[]>,
+        );
 
-        return providers.map(provider => ({
+        return providers.map((provider: ProviderWithPrograms) => ({
           ...provider,
           programs: programsByProvider[provider.id] || [],
         }));
@@ -198,8 +254,8 @@ export class ProviderRepository extends BaseRepository<Provider> {
     });
 
     // Filter by Haversine distance
-    const providersWithDistance = allProviders
-      .map(provider => ({
+    const providersWithDistance = (allProviders as ProviderWithPrograms[])
+      .map((provider: ProviderWithPrograms) => ({
         ...provider,
         distance_km: this.haversineDistance(
           latitude,
@@ -208,8 +264,8 @@ export class ProviderRepository extends BaseRepository<Provider> {
           provider.longitude!,
         ),
       }))
-      .filter(provider => provider.distance_km <= radiusKm)
-      .sort((a, b) => a.distance_km - b.distance_km);
+      .filter((provider: ProviderWithPrograms & { distance_km: number }) => provider.distance_km <= radiusKm)
+      .sort((a: ProviderWithPrograms & { distance_km: number }, b: ProviderWithPrograms & { distance_km: number }) => a.distance_km - b.distance_km);
 
     providerLogger.info('Haversine fallback query executed', {}, {
       totalProviders: allProviders.length,
@@ -373,14 +429,17 @@ export class ProviderRepository extends BaseRepository<Provider> {
   /**
    * Create provider with programs in a transaction
    */
-  async createWithPrograms(providerData: any, programsData: any[]): Promise<ProviderWithPrograms> {
-    return await this.prisma.$transaction(async (tx) => {
+  async createWithPrograms(
+    providerData: Partial<Provider>,
+    programsData: Partial<Program>[],
+  ): Promise<ProviderWithPrograms> {
+    return await this.prisma.$transaction(async (tx: { provider: { create: (args: { data: unknown }) => Promise<Provider> }; program: { create: (args: { data: unknown }) => Promise<Program> } }) => {
       const provider = await tx.provider.create({
         data: providerData,
       });
 
       const programs = await Promise.all(
-        programsData.map((programData) =>
+        programsData.map((programData: Partial<Program>) =>
           tx.program.create({
             data: {
               ...programData,

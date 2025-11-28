@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { AdminLayout } from '~/components/AdminLayout';
 import { api } from '~/utils/api';
+import type { Provider } from '~/repositories/provider.repository';
 
 export default function AdminDashboard() {
   const { data: providers } = api.provider.getAll.useQuery();
@@ -91,7 +92,7 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {providers?.slice(0, 5).map((provider) => (
+              {providers?.slice(0, 5).map((provider: Provider) => (
                 <tr key={provider.id}>
                   <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
                     {provider.businessName}

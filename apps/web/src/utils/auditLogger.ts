@@ -48,7 +48,7 @@ export class AuditLogger {
     const auditEvent: Omit<AuditEvent, 'id'> = {
       timestamp: new Date(),
       eventType,
-      correlationId: context.correlationId,
+      correlationId: context.correlationId || `audit-${Date.now()}`,
       ...details,
     };
 

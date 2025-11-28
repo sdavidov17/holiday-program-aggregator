@@ -1,4 +1,3 @@
-import type { Subscription } from '@prisma/client';
 import { SubscriptionStatus } from '~/types/database';
 
 // Minimal subscription data needed for status checks
@@ -9,6 +8,21 @@ export interface SubscriptionData {
   cancelAtPeriodEnd: boolean;
   trialEndsAt?: Date | null;
   stripeSubscriptionId?: string | null;
+}
+
+// Define Subscription type locally for compatibility
+interface Subscription extends SubscriptionData {
+  id: string;
+  userId: string;
+  stripeCustomerId: string | null;
+  stripePriceId: string | null;
+  tier: string | null;
+  currentPeriodStart: Date | null;
+  canceledAt: Date | null;
+  lastReminderSent: Date | null;
+  reminderCount: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Partial subscription data (from API responses)

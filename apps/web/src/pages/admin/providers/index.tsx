@@ -2,6 +2,12 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { AdminLayout } from '~/components/AdminLayout';
 import { api } from '~/utils/api';
+import type { Provider, Program } from '~/repositories/provider.repository';
+
+// Extended provider type with programs
+interface ProviderWithPrograms extends Provider {
+  programs: Program[];
+}
 
 export default function ProvidersListPage() {
   const [includeUnpublished, setIncludeUnpublished] = useState(true);
@@ -117,7 +123,7 @@ export default function ProvidersListPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {providers?.map((provider) => (
+              {providers?.map((provider: Provider) => (
                 <tr key={provider.id}>
                   <td className="px-6 py-4">
                     <div>
@@ -139,7 +145,7 @@ export default function ProvidersListPage() {
                     )}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    {provider.programs.length} programs
+                    {(provider as ProviderWithPrograms).programs?.length || 0} programs
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex gap-2">

@@ -74,7 +74,9 @@ const loggingMiddleware = t.middleware(async ({ path, next, ctx }) => {
   };
 
   const requestContext: RequestContext = {
-    ...logContext,
+    correlationId: ctx.correlationId || `trpc-${Date.now()}`,
+    userId: logContext.userId,
+    sessionId: logContext.sessionId,
     journey: path,
     startTime: Date.now(),
   };
@@ -177,15 +179,15 @@ export const premiumProcedure = protectedProcedure.use(async ({ ctx, next }) => 
   ) {
     // Use transaction to prevent race conditions
     try {
-      await ctx.db.$transaction(async (tx) => {
+      await ctx.db.$transaction(async (tx: { subscription: { findUnique: (args: { where: { id: string } }) => Promise<typeof subscription | null>; update: (args: { where: Record<string, unknown>; data: Record<string, unknown> }) => Promise<unknown> } }) => {
         // Re-check status within transaction to prevent race condition
         const currentSub = await tx.subscription.findUnique({
           where: { id: subscription.id },
         });
-        
+
         if (currentSub?.status === SubscriptionStatus.ACTIVE) {
           await tx.subscription.update({
-            where: { 
+            where: {
               id: subscription.id,
               status: SubscriptionStatus.ACTIVE // Optimistic lock on status
             },

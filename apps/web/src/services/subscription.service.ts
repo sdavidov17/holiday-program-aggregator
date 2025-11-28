@@ -1,4 +1,4 @@
-import type { Prisma, PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import { env } from '~/env.mjs';
 import { SubscriptionStatus } from '~/server/db';
@@ -270,7 +270,7 @@ export class SubscriptionService {
    */
   async updateSubscriptionFromWebhook(
     stripeSubscriptionId: string,
-    updates: Partial<Prisma.SubscriptionUpdateInput>,
+    updates: Record<string, unknown>,
   ) {
     const subscription = await this.db.subscription.findFirst({
       where: { stripeSubscriptionId },
