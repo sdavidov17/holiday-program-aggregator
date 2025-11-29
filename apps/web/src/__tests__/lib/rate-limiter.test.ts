@@ -281,21 +281,29 @@ describe('Rate Limiter', () => {
     });
 
     it('should not call handler when rate limited', async () => {
-      const handler = jest.fn();
-      const wrappedHandler = withRateLimit(handler, { maxRequests: 0 });
+      const handler = jest.fn().mockResolvedValue(undefined);
+      const wrappedHandler = withRateLimit(handler, { maxRequests: 1 });
 
-      const { req, res } = createMocks({
+      // First request - should succeed and call handler
+      const { req: req1, res: res1 } = createMocks({
         method: 'GET',
         url: '/api/test-no-call',
         headers: { 'x-forwarded-for': '22.0.0.1' },
       });
+      await wrappedHandler(req1 as any, res1 as any);
 
-      await wrappedHandler(req as any, res as any);
+      // Second request - should be rate limited, handler NOT called
+      const { req: req2, res: res2 } = createMocks({
+        method: 'GET',
+        url: '/api/test-no-call',
+        headers: { 'x-forwarded-for': '22.0.0.1' },
+      });
+      await wrappedHandler(req2 as any, res2 as any);
 
-      // Handler should have been called once (first request allowed, 0 maxRequests means no limit check fails on first)
-      // Actually with maxRequests: 0, first request will already fail
-      // Let me re-check - with maxRequests set, the check is `timestamps.length >= maxRequests`
-      // So with maxRequests: 1, first request succeeds (0 < 1), second fails
+      // Handler should only be called once (first request)
+      expect(handler).toHaveBeenCalledTimes(1);
+      // Second request should get 429 status
+      expect(res2._getStatusCode()).toBe(429);
     });
   });
 

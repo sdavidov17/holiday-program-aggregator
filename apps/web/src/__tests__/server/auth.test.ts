@@ -5,16 +5,12 @@
 
 import bcrypt from 'bcryptjs';
 
-// Mock database
-const mockFindUnique = jest.fn();
+// Use the global mock from __tests__/__mocks__/db.js
+// The global mock is automatically used when importing ~/server/db
+import { db } from '~/server/db';
 
-jest.mock('~/server/db', () => ({
-  db: {
-    user: {
-      findUnique: (...args: unknown[]) => mockFindUnique(...args),
-    },
-  },
-}));
+// Get reference to the mocked findUnique function
+const mockFindUnique = db.user.findUnique as jest.Mock;
 
 // Mock environment
 jest.mock('~/env.mjs', () => ({
@@ -50,7 +46,7 @@ describe('Authentication System', () => {
     });
 
     it('should have Credentials provider configured', () => {
-      const credentialsProvider = authOptions.providers.find((p) => p.name === 'credentials');
+      const credentialsProvider = authOptions.providers.find((p) => p.type === 'credentials');
       expect(credentialsProvider).toBeDefined();
     });
 
@@ -63,7 +59,7 @@ describe('Authentication System', () => {
     let authorize: Function;
 
     beforeEach(() => {
-      const credentialsProvider = authOptions.providers.find((p) => p.name === 'credentials');
+      const credentialsProvider = authOptions.providers.find((p) => p.type === 'credentials');
       // Access the authorize function from the credentials provider
       authorize = (credentialsProvider as any).options.authorize;
     });
@@ -295,7 +291,7 @@ describe('Authentication System', () => {
     let authorize: Function;
 
     beforeEach(() => {
-      const credentialsProvider = authOptions.providers.find((p) => p.name === 'credentials');
+      const credentialsProvider = authOptions.providers.find((p) => p.type === 'credentials');
       authorize = (credentialsProvider as any).options.authorize;
     });
 

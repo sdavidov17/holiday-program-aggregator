@@ -3,7 +3,9 @@
  * Tests common database operations and audit logging
  */
 
-// Create mock functions that will be used in the jest.mock factory
+import type { PrismaClient } from '@prisma/client';
+
+// Create mock functions
 const mockFindUnique = jest.fn();
 const mockFindMany = jest.fn();
 const mockFindFirst = jest.fn();
@@ -37,24 +39,23 @@ jest.mock('~/utils/auditLogger', () => ({
   },
 }));
 
-// Mock Prisma - using arrow functions to allow access to the mock fns
-jest.mock('~/server/db', () => ({
-  db: {
-    testModel: {
-      findUnique: (...args: unknown[]) => mockFindUnique(...args),
-      findMany: (...args: unknown[]) => mockFindMany(...args),
-      findFirst: (...args: unknown[]) => mockFindFirst(...args),
-      create: (...args: unknown[]) => mockCreate(...args),
-      update: (...args: unknown[]) => mockUpdate(...args),
-      delete: (...args: unknown[]) => mockDelete(...args),
-      count: (...args: unknown[]) => mockCount(...args),
-    },
-    $transaction: (fn: (tx: unknown) => Promise<unknown>) => mockTransaction(fn),
-  },
-}));
-
 // Import after mocks
 import { BaseRepository } from '../../repositories/base.repository';
+
+// Create a mock Prisma client to inject into the repository
+const createMockPrisma = () =>
+  ({
+    testModel: {
+      findUnique: mockFindUnique,
+      findMany: mockFindMany,
+      findFirst: mockFindFirst,
+      create: mockCreate,
+      update: mockUpdate,
+      delete: mockDelete,
+      count: mockCount,
+    },
+    $transaction: mockTransaction,
+  }) as unknown as PrismaClient;
 
 // Create a concrete implementation for testing
 interface TestEntity {
@@ -65,17 +66,19 @@ interface TestEntity {
 }
 
 class TestRepository extends BaseRepository<TestEntity> {
-  constructor() {
-    super('testModel');
+  constructor(prisma: PrismaClient) {
+    super('testModel', prisma);
   }
 }
 
 describe('BaseRepository', () => {
   let repository: TestRepository;
+  let mockPrisma: PrismaClient;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    repository = new TestRepository();
+    mockPrisma = createMockPrisma();
+    repository = new TestRepository(mockPrisma);
   });
 
   describe('findById', () => {

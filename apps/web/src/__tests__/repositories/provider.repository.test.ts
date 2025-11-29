@@ -39,42 +39,45 @@ const mockUpdateMany = jest.fn();
 const mockDeleteMany = jest.fn();
 const mockProgramFindMany = jest.fn();
 const mockProgramCreateMany = jest.fn();
+const mockProgramCreate = jest.fn();
 
-jest.mock('~/server/db', () => ({
-  db: {
-    provider: {
-      findUnique: (...args: unknown[]) => mockFindUnique(...args),
-      findMany: (...args: unknown[]) => mockFindMany(...args),
-      findFirst: (...args: unknown[]) => mockFindFirst(...args),
-      create: (...args: unknown[]) => mockCreate(...args),
-      update: (...args: unknown[]) => mockUpdate(...args),
-      delete: (...args: unknown[]) => mockDelete(...args),
-      count: (...args: unknown[]) => mockCount(...args),
-      createMany: (...args: unknown[]) => mockCreateMany(...args),
-      updateMany: (...args: unknown[]) => mockUpdateMany(...args),
-      deleteMany: (...args: unknown[]) => mockDeleteMany(...args),
-    },
-    program: {
-      findMany: (...args: unknown[]) => mockProgramFindMany(...args),
-      createMany: (...args: unknown[]) => mockProgramCreateMany(...args),
-    },
-    $queryRaw: (...args: unknown[]) => mockQueryRaw(...args),
-    $transaction: (...args: unknown[]) => mockTransaction(...args),
+// Create mock prisma client to inject into repository
+const createMockPrisma = () => ({
+  provider: {
+    findUnique: mockFindUnique,
+    findMany: mockFindMany,
+    findFirst: mockFindFirst,
+    create: mockCreate,
+    update: mockUpdate,
+    delete: mockDelete,
+    count: mockCount,
+    createMany: mockCreateMany,
+    updateMany: mockUpdateMany,
+    deleteMany: mockDeleteMany,
   },
-}));
+  program: {
+    findMany: mockProgramFindMany,
+    createMany: mockProgramCreateMany,
+    create: mockProgramCreate,
+  },
+  $queryRaw: mockQueryRaw,
+  $transaction: mockTransaction,
+});
 
 import { ProviderRepository } from '../../repositories/provider.repository';
 
 describe('ProviderRepository', () => {
   let repository: ProviderRepository;
+  let mockPrisma: ReturnType<typeof createMockPrisma>;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    repository = new ProviderRepository();
+    mockPrisma = createMockPrisma();
+    repository = new ProviderRepository(mockPrisma);
 
     // Default mock implementations
     mockTransaction.mockImplementation(async (fn) =>
-      fn({ provider: { create: mockCreate }, program: { createMany: mockProgramCreateMany } }),
+      fn({ provider: { create: mockCreate }, program: { create: mockProgramCreate } }),
     );
   });
 
@@ -158,7 +161,9 @@ describe('ProviderRepository', () => {
       expect(mockFindMany).toHaveBeenCalledWith(
         expect.objectContaining({
           include: expect.objectContaining({
-            programs: true,
+            programs: expect.objectContaining({
+              where: { isActive: true, isPublished: true },
+            }),
           }),
         }),
       );
