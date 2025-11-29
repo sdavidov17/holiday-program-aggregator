@@ -3,8 +3,7 @@
  * Tests rate limiting middleware, presets, and utility functions
  */
 
-import { createMocks, MockRequest, MockResponse } from 'node-mocks-http';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { createMocks } from 'node-mocks-http';
 import {
   apiRateLimit,
   authRateLimit,

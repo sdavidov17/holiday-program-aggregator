@@ -263,11 +263,7 @@ export class StructuredLogger {
   /**
    * Log a security event (always logged regardless of level)
    */
-  security(
-    event: string,
-    context: Partial<LogContext> = {},
-    data?: Record<string, unknown>,
-  ): void {
+  security(event: string, context: Partial<LogContext> = {}, data?: Record<string, unknown>): void {
     const entry = this.createLogEntry('warn', `[SECURITY] ${event}`, context, {
       ...data,
       securityEvent: true,
@@ -281,11 +277,7 @@ export class StructuredLogger {
   /**
    * Log an audit event (always logged regardless of level)
    */
-  audit(
-    action: string,
-    context: Partial<LogContext> = {},
-    data?: Record<string, unknown>,
-  ): void {
+  audit(action: string, context: Partial<LogContext> = {}, data?: Record<string, unknown>): void {
     const entry = this.createLogEntry('info', `[AUDIT] ${action}`, context, {
       ...data,
       auditEvent: true,
@@ -303,7 +295,10 @@ export const logger = new StructuredLogger();
 /**
  * Creates a child logger for a specific service/module
  */
-export function createLogger(serviceName: string, defaultContext?: Partial<LogContext>): StructuredLogger {
+export function createLogger(
+  serviceName: string,
+  defaultContext?: Partial<LogContext>,
+): StructuredLogger {
   return logger.child(serviceName, defaultContext);
 }
 

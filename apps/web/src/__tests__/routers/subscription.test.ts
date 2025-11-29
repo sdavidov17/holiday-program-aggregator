@@ -58,7 +58,10 @@ describe('Subscription Router', () => {
   });
 
   // Create mock context for tRPC
-  const createMockContext = (session: Session | null = null, reqHeaders: Record<string, string> = {}) => ({
+  const createMockContext = (
+    session: Session | null = null,
+    reqHeaders: Record<string, string> = {},
+  ) => ({
     session,
     db: mockDb,
     req: {
@@ -280,9 +283,7 @@ describe('Subscription Router', () => {
       const ctx = createMockContext(session);
       const caller = subscriptionRouter.createCaller(ctx);
 
-      await expect(caller.cancelSubscription()).rejects.toThrow(
-        'No active subscription found',
-      );
+      await expect(caller.cancelSubscription()).rejects.toThrow('No active subscription found');
     });
 
     it('should reject unauthenticated requests', async () => {

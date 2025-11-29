@@ -219,10 +219,7 @@ describe('Encryption Utilities', () => {
       });
 
       expect(() => encryptPII('test')).toThrow('Failed to encrypt PII');
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Encryption error:',
-        expect.any(Error),
-      );
+      expect(consoleSpy).toHaveBeenCalledWith('Encryption error:', expect.any(Error));
 
       CryptoJS.AES.encrypt = originalEncrypt;
       consoleSpy.mockRestore();
@@ -237,10 +234,7 @@ describe('Encryption Utilities', () => {
       });
 
       expect(() => decryptPII('encrypted-data')).toThrow('Failed to decrypt PII');
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Decryption error:',
-        expect.any(Error),
-      );
+      expect(consoleSpy).toHaveBeenCalledWith('Decryption error:', expect.any(Error));
 
       CryptoJS.AES.decrypt = originalDecrypt;
       consoleSpy.mockRestore();

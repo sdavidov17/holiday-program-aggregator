@@ -45,16 +45,12 @@ describe('Authentication System', () => {
     });
 
     it('should have Google provider configured', () => {
-      const googleProvider = authOptions.providers.find(
-        (p) => p.name === 'Google',
-      );
+      const googleProvider = authOptions.providers.find((p) => p.name === 'Google');
       expect(googleProvider).toBeDefined();
     });
 
     it('should have Credentials provider configured', () => {
-      const credentialsProvider = authOptions.providers.find(
-        (p) => p.name === 'credentials',
-      );
+      const credentialsProvider = authOptions.providers.find((p) => p.name === 'credentials');
       expect(credentialsProvider).toBeDefined();
     });
 
@@ -67,9 +63,7 @@ describe('Authentication System', () => {
     let authorize: Function;
 
     beforeEach(() => {
-      const credentialsProvider = authOptions.providers.find(
-        (p) => p.name === 'credentials',
-      );
+      const credentialsProvider = authOptions.providers.find((p) => p.name === 'credentials');
       // Access the authorize function from the credentials provider
       authorize = (credentialsProvider as any).options.authorize;
     });
@@ -301,9 +295,7 @@ describe('Authentication System', () => {
     let authorize: Function;
 
     beforeEach(() => {
-      const credentialsProvider = authOptions.providers.find(
-        (p) => p.name === 'credentials',
-      );
+      const credentialsProvider = authOptions.providers.find((p) => p.name === 'credentials');
       authorize = (credentialsProvider as any).options.authorize;
     });
 

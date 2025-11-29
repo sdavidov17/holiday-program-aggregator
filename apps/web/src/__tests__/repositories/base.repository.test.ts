@@ -210,13 +210,9 @@ describe('BaseRepository', () => {
       const result = await repository.create(createData, 'user-123');
 
       expect(mockCreate).toHaveBeenCalledWith({ data: createData });
-      expect(mockLogAction).toHaveBeenCalledWith(
-        'CREATE',
-        'testModel',
-        'new-1',
-        'user-123',
-        { created: createData },
-      );
+      expect(mockLogAction).toHaveBeenCalledWith('CREATE', 'testModel', 'new-1', 'user-123', {
+        created: createData,
+      });
       expect(result).toEqual(created);
     });
 
@@ -257,13 +253,10 @@ describe('BaseRepository', () => {
         where: { id: 'test-1' },
         data: { name: 'New Name' },
       });
-      expect(mockLogAction).toHaveBeenCalledWith(
-        'UPDATE',
-        'testModel',
-        'test-1',
-        'user-123',
-        { before: beforeEntity, after: afterEntity },
-      );
+      expect(mockLogAction).toHaveBeenCalledWith('UPDATE', 'testModel', 'test-1', 'user-123', {
+        before: beforeEntity,
+        after: afterEntity,
+      });
       expect(result).toEqual(afterEntity);
     });
 
@@ -286,9 +279,7 @@ describe('BaseRepository', () => {
       mockFindUnique.mockResolvedValue({ id: 'test-1' });
       mockUpdate.mockRejectedValue(new Error('Update failed'));
 
-      await expect(repository.update('test-1', { name: 'New' })).rejects.toThrow(
-        'Update failed',
-      );
+      await expect(repository.update('test-1', { name: 'New' })).rejects.toThrow('Update failed');
       expect(mockLoggerError).toHaveBeenCalled();
     });
   });
@@ -304,13 +295,9 @@ describe('BaseRepository', () => {
       expect(mockDelete).toHaveBeenCalledWith({
         where: { id: 'test-1' },
       });
-      expect(mockLogAction).toHaveBeenCalledWith(
-        'DELETE',
-        'testModel',
-        'test-1',
-        'user-123',
-        { deleted: entity },
-      );
+      expect(mockLogAction).toHaveBeenCalledWith('DELETE', 'testModel', 'test-1', 'user-123', {
+        deleted: entity,
+      });
       expect(result).toEqual(entity);
     });
 

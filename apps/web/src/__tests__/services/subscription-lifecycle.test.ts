@@ -4,10 +4,7 @@
  */
 
 import { addDays, startOfDay } from 'date-fns';
-import {
-  type LifecycleResults,
-  processSubscriptionLifecycle,
-} from '../../services/subscription-lifecycle';
+import { processSubscriptionLifecycle } from '../../services/subscription-lifecycle';
 
 // Mock database
 const mockFindMany = jest.fn();
@@ -372,9 +369,7 @@ describe('Subscription Lifecycle Service', () => {
       const results = await processSubscriptionLifecycle();
 
       expect(results.expired).toBe(1);
-      expect(results.errors).toContain(
-        'Failed to send expiration email for user-1: Email failed',
-      );
+      expect(results.errors).toContain('Failed to send expiration email for user-1: Email failed');
       expect(mockIncrementExpirationNoticesFailed).toHaveBeenCalled();
     });
 
@@ -398,9 +393,7 @@ describe('Subscription Lifecycle Service', () => {
       const results = await processSubscriptionLifecycle();
 
       expect(results.expired).toBe(0);
-      expect(results.errors).toContain(
-        'Failed to process expiration for user-1: DB update failed',
-      );
+      expect(results.errors).toContain('Failed to process expiration for user-1: DB update failed');
     });
 
     it('should track expiration metrics correctly', async () => {

@@ -7,33 +7,66 @@
  * Run: pnpm test -- schema-sync
  */
 
-import { Provider, Program } from '~/repositories/provider.repository';
+import type { Program, Provider } from '~/repositories/provider.repository';
 
 // Expected fields from Prisma schema - update if schema changes
 const PROVIDER_SCHEMA = {
   required: [
-    'id', 'businessName', 'contactName', 'email', 'phone',
-    'address', 'suburb', 'state', 'postcode', 'description',
-    'ageGroups', 'specialNeeds', 'isVetted', 'isPublished',
-    'vettingStatus', 'createdAt', 'updatedAt'
+    'id',
+    'businessName',
+    'contactName',
+    'email',
+    'phone',
+    'address',
+    'suburb',
+    'state',
+    'postcode',
+    'description',
+    'ageGroups',
+    'specialNeeds',
+    'isVetted',
+    'isPublished',
+    'vettingStatus',
+    'createdAt',
+    'updatedAt',
   ],
   optional: [
-    'website', 'abn', 'logoUrl', 'bannerUrl', 'capacity',
-    'specialNeedsDetails', 'vettingNotes', 'vettingDate',
-    'latitude', 'longitude'
-  ]
+    'website',
+    'abn',
+    'logoUrl',
+    'bannerUrl',
+    'capacity',
+    'specialNeedsDetails',
+    'vettingNotes',
+    'vettingDate',
+    'latitude',
+    'longitude',
+  ],
 } as const;
 
 const PROGRAM_SCHEMA = {
   required: [
-    'id', 'providerId', 'name', 'description', 'category',
-    'ageMin', 'ageMax', 'price', 'location', 'startDate', 'endDate',
-    'startTime', 'endTime', 'daysOfWeek', 'isActive', 'isPublished',
-    'programStatus', 'createdAt', 'updatedAt'
+    'id',
+    'providerId',
+    'name',
+    'description',
+    'category',
+    'ageMin',
+    'ageMax',
+    'price',
+    'location',
+    'startDate',
+    'endDate',
+    'startTime',
+    'endTime',
+    'daysOfWeek',
+    'isActive',
+    'isPublished',
+    'programStatus',
+    'createdAt',
+    'updatedAt',
   ],
-  optional: [
-    'capacity', 'enrollmentUrl', 'imageUrl'
-  ]
+  optional: ['capacity', 'enrollmentUrl', 'imageUrl'],
 } as const;
 
 describe('Schema Sync: Provider', () => {

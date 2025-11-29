@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { AdminLayout } from '~/components/AdminLayout';
-import { api } from '~/utils/api';
 import type { Provider } from '~/repositories/provider.repository';
+import { api } from '~/utils/api';
 
 export default function AdminDashboard() {
   const { data: providers } = api.provider.getAll.useQuery();

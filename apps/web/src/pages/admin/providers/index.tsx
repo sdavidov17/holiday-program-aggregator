@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { AdminLayout } from '~/components/AdminLayout';
+import type { Program, Provider } from '~/repositories/provider.repository';
 import { api } from '~/utils/api';
-import type { Provider, Program } from '~/repositories/provider.repository';
 
 // Extended provider type with programs
 interface ProviderWithPrograms extends Provider {

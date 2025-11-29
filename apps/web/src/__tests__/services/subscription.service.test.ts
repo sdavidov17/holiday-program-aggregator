@@ -165,10 +165,7 @@ describe('SubscriptionService', () => {
         'http://cancel',
       );
 
-      expect(mockCreateStripeCustomer).toHaveBeenCalledWith(
-        'test@example.com',
-        'user-123',
-      );
+      expect(mockCreateStripeCustomer).toHaveBeenCalledWith('test@example.com', 'user-123');
       expect(mockCreateCheckoutSession).toHaveBeenCalledWith(
         'cus_new',
         'user-123',
@@ -283,10 +280,9 @@ describe('SubscriptionService', () => {
 
       const result = await service.cancelSubscription('user-123');
 
-      expect(mockStripe.subscriptions.update).toHaveBeenCalledWith(
-        'sub_stripe_123',
-        { cancel_at_period_end: true },
-      );
+      expect(mockStripe.subscriptions.update).toHaveBeenCalledWith('sub_stripe_123', {
+        cancel_at_period_end: true,
+      });
       expect(mockDb.subscription.update).toHaveBeenCalledWith({
         where: { id: 'sub-1' },
         data: {
@@ -301,9 +297,7 @@ describe('SubscriptionService', () => {
     it('should throw NOT_FOUND if no subscription exists', async () => {
       mockDb.subscription.findUnique.mockResolvedValue(null);
 
-      await expect(service.cancelSubscription('user-123')).rejects.toThrow(
-        TRPCError,
-      );
+      await expect(service.cancelSubscription('user-123')).rejects.toThrow(TRPCError);
       await expect(service.cancelSubscription('user-123')).rejects.toThrow(
         'No active subscription found',
       );
@@ -337,10 +331,9 @@ describe('SubscriptionService', () => {
 
       const result = await service.resumeSubscription('user-123');
 
-      expect(mockStripe.subscriptions.update).toHaveBeenCalledWith(
-        'sub_stripe_123',
-        { cancel_at_period_end: false },
-      );
+      expect(mockStripe.subscriptions.update).toHaveBeenCalledWith('sub_stripe_123', {
+        cancel_at_period_end: false,
+      });
       expect(mockDb.subscription.update).toHaveBeenCalledWith({
         where: { id: 'sub-1' },
         data: {
@@ -355,9 +348,7 @@ describe('SubscriptionService', () => {
     it('should throw NOT_FOUND if no subscription exists', async () => {
       mockDb.subscription.findUnique.mockResolvedValue(null);
 
-      await expect(service.resumeSubscription('user-123')).rejects.toThrow(
-        'No subscription found',
-      );
+      await expect(service.resumeSubscription('user-123')).rejects.toThrow('No subscription found');
     });
 
     it('should throw BAD_REQUEST if subscription is not scheduled for cancellation', async () => {

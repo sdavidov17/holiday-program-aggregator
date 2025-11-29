@@ -3,8 +3,8 @@
  * Handles all database operations for providers with business logic
  */
 
-import { BaseRepository } from './base.repository';
 import { createLogger } from '~/utils/logger';
+import { BaseRepository } from './base.repository';
 
 // Create a child logger for the provider repository
 const providerLogger = createLogger('provider-repository');
@@ -95,12 +95,7 @@ export class ProviderRepository extends BaseRepository<Provider> {
     try {
       // If we have coordinates and radius, use PostGIS geospatial query
       if (params.latitude && params.longitude && params.radius) {
-        return this.findByCoordinates(
-          params.latitude,
-          params.longitude,
-          params.radius,
-          params,
-        );
+        return this.findByCoordinates(params.latitude, params.longitude, params.radius, params);
       }
 
       // Otherwise fall back to text-based search
@@ -177,12 +172,16 @@ export class ProviderRepository extends BaseRepository<Provider> {
           ORDER BY distance_km ASC
         `;
 
-        providerLogger.info('PostGIS geospatial query executed', {}, {
-          resultsCount: providers.length,
-          latitude,
-          longitude,
-          radiusKm,
-        });
+        providerLogger.info(
+          'PostGIS geospatial query executed',
+          {},
+          {
+            resultsCount: providers.length,
+            latitude,
+            longitude,
+            radiusKm,
+          },
+        );
 
         // Load programs for each provider
         const providerIds = providers.map((p: ProviderWithPrograms) => p.id);
@@ -213,9 +212,13 @@ export class ProviderRepository extends BaseRepository<Provider> {
         }));
       } catch (postgisError) {
         // PostGIS not available, fall back to Haversine calculation
-        providerLogger.warn('PostGIS query failed, falling back to Haversine', {}, {
-          error: (postgisError as Error).message,
-        });
+        providerLogger.warn(
+          'PostGIS query failed, falling back to Haversine',
+          {},
+          {
+            error: (postgisError as Error).message,
+          },
+        );
 
         return this.findByHaversine(latitude, longitude, radiusKm, additionalFilters);
       }
@@ -268,14 +271,26 @@ export class ProviderRepository extends BaseRepository<Provider> {
           provider.longitude!,
         ),
       }))
-      .filter((provider: ProviderWithPrograms & { distance_km: number }) => provider.distance_km <= radiusKm)
-      .sort((a: ProviderWithPrograms & { distance_km: number }, b: ProviderWithPrograms & { distance_km: number }) => a.distance_km - b.distance_km);
+      .filter(
+        (provider: ProviderWithPrograms & { distance_km: number }) =>
+          provider.distance_km <= radiusKm,
+      )
+      .sort(
+        (
+          a: ProviderWithPrograms & { distance_km: number },
+          b: ProviderWithPrograms & { distance_km: number },
+        ) => a.distance_km - b.distance_km,
+      );
 
-    providerLogger.info('Haversine fallback query executed', {}, {
-      totalProviders: allProviders.length,
-      matchingProviders: providersWithDistance.length,
-      radiusKm,
-    });
+    providerLogger.info(
+      'Haversine fallback query executed',
+      {},
+      {
+        totalProviders: allProviders.length,
+        matchingProviders: providersWithDistance.length,
+        radiusKm,
+      },
+    );
 
     return providersWithDistance as ProviderWithPrograms[];
   }
@@ -284,12 +299,7 @@ export class ProviderRepository extends BaseRepository<Provider> {
    * Calculate distance between two points using Haversine formula
    * Returns distance in kilometers
    */
-  private haversineDistance(
-    lat1: number,
-    lon1: number,
-    lat2: number,
-    lon2: number,
-  ): number {
+  private haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const R = 6371; // Earth's radius in kilometers
     const dLat = this.toRadians(lat2 - lat1);
     const dLon = this.toRadians(lon2 - lon1);
@@ -437,27 +447,32 @@ export class ProviderRepository extends BaseRepository<Provider> {
     providerData: Partial<Provider>,
     programsData: Partial<Program>[],
   ): Promise<ProviderWithPrograms> {
-    const result = await this.prisma.$transaction(async (tx: { provider: { create: (args: { data: unknown }) => Promise<Provider> }; program: { create: (args: { data: unknown }) => Promise<Program> } }) => {
-      const provider = await tx.provider.create({
-        data: providerData,
-      });
+    const result = await this.prisma.$transaction(
+      async (tx: {
+        provider: { create: (args: { data: unknown }) => Promise<Provider> };
+        program: { create: (args: { data: unknown }) => Promise<Program> };
+      }) => {
+        const provider = await tx.provider.create({
+          data: providerData,
+        });
 
-      const programs = await Promise.all(
-        programsData.map((programData: Partial<Program>) =>
-          tx.program.create({
-            data: {
-              ...programData,
-              providerId: provider.id,
-            },
-          }),
-        ),
-      );
+        const programs = await Promise.all(
+          programsData.map((programData: Partial<Program>) =>
+            tx.program.create({
+              data: {
+                ...programData,
+                providerId: provider.id,
+              },
+            }),
+          ),
+        );
 
-      return {
-        ...provider,
-        programs,
-      };
-    });
+        return {
+          ...provider,
+          programs,
+        };
+      },
+    );
 
     return result as ProviderWithPrograms;
   }

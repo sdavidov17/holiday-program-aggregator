@@ -73,7 +73,9 @@ describe('ProviderRepository', () => {
     repository = new ProviderRepository();
 
     // Default mock implementations
-    mockTransaction.mockImplementation(async (fn) => fn({ provider: { create: mockCreate }, program: { createMany: mockProgramCreateMany } }));
+    mockTransaction.mockImplementation(async (fn) =>
+      fn({ provider: { create: mockCreate }, program: { createMany: mockProgramCreateMany } }),
+    );
   });
 
   describe('findByLocation', () => {
@@ -206,9 +208,7 @@ describe('ProviderRepository', () => {
     });
 
     it('should use PostGIS when available', async () => {
-      const mockPostGISResult = [
-        { id: 'prov-1', businessName: 'PostGIS Result', distance: 500 },
-      ];
+      const mockPostGISResult = [{ id: 'prov-1', businessName: 'PostGIS Result', distance: 500 }];
       mockQueryRaw.mockResolvedValue(mockPostGISResult);
 
       const result = await repository.findByCoordinates(-33.8688, 151.2093, 10);
@@ -221,9 +221,7 @@ describe('ProviderRepository', () => {
 
   describe('findVettedProviders', () => {
     it('should find only vetted providers', async () => {
-      const vettedProviders = [
-        { id: 'prov-1', isVetted: true, vettingStatus: 'APPROVED' },
-      ];
+      const vettedProviders = [{ id: 'prov-1', isVetted: true, vettingStatus: 'APPROVED' }];
       mockFindMany.mockResolvedValue(vettedProviders);
 
       const result = await repository.findVettedProviders();
@@ -276,7 +274,7 @@ describe('ProviderRepository', () => {
         isVetted: false,
       });
 
-      const result = await repository.updateVettingStatus(
+      const _result = await repository.updateVettingStatus(
         'prov-1',
         'REJECTED',
         'Missing required documentation',
@@ -475,10 +473,9 @@ describe('ProviderRepository', () => {
       it('should update multiple providers', async () => {
         mockUpdateMany.mockResolvedValue({ count: 3 });
 
-        const result = await repository.updateMany(
-          ['prov-1', 'prov-2', 'prov-3'],
-          { isPublished: true },
-        );
+        const result = await repository.updateMany(['prov-1', 'prov-2', 'prov-3'], {
+          isPublished: true,
+        });
 
         expect(mockUpdateMany).toHaveBeenCalledWith({
           where: { id: { in: ['prov-1', 'prov-2', 'prov-3'] } },

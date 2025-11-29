@@ -52,13 +52,13 @@ jobs:
       - name: Run checks
         run: |
           echo "::group::Linting"
-          pnpm lint
+          cd apps/web && pnpm exec biome check .
           echo "::endgroup::"
-          
+
           echo "::group::Type checking"
           pnpm type-check
           echo "::endgroup::"
-          
+
           echo "::group::Tests"
           cd apps/web && pnpm test:ci
           echo "::endgroup::"

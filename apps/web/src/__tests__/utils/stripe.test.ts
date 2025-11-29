@@ -3,8 +3,6 @@
  * Tests Stripe customer, checkout, webhook, and subscription operations
  */
 
-import Stripe from 'stripe';
-
 // Mock Stripe SDK
 const mockCustomersCreate = jest.fn();
 const mockCheckoutSessionsCreate = jest.fn();
@@ -85,10 +83,7 @@ describe('Stripe Utilities', () => {
       };
       mockCustomersCreate.mockResolvedValue(mockCustomer);
 
-      const result = await stripeUtils.createStripeCustomer(
-        'test@example.com',
-        'user-123',
-      );
+      const result = await stripeUtils.createStripeCustomer('test@example.com', 'user-123');
 
       expect(mockCustomersCreate).toHaveBeenCalledWith({
         email: 'test@example.com',
@@ -107,11 +102,7 @@ describe('Stripe Utilities', () => {
       };
       mockCustomersCreate.mockResolvedValue(mockCustomer);
 
-      await stripeUtils.createStripeCustomer(
-        'test@example.com',
-        'user-123',
-        'Test User',
-      );
+      await stripeUtils.createStripeCustomer('test@example.com', 'user-123', 'Test User');
 
       expect(mockCustomersCreate).toHaveBeenCalledWith({
         email: 'test@example.com',
@@ -133,13 +124,11 @@ describe('Stripe Utilities', () => {
     });
 
     it('should propagate Stripe API errors', async () => {
-      mockCustomersCreate.mockRejectedValue(
-        new Error('Invalid email address'),
-      );
+      mockCustomersCreate.mockRejectedValue(new Error('Invalid email address'));
 
-      await expect(
-        stripeUtils.createStripeCustomer('invalid', 'user-123'),
-      ).rejects.toThrow('Invalid email address');
+      await expect(stripeUtils.createStripeCustomer('invalid', 'user-123')).rejects.toThrow(
+        'Invalid email address',
+      );
     });
   });
 
@@ -201,9 +190,7 @@ describe('Stripe Utilities', () => {
     });
 
     it('should propagate Stripe API errors', async () => {
-      mockCheckoutSessionsCreate.mockRejectedValue(
-        new Error('Invalid price'),
-      );
+      mockCheckoutSessionsCreate.mockRejectedValue(new Error('Invalid price'));
 
       await expect(
         stripeUtils.createCheckoutSession(
@@ -259,9 +246,9 @@ describe('Stripe Utilities', () => {
         throw new Error('Signature verification failed');
       });
 
-      await expect(
-        stripeUtils.constructWebhookEvent('invalid', 'bad_sig'),
-      ).rejects.toThrow('Webhook signature verification failed');
+      await expect(stripeUtils.constructWebhookEvent('invalid', 'bad_sig')).rejects.toThrow(
+        'Webhook signature verification failed',
+      );
 
       expect(logger.error).toHaveBeenCalledWith(
         'Webhook signature verification failed',
@@ -289,13 +276,11 @@ describe('Stripe Utilities', () => {
     });
 
     it('should propagate Stripe errors for invalid subscription ID', async () => {
-      mockSubscriptionsRetrieve.mockRejectedValue(
-        new Error('No such subscription'),
-      );
+      mockSubscriptionsRetrieve.mockRejectedValue(new Error('No such subscription'));
 
-      await expect(
-        stripeUtils.getSubscription('sub_invalid'),
-      ).rejects.toThrow('No such subscription');
+      await expect(stripeUtils.getSubscription('sub_invalid')).rejects.toThrow(
+        'No such subscription',
+      );
     });
   });
 
@@ -316,13 +301,11 @@ describe('Stripe Utilities', () => {
     });
 
     it('should propagate Stripe errors', async () => {
-      mockSubscriptionsUpdate.mockRejectedValue(
-        new Error('Subscription already canceled'),
-      );
+      mockSubscriptionsUpdate.mockRejectedValue(new Error('Subscription already canceled'));
 
-      await expect(
-        stripeUtils.cancelSubscription('sub_canceled'),
-      ).rejects.toThrow('Subscription already canceled');
+      await expect(stripeUtils.cancelSubscription('sub_canceled')).rejects.toThrow(
+        'Subscription already canceled',
+      );
     });
   });
 });
@@ -357,9 +340,9 @@ describe('Stripe Utilities - No Configuration', () => {
 
     const stripeUtils = await import('../../utils/stripe');
 
-    await expect(
-      stripeUtils.createStripeCustomer('test@example.com', 'user-123'),
-    ).rejects.toThrow('Stripe is not configured');
+    await expect(stripeUtils.createStripeCustomer('test@example.com', 'user-123')).rejects.toThrow(
+      'Stripe is not configured',
+    );
   });
 
   it('should throw error from createCheckoutSession when Stripe not configured', async () => {
@@ -395,9 +378,9 @@ describe('Stripe Utilities - No Configuration', () => {
 
     const stripeUtils = await import('../../utils/stripe');
 
-    await expect(
-      stripeUtils.constructWebhookEvent('body', 'sig'),
-    ).rejects.toThrow('Stripe webhook secret is not configured');
+    await expect(stripeUtils.constructWebhookEvent('body', 'sig')).rejects.toThrow(
+      'Stripe webhook secret is not configured',
+    );
   });
 
   it('should throw error from getSubscription when Stripe not configured', async () => {

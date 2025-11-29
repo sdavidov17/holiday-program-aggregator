@@ -1,8 +1,8 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { ProviderRepository } from '~/repositories/provider.repository';
 import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { logger } from '~/utils/logger';
-import { ProviderRepository } from '~/repositories/provider.repository';
 
 // Create repository instance
 const providerRepository = new ProviderRepository();
@@ -135,48 +135,46 @@ export const providerRouter = createTRPCRouter({
   }),
 
   // Search providers by location and filters
-  search: protectedProcedure
-    .input(searchProviderSchema)
-    .query(async ({ ctx, input }) => {
-      logger.info(
-        'Provider search initiated',
-        {
-          userId: ctx.session.user.id,
-          correlationId: ctx.correlationId,
-        },
-        {
-          hasCoordinates: !!(input.latitude && input.longitude),
-          radius: input.radius,
-          suburb: input.suburb,
-          state: input.state,
-        },
-      );
-
-      const providers = await providerRepository.findByLocation({
-        latitude: input.latitude,
-        longitude: input.longitude,
-        radius: input.radius || 25, // Default 25km radius
+  search: protectedProcedure.input(searchProviderSchema).query(async ({ ctx, input }) => {
+    logger.info(
+      'Provider search initiated',
+      {
+        userId: ctx.session.user.id,
+        correlationId: ctx.correlationId,
+      },
+      {
+        hasCoordinates: !!(input.latitude && input.longitude),
+        radius: input.radius,
         suburb: input.suburb,
         state: input.state,
-        ageGroup: input.ageGroup,
-        category: input.category,
-        isPublished: true,
-        isVetted: true,
-      });
+      },
+    );
 
-      logger.info(
-        'Provider search completed',
-        {
-          userId: ctx.session.user.id,
-          correlationId: ctx.correlationId,
-        },
-        {
-          resultsCount: providers.length,
-        },
-      );
+    const providers = await providerRepository.findByLocation({
+      latitude: input.latitude,
+      longitude: input.longitude,
+      radius: input.radius || 25, // Default 25km radius
+      suburb: input.suburb,
+      state: input.state,
+      ageGroup: input.ageGroup,
+      category: input.category,
+      isPublished: true,
+      isVetted: true,
+    });
 
-      return providers;
-    }),
+    logger.info(
+      'Provider search completed',
+      {
+        userId: ctx.session.user.id,
+        correlationId: ctx.correlationId,
+      },
+      {
+        resultsCount: providers.length,
+      },
+    );
+
+    return providers;
+  }),
 
   // Search by coordinates (convenience endpoint)
   searchByCoordinates: protectedProcedure
@@ -188,11 +186,7 @@ export const providerRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      return providerRepository.findByCoordinates(
-        input.latitude,
-        input.longitude,
-        input.radius,
-      );
+      return providerRepository.findByCoordinates(input.latitude, input.longitude, input.radius);
     }),
 
   // Get single provider
