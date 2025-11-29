@@ -436,7 +436,7 @@ export class ProviderRepository extends BaseRepository<Provider> {
     providerData: Partial<Provider>,
     programsData: Partial<Program>[],
   ): Promise<ProviderWithPrograms> {
-    return await this.prisma.$transaction(async (tx: { provider: { create: (args: { data: unknown }) => Promise<Provider> }; program: { create: (args: { data: unknown }) => Promise<Program> } }) => {
+    const result = await this.prisma.$transaction(async (tx: { provider: { create: (args: { data: unknown }) => Promise<Provider> }; program: { create: (args: { data: unknown }) => Promise<Program> } }) => {
       const provider = await tx.provider.create({
         data: providerData,
       });
@@ -457,6 +457,8 @@ export class ProviderRepository extends BaseRepository<Provider> {
         programs,
       };
     });
+
+    return result as ProviderWithPrograms;
   }
 
   /**
