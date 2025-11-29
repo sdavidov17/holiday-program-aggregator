@@ -215,12 +215,14 @@ describe('ProviderRepository', () => {
     it('should use PostGIS when available', async () => {
       const mockPostGISResult = [{ id: 'prov-1', businessName: 'PostGIS Result', distance: 500 }];
       mockQueryRaw.mockResolvedValue(mockPostGISResult);
+      // Also mock program.findMany since PostGIS path loads programs
+      mockProgramFindMany.mockResolvedValue([]);
 
       const result = await repository.findByCoordinates(-33.8688, 151.2093, 10);
 
       expect(mockQueryRaw).toHaveBeenCalled();
-      // PostGIS query was used
-      expect(result).toEqual(mockPostGISResult);
+      // PostGIS query was used - result includes empty programs array
+      expect(result).toEqual([{ ...mockPostGISResult[0], programs: [] }]);
     });
   });
 
@@ -395,13 +397,19 @@ describe('ProviderRepository', () => {
         providerId: 'new-prov-1',
       }));
 
+      let programIndex = 0;
       mockTransaction.mockImplementation(async (fn) => {
         const mockTx = {
           provider: { create: jest.fn().mockResolvedValue(createdProvider) },
-          program: { createMany: jest.fn().mockResolvedValue({ count: 2 }) },
+          program: {
+            create: jest.fn().mockImplementation(() => {
+              const program = createdPrograms[programIndex];
+              programIndex++;
+              return Promise.resolve(program);
+            }),
+          },
         };
-        await fn(mockTx);
-        return { ...createdProvider, programs: createdPrograms };
+        return await fn(mockTx);
       });
 
       const result = await repository.createWithPrograms(providerData as any, programsData as any);

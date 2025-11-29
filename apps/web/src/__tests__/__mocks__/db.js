@@ -202,6 +202,7 @@ const mockPrismaClient = {
   subscription: {
     deleteMany: jest.fn(() => Promise.resolve({ count: 0 })),
     findUnique: jest.fn(() => Promise.resolve(null)),
+    findMany: jest.fn(() => Promise.resolve([])),
     create: jest.fn(() =>
       Promise.resolve({
         id: 'sub-test-id',

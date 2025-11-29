@@ -4,26 +4,13 @@
  */
 
 import { addDays, startOfDay } from 'date-fns';
-import { processSubscriptionLifecycle } from '../../services/subscription-lifecycle';
 
-// Mock database
-const mockFindMany = jest.fn();
-const mockUpdate = jest.fn();
+// Use the global mock from __tests__/__mocks__/db.js
+import { db } from '~/server/db';
 
-jest.mock('~/server/db', () => ({
-  db: {
-    subscription: {
-      findMany: (...args: unknown[]) => mockFindMany(...args),
-      update: (...args: unknown[]) => mockUpdate(...args),
-    },
-  },
-  SubscriptionStatus: {
-    ACTIVE: 'ACTIVE',
-    EXPIRED: 'EXPIRED',
-    PENDING: 'PENDING',
-    CANCELED: 'CANCELED',
-  },
-}));
+// Get references to the mocked functions
+const mockFindMany = db.subscription.findMany as jest.Mock;
+const mockUpdate = db.subscription.update as jest.Mock;
 
 // Mock email service
 const mockSendRenewalReminder = jest.fn();
@@ -54,6 +41,9 @@ jest.mock('~/utils/subscription-metrics', () => ({
     logMetrics: mockLogMetrics,
   })),
 }));
+
+// Import after mocks are set up
+import { processSubscriptionLifecycle } from '../../services/subscription-lifecycle';
 
 // Mock environment
 process.env.NEXTAUTH_URL = 'http://localhost:3000';

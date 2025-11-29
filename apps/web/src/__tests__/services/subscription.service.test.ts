@@ -4,26 +4,34 @@
  */
 
 import { TRPCError } from '@trpc/server';
-import { SubscriptionService } from '../../services/subscription.service';
 
-// Mock Stripe utilities
-const mockCreateStripeCustomer = jest.fn();
-const mockCreateCheckoutSession = jest.fn();
-const mockStripe = {
-  subscriptions: {
-    update: jest.fn(),
-  },
-};
-
+// Mock Stripe utilities - define mock inside factory to avoid hoisting issues
 jest.mock('~/utils/stripe', () => ({
-  stripe: mockStripe,
-  createStripeCustomer: (...args: unknown[]) => mockCreateStripeCustomer(...args),
-  createCheckoutSession: (...args: unknown[]) => mockCreateCheckoutSession(...args),
+  stripe: {
+    subscriptions: {
+      update: jest.fn(),
+    },
+  },
+  createStripeCustomer: jest.fn(),
+  createCheckoutSession: jest.fn(),
   ANNUAL_SUBSCRIPTION_CONFIG: {
     mode: 'subscription',
     priceId: 'price_test',
   },
 }));
+
+// Import after mocking
+import { SubscriptionService } from '../../services/subscription.service';
+import {
+  createStripeCustomer,
+  createCheckoutSession,
+  stripe,
+} from '~/utils/stripe';
+
+// Get references to the mocked functions
+const mockCreateStripeCustomer = createStripeCustomer as jest.Mock;
+const mockCreateCheckoutSession = createCheckoutSession as jest.Mock;
+const mockStripe = stripe as jest.Mocked<typeof stripe>;
 
 // Mock environment
 jest.mock('~/env.mjs', () => ({
