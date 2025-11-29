@@ -1,8 +1,9 @@
 import { SubscriptionStatus } from '~/types/database';
 
 // Minimal subscription data needed for status checks
+// Note: status is string to match Prisma schema (stored as String, not enum)
 export interface SubscriptionData {
-  status: SubscriptionStatus;
+  status: string;
   expiresAt: Date | null;
   currentPeriodEnd: Date | null;
   cancelAtPeriodEnd: boolean;
@@ -29,7 +30,7 @@ interface Subscription extends SubscriptionData {
 
 // Partial subscription data (from API responses)
 export type PartialSubscriptionData = Partial<SubscriptionData> & {
-  status?: SubscriptionStatus;
+  status?: string;
 };
 
 /**
