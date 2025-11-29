@@ -1,4 +1,3 @@
-import { db } from '~/server/db';
 import { type LogContext, logger } from './logger';
 
 export type AuditEventType =

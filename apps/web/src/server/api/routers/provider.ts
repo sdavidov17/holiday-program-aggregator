@@ -185,7 +185,7 @@ export const providerRouter = createTRPCRouter({
         radius: z.number().min(1).max(500).default(25),
       }),
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       return providerRepository.findByCoordinates(input.latitude, input.longitude, input.radius);
     }),
 

@@ -211,7 +211,7 @@ export const premiumProcedure = protectedProcedure.use(async ({ ctx, next }) => 
         subscriptionId: subscription.id,
         userId: ctx.session.user.id,
       });
-    } catch (error) {
+    } catch (_error) {
       // If update fails due to concurrent modification, that's ok
       logger.debug('Subscription status already updated by another request', {
         correlationId: ctx.correlationId,
