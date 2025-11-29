@@ -447,34 +447,30 @@ export class ProviderRepository extends BaseRepository<Provider> {
     providerData: Partial<Provider>,
     programsData: Partial<Program>[],
   ): Promise<ProviderWithPrograms> {
-    const result = await this.prisma.$transaction(
-      async (tx: {
-        provider: { create: (args: { data: unknown }) => Promise<Provider> };
-        program: { create: (args: { data: unknown }) => Promise<Program> };
-      }) => {
-        const provider = await tx.provider.create({
-          data: providerData,
-        });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await this.prisma.$transaction(async (tx: any) => {
+      const provider = await tx.provider.create({
+        data: providerData as any,
+      });
 
-        const programs = await Promise.all(
-          programsData.map((programData: Partial<Program>) =>
-            tx.program.create({
-              data: {
-                ...programData,
-                providerId: provider.id,
-              },
-            }),
-          ),
-        );
+      const programs = await Promise.all(
+        programsData.map((programData: Partial<Program>) =>
+          tx.program.create({
+            data: {
+              ...programData,
+              providerId: provider.id,
+            } as any,
+          }),
+        ),
+      );
 
-        return {
-          ...provider,
-          programs,
-        };
-      },
-    );
+      return {
+        ...provider,
+        programs,
+      };
+    });
 
-    return result as ProviderWithPrograms;
+    return result as unknown as ProviderWithPrograms;
   }
 
   /**

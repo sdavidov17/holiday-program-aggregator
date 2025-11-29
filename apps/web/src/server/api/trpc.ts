@@ -179,32 +179,23 @@ export const premiumProcedure = protectedProcedure.use(async ({ ctx, next }) => 
   ) {
     // Use transaction to prevent race conditions
     try {
-      await ctx.db.$transaction(
-        async (tx: {
-          subscription: {
-            findUnique: (args: { where: { id: string } }) => Promise<typeof subscription | null>;
-            update: (args: {
-              where: Record<string, unknown>;
-              data: Record<string, unknown>;
-            }) => Promise<unknown>;
-          };
-        }) => {
-          // Re-check status within transaction to prevent race condition
-          const currentSub = await tx.subscription.findUnique({
-            where: { id: subscription.id },
-          });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await ctx.db.$transaction(async (tx: any) => {
+        // Re-check status within transaction to prevent race condition
+        const currentSub = await tx.subscription.findUnique({
+          where: { id: subscription.id },
+        });
 
-          if (currentSub?.status === SubscriptionStatus.ACTIVE) {
-            await tx.subscription.update({
-              where: {
-                id: subscription.id,
-                status: SubscriptionStatus.ACTIVE, // Optimistic lock on status
-              },
-              data: { status: SubscriptionStatus.EXPIRED },
-            });
-          }
-        },
-      );
+        if (currentSub?.status === SubscriptionStatus.ACTIVE) {
+          await tx.subscription.update({
+            where: {
+              id: subscription.id,
+              status: SubscriptionStatus.ACTIVE, // Optimistic lock on status
+            } as any,
+            data: { status: SubscriptionStatus.EXPIRED },
+          });
+        }
+      });
 
       logger.info('Subscription expired and status updated', {
         correlationId: ctx.correlationId,

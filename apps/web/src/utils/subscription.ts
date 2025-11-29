@@ -10,13 +10,15 @@ export interface SubscriptionData {
   stripeSubscriptionId?: string | null;
 }
 
-// Define Subscription type locally for compatibility
+// Define Subscription type locally for compatibility with Prisma schema
 interface Subscription extends SubscriptionData {
   id: string;
   userId: string;
   stripeCustomerId: string | null;
   stripePriceId: string | null;
-  tier: string | null;
+  stripePaymentMethodId: string | null;
+  stripePaymentIntentId: string | null;
+  stripePaymentStatus: string | null;
   currentPeriodStart: Date | null;
   canceledAt: Date | null;
   lastReminderSent: Date | null;
