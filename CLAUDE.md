@@ -151,6 +151,12 @@ Before every commit, run:
 pnpm lint && pnpm typecheck && pnpm test
 ```
 
+**CRITICAL**: Before pushing to remote, also run the full build to catch Vercel deployment issues:
+```bash
+SKIP_ENV_VALIDATION=true pnpm build
+```
+This catches TypeScript errors that only appear during `next build` (which Vercel runs).
+
 ### Story & Issue Management
 **IMPORTANT**: Always keep `/docs/stories/` and GitHub Issues synchronized:
 - When creating or updating a story in `/docs/stories/`, create/update the corresponding GitHub issue
@@ -218,6 +224,25 @@ pnpm test -- path/to/test.ts
 npx prisma generate
 pnpm typecheck
 ```
+
+### Prisma Type Import Issues
+**IMPORTANT**: Do NOT import entity types directly from `@prisma/client` in source files:
+```typescript
+// ❌ BAD - Will fail during Vercel build
+import type { Provider, Program } from '@prisma/client';
+
+// ✅ GOOD - Define types locally or import from repository
+import type { Provider, Program } from '~/repositories/provider.repository';
+```
+
+**Why?** Prisma client types are generated at build time. During Vercel's `next build`,
+the types may not be available when TypeScript compiles, causing build failures.
+
+**Solution**: Define entity types locally in repositories (see `provider.repository.ts`)
+and export them for use in other files. Ensure types match the Prisma schema exactly:
+- `String` in Prisma → `string` in TypeScript
+- `String?` in Prisma → `string | null` in TypeScript
+- JSON fields stored as `String` (like `ageGroups`) → `string` NOT `string[]`
 
 ## Architecture Patterns
 

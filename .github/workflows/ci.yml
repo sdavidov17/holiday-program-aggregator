@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, 'claude/**']
   pull_request:
     branches: [main, develop]
 
@@ -105,9 +105,9 @@ jobs:
         run: pnpm audit --audit-level=high || true
         continue-on-error: true
       
-      # Build validation (only on main branch pushes)
+      # Build validation - run on all PRs and main branch pushes
+      # This catches TypeScript errors that only appear during next build
       - name: Build check
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: pnpm build
         env:
           SKIP_ENV_VALIDATION: true
