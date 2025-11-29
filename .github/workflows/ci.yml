@@ -16,7 +16,24 @@ jobs:
   checks:
     name: Quality Checks
     runs-on: ubuntu-latest
-    
+
+    # PostgreSQL service for integration tests
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        # Health checks to wait for postgres to be ready
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,7 +64,14 @@ jobs:
       
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
+      # Setup database schema for integration tests
+      - name: Setup test database
+        run: |
+          cd apps/web && npx prisma db push --skip-generate
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test_db?schema=public"
+
       # Run all checks in parallel where possible
       - name: Run checks
         run: |
@@ -64,7 +88,7 @@ jobs:
           echo "::endgroup::"
         env:
           NODE_ENV: test
-          DATABASE_URL: "postgresql://test:test@localhost:5432/test_db?schema=public"
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test_db?schema=public"
           NEXTAUTH_SECRET: "test-secret-for-ci"
           ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
       
@@ -111,7 +135,7 @@ jobs:
         run: pnpm build
         env:
           SKIP_ENV_VALIDATION: true
-          DATABASE_URL: "postgresql://test:test@localhost:5432/test_db?schema=public"
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test_db?schema=public"
           NEXTAUTH_SECRET: "test-secret-for-ci"
           NEXTAUTH_URL: "http://localhost:3000"
           ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
