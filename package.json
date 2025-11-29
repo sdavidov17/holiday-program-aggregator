@@ -12,9 +12,12 @@
     "build:web": "turbo run build --filter=web",
     "db:push": "turbo run db:push",
     "db:migrate": "turbo run db:migrate",
-    "db:studio": "turbo run db:studio"
+    "db:studio": "turbo run db:studio",
+    "prepare": "husky || true",
+    "pre-commit": "pnpm run lint && pnpm run type-check && pnpm run test"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "turbo": "^1.13.4"
   },
   "packageManager": "pnpm@8.6.10",

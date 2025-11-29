@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Pre-commit hook: Run lint, type-check, and tests before committing
+# This catches TypeScript errors and test failures before they reach CI/Vercel
+
+echo "🔍 Running pre-commit checks..."
+
+# Run lint
+echo "📋 Linting..."
+pnpm run lint || {
+  echo "❌ Lint failed. Please fix the errors and try again."
+  exit 1
+}
+
+# Run type-check
+echo "🔷 Type checking..."
+pnpm run type-check || {
+  echo "❌ Type check failed. Please fix the errors and try again."
+  exit 1
+}
+
+# Run tests (fast subset for pre-commit)
+echo "🧪 Running tests..."
+cd apps/web && pnpm test -- --testPathPattern="schema-sync|unit" --passWithNoTests || {
+  echo "❌ Tests failed. Please fix the errors and try again."
+  exit 1
+}
+
+echo "✅ All pre-commit checks passed!"
