@@ -20,13 +20,9 @@ jest.mock('~/utils/stripe', () => ({
   },
 }));
 
+import { createCheckoutSession, createStripeCustomer, stripe } from '~/utils/stripe';
 // Import after mocking
 import { SubscriptionService } from '../../services/subscription.service';
-import {
-  createStripeCustomer,
-  createCheckoutSession,
-  stripe,
-} from '~/utils/stripe';
 
 // Get references to the mocked functions
 const mockCreateStripeCustomer = createStripeCustomer as jest.Mock;
