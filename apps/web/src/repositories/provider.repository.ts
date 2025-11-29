@@ -10,19 +10,20 @@ import { createLogger } from '~/utils/logger';
 const providerLogger = createLogger('provider-repository');
 
 // Define Provider type locally to avoid Prisma client generation timing issues
+// IMPORTANT: Keep in sync with prisma/schema.prisma - see __tests__/types/schema-sync.test.ts
 export interface Provider {
   id: string;
   businessName: string;
-  contactName: string | null;
+  contactName: string;
   email: string;
-  phone: string | null;
+  phone: string;
   website: string | null;
   abn: string | null;
-  address: string | null;
-  suburb: string | null;
-  state: string | null;
-  postcode: string | null;
-  description: string | null;
+  address: string;
+  suburb: string;
+  state: string;
+  postcode: string;
+  description: string;
   logoUrl: string | null;
   bannerUrl: string | null;
   capacity: number | null;
@@ -31,7 +32,7 @@ export interface Provider {
   specialNeedsDetails: string | null;
   isVetted: boolean;
   isPublished: boolean;
-  vettingStatus: string | null;
+  vettingStatus: string;
   vettingNotes: string | null;
   vettingDate: Date | null;
   latitude: number | null;
