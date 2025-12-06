@@ -21,7 +21,7 @@ pnpm run type-check || {
 
 # Run tests (fast subset for pre-commit)
 echo "🧪 Running tests..."
-cd apps/web && pnpm test -- --testPathPattern="schema-sync|unit" --passWithNoTests || {
+cd apps/web && pnpm test || {
   echo "❌ Tests failed. Please fix the errors and try again."
   exit 1
 }
