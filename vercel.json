@@ -3,5 +3,9 @@
   "outputDirectory": "apps/web/.next",
   "installCommand": "pnpm install",
   "framework": null,
-  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ':!docs' ':!*.md'"
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ':!docs' ':!*.md'",
+  "github": {
+    "enabled": true,
+    "silent": false
+  }
 }

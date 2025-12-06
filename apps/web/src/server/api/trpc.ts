@@ -74,7 +74,9 @@ const loggingMiddleware = t.middleware(async ({ path, next, ctx }) => {
   };
 
   const requestContext: RequestContext = {
-    ...logContext,
+    correlationId: ctx.correlationId || `trpc-${Date.now()}`,
+    userId: logContext.userId,
+    sessionId: logContext.sessionId,
     journey: path,
     startTime: Date.now(),
   };
@@ -177,18 +179,19 @@ export const premiumProcedure = protectedProcedure.use(async ({ ctx, next }) => 
   ) {
     // Use transaction to prevent race conditions
     try {
-      await ctx.db.$transaction(async (tx) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await ctx.db.$transaction(async (tx: any) => {
         // Re-check status within transaction to prevent race condition
         const currentSub = await tx.subscription.findUnique({
           where: { id: subscription.id },
         });
-        
+
         if (currentSub?.status === SubscriptionStatus.ACTIVE) {
           await tx.subscription.update({
-            where: { 
+            where: {
               id: subscription.id,
-              status: SubscriptionStatus.ACTIVE // Optimistic lock on status
-            },
+              status: SubscriptionStatus.ACTIVE, // Optimistic lock on status
+            } as any,
             data: { status: SubscriptionStatus.EXPIRED },
           });
         }
@@ -199,7 +202,7 @@ export const premiumProcedure = protectedProcedure.use(async ({ ctx, next }) => 
         subscriptionId: subscription.id,
         userId: ctx.session.user.id,
       });
-    } catch (error) {
+    } catch (_error) {
       // If update fails due to concurrent modification, that's ok
       logger.debug('Subscription status already updated by another request', {
         correlationId: ctx.correlationId,

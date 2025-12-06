@@ -1,14 +1,9 @@
-import type { Prisma, PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import { env } from '~/env.mjs';
 import { SubscriptionStatus } from '~/server/db';
 import { logger } from '~/utils/logger';
-import {
-  ANNUAL_SUBSCRIPTION_CONFIG,
-  createCheckoutSession,
-  createStripeCustomer,
-  stripe,
-} from '~/utils/stripe';
+import { createCheckoutSession, createStripeCustomer, stripe } from '~/utils/stripe';
 import { isSubscriptionActive } from '~/utils/subscription';
 
 export class SubscriptionService {
@@ -270,7 +265,7 @@ export class SubscriptionService {
    */
   async updateSubscriptionFromWebhook(
     stripeSubscriptionId: string,
-    updates: Partial<Prisma.SubscriptionUpdateInput>,
+    updates: Record<string, unknown>,
   ) {
     const subscription = await this.db.subscription.findFirst({
       where: { stripeSubscriptionId },

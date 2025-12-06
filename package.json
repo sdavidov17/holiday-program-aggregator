@@ -12,12 +12,22 @@
     "build:web": "turbo run build --filter=web",
     "db:push": "turbo run db:push",
     "db:migrate": "turbo run db:migrate",
-    "db:studio": "turbo run db:studio"
+    "db:studio": "turbo run db:studio",
+    "prepare": "husky || true",
+    "pre-commit": "pnpm run lint && pnpm run type-check && pnpm run test"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "turbo": "^1.13.4"
   },
   "packageManager": "pnpm@8.6.10",
+  "pnpm": {
+    "overrides": {
+      "js-yaml": ">=3.14.2",
+      "glob": ">=11.1.0",
+      "body-parser": ">=2.2.1"
+    }
+  },
   "workspaces": [
     "apps/*",
     "packages/*"

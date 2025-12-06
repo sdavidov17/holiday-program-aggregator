@@ -6,7 +6,8 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.mjs", "**/*.cjs"]
   },
   "formatter": {
     "enabled": true,
@@ -23,10 +24,13 @@
       "suspicious": {
         "noExplicitAny": "off",
         "noConsole": "off",
-        "noArrayIndexKey": "off"
+        "noArrayIndexKey": "off",
+        "noAssignInExpressions": "off",
+        "noExportsInTest": "off"
       },
       "complexity": {
-        "noForEach": "off"
+        "noForEach": "off",
+        "noBannedTypes": "off"
       },
       "style": {
         "noNonNullAssertion": "off",
@@ -39,7 +43,13 @@
       },
       "correctness": {
         "useUniqueElementIds": "off",
-        "useExhaustiveDependencies": "off"
+        "useExhaustiveDependencies": "off",
+        "noUnusedVariables": "warn",
+        "noUnusedImports": "warn",
+        "noUnusedFunctionParameters": "warn"
+      },
+      "performance": {
+        "noImgElement": "off"
       }
     }
   },

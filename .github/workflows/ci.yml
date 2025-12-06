@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, 'claude/**']
   pull_request:
     branches: [main, develop]
 
@@ -16,7 +16,24 @@ jobs:
   checks:
     name: Quality Checks
     runs-on: ubuntu-latest
-    
+
+    # PostgreSQL service for integration tests
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        # Health checks to wait for postgres to be ready
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,24 +64,31 @@ jobs:
       
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
+      # Setup database schema for integration tests
+      - name: Setup test database
+        run: |
+          cd apps/web && npx prisma db push --skip-generate
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test_db?schema=public"
+
       # Run all checks in parallel where possible
       - name: Run checks
         run: |
           echo "::group::Linting"
-          pnpm lint
+          cd apps/web && pnpm exec biome check .
           echo "::endgroup::"
-          
+
           echo "::group::Type checking"
           pnpm type-check
           echo "::endgroup::"
-          
+
           echo "::group::Tests"
           cd apps/web && pnpm test:ci
           echo "::endgroup::"
         env:
           NODE_ENV: test
-          DATABASE_URL: "postgresql://test:test@localhost:5432/test_db?schema=public"
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test_db?schema=public"
           NEXTAUTH_SECRET: "test-secret-for-ci"
           ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
       
@@ -105,13 +129,13 @@ jobs:
         run: pnpm audit --audit-level=high || true
         continue-on-error: true
       
-      # Build validation (only on main branch pushes)
+      # Build validation - run on all PRs and main branch pushes
+      # This catches TypeScript errors that only appear during next build
       - name: Build check
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: pnpm build
         env:
           SKIP_ENV_VALIDATION: true
-          DATABASE_URL: "postgresql://test:test@localhost:5432/test_db?schema=public"
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test_db?schema=public"
           NEXTAUTH_SECRET: "test-secret-for-ci"
           NEXTAUTH_URL: "http://localhost:3000"
           ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
@@ -136,6 +160,89 @@ jobs:
       
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
+
+  # E2E Tests - Only run on PRs to main
+  e2e-tests:
+    name: E2E Tests
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    needs: checks  # Run after quality checks pass
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: cd apps/web && npx playwright install --with-deps chromium
+
+      - name: Setup database
+        run: cd apps/web && npx prisma db push --skip-generate
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test_db?schema=public"
+
+      - name: Build application
+        run: pnpm build
+        env:
+          SKIP_ENV_VALIDATION: true
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test_db?schema=public"
+          NEXTAUTH_SECRET: "test-secret-for-ci"
+          NEXTAUTH_URL: "http://localhost:3000"
+          ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+
+      - name: Run E2E tests
+        run: cd apps/web && npx playwright test
+        env:
+          CI: true
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test_db?schema=public"
+          NEXTAUTH_SECRET: "test-secret-for-ci"
+          NEXTAUTH_URL: "http://localhost:3000"
+          ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report/
+          retention-days: 7
 
   # Claude Code Review - Automated quality checks
   claude-review:

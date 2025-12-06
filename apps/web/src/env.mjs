@@ -57,6 +57,9 @@ export const env = createEnv({
     ADMIN_PASSWORD: z.string().optional(),
     ADMIN_NAME: z.string().optional(),
     ADMIN_SETUP_KEY: z.string().optional(),
+    // Logging
+    LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
+    LOG_FORMAT: z.enum(['json', 'pretty']).default('json'),
   },
 
   /**
@@ -95,6 +98,8 @@ export const env = createEnv({
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
     ADMIN_NAME: process.env.ADMIN_NAME,
     ADMIN_SETUP_KEY: process.env.ADMIN_SETUP_KEY,
+    LOG_LEVEL: process.env.LOG_LEVEL,
+    LOG_FORMAT: process.env.LOG_FORMAT,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

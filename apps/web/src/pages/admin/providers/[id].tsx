@@ -4,6 +4,14 @@ import { useEffect, useState } from 'react';
 import { AdminLayout } from '~/components/AdminLayout';
 import { api } from '~/utils/api';
 
+// Local Program type for TypeScript
+interface ProgramType {
+  id: string;
+  name: string;
+  category: string;
+  isActive: boolean;
+}
+
 export default function EditProviderPage() {
   const router = useRouter();
   const { id } = router.query as { id: string };
@@ -351,7 +359,7 @@ export default function EditProviderPage() {
             <h3 className="mb-4 text-lg font-medium text-gray-900">Programs</h3>
             {provider.programs.length > 0 ? (
               <div className="space-y-2">
-                {provider.programs.map((program) => (
+                {provider.programs.map((program: ProgramType) => (
                   <div
                     key={program.id}
                     className="flex items-center justify-between rounded border p-3"

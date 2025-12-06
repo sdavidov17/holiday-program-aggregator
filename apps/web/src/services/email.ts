@@ -26,7 +26,7 @@ export async function sendRenewalReminder(email: string, data: RenewalReminderDa
 
   const emailHtml = await render(RenewalReminderEmail(data));
 
-  const { data: result, error } = await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: 'Holiday Programs <noreply@holidayprograms.com.au>',
     to: email,
     subject: 'Your subscription expires in 7 days',
@@ -49,7 +49,7 @@ export async function sendExpirationNotice(
 
   const emailHtml = await render(ExpirationNoticeEmail(data));
 
-  const { data: result, error } = await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: 'Holiday Programs <noreply@holidayprograms.com.au>',
     to: email,
     subject: 'Your subscription has expired',

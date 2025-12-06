@@ -18,8 +18,19 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run dev',
+    command: process.env.CI ? 'pnpm start' : 'pnpm dev',
     port: 3000,
     reuseExistingServer: !process.env.CI,
+    timeout: 120000,
+    env: {
+      DATABASE_URL:
+        process.env.DATABASE_URL ||
+        'postgresql://postgres:postgres@localhost:5432/test_db?schema=public',
+      NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'test-secret-for-ci',
+      NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
+      ENCRYPTION_KEY:
+        process.env.ENCRYPTION_KEY || 'test-encryption-key-1234567890123456789012345678',
+      SKIP_ENV_VALIDATION: 'true',
+    },
   },
 });

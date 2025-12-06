@@ -12,13 +12,10 @@ export default function SubscriptionSuccess() {
   const [redirectTimer, setRedirectTimer] = useState(10);
 
   // Check subscription status
-  const { data: subscriptionStatus, refetch } = api.subscription.getSubscriptionStatus.useQuery(
-    undefined,
-    {
-      enabled: !!session?.user,
-      refetchInterval: 2000, // Check every 2 seconds
-    },
-  );
+  const { data: subscriptionStatus } = api.subscription.getSubscriptionStatus.useQuery(undefined, {
+    enabled: !!session?.user,
+    refetchInterval: 2000, // Check every 2 seconds
+  });
 
   useEffect(() => {
     // Countdown timer
