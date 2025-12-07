@@ -148,3 +148,22 @@ model Subscription {
     @@index([userId])
     @@index([status, expiresAt])
 }
+
+model AuditLog {
+    id            String   @id @default(cuid())
+    timestamp     DateTime @default(now())
+    eventType     String
+    userId        String?
+    email         String?
+    ipAddress     String?
+    userAgent     String?
+    correlationId String?
+    metadata      String?  // JSON string
+    result        String   // "success" or "failure"
+    errorMessage  String?
+
+    @@index([userId])
+    @@index([eventType])
+    @@index([timestamp])
+    @@index([correlationId])
+}

@@ -3,6 +3,13 @@
 ## Overview
 The Definition of Ready ensures that user stories are properly prepared before development begins. This document establishes clear criteria that must be met for a story to be considered ready for sprint planning and development.
 
+### Team Topologies Fast Flow Alignment
+Following Team Topologies principles for reducing delays:
+- **Minimize dependencies**: Stories should be completable by a single stream-aligned team
+- **Clear boundaries**: Well-defined interfaces reduce coordination overhead
+- **Cognitive load assessment**: Ensure story complexity fits team capacity
+- **Reduce handovers**: Three Amigos collaboration prevents back-and-forth during development
+
 ## Core Criteria
 
 A user story is **READY** when ALL of the following criteria are met:
@@ -76,6 +83,13 @@ Feature: [Feature Name]
 - [ ] **Architecture Review**: Solution Architect has approved technical approach
 - [ ] **SM Facilitation**: Scrum Master has facilitated reviews and sign-offs
 - [ ] **Stakeholder Approval**: Product Owner has signed off on acceptance criteria
+
+### 8. Team Topologies Readiness ✅
+- [ ] **Team Independence**: Story can be completed without external team dependencies
+- [ ] **Cognitive Load Check**: Story complexity is appropriate for team capacity
+- [ ] **Clear Interfaces**: Any required interactions with other teams use defined APIs
+- [ ] **Platform Services**: Self-service platform capabilities identified and available
+- [ ] **Enabling Support**: Any needed expertise from enabling teams is scheduled
 
 ## DoR Checklist by Story Type
 
@@ -224,3 +238,9 @@ Exceptions to DoR require:
 - [Testing Strategy](../guides/testing-strategy.md)
 - [Team Guidelines](./team-guidelines.md)
 - [BMAD Orchestration](../guides/bmad-claude-code-orchestration.md)
+
+## Team Topologies Resources
+- [Why Agile Isn't Enough - Part 1](https://teamtopologies.com/news-blogs-newsletters/why-agile-isnt-enough-and-whats-really-slowing-you-down-part-1) - Why organizational structure matters
+- [Why Agile Isn't Enough - Part 2](https://teamtopologies.com/news-blogs-newsletters/why-agile-isnt-enough-and-whats-really-slowing-you-down-part-2) - Addressing structural frictions
+- [Team Topologies Academy Courses](https://academy.teamtopologies.com/) - Comprehensive training
+- [Key Concepts for Fast Flow](https://teamtopologies.com/key-concepts) - Implementation guide

@@ -2,6 +2,50 @@
 
 ## Team Structure
 
+### Team Topologies Approach
+
+Our team structure follows Team Topologies principles to optimize for fast flow of value delivery:
+
+#### Four Fundamental Team Types
+
+1. **Stream-Aligned Teams**: Aligned to a flow of work from a segment of the business domain
+   - End-to-end ownership of features
+   - Minimize handovers and dependencies
+   - Direct customer value delivery
+
+2. **Enabling Teams**: Help Stream-aligned teams overcome obstacles and detect missing capabilities
+   - Temporary collaboration model
+   - Knowledge transfer focus
+   - Build capabilities, not dependencies
+
+3. **Complicated Subsystem Teams**: Manage parts of the system that require specialist knowledge
+   - Reduce cognitive load on stream-aligned teams
+   - Deep expertise in specific technical areas
+
+4. **Platform Teams**: Provide internal services to reduce cognitive load on stream-aligned teams
+   - Self-service capabilities
+   - API-first approach
+   - Developer experience focus
+
+#### Team Interaction Modes
+
+- **Collaboration**: Working closely together for a limited time (discovery, innovation)
+- **X-as-a-Service**: One team provides and one team consumes (clear boundaries)
+- **Facilitating**: One team helps another to learn and improve capabilities
+
+#### Cognitive Load Management
+
+**Team Cognitive Load Assessment**:
+- Domain complexity: How complex is the business domain?
+- Technical complexity: How complex is the technology stack?
+- Organizational complexity: How many teams/systems do we interact with?
+
+**Reducing Cognitive Load**:
+- Limit team responsibilities to what fits in their cognitive capacity
+- Use platform teams to abstract infrastructure complexity
+- Clear team boundaries and interfaces
+- Minimize unnecessary team dependencies
+
 ### Roles & Responsibilities
 
 | Role | Primary Owner | Backup | Responsibilities |
@@ -77,6 +121,22 @@
 - Leave without clear next steps
 
 ## Development Process
+
+### Flow-Based Development
+
+Aligned with Team Topologies principles for fast flow:
+
+#### Flow Metrics
+- **Flow Velocity**: Number of flow items completed per unit of time
+- **Flow Time**: Time from start to completion of work
+- **Flow Load**: Number of flow items in progress
+- **Flow Efficiency**: Ratio of active time to wait time
+
+#### Reducing Handovers
+- Stream-aligned teams own features end-to-end
+- Minimize coordination between teams
+- Clear team APIs and boundaries
+- Self-service platform capabilities
 
 ### Sprint Workflow
 
@@ -319,6 +379,40 @@ Technical Emergency: tech-oncall@team.com
 Security Incident: security@team.com
 HR Urgent: hr@company.com
 ```
+
+## Team Topologies Resources
+
+### Core Learning Resources
+
+#### Articles & Newsletters
+- [Why Agile Isn't Enough - Part 1](https://teamtopologies.com/news-blogs-newsletters/why-agile-isnt-enough-and-whats-really-slowing-you-down-part-1) - Understanding organizational flow challenges and bottlenecks
+- [Why Agile Isn't Enough - Part 2](https://teamtopologies.com/news-blogs-newsletters/why-agile-isnt-enough-and-whats-really-slowing-you-down-part-2) - Structural and interactional frictions that slow delivery
+
+#### Training & Courses
+- [Team Topologies Academy](https://academy.teamtopologies.com/) - Self-paced video courses
+- [Team Topologies Distilled Course](https://academy.teamtopologies.com/courses) - 3-hour comprehensive overview
+- [Team Topologies for Managers](https://academy.teamtopologies.com/courses/team-topologies-for-managers) - Leadership perspective
+- [Effective Enabling Teams Course](https://academy.teamtopologies.com/courses) - Building capability-focused teams
+
+#### Books & References
+- [Team Topologies Book (2nd Edition)](https://teamtopologies.com/book) - Complete guide to organizing for fast flow
+- [Key Concepts & Practices](https://teamtopologies.com/key-concepts) - Quick reference guide
+
+### Implementation Guidance
+
+#### Assessment Questions
+1. Are we organized in a way that supports flow?
+2. Can our teams deliver value independently?
+3. How much effort goes to coordination vs. delivery?
+4. What is our team's cognitive load?
+5. Are team boundaries and interactions clear?
+
+#### Anti-Patterns to Avoid
+- Teams organized by function rather than value stream
+- Excessive handovers between teams
+- Unclear ownership and accountability
+- Teams dependent on multiple other teams
+- Cognitive overload from too many responsibilities
 
 ## Related Documents
 

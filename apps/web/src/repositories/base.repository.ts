@@ -9,7 +9,7 @@ import { auditLogger } from '~/utils/auditLogger';
 
 export interface FindOptions {
   where?: Record<string, any>;
-  include?: Record<string, boolean>;
+  include?: Record<string, any>;
   orderBy?: Record<string, 'asc' | 'desc'>;
   take?: number;
   skip?: number;
@@ -27,7 +27,7 @@ export abstract class BaseRepository<T> {
   /**
    * Find a single record by ID
    */
-  async findById(id: string, include?: Record<string, boolean>): Promise<T | null> {
+  async findById(id: string, include?: Record<string, any>): Promise<T | null> {
     try {
       const result = await (this.prisma as any)[this.modelName].findUnique({
         where: { id },

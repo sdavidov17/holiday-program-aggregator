@@ -3,6 +3,13 @@
 ## Overview
 The Definition of Done ensures that user stories meet quality standards before being considered complete. This document establishes clear criteria that must be met for a story to be marked as "Done" and ready for production deployment.
 
+### Team Topologies Flow Principles
+Aligned with Team Topologies fast flow principles:
+- **Minimize handovers**: Teams own features end-to-end to reduce coordination overhead
+- **Optimize cognitive load**: Clear boundaries ensure teams aren't overwhelmed
+- **Stream-aligned delivery**: Focus on continuous value delivery to customers
+- **Platform thinking**: Self-service capabilities reduce dependencies
+
 ## Core Criteria
 
 A user story is **DONE** when ALL of the following criteria are met:
@@ -256,9 +263,24 @@ Review and update DoD:
 - Based on escaped defects
 - Team feedback and suggestions
 
+### Flow Metrics for DoD
+Track delivery excellence using Team Topologies flow metrics:
+- **Flow Time**: Time from story start to DoD completion
+- **Flow Efficiency**: Active work time vs. wait time in achieving DoD
+- **Flow Load**: Number of stories in progress vs. completed
+- **Flow Distribution**: Balance of work types (features, bugs, tech debt)
+
+These metrics help identify bottlenecks in achieving DoD and improve delivery flow.
+
 ## Related Documents
 - [Definition of Ready](./definition-of-ready.md)
 - [Story Template](./story-template.md)
 - [Testing Strategy](../guides/testing-strategy.md)
 - [Team Guidelines](./team-guidelines.md)
 - [Code Review Process](./team-guidelines.md#code-review-process)
+
+## Team Topologies Resources
+- [Why Agile Isn't Enough - Part 1](https://teamtopologies.com/news-blogs-newsletters/why-agile-isnt-enough-and-whats-really-slowing-you-down-part-1) - Organizational flow challenges
+- [Why Agile Isn't Enough - Part 2](https://teamtopologies.com/news-blogs-newsletters/why-agile-isnt-enough-and-whats-really-slowing-you-down-part-2) - Structural frictions
+- [Team Topologies Academy](https://academy.teamtopologies.com/) - Self-paced courses
+- [Fast Flow Principles](https://teamtopologies.com/key-concepts) - Key concepts guide

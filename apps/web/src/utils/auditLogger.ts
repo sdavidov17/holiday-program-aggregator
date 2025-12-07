@@ -59,9 +59,7 @@ export class AuditLogger {
         journey: 'authentication',
       });
 
-      // In a real implementation, we would store this in a separate audit database
-      // For now, we'll just log it. When implementing, create an AuditLog table:
-      /*
+      // Persist to database
       await db.auditLog.create({
         data: {
           eventType,
@@ -70,12 +68,11 @@ export class AuditLogger {
           ipAddress: details.ipAddress,
           userAgent: details.userAgent,
           correlationId: context.correlationId,
-          metadata: details.metadata,
+          metadata: details.metadata ? JSON.stringify(details.metadata) : null,
           result: details.result,
           errorMessage: details.errorMessage,
         },
       });
-      */
     } catch (error) {
       // Never let audit logging failure break the main flow
       logger.error('Failed to log audit event', context, error as Error, {
@@ -95,17 +92,52 @@ export class AuditLogger {
     eventType?: AuditEventType;
     result?: 'success' | 'failure';
   }): Promise<AuditEvent[]> {
-    // Placeholder for when we have the database table
-    // This would query the audit log table with appropriate filters
-    logger.info(
-      'Audit log query requested',
-      {
-        correlationId: `audit-query-${Date.now()}`,
-      } as LogContext,
-      { filters },
-    );
+    try {
+      const where: any = {};
 
-    return [];
+      if (filters.startDate) {
+        where.timestamp = { gte: filters.startDate };
+      }
+
+      if (filters.endDate) {
+        where.timestamp = { ...where.timestamp, lte: filters.endDate };
+      }
+
+      if (filters.userId) {
+        where.userId = filters.userId;
+      }
+
+      if (filters.eventType) {
+        where.eventType = filters.eventType;
+      }
+
+      if (filters.result) {
+        where.result = filters.result;
+      }
+
+      const logs = await db.auditLog.findMany({
+        where,
+        orderBy: { timestamp: 'desc' },
+        take: 100, // Limit to 100 for now
+      });
+
+      return logs.map((log) => ({
+        id: log.id,
+        timestamp: log.timestamp,
+        eventType: log.eventType as AuditEventType,
+        userId: log.userId || undefined,
+        email: log.email || undefined,
+        ipAddress: log.ipAddress || undefined,
+        userAgent: log.userAgent || undefined,
+        correlationId: log.correlationId || '',
+        metadata: log.metadata ? JSON.parse(log.metadata) : undefined,
+        result: log.result as 'success' | 'failure',
+        errorMessage: log.errorMessage || undefined,
+      }));
+    } catch (error) {
+      logger.error('Failed to query audit logs', { correlationId: 'query' }, error as Error);
+      return [];
+    }
   }
 
   /**
@@ -115,18 +147,27 @@ export class AuditLogger {
     identifier: { email?: string; ipAddress?: string },
     sinceMinutes: number = 30,
   ): Promise<number> {
-    const _since = new Date(Date.now() - sinceMinutes * 60 * 1000);
+    const since = new Date(Date.now() - sinceMinutes * 60 * 1000);
 
-    // Placeholder - would query the audit log table
-    logger.info(
-      'Failed login attempt check',
-      {
-        correlationId: `login-check-${Date.now()}`,
-      } as LogContext,
-      { identifier, sinceMinutes },
-    );
+    try {
+      const where: any = {
+        eventType: 'AUTH_LOGIN_FAILED',
+        timestamp: { gte: since },
+      };
 
-    return 0;
+      if (identifier.email) {
+        where.email = identifier.email;
+      } else if (identifier.ipAddress) {
+        where.ipAddress = identifier.ipAddress;
+      } else {
+        return 0;
+      }
+
+      return await db.auditLog.count({ where });
+    } catch (error) {
+      logger.error('Failed to count failed logins', { correlationId: 'security-check' }, error as Error);
+      return 0;
+    }
   }
 
   /**
@@ -143,17 +184,37 @@ export class AuditLogger {
       correlationId: `audit-${action.toLowerCase()}-${Date.now()}`,
     };
 
-    logger.info(`Data Action: ${action} ${modelName}`, context, {
-      action,
-      modelName,
-      recordId,
-      userId,
-      details,
-      journey: 'data-audit',
-    });
+    try {
+      logger.info(`Data Action: ${action} ${modelName}`, context, {
+        action,
+        modelName,
+        recordId,
+        userId,
+        details,
+        journey: 'data-audit',
+      });
 
-    // In production, this would write to an audit log table
-    // For now, just log it for monitoring
+      // Persist to database
+      await db.auditLog.create({
+        data: {
+          eventType: `DATA_${action}`,
+          userId,
+          correlationId: context.correlationId,
+          metadata: JSON.stringify({
+            modelName,
+            recordId,
+            details,
+          }),
+          result: 'success',
+        },
+      });
+    } catch (error) {
+      logger.error('Failed to log data action', context, error as Error, {
+        action,
+        modelName,
+        recordId,
+      });
+    }
   }
 }
 

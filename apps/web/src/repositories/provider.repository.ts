@@ -303,4 +303,44 @@ export class ProviderRepository extends BaseRepository<Provider> {
       where: { id: { in: ids } },
     });
   }
+
+  /**
+   * Create a new provider with business logic
+   */
+  async createProvider(data: any, userId: string): Promise<Provider> {
+    const { ageGroups, ...providerData } = data;
+
+    const createData = {
+      ...providerData,
+      ageGroups: ageGroups ? JSON.stringify(ageGroups) : '[]',
+      vettingDate: data.isVetted ? new Date() : null,
+      vettingStatus: data.isVetted ? 'APPROVED' : 'NOT_STARTED',
+    };
+
+    return this.create(createData, userId);
+  }
+
+  /**
+   * Update a provider with business logic
+   */
+  async updateProvider(id: string, data: any, userId: string): Promise<Provider> {
+    const { ageGroups, ...updateData } = data;
+    const dataToUpdate: any = { ...updateData };
+
+    // Handle JSON fields
+    if (ageGroups !== undefined) {
+      dataToUpdate.ageGroups = ageGroups ? JSON.stringify(ageGroups) : '[]';
+    }
+
+    // Check if vetting status changed (requires fetching current state)
+    if (data.isVetted !== undefined) {
+      const current = await this.findById(id);
+      if (current && current.isVetted !== data.isVetted) {
+        dataToUpdate.vettingDate = data.isVetted ? new Date() : null;
+        dataToUpdate.vettingStatus = data.isVetted ? 'APPROVED' : 'NOT_STARTED';
+      }
+    }
+
+    return this.update(id, dataToUpdate, userId);
+  }
 }

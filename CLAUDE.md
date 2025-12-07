@@ -19,9 +19,6 @@ All project documentation is organized in `/docs/` with the following structure:
 
 ### Business & Product
 - **Reference**: `/docs/reference/` - BMAD artifacts, PRD, UX designs
-  - Product Requirements Document (complete PRD)
-  - Product brief and business case
-  - UX design specifications
 
 ### Project Management
 - **Project**: `/docs/project/` - Planning and process documentation
@@ -29,41 +26,120 @@ All project documentation is organized in `/docs/` with the following structure:
   - Implementation status
   - Team guidelines and branching strategy
 
-### Operations
-- **Runbooks**: `/docs/runbooks/` - Operational procedures
-  - Incident response
-  - Deployment checklist
-  - Rollback procedures
-
 ### Development
 - **Stories**: `/docs/stories/` - All epic stories with acceptance criteria
 
-## Development Commands
+## Project Architecture
 
-Based on T3 Stack + Turborepo (see `/docs/architecture/tech-stack.md` for versions):
+### Monorepo Structure
+This is a **Turborepo monorepo** with a single Next.js app (no packages directory):
 
-```bash
-# Development
-pnpm dev              # Start development server
-pnpm build            # Build all packages
-pnpm test             # Run tests
-pnpm lint && pnpm typecheck  # Code quality checks
-
-# Database (Prisma)
-pnpm db:push          # Push schema changes
-pnpm db:migrate       # Run migrations
-pnpm db:studio        # Open Prisma Studio
-
-# Monorepo
-pnpm dev:web          # Web app only
-pnpm build:web        # Build web app only
+```
+holiday-program-aggregator/
+├── apps/
+│   └── web/                    # Next.js 15 application (T3 Stack)
+│       ├── src/
+│       │   ├── pages/         # Next.js Pages Router
+│       │   ├── server/        # tRPC API layer
+│       │   │   ├── api/       # tRPC routers (user, subscription, provider, admin, healthz)
+│       │   │   ├── auth.ts    # NextAuth configuration
+│       │   │   └── db.ts      # Prisma client
+│       │   ├── repositories/  # Database access layer (BaseRepository pattern)
+│       │   ├── services/      # Business logic layer
+│       │   ├── utils/         # Shared utilities (encryption, logger, auditLogger)
+│       │   ├── components/    # React components
+│       │   ├── hooks/         # Custom React hooks
+│       │   └── types/         # TypeScript type definitions
+│       ├── prisma/
+│       │   ├── schema.prisma  # Database schema
+│       │   └── seed*.ts       # Database seeding scripts
+│       └── __tests__/         # Jest test files
+├── docs/                      # Comprehensive documentation
+└── turbo.json                 # Turborepo configuration
 ```
 
-## Project Structure
+### Tech Stack (see `/docs/architecture/tech-stack.md`)
+- **Frontend**: Next.js 15.4.6, React 19.1.1, TypeScript 5.9.2
+- **Backend**: tRPC 11.4.4 for type-safe APIs
+- **Database**: PostgreSQL 16.3 with Prisma 6.13.0 ORM
+- **Auth**: NextAuth v4.24.11
+- **Styling**: Tailwind CSS 3.4.17, Shadcn/UI + Radix UI
+- **State**: TanStack Query 5.84.2, Zustand
+- **Testing**: Jest 30.0.5 (unit/integration), Playwright 1.54.2 (E2E)
+- **Linting**: Biome 2.2.0 (replaces ESLint)
+- **CI/CD**: Vercel deployment, GitHub Actions
 
-- **Monorepo**: Turborepo with `/apps/web` (Next.js) and `/packages` (shared code)
-- **Architecture**: Serverless on Vercel, PostgreSQL with PostGIS, Sydney region
-- **Key Features**: Provider vetting, geospatial search, subscription management, automated suggestions
+### Key Architectural Patterns
+
+#### Repository Pattern
+All database access uses the BaseRepository pattern (`src/repositories/base.repository.ts`):
+- Provides standard CRUD operations
+- Includes automatic audit logging
+- Supports transactions
+- Example: `ProviderRepository` extends `BaseRepository<Provider>`
+
+#### tRPC API Structure
+API routers are in `src/server/api/routers/`:
+- `user.ts` - User management
+- `subscription.ts` - Subscription/Stripe integration
+- `provider.ts` - Provider and program management
+- `admin.ts` - Admin operations
+- `healthz.ts` - Health checks
+
+All routers are assembled in `src/server/api/root.ts` as `appRouter`.
+
+#### Database Schema
+Core models in `prisma/schema.prisma`:
+- **User** - Authentication and profile (NextAuth)
+- **Provider** - Holiday program providers with vetting workflow
+- **Program** - Holiday programs with geospatial data
+- **Subscription** - Stripe subscription management
+- Key features: PostGIS support planned, audit trail, soft deletes
+
+## Development Commands
+
+### Core Commands
+```bash
+# Development
+pnpm dev              # Start dev server (http://localhost:3000)
+pnpm build            # Production build
+pnpm start            # Start production server
+
+# Quality Checks (run before committing)
+pnpm lint             # Biome linting (non-blocking in CI)
+pnpm typecheck        # TypeScript type checking
+pnpm test             # Run Jest unit tests
+pnpm test:watch       # Run tests in watch mode
+pnpm test:coverage    # Run tests with coverage report
+pnpm test:e2e         # Run Playwright E2E tests
+
+# Database (Prisma)
+pnpm db:push          # Push schema changes (development)
+pnpm db:migrate       # Create and run migrations
+pnpm db:studio        # Open Prisma Studio GUI
+pnpm db:seed          # Seed database with test data
+
+# Docker (local PostgreSQL)
+pnpm docker:up        # Start PostgreSQL container
+pnpm docker:down      # Stop PostgreSQL container
+pnpm docker:reset     # Reset database and container
+```
+
+### Testing Commands
+```bash
+# Run specific test file
+cd apps/web && pnpm test -- path/to/test.test.ts
+
+# Run tests matching pattern
+cd apps/web && pnpm test -- -t "test name pattern"
+
+# Run tests for specific file pattern
+cd apps/web && pnpm test -- repositories
+
+# E2E tests
+cd apps/web && pnpm test:e2e
+cd apps/web && pnpm test:e2e:ui  # Interactive UI mode
+```
 
 ## Development Rules
 
@@ -94,10 +170,26 @@ pnpm build:web        # Build web app only
 
 ### Code Quality Standards
 - Always run `pnpm lint && pnpm typecheck` before committing
-- Ensure test coverage remains above 80% (previously 75%, now updated)
-- Follow repository pattern for database operations
-- Use proper error handling with AppError classes
+- Ensure test coverage remains above 80% for new code
+- Follow repository pattern for database operations (extend `BaseRepository`)
+- Use audit logging via `auditLogger.logAction()` for security-relevant operations
 - Never commit sensitive information or debug endpoints
 - Write tests FIRST or alongside code (TDD/BDD approach)
+- Use proper error handling and logging (`utils/logger.ts`)
+
+### Security Requirements
+- No hardcoded secrets (use environment variables)
+- All sensitive operations must use audit logging
+- Encryption for PII using `utils/encryption.ts`
+- Rate limiting on public endpoints
+- SQL injection protection via Prisma (never use raw SQL without parameterization)
+- Authentication required for all non-public routes
+
+### BMAD Method Integration
+This project uses BMAD (Business-Model-Architecture-Development) methodology:
+- Cursor rules in `.cursor/rules/` define specialized agent personas (@dev, @pm, @po, @qa, etc.)
+- Core development workflows in `.bmad-core/` (not loaded during normal Claude Code operation)
+- Story-driven development with strict DoR/DoD compliance
+- When invoked with `@dev` in Cursor, follows strict story implementation workflow
 
 Refer to documentation in `/docs/` for all implementation details, requirements, and architectural decisions.
