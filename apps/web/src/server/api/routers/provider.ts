@@ -86,11 +86,8 @@ export const providerRouter = createTRPCRouter({
         where.isVetted = true;
       }
 
-      return providerRepository.findMany({
+      return providerRepository.findManyWithPrograms({
         where,
-        include: {
-          programs: true,
-        },
         orderBy: {
           createdAt: 'desc',
         },
@@ -122,7 +119,7 @@ export const providerRouter = createTRPCRouter({
   // Get single provider
   getById: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
     const providerRepository = new ProviderRepository(ctx.db);
-    const provider = await providerRepository.findById(input.id, { programs: true });
+    const provider = await providerRepository.findByIdWithPrograms(input.id);
 
     if (!provider) {
       throw new TRPCError({

@@ -28,6 +28,20 @@ export class ProviderRepository extends BaseRepository<Provider> {
   }
 
   /**
+   * Find provider by ID with programs included
+   */
+  async findByIdWithPrograms(id: string): Promise<ProviderWithPrograms | null> {
+    return this.findById(id, { programs: true }) as Promise<ProviderWithPrograms | null>;
+  }
+
+  /**
+   * Find all providers with programs included
+   */
+  async findManyWithPrograms(options: any = {}): Promise<ProviderWithPrograms[]> {
+    return this.findMany({ ...options, include: { programs: true } }) as Promise<ProviderWithPrograms[]>;
+  }
+
+  /**
    * Find providers by location using PostGIS (when implemented)
    * For now, using suburb/state filtering
    */
