@@ -25,7 +25,7 @@ async function main() {
   const premiumEmail = 'premium@test.com';
   const existingPremium = await prisma.user.findUnique({ where: { email: premiumEmail } });
   if (!existingPremium) {
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         email: premiumEmail,
         name: 'Premium User',
