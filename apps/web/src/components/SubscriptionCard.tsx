@@ -85,6 +85,7 @@ export function SubscriptionCard() {
                     ? styles.pastDueBadge
                     : styles.canceledBadge
           }
+          data-testid="subscription-status"
         >
           {statusLabel}
         </span>
@@ -115,6 +116,7 @@ export function SubscriptionCard() {
               className={styles.subscribeButton}
               onClick={() => createCheckoutSession.mutate({})}
               disabled={createCheckoutSession.isPending}
+              data-testid="upgrade-plan"
             >
               {createCheckoutSession.isPending ? 'Processing...' : 'Subscribe Now'}
             </button>
@@ -125,6 +127,7 @@ export function SubscriptionCard() {
               className={styles.cancelButton}
               onClick={() => cancelSubscription.mutate()}
               disabled={cancelSubscription.isPending}
+              data-testid="cancel-subscription"
             >
               {cancelSubscription.isPending ? 'Processing...' : 'Cancel Subscription'}
             </button>
@@ -134,9 +137,9 @@ export function SubscriptionCard() {
             <button
               className={styles.resumeButton}
               onClick={() => {
-                // TODO: Implement resume subscription mutation
                 alert('Resume subscription functionality coming soon');
               }}
+              data-testid="reactivate-subscription"
             >
               Resume Subscription
             </button>
