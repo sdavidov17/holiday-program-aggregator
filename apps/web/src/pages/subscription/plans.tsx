@@ -1,7 +1,9 @@
 import Head from 'next/head';
+import { useState } from 'react';
 import { api } from '~/utils/api';
 
 export default function SubscriptionPlans() {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const createCheckoutSession = api.subscription.createCheckoutSession.useMutation({
     onSuccess: (data) => {
       if (data.url) {
@@ -11,15 +13,12 @@ export default function SubscriptionPlans() {
      onError: (error) => {
       // For E2E tests to catch the error
       console.error('Checkout error:', error);
-      // Show error in UI for test to verify
-       if (document.getElementById('error-message')) {
-           document.getElementById('error-message')!.textContent = 'Payment failed: ' + error.message;
-           document.getElementById('error-message')!.style.display = 'block';
-       }
+      setErrorMessage('Payment failed: ' + error.message);
     }
   });
 
   const handleSubscribe = (priceId: string) => {
+    setErrorMessage(null);
     createCheckoutSession.mutate({ priceId });
   };
 
@@ -57,7 +56,16 @@ export default function SubscriptionPlans() {
       <div className="container mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Choose Your Plan</h1>
         
-         <div id="error-message" data-testid="error-message" className="hidden bg-red-100 text-red-700 p-4 mb-4 rounded"></div>
+         {errorMessage && (
+           <div id="error-message" data-testid="error-message" className="bg-red-100 text-red-700 p-4 mb-4 rounded">
+             {errorMessage}
+           </div>
+         )}
+         
+         {!errorMessage && (
+            // Keep hidden element for test stability if it expects it to exist but be hidden
+            <div id="error-message" className="hidden"></div>
+         )}
 
         <div className="grid md:grid-cols-3 gap-8">
           {plans.map((plan) => (
