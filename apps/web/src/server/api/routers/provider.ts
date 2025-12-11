@@ -1,8 +1,8 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { ProviderRepository } from '~/repositories/provider.repository';
 import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { logger } from '~/utils/logger';
-import { ProviderRepository } from '~/repositories/provider.repository';
 
 // Admin-only procedure
 const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {

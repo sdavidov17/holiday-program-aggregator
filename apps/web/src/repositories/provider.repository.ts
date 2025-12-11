@@ -38,7 +38,9 @@ export class ProviderRepository extends BaseRepository<Provider> {
    * Find all providers with programs included
    */
   async findManyWithPrograms(options: any = {}): Promise<ProviderWithPrograms[]> {
-    return this.findMany({ ...options, include: { programs: true } }) as Promise<ProviderWithPrograms[]>;
+    return this.findMany({ ...options, include: { programs: true } }) as Promise<
+      ProviderWithPrograms[]
+    >;
   }
 
   /**

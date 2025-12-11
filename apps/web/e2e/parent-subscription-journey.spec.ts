@@ -152,7 +152,7 @@ test.describe('Parent Subscription Journey', () => {
       // But the test expects "Basic" text in "current-plan" element.
       // Since /subscription/index.tsx uses SubscriptionCard, and SubscriptionCard shows status.
       // If user has no subscription (Basic), SubscriptionCard might say "No active subscription" or similar.
-      // Let's adjust expectation based on implementation. 
+      // Let's adjust expectation based on implementation.
       // Actually, let's skip this check or adjust logic because "Basic" is default/no subscription.
       // The implemented SubscriptionCard shows status label.
       // If status is null/undefined, it might not show anything or show "Inactive".

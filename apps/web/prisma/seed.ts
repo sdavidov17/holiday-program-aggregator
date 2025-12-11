@@ -16,9 +16,9 @@ async function main() {
   await prisma.user.deleteMany({
     where: {
       email: {
-        in: ['premium@test.com', 'basic@test.com']
-      }
-    }
+        in: ['premium@test.com', 'basic@test.com'],
+      },
+    },
   });
 
   // Create premium user for E2E tests
@@ -40,8 +40,8 @@ async function main() {
             currentPeriodStart: new Date(),
             currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
             cancelAtPeriodEnd: false,
-          }
-        }
+          },
+        },
       },
     });
     console.log(`✅ Created premium user: ${premiumEmail} with subscription`);
@@ -74,7 +74,6 @@ async function main() {
     });
     console.log(`✅ Updated existing basic user password`);
   }
-
 
   // Get admin credentials from environment variables ONLY
   const adminEmail = process.env.ADMIN_EMAIL;
@@ -174,7 +173,6 @@ async function main() {
   } else {
     console.log(`✅ Test user already exists: ${testUserEmail}`);
   }
-
 
   console.log('🎉 Database seed completed!');
 }

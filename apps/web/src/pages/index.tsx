@@ -143,10 +143,7 @@ export default function Home() {
                 >
                   Providers
                 </Link>
-                <Link
-                  href="/about"
-                  className="text-gray-700 hover:text-primary-600 font-medium"
-                >
+                <Link href="/about" className="text-gray-700 hover:text-primary-600 font-medium">
                   About
                 </Link>
               </nav>
@@ -194,7 +191,12 @@ export default function Home() {
                       data-testid="search-location"
                     />
                   </div>
-                  <button type="submit" className="btn-primary px-8" data-testid="search-button" aria-label="Search">
+                  <button
+                    type="submit"
+                    className="btn-primary px-8"
+                    data-testid="search-button"
+                    aria-label="Search"
+                  >
                     Search
                   </button>
                 </div>

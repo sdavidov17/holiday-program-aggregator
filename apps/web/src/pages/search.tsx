@@ -34,10 +34,7 @@ const SearchPage: NextPage = () => {
               {/* Placeholder for search functionality */}
               <div className="space-y-4">
                 <div>
-                  <label
-                    htmlFor="keyword"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
+                  <label htmlFor="keyword" className="block text-sm font-medium text-gray-700 mb-2">
                     Keyword
                   </label>
                   <input
@@ -50,14 +47,16 @@ const SearchPage: NextPage = () => {
                 </div>
 
                 <div className="mt-8 text-center text-gray-500" data-testid="no-results-message">
-                  <p>
-                    No programs found matching your search criteria.
-                  </p>
+                  <p>No programs found matching your search criteria.</p>
                 </div>
 
                 {/* Dummy result for E2E testing when search is active */}
-                <div data-testid="provider-card" className="p-4 border rounded">Dummy Provider</div>
-                <div data-testid="mobile-provider-card" className="p-4 border rounded">Dummy Mobile Provider</div>
+                <div data-testid="provider-card" className="p-4 border rounded">
+                  Dummy Provider
+                </div>
+                <div data-testid="mobile-provider-card" className="p-4 border rounded">
+                  Dummy Mobile Provider
+                </div>
 
                 <div>
                   <label

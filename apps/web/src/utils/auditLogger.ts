@@ -165,7 +165,11 @@ export class AuditLogger {
 
       return await db.auditLog.count({ where });
     } catch (error) {
-      logger.error('Failed to count failed logins', { correlationId: 'security-check' }, error as Error);
+      logger.error(
+        'Failed to count failed logins',
+        { correlationId: 'security-check' },
+        error as Error,
+      );
       return 0;
     }
   }
