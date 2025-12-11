@@ -34,7 +34,7 @@ async function main() {
         emailVerified: new Date(),
         subscriptions: {
           create: {
-            status: 'active',
+            status: 'ACTIVE',
             stripeSubscriptionId: 'sub_premium',
             stripePriceId: 'price_premium',
             currentPeriodStart: new Date(),
@@ -51,6 +51,38 @@ async function main() {
       data: { password: await bcrypt.hash('Test123!@#', 10) },
     });
     console.log(`✅ Updated existing premium user password`);
+  }
+
+  // Create premium user for cancellation tests
+  const premiumCancelEmail = 'premium_cancel@test.com';
+  const existingPremiumCancel = await prisma.user.findUnique({ where: { email: premiumCancelEmail } });
+  if (!existingPremiumCancel) {
+    await prisma.user.create({
+      data: {
+        email: premiumCancelEmail,
+        name: 'Premium Cancel User',
+        password: await bcrypt.hash('Test123!@#', 10),
+        role: UserRole.USER,
+        emailVerified: new Date(),
+        subscriptions: {
+          create: {
+            status: 'ACTIVE',
+            stripeSubscriptionId: 'sub_premium_cancel',
+            stripePriceId: 'price_premium',
+            currentPeriodStart: new Date(),
+            currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+            cancelAtPeriodEnd: false,
+          },
+        },
+      },
+    });
+    console.log(`✅ Created premium cancel user: ${premiumCancelEmail}`);
+  } else {
+    await prisma.user.update({
+      where: { email: premiumCancelEmail },
+      data: { password: await bcrypt.hash('Test123!@#', 10) },
+    });
+    console.log(`✅ Updated existing premium cancel user password`);
   }
 
   // Create basic user for E2E tests

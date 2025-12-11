@@ -32,6 +32,8 @@ async function loginUser(page: Page, user: typeof testUser) {
 }
 
 test.describe('Parent Subscription Journey', () => {
+  test.describe.configure({ mode: 'serial' });
+
   test.beforeEach(async ({ page }) => {
     // Set viewport for consistent testing
     await page.setViewportSize({ width: 1280, height: 720 });
@@ -176,7 +178,7 @@ test.describe('Parent Subscription Journey', () => {
   });
 
   test('Subscription cancellation flow', async ({ page }) => {
-    await loginUser(page, { ...testUser, email: 'premium@test.com' });
+    await loginUser(page, { ...testUser, email: 'premium_cancel@test.com' });
 
     await test.step('Navigate to subscription management', async () => {
       await page.goto('/subscription');
