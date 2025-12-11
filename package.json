@@ -27,6 +27,12 @@
     "lint-staged": "^16.2.7",
     "turbo": "^1.13.4"
   },
+  "pnpm": {
+    "overrides": {
+      "glob@^10.0.0": "^10.5.0",
+      "glob@^11.0.0": "^11.1.0"
+    }
+  },
   "packageManager": "pnpm@8.6.10",
   "workspaces": [
     "apps/*",
