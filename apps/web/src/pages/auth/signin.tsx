@@ -25,6 +25,12 @@ export default function SignIn() {
     }
   }, [router.query.error]);
 
+  useEffect(() => {
+    if (router.query.signup === 'true') {
+      setIsSignUp(true);
+    }
+  }, [router.query.signup]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');

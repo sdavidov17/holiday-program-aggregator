@@ -64,14 +64,15 @@ test.describe('Parent Subscription Journey', () => {
 
     // Step 3: Registration
     await test.step('Register new account', async () => {
-      await page.click('[data-testid="signup-link"]');
-      await expect(page).toHaveURL('/auth/signup');
+      await page.goto('/');
+      await page.click('[data-testid="hero-cta"]');
+      await expect(page).toHaveURL(/\/auth\/sign(in|up)/);
 
       await registerUser(page, testUser);
 
-      // Should redirect to onboarding or dashboard
-      await expect(page).toHaveURL(/\/(dashboard|onboarding)/);
-      await expect(page.locator('[data-testid="welcome-message"]')).toContainText(testUser.name);
+      // Should redirect to home after successful signup
+      await expect(page).toHaveURL('/');
+      await expect(page.locator('text=My Account')).toBeVisible();
     });
 
     // Step 4: Subscription Selection
