@@ -12,10 +12,26 @@
     "build:web": "turbo run build --filter=web",
     "db:push": "turbo run db:push",
     "db:migrate": "turbo run db:migrate",
-    "db:studio": "turbo run db:studio"
+    "db:studio": "turbo run db:studio",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "apps/web/**/*.{ts,tsx,js,jsx,json,css}": [
+      "pnpm --filter web biome check --apply --no-errors-on-unmatched"
+    ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "turbo": "^1.13.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "glob@^10.0.0": "^10.5.0",
+      "glob@^11.0.0": "^11.1.0"
+    }
   },
   "packageManager": "pnpm@8.6.10",
   "workspaces": [

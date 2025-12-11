@@ -182,12 +182,12 @@ export const premiumProcedure = protectedProcedure.use(async ({ ctx, next }) => 
         const currentSub = await tx.subscription.findUnique({
           where: { id: subscription.id },
         });
-        
+
         if (currentSub?.status === SubscriptionStatus.ACTIVE) {
           await tx.subscription.update({
-            where: { 
+            where: {
               id: subscription.id,
-              status: SubscriptionStatus.ACTIVE // Optimistic lock on status
+              status: SubscriptionStatus.ACTIVE, // Optimistic lock on status
             },
             data: { status: SubscriptionStatus.EXPIRED },
           });
@@ -199,7 +199,7 @@ export const premiumProcedure = protectedProcedure.use(async ({ ctx, next }) => 
         subscriptionId: subscription.id,
         userId: ctx.session.user.id,
       });
-    } catch (error) {
+    } catch (_error) {
       // If update fails due to concurrent modification, that's ok
       logger.debug('Subscription status already updated by another request', {
         correlationId: ctx.correlationId,

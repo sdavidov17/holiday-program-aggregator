@@ -34,7 +34,11 @@ export default function TestLogin() {
         <h1>Logged in!</h1>
         <p>Email: {session.user?.email}</p>
         <p>Role: {session.user?.role}</p>
-        <button onClick={() => (window.location.href = '/admin/bmad-dashboard')}>
+        <button
+          onClick={() => {
+            window.location.href = '/admin/bmad-dashboard';
+          }}
+        >
           Go to BMAD Dashboard
         </button>
       </div>

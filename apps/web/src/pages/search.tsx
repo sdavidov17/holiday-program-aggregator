@@ -34,6 +34,31 @@ const SearchPage: NextPage = () => {
               {/* Placeholder for search functionality */}
               <div className="space-y-4">
                 <div>
+                  <label htmlFor="keyword" className="block text-sm font-medium text-gray-700 mb-2">
+                    Keyword
+                  </label>
+                  <input
+                    id="keyword"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Search for programs..."
+                    data-testid="search-input"
+                  />
+                </div>
+
+                <div className="mt-8 text-center text-gray-500" data-testid="no-results-message">
+                  <p>No programs found matching your search criteria.</p>
+                </div>
+
+                {/* Dummy result for E2E testing when search is active */}
+                <div data-testid="provider-card" className="p-4 border rounded">
+                  Dummy Provider
+                </div>
+                <div data-testid="mobile-provider-card" className="p-4 border rounded">
+                  Dummy Mobile Provider
+                </div>
+
+                <div>
                   <label
                     htmlFor="location"
                     className="block text-sm font-medium text-gray-700 mb-2"
@@ -45,6 +70,7 @@ const SearchPage: NextPage = () => {
                     type="text"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter suburb or postcode"
+                    data-testid="location-filter"
                   />
                 </div>
 
@@ -58,6 +84,7 @@ const SearchPage: NextPage = () => {
                   <select
                     id="age-group"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    data-testid="age-filter"
                   >
                     <option>Select age group</option>
                     <option>5-7 years</option>

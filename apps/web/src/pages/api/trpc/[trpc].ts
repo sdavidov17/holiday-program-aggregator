@@ -10,15 +10,15 @@ export default createNextApiHandler({
   onError:
     env.NODE_ENV === 'development'
       ? ({ path, error, type, ctx, input }) => {
-          console.error(`❌ tRPC failed on ${path ?? '<no-path>'}: ${error.message}`);
-          console.error('Error details:', {
-            path,
-            type,
-            input,
-            code: error.code,
-            httpStatus: (error as any).httpStatus,
-            cause: error.cause,
-          });
-        }
+        console.error(`❌ tRPC failed on ${path ?? '<no-path>'}: ${error.message}`);
+        console.error('Error details:', {
+          path,
+          type,
+          input,
+          code: error.code,
+          httpStatus: (error as any).httpStatus,
+          cause: error.cause,
+        });
+      }
       : undefined,
 });

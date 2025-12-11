@@ -12,6 +12,101 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Starting database seed...');
 
+  // Clean up test users first
+  await prisma.user.deleteMany({
+    where: {
+      email: {
+        in: ['premium@test.com', 'basic@test.com'],
+      },
+    },
+  });
+
+  // Create premium user for E2E tests
+  const premiumEmail = 'premium@test.com';
+  const existingPremium = await prisma.user.findUnique({ where: { email: premiumEmail } });
+  if (!existingPremium) {
+    await prisma.user.create({
+      data: {
+        email: premiumEmail,
+        name: 'Premium User',
+        password: await bcrypt.hash('Test123!@#', 10),
+        role: UserRole.USER,
+        emailVerified: new Date(),
+        subscriptions: {
+          create: {
+            status: 'ACTIVE',
+            stripeSubscriptionId: 'sub_premium',
+            stripePriceId: 'price_premium',
+            currentPeriodStart: new Date(),
+            currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+            cancelAtPeriodEnd: false,
+          },
+        },
+      },
+    });
+    console.log(`✅ Created premium user: ${premiumEmail} with subscription`);
+  } else {
+    await prisma.user.update({
+      where: { email: premiumEmail },
+      data: { password: await bcrypt.hash('Test123!@#', 10) },
+    });
+    console.log(`✅ Updated existing premium user password`);
+  }
+
+  // Create premium user for cancellation tests
+  const premiumCancelEmail = 'premium_cancel@test.com';
+  const existingPremiumCancel = await prisma.user.findUnique({ where: { email: premiumCancelEmail } });
+  if (!existingPremiumCancel) {
+    await prisma.user.create({
+      data: {
+        email: premiumCancelEmail,
+        name: 'Premium Cancel User',
+        password: await bcrypt.hash('Test123!@#', 10),
+        role: UserRole.USER,
+        emailVerified: new Date(),
+        subscriptions: {
+          create: {
+            status: 'ACTIVE',
+            stripeSubscriptionId: 'sub_premium_cancel',
+            stripePriceId: 'price_premium',
+            currentPeriodStart: new Date(),
+            currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+            cancelAtPeriodEnd: false,
+          },
+        },
+      },
+    });
+    console.log(`✅ Created premium cancel user: ${premiumCancelEmail}`);
+  } else {
+    await prisma.user.update({
+      where: { email: premiumCancelEmail },
+      data: { password: await bcrypt.hash('Test123!@#', 10) },
+    });
+    console.log(`✅ Updated existing premium cancel user password`);
+  }
+
+  // Create basic user for E2E tests
+  const basicEmail = 'basic@test.com';
+  const existingBasic = await prisma.user.findUnique({ where: { email: basicEmail } });
+  if (!existingBasic) {
+    await prisma.user.create({
+      data: {
+        email: basicEmail,
+        name: 'Basic User',
+        password: await bcrypt.hash('Test123!@#', 10),
+        role: UserRole.USER,
+        emailVerified: new Date(),
+      },
+    });
+    console.log(`✅ Created basic user: ${basicEmail}`);
+  } else {
+    await prisma.user.update({
+      where: { email: basicEmail },
+      data: { password: await bcrypt.hash('Test123!@#', 10) },
+    });
+    console.log(`✅ Updated existing basic user password`);
+  }
+
   // Get admin credentials from environment variables ONLY
   const adminEmail = process.env.ADMIN_EMAIL;
   const adminPassword = process.env.ADMIN_PASSWORD;

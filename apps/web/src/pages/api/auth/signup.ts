@@ -7,6 +7,7 @@ import { hashPassword } from '~/utils/encryption';
 const signupSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
+  name: z.string().optional(),
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -33,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
-    const { email, password } = parsed.data;
+    const { email, password, name } = parsed.data;
 
     // Check if user already exists
     const existingUser = await db.user.findUnique({
@@ -52,6 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: {
         email,
         password: hashedPassword,
+        name,
       },
     });
 

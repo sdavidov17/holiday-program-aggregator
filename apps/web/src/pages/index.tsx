@@ -13,6 +13,7 @@ export default function Home() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [location, setLocation] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,12 +110,45 @@ export default function Home() {
                     Sign In
                   </Link>
                   <Link href="/auth/signin?signup=true" className="btn-primary">
-                    Get Started
+                    <span data-testid="hero-cta">Get Started</span>
                   </Link>
                 </>
               )}
             </div>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              className="md:hidden"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              data-testid="mobile-menu-toggle"
+            >
+              <Users className="w-6 h-6 text-gray-700" />
+            </button>
           </div>
+
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 border-t border-gray-100" data-testid="mobile-menu">
+              <nav className="flex flex-col gap-4 mt-4">
+                <Link
+                  href="/search"
+                  className="text-gray-700 hover:text-primary-600 font-medium"
+                  data-testid="mobile-search"
+                >
+                  Browse Activities
+                </Link>
+                <Link
+                  href="/providers"
+                  className="text-gray-700 hover:text-primary-600 font-medium"
+                >
+                  Providers
+                </Link>
+                <Link href="/about" className="text-gray-700 hover:text-primary-600 font-medium">
+                  About
+                </Link>
+              </nav>
+            </div>
+          )}
         </div>
       </header>
 
@@ -142,6 +176,8 @@ export default function Home() {
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search activities..."
                       className="w-full pl-12 pr-4 py-4 focus:outline-none text-gray-900"
+                      data-testid="search-input"
+                      aria-label="Search activities"
                     />
                   </div>
                   <div className="flex-1 relative">
@@ -152,9 +188,15 @@ export default function Home() {
                       onChange={(e) => setLocation(e.target.value)}
                       placeholder="Location or postcode"
                       className="w-full pl-12 pr-4 py-4 focus:outline-none text-gray-900"
+                      data-testid="search-location"
                     />
                   </div>
-                  <button type="submit" className="btn-primary px-8">
+                  <button
+                    type="submit"
+                    className="btn-primary px-8"
+                    data-testid="search-button"
+                    aria-label="Search"
+                  >
                     Search
                   </button>
                 </div>

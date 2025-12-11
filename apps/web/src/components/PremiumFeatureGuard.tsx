@@ -8,7 +8,7 @@ interface PremiumFeatureGuardProps {
 }
 
 const SubscriptionPrompt: React.FC = () => (
-  <div className="text-center p-8 bg-gray-50 rounded-lg">
+  <div className="text-center p-8 bg-gray-50 rounded-lg" data-testid="signup-prompt">
     <h3 className="text-lg font-semibold mb-2">Premium Feature</h3>
     <p className="text-gray-600 mb-4">This feature requires an active subscription.</p>
     <Link

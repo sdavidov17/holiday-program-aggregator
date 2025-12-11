@@ -75,6 +75,7 @@ export default function Profile({ user }: ProfileProps) {
           <div className="flex items-start space-x-6">
             {user.image ? (
               // eslint-disable-next-line @next/next/no-img-element
+              // biome-ignore lint/performance/noImgElement: External user images require Next.js Image config changes
               <img
                 src={user.image}
                 alt="Profile"
@@ -239,14 +240,14 @@ export default function Profile({ user }: ProfileProps) {
                 <span className="text-gray-600">Status</span>
                 <span
                   className={`font-medium capitalize ${
-                    user.subscription.status === 'active'
+                    user.subscription.status === 'ACTIVE' || user.subscription.status === 'active'
                       ? 'text-green-600'
                       : user.subscription.status === 'trialing'
                         ? 'text-blue-600'
                         : 'text-gray-600'
                   }`}
                 >
-                  {user.subscription.status}
+                  {user.subscription.status.toLowerCase()}
                 </span>
               </div>
 

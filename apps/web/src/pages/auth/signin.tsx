@@ -10,6 +10,7 @@ export default function SignIn() {
   const [loginType, setLoginType] = useState<'parent' | 'admin'>('parent');
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -23,6 +24,12 @@ export default function SignIn() {
       );
     }
   }, [router.query.error]);
+
+  useEffect(() => {
+    if (router.query.signup === 'true') {
+      setIsSignUp(true);
+    }
+  }, [router.query.signup]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +47,7 @@ export default function SignIn() {
         const res = await fetch('/api/auth/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, password, name }),
         });
 
         if (!res.ok) {
@@ -163,6 +170,39 @@ export default function SignIn() {
 
             {/* Login Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
+              {isSignUp && (
+                <div>
+                  <label htmlFor="name" className="label">
+                    Full Name
+                  </label>
+                  <div className="relative">
+                    <svg
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                    <input
+                      id="name"
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="input pl-10"
+                      placeholder="John Doe"
+                      required
+                      data-testid="name-input"
+                    />
+                  </div>
+                </div>
+              )}
+
               <div>
                 <label htmlFor="email" className="label">
                   Email Address
@@ -189,6 +229,7 @@ export default function SignIn() {
                     className="input pl-10"
                     placeholder="you@example.com"
                     required
+                    data-testid="email-input"
                   />
                 </div>
               </div>
@@ -220,6 +261,7 @@ export default function SignIn() {
                     placeholder="••••••••"
                     required
                     minLength={6}
+                    data-testid="password-input"
                   />
                 </div>
               </div>
@@ -252,6 +294,7 @@ export default function SignIn() {
                       placeholder="••••••••"
                       required
                       minLength={6}
+                      data-testid="confirm-password-input"
                     />
                   </div>
                 </div>
@@ -261,6 +304,7 @@ export default function SignIn() {
                 type="submit"
                 disabled={loading}
                 className="btn-primary w-full flex items-center justify-center gap-2"
+                data-testid={isSignUp ? 'signup-button' : 'signin-button'}
               >
                 {loading ? (
                   <span>Loading...</span>
@@ -335,6 +379,7 @@ export default function SignIn() {
                       setError('');
                     }}
                     className="text-primary-600 hover:text-primary-700 font-medium"
+                    data-testid="toggle-auth-mode"
                   >
                     Sign in
                   </button>
@@ -348,6 +393,7 @@ export default function SignIn() {
                       setError('');
                     }}
                     className="text-primary-600 hover:text-primary-700 font-medium"
+                    data-testid="toggle-auth-mode"
                   >
                     Sign up for free
                   </button>

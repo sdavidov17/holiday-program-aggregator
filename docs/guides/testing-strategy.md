@@ -1,5 +1,7 @@
 # Testing Strategy
 
+This document outlines the testing strategy for the Holiday Program Aggregator. For details on how these tests are integrated into our deployment pipeline, see the [CI/CD Strategy](./ci-cd-strategy.md).
+
 ## Overview
 
 This document defines our testing approach for the Holiday Program Aggregator, ensuring high quality and reliability across all components.

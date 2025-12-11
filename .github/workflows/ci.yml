@@ -16,27 +16,27 @@ jobs:
   checks:
     name: Quality Checks
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Needed for some checks
-      
+          fetch-depth: 0 # Needed for some checks
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      
+          node-version: "20"
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-      
+
       # Intelligent caching
       - name: Get pnpm store directory
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-      
+
       - name: Setup pnpm cache
         uses: actions/cache@v4
         with:
@@ -44,21 +44,21 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       # Run all checks in parallel where possible
       - name: Run checks
         run: |
           echo "::group::Linting"
           pnpm lint
           echo "::endgroup::"
-          
+
           echo "::group::Type checking"
           pnpm type-check
           echo "::endgroup::"
-          
+
           echo "::group::Tests"
           cd apps/web && pnpm test:ci
           echo "::endgroup::"
@@ -67,7 +67,7 @@ jobs:
           DATABASE_URL: "postgresql://test:test@localhost:5432/test_db?schema=public"
           NEXTAUTH_SECRET: "test-secret-for-ci"
           ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
-      
+
       # Upload test results
       - name: Upload test results
         if: always()
@@ -80,7 +80,7 @@ jobs:
             apps/web/coverage/ctrf-report.json
             apps/web/coverage/test-report.html
             apps/web/coverage/test-summary.md
-      
+
       # Upload coverage reports
       - name: Upload coverage reports
         if: always()
@@ -88,7 +88,7 @@ jobs:
         with:
           name: coverage-report
           path: apps/web/coverage/
-      
+
       # Add test summary to PR (only on pull requests)
       - name: Test Report Summary
         if: always() && github.event_name == 'pull_request'
@@ -99,15 +99,13 @@ jobs:
           reporter: jest-junit
           fail-on-error: false
         continue-on-error: true
-      
-      # Security audit (non-blocking)
+
+      # Security audit (blocking)
       - name: Security audit
-        run: pnpm audit --audit-level=high || true
-        continue-on-error: true
-      
-      # Build validation (only on main branch pushes)
+        run: pnpm audit --audit-level=high
+
+      # Build validation (run on all pushes and PRs)
       - name: Build check
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: pnpm build
         env:
           SKIP_ENV_VALIDATION: true
@@ -115,6 +113,84 @@ jobs:
           NEXTAUTH_SECRET: "test-secret-for-ci"
           NEXTAUTH_URL: "http://localhost:3000"
           ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: holiday_aggregator
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Browsers
+        run: cd apps/web && pnpm exec playwright install --with-deps
+
+      - name: Setup Database
+        run: |
+          cd apps/web
+          pnpm db:push
+          pnpm db:seed
+        env:
+          DATABASE_URL: "postgresql://postgres:password@localhost:5432/holiday_aggregator"
+          NEXTAUTH_SECRET: "test-secret-for-ci"
+          ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+
+      - name: Run E2E Tests
+        run: cd apps/web && pnpm test:e2e
+        env:
+          DATABASE_URL: "postgresql://postgres:password@localhost:5432/holiday_aggregator"
+          NEXTAUTH_SECRET: "test-secret-for-ci"
+          NEXTAUTH_URL: "http://localhost:3000"
+          ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+          CI: true
+
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report/
+          retention-days: 30
 
   # CodeQL Security Analysis
   security-checks:
@@ -124,16 +200,16 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: javascript-typescript
-      
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
@@ -151,56 +227,56 @@ jobs:
       pull-requests: write
       issues: read
       id-token: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Get full history for better context
-      
+          fetch-depth: 0 # Get full history for better context
+
       - name: Claude Code Review
         uses: anthropics/claude-code-action@beta
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          
+
           # Use sticky comments to avoid duplicate reviews
           use_sticky_comment: true
-          
+
           # Comprehensive review prompt
           direct_prompt: |
             Please review this pull request comprehensively:
-            
+
             ## Code Quality
             - Check for best practices and clean code principles
             - Identify code smells or anti-patterns
             - Suggest improvements for readability and maintainability
-            
+
             ## Security
             - Identify potential security vulnerabilities
             - Check for SQL injection, XSS, or authentication issues
             - Verify no secrets or sensitive data are exposed
-            
+
             ## Performance
             - Identify potential performance bottlenecks
             - Check for inefficient queries or algorithms
             - Suggest optimizations where applicable
-            
+
             ## Testing
             - Verify test coverage for new code
             - Check if tests follow BDD patterns where applicable
             - Ensure critical paths are tested
-            
+
             ## TypeScript & React
             - Verify proper TypeScript usage and type safety
             - Check React best practices and hooks usage
             - Identify potential memory leaks or side effects
-            
+
             ## Documentation
             - Check if complex logic is properly documented
             - Verify API changes are documented
-            
+
             Be constructive and prioritize critical issues. Mark security issues as "🔴 Critical".
-          
+
           # Allow Claude to run tests and checks
           allowed_tools: "Bash(pnpm lint),Bash(pnpm type-check),Bash(pnpm test:ci)"
-        continue-on-error: true  # Don't block PR if review fails
+        continue-on-error: true # Don't block PR if review fails
