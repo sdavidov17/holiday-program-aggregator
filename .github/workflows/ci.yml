@@ -100,14 +100,12 @@ jobs:
           fail-on-error: false
         continue-on-error: true
       
-      # Security audit (non-blocking)
+      # Security audit (blocking)
       - name: Security audit
-        run: pnpm audit --audit-level=high || true
-        continue-on-error: true
-      
-      # Build validation (only on main branch pushes)
+        run: pnpm audit --audit-level=high
+
+      # Build validation (run on all pushes and PRs)
       - name: Build check
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: pnpm build
         env:
           SKIP_ENV_VALIDATION: true
@@ -115,6 +113,74 @@ jobs:
           NEXTAUTH_SECRET: "test-secret-for-ci"
           NEXTAUTH_URL: "http://localhost:3000"
           ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: holiday_aggregator
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Browsers
+        run: cd apps/web && pnpm exec playwright install --with-deps
+
+      - name: Run E2E Tests
+        run: cd apps/web && pnpm test:e2e
+        env:
+          DATABASE_URL: "postgresql://postgres:password@localhost:5432/holiday_aggregator"
+          NEXTAUTH_SECRET: "test-secret-for-ci"
+          NEXTAUTH_URL: "http://localhost:3000"
+          ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+          CI: true
+
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report/
+          retention-days: 30
 
   # CodeQL Security Analysis
   security-checks:
