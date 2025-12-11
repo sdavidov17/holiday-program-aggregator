@@ -13,7 +13,7 @@ export default function SubscriptionPlans() {
     onError: (error) => {
       // For E2E tests to catch the error
       console.error('Checkout error:', error);
-      setErrorMessage('Payment failed: ' + error.message);
+      setErrorMessage('Payment initialization failed. Please try again.');
     },
   });
 

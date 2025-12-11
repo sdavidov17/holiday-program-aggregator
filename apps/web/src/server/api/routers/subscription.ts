@@ -30,7 +30,7 @@ export const subscriptionRouter = createTRPCRouter({
         priceId: z.string().optional(),
       }),
     )
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input: _input }) => {
       const service = new SubscriptionService(ctx.db);
       const { user } = ctx.session;
       const { req } = ctx;

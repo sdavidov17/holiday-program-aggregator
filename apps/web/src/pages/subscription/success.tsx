@@ -12,7 +12,7 @@ export default function SubscriptionSuccess() {
   const [redirectTimer, setRedirectTimer] = useState(10);
 
   // Check subscription status
-  const { data: subscriptionStatus, refetch } = api.subscription.getSubscriptionStatus.useQuery(
+  const { data: subscriptionStatus } = api.subscription.getSubscriptionStatus.useQuery(
     undefined,
     {
       enabled: !!session?.user,
