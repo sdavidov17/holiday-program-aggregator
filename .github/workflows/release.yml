@@ -3,61 +3,63 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   create-release:
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: write
+
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Generate Release Notes
-      id: changelog
-      run: |
-        # Get the previous tag
-        PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-        CURRENT_TAG=${{ github.ref_name }}
-        
-        # Generate changelog
-        if [ -z "$PREV_TAG" ]; then
-          echo "## 🎉 First Release!" > release-notes.md
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate Release Notes
+        id: changelog
+        run: |
+          # Get the previous tag
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          CURRENT_TAG=${{ github.ref_name }}
+
+          # Generate changelog
+          if [ -z "$PREV_TAG" ]; then
+            echo "## 🎉 First Release!" > release-notes.md
+            echo "" >> release-notes.md
+            echo "Initial release of Holiday Program Aggregator" >> release-notes.md
+          else
+            echo "## 📋 Changes since $PREV_TAG" > release-notes.md
+            echo "" >> release-notes.md
+            
+            # Group commits by type
+            echo "### ✨ Features" >> release-notes.md
+            git log --pretty=format:"- %s" $PREV_TAG..HEAD | grep -E "^- feat" | sed 's/^- feat[(:]/- /' >> release-notes.md || echo "- No new features" >> release-notes.md
+            
+            echo "" >> release-notes.md
+            echo "### 🐛 Bug Fixes" >> release-notes.md
+            git log --pretty=format:"- %s" $PREV_TAG..HEAD | grep -E "^- fix" | sed 's/^- fix[(:]/- /' >> release-notes.md || echo "- No bug fixes" >> release-notes.md
+            
+            echo "" >> release-notes.md
+            echo "### 📚 Documentation" >> release-notes.md
+            git log --pretty=format:"- %s" $PREV_TAG..HEAD | grep -E "^- docs" | sed 's/^- docs[(:]/- /' >> release-notes.md || echo "- No documentation changes" >> release-notes.md
+            
+            echo "" >> release-notes.md
+            echo "### 🔧 Other Changes" >> release-notes.md
+            git log --pretty=format:"- %s" $PREV_TAG..HEAD | grep -vE "^- (feat|fix|docs)" >> release-notes.md || echo "- No other changes" >> release-notes.md
+          fi
+
           echo "" >> release-notes.md
-          echo "Initial release of Holiday Program Aggregator" >> release-notes.md
-        else
-          echo "## 📋 Changes since $PREV_TAG" > release-notes.md
-          echo "" >> release-notes.md
-          
-          # Group commits by type
-          echo "### ✨ Features" >> release-notes.md
-          git log --pretty=format:"- %s" $PREV_TAG..HEAD | grep -E "^- feat" | sed 's/^- feat[(:]/- /' >> release-notes.md || echo "- No new features" >> release-notes.md
-          
-          echo "" >> release-notes.md
-          echo "### 🐛 Bug Fixes" >> release-notes.md
-          git log --pretty=format:"- %s" $PREV_TAG..HEAD | grep -E "^- fix" | sed 's/^- fix[(:]/- /' >> release-notes.md || echo "- No bug fixes" >> release-notes.md
-          
-          echo "" >> release-notes.md
-          echo "### 📚 Documentation" >> release-notes.md
-          git log --pretty=format:"- %s" $PREV_TAG..HEAD | grep -E "^- docs" | sed 's/^- docs[(:]/- /' >> release-notes.md || echo "- No documentation changes" >> release-notes.md
-          
-          echo "" >> release-notes.md
-          echo "### 🔧 Other Changes" >> release-notes.md
-          git log --pretty=format:"- %s" $PREV_TAG..HEAD | grep -vE "^- (feat|fix|docs)" >> release-notes.md || echo "- No other changes" >> release-notes.md
-        fi
-        
-        echo "" >> release-notes.md
-        echo "---" >> release-notes.md
-        echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/$PREV_TAG...$CURRENT_TAG" >> release-notes.md
-    
-    - name: Create GitHub Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref_name }}
-        release_name: Release ${{ github.ref_name }}
-        body_path: release-notes.md
-        draft: false
-        prerelease: false
+          echo "---" >> release-notes.md
+          echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/$PREV_TAG...$CURRENT_TAG" >> release-notes.md
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body_path: release-notes.md
+          draft: false
+          prerelease: false
