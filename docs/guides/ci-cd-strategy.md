@@ -8,9 +8,12 @@ The pipeline enforces rigorous checks on every Pull Request (PR) before code can
 
 ### Workflow Stages
 
-1.  **Commit & Push**: Developer pushes code to a feature branch.
-2.  **Pull Request**: A PR is opened against `main`.
-3.  **Automated Checks (Parallel)**:
+1.  **Local Pre-commit (Husky)**:
+    *   **Lint-Staged**: Runs `biome check` on changing files. Enforces quality before commit.
+    *   **Commitlint**: Enforces semantic commit messages (e.g., `feat:`, `fix:`).
+2.  **Commit & Push**: Developer pushes code to a feature branch.
+3.  **Pull Request**: A PR is opened against `main`.
+4.  **Automated Checks (Parallel)**:
     *   **Linting & Formatting**: Biome ensures code style and quality.
     *   **Type Checking**: TypeScript validation.
     *   **Unit Tests**: Jest tests for isolated logic.
