@@ -23,3 +23,7 @@ Thumbs.db
 # expansion-packs/
 # web-bundles/
 # *expansion-pack*
+
+# Playwright traces
+apps/web/data/*.zip
+apps/web/data/*.md
