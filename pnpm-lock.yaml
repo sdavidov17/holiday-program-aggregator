@@ -75,7 +75,7 @@ importers:
         version: 11.4.4(@trpc/server@11.4.4)(typescript@5.9.2)
       '@trpc/next':
         specifier: ^11.4.4
-        version: 11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/react-query@11.4.4)(@trpc/server@11.4.4)(next@15.4.8)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2)
+        version: 11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/react-query@11.4.4)(@trpc/server@11.4.4)(next@15.4.10)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2)
       '@trpc/react-query':
         specifier: ^11.4.4
         version: 11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/server@11.4.4)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2)
@@ -110,11 +110,11 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1
       next:
-        specifier: 15.4.8
-        version: 15.4.8(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.1.1)(react@19.1.1)
+        specifier: 15.4.10
+        version: 15.4.10(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.1.1)(react@19.1.1)
       next-auth:
         specifier: ^4.24.11
-        version: 4.24.11(next@15.4.8)(react-dom@19.1.1)(react@19.1.1)
+        version: 4.24.11(next@15.4.10)(react-dom@19.1.1)(react@19.1.1)
       react:
         specifier: 19.1.1
         version: 19.1.1
@@ -1992,11 +1992,11 @@ packages:
       next-auth: ^4
     dependencies:
       '@prisma/client': 6.13.0(prisma@6.13.0)(typescript@5.9.2)
-      next-auth: 4.24.11(next@15.4.8)(react-dom@19.1.1)(react@19.1.1)
+      next-auth: 4.24.11(next@15.4.10)(react-dom@19.1.1)(react@19.1.1)
     dev: false
 
-  /@next/env@15.4.8:
-    resolution: {integrity: sha512-LydLa2MDI1NMrOFSkO54mTc8iIHSttj6R6dthITky9ylXV2gCGi0bHQjVCtLGRshdRPjyh2kXbxJukDtBWQZtQ==}
+  /@next/env@15.4.10:
+    resolution: {integrity: sha512-knhmoJ0Vv7VRf6pZEPSnciUG1S4bIhWx+qTYBW/AjxEtlzsiNORPk8sFDCEvqLfmKuey56UB9FL1UdHEV3uBrg==}
     dev: false
 
   /@next/swc-darwin-arm64@15.4.8:
@@ -2623,7 +2623,7 @@ packages:
       typescript: 5.9.2
     dev: false
 
-  /@trpc/next@11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/react-query@11.4.4)(@trpc/server@11.4.4)(next@15.4.8)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2):
+  /@trpc/next@11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/react-query@11.4.4)(@trpc/server@11.4.4)(next@15.4.10)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2):
     resolution: {integrity: sha512-BTmMHv7whqSf6oE7qAKPCHWNZY9kqEi0inWW690bbs8FJ12A7S5nwIAbzyILfA0S5IJfMFTPJ/ueX2lCMYK67A==}
     peerDependencies:
       '@tanstack/react-query': ^5.59.15
@@ -2644,7 +2644,7 @@ packages:
       '@trpc/client': 11.4.4(@trpc/server@11.4.4)(typescript@5.9.2)
       '@trpc/react-query': 11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/server@11.4.4)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2)
       '@trpc/server': 11.4.4(typescript@5.9.2)
-      next: 15.4.8(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.1.1)(react@19.1.1)
+      next: 15.4.10(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.1.1)(react@19.1.1)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
       typescript: 5.9.2
@@ -3077,6 +3077,11 @@ packages:
     resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
     engines: {node: '>=12'}
 
+  /ansi-styles@6.2.3:
+    resolution: {integrity: sha512-4Dj6M28JB+oAH8kFkTLUo+a2jwOFkuqb3yucU0CANcRRUbxS0cP0nZYCGjcc3BNXwRIsUVmDGgzawme7zvJHvg==}
+    engines: {node: '>=12'}
+    dev: true
+
   /any-promise@1.3.0:
     resolution: {integrity: sha512-7UvmKalWRt1wgjL1RrGxoSJW/0QZFIegpeGvZG9kjp8vrRu55XTHbwnqq2GpXm9uLbcuhxm3IqX9OB4MZR1b2A==}
     dev: true
@@ -3257,7 +3262,7 @@ packages:
       content-type: 1.0.5
       debug: 4.4.3
       http-errors: 2.0.1
-      iconv-lite: 0.7.0
+      iconv-lite: 0.7.1
       on-finished: 2.4.1
       qs: 6.14.0
       raw-body: 3.0.2
@@ -3291,7 +3296,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001734
+      caniuse-lite: 1.0.30001760
       electron-to-chromium: 1.5.199
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.25.2)
@@ -3394,6 +3399,7 @@ packages:
 
   /caniuse-lite@1.0.30001734:
     resolution: {integrity: sha512-uhE1Ye5vgqju6OI71HTQqcBCZrvHugk0MjLak7Q+HfoBgoq5Bi+5YnwjP4fjDgrtYr/l8MVRBvzz9dPD4KyK0A==}
+    dev: true
 
   /caniuse-lite@1.0.30001760:
     resolution: {integrity: sha512-7AAMPcueWELt1p3mi13HR/LHH0TJLT11cnwDJEs3xA4+CK/PLKeO9Kl1oru24htkyUKtkGCvAx4ohB0Ttry8Dw==}
@@ -4670,8 +4676,8 @@ packages:
       safer-buffer: 2.1.2
     dev: true
 
-  /iconv-lite@0.7.0:
-    resolution: {integrity: sha512-cf6L2Ds3h57VVmkZe+Pn+5APsT7FpqJtEhhieDCvrE2MK5Qk9MyffgQyuxQTm6BChfeZNtcOLHp9IcWRVcIcBQ==}
+  /iconv-lite@0.7.1:
+    resolution: {integrity: sha512-2Tth85cXwGFHfvRgZWszZSvdo+0Xsqmw8k8ZwxScfcBneNUraK+dxRxRm24nszx80Y0TVio8kKLt5sLE7ZCLlw==}
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
@@ -5675,7 +5681,7 @@ packages:
       ansi-escapes: 7.2.0
       cli-cursor: 5.0.0
       slice-ansi: 7.1.2
-      strip-ansi: 7.1.0
+      strip-ansi: 7.1.2
       wrap-ansi: 9.0.2
     dev: true
 
@@ -5920,7 +5926,7 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /next-auth@4.24.11(next@15.4.8)(react-dom@19.1.1)(react@19.1.1):
+  /next-auth@4.24.11(next@15.4.10)(react-dom@19.1.1)(react@19.1.1):
     resolution: {integrity: sha512-pCFXzIDQX7xmHFs4KVH4luCjaCbuPRtZ9oBUjUhOk84mZ9WVPf94n87TxYI4rSRf9HmfHEF8Yep3JrYDVOo3Cw==}
     peerDependencies:
       '@auth/core': 0.34.2
@@ -5938,7 +5944,7 @@ packages:
       '@panva/hkdf': 1.2.1
       cookie: 0.7.2
       jose: 4.15.9
-      next: 15.4.8(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.1.1)(react@19.1.1)
+      next: 15.4.10(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.1.1)(react@19.1.1)
       oauth: 0.9.15
       openid-client: 5.7.1
       preact: 10.27.0
@@ -5948,8 +5954,8 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next@15.4.8(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.1.1)(react@19.1.1):
-    resolution: {integrity: sha512-jwOXTz/bo0Pvlf20FSb6VXVeWRssA2vbvq9SdrOPEg9x8E1B27C2rQtvriAn600o9hH61kjrVRexEffv3JybuA==}
+  /next@15.4.10(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.1.1)(react@19.1.1):
+    resolution: {integrity: sha512-itVlc79QjpKMFMRhP+kbGKaSG/gZM6RCvwhEbwmCNF06CdDiNaoHcbeg0PqkEa2GOcn8KJ0nnc7+yL7EjoYLHQ==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
     hasBin: true
     peerDependencies:
@@ -5969,10 +5975,10 @@ packages:
       sass:
         optional: true
     dependencies:
-      '@next/env': 15.4.8
+      '@next/env': 15.4.10
       '@playwright/test': 1.57.0
       '@swc/helpers': 0.5.15
-      caniuse-lite: 1.0.30001734
+      caniuse-lite: 1.0.30001760
       postcss: 8.4.31
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
@@ -6619,7 +6625,7 @@ packages:
     dependencies:
       bytes: 3.1.2
       http-errors: 2.0.1
-      iconv-lite: 0.7.0
+      iconv-lite: 0.7.1
       unpipe: 1.0.0
     dev: false
 
@@ -7052,7 +7058,7 @@ packages:
     resolution: {integrity: sha512-iOBWFgUX7caIZiuutICxVgX1SdxwAVFFKwt1EvMYYec/NWO5meOJ6K5uQxhrYBdQJne4KxiqZc+KptFOWFSI9w==}
     engines: {node: '>=18'}
     dependencies:
-      ansi-styles: 6.2.1
+      ansi-styles: 6.2.3
       is-fullwidth-code-point: 5.1.0
     dev: true
 
@@ -7233,13 +7239,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       ansi-regex: 5.0.1
-
-  /strip-ansi@7.1.0:
-    resolution: {integrity: sha512-iq6eVVI64nQQTRYq2KtEg2d2uU7LElhTJwsH4YzIHZshxlgZms/wIc4VoDQTlG/IvVIrBKG06CrZnp0qv7hkcQ==}
-    engines: {node: '>=12'}
-    dependencies:
-      ansi-regex: 6.2.2
-    dev: true
 
   /strip-ansi@7.1.2:
     resolution: {integrity: sha512-gmBGslpoQJtgnMAvOVqGZpEz9dyoKTCzy2nfz/n8aIFhN/jCE/rCmcxabB6jOOHV+0WNnylOxaxBQPSvcWklhA==}
@@ -7862,9 +7861,9 @@ packages:
     resolution: {integrity: sha512-42AtmgqjV+X1VpdOfyTGOYRi0/zsoLqtXQckTmqTeybT+BDIbM/Guxo7x3pE2vtpr1ok6xRqM9OpBe+Jyoqyww==}
     engines: {node: '>=18'}
     dependencies:
-      ansi-styles: 6.2.1
+      ansi-styles: 6.2.3
       string-width: 7.2.0
-      strip-ansi: 7.1.0
+      strip-ansi: 7.1.2
     dev: true
 
   /wrappy@1.0.2:
