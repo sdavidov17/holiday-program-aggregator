@@ -48,11 +48,33 @@ graph TD
     K -- Yes --> M[Allow Merge]
     
     M --> N[Merge to Main]
-    N --> O[Vercel Deployment]
-    O --> P([Live Preview/Staging])
+    N -->|Auto Deploy| O([Staging / Beta])
+    N -- Tag v* --> P([Production Release])
 ```
 
 ## Environment Strategy
 
-*   **Preview**: Deployed for every PR (Ephemeral).
-*   **Staging/Production**: Deployed from `main`. We recommend using `main` as Staging and a stable release tag or `production` branch for Live users.
+*   **Preview**: Deployed automatically for every PR.
+*   **Staging**: The `main` branch acts as Staging. It is always deployable and reflects the latest integrated state.
+*   **Production**: Deployed via release tags (e.g., `v*`). This ensures you only promote thoroughly tested code from `main`.
+
+## URL Examples (Free Vercel Subdomains)
+
+Vercel generates free `.vercel.app` subdomains. You do **not** need to pay for these.
+
+1.  **Production (Live)**:
+    *   URL: `https://holiday-program-aggregator.vercel.app`
+    *   Updates: Only when release tag (e.g., `v0.1`) is pushed.
+
+2.  **Beta / Staging (`main`)**:
+    *   URL: `https://holiday-program-aggregator.vercel.app` (or `https://holiday-program-aggregator-git-main-sdavidov17.vercel.app`)
+    *   Updates: Automatically on every push to `main`.
+    *   **Persistent**: The tip of `main` is your latest "Beta".
+
+3.  **Ephemeral Preview (Pull Requests)**:
+    *   URL: `https://holiday-program-aggregator-git-feature-login-sdavidov17.vercel.app`
+    *   Updates: Created automatically for every PR.
+    *   **Ephemeral**: Unique to that specific branch/PR. Perfect for isolation.
+    *   URL: `https://holiday-program-aggregator-git-feature-login-sdavidov17.vercel.app`
+    *   Updates: Created automatically for every PR.
+    *   **Ephemeral**: Unique to that specific branch/PR. Perfect for isolation.

@@ -1,0 +1,21 @@
+name: Slack Notification
+
+on:
+    deployment_status:
+
+jobs:
+    notify:
+        # Only run on successful deployments
+        if: github.event.deployment_status.state == 'success'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Send Slack Notification
+              uses: rtCamp/action-slack-notify@v2
+              env:
+                  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+                  SLACK_CHANNEL: general
+                  SLACK_USERNAME: Vercel DeployBot
+                  SLACK_TITLE: Deployment Successful
+                  SLACK_MESSAGE: "🚀 A new version has been deployed to ${{ github.event.deployment_status.environment }}!\nURL: ${{ github.event.deployment_status.target_url }}"
+                  SLACK_COLOR: good
+                  SLACK_ICON: https://assets.vercel.com/image/upload/front/favicon/vercel/180x180.png
