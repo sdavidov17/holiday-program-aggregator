@@ -72,16 +72,16 @@ importers:
         version: 5.84.2(react@19.1.1)
       '@trpc/client':
         specifier: ^11.4.4
-        version: 11.4.4(@trpc/server@11.4.4)(typescript@5.9.2)
+        version: 11.4.4(@trpc/server@11.8.0)(typescript@5.9.2)
       '@trpc/next':
         specifier: ^11.4.4
-        version: 11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/react-query@11.4.4)(@trpc/server@11.4.4)(next@15.4.8)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2)
+        version: 11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/react-query@11.4.4)(@trpc/server@11.8.0)(next@15.4.8)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2)
       '@trpc/react-query':
         specifier: ^11.4.4
-        version: 11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/server@11.4.4)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2)
+        version: 11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/server@11.8.0)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2)
       '@trpc/server':
-        specifier: ^11.4.4
-        version: 11.4.4(typescript@5.9.2)
+        specifier: ^11.8.0
+        version: 11.8.0(typescript@5.9.2)
       '@types/bcryptjs':
         specifier: ^3.0.0
         version: 3.0.0
@@ -2613,17 +2613,17 @@ packages:
       '@testing-library/dom': 10.4.1
     dev: true
 
-  /@trpc/client@11.4.4(@trpc/server@11.4.4)(typescript@5.9.2):
+  /@trpc/client@11.4.4(@trpc/server@11.8.0)(typescript@5.9.2):
     resolution: {integrity: sha512-86OZl+Y+Xlt9ITGlhCMImERcsWCOrVzpNuzg3XBlsDSmSs9NGsghKjeCpJQlE36XaG3aze+o9pRukiYYvBqxgQ==}
     peerDependencies:
       '@trpc/server': 11.4.4
       typescript: '>=5.7.2'
     dependencies:
-      '@trpc/server': 11.4.4(typescript@5.9.2)
+      '@trpc/server': 11.8.0(typescript@5.9.2)
       typescript: 5.9.2
     dev: false
 
-  /@trpc/next@11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/react-query@11.4.4)(@trpc/server@11.4.4)(next@15.4.8)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2):
+  /@trpc/next@11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/react-query@11.4.4)(@trpc/server@11.8.0)(next@15.4.8)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2):
     resolution: {integrity: sha512-BTmMHv7whqSf6oE7qAKPCHWNZY9kqEi0inWW690bbs8FJ12A7S5nwIAbzyILfA0S5IJfMFTPJ/ueX2lCMYK67A==}
     peerDependencies:
       '@tanstack/react-query': ^5.59.15
@@ -2641,16 +2641,16 @@ packages:
         optional: true
     dependencies:
       '@tanstack/react-query': 5.84.2(react@19.1.1)
-      '@trpc/client': 11.4.4(@trpc/server@11.4.4)(typescript@5.9.2)
-      '@trpc/react-query': 11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/server@11.4.4)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2)
-      '@trpc/server': 11.4.4(typescript@5.9.2)
+      '@trpc/client': 11.4.4(@trpc/server@11.8.0)(typescript@5.9.2)
+      '@trpc/react-query': 11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/server@11.8.0)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2)
+      '@trpc/server': 11.8.0(typescript@5.9.2)
       next: 15.4.8(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.1.1)(react@19.1.1)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
       typescript: 5.9.2
     dev: false
 
-  /@trpc/react-query@11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/server@11.4.4)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2):
+  /@trpc/react-query@11.4.4(@tanstack/react-query@5.84.2)(@trpc/client@11.4.4)(@trpc/server@11.8.0)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2):
     resolution: {integrity: sha512-syXx1JLSERAHWh8BtBZsbv2PIt2nfvO1Sd6C6vHzNO8wAHxpcmq9HyEdrfi+5SfeRfPCJc/ZPCN2wVv98T+big==}
     peerDependencies:
       '@tanstack/react-query': ^5.80.3
@@ -2661,15 +2661,15 @@ packages:
       typescript: '>=5.7.2'
     dependencies:
       '@tanstack/react-query': 5.84.2(react@19.1.1)
-      '@trpc/client': 11.4.4(@trpc/server@11.4.4)(typescript@5.9.2)
-      '@trpc/server': 11.4.4(typescript@5.9.2)
+      '@trpc/client': 11.4.4(@trpc/server@11.8.0)(typescript@5.9.2)
+      '@trpc/server': 11.8.0(typescript@5.9.2)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
       typescript: 5.9.2
     dev: false
 
-  /@trpc/server@11.4.4(typescript@5.9.2):
-    resolution: {integrity: sha512-VkJb2xnb4rCynuwlCvgPBh5aM+Dco6fBBIo6lWAdJJRYVwtyE5bxNZBgUvRRz/cFSEAy0vmzLxF7aABDJfK5Rg==}
+  /@trpc/server@11.8.0(typescript@5.9.2):
+    resolution: {integrity: sha512-DphyQnLuyX2nwJCQGWQ9zYz4hZGvRhSBqDhQ0SH3tDhQ3PU4u68xofA0pJ741Ir4InEAFD+TtJVLAQy+wVOkiQ==}
     peerDependencies:
       typescript: '>=5.7.2'
     dependencies:
@@ -3257,7 +3257,7 @@ packages:
       content-type: 1.0.5
       debug: 4.4.3
       http-errors: 2.0.1
-      iconv-lite: 0.7.0
+      iconv-lite: 0.7.1
       on-finished: 2.4.1
       qs: 6.14.0
       raw-body: 3.0.2
@@ -4234,8 +4234,8 @@ packages:
       qs: 6.14.0
       range-parser: 1.2.1
       router: 2.2.0
-      send: 1.2.0
-      serve-static: 2.2.0
+      send: 1.2.1
+      serve-static: 2.2.1
       statuses: 2.0.2
       type-is: 2.0.1
       vary: 1.1.2
@@ -4670,8 +4670,8 @@ packages:
       safer-buffer: 2.1.2
     dev: true
 
-  /iconv-lite@0.7.0:
-    resolution: {integrity: sha512-cf6L2Ds3h57VVmkZe+Pn+5APsT7FpqJtEhhieDCvrE2MK5Qk9MyffgQyuxQTm6BChfeZNtcOLHp9IcWRVcIcBQ==}
+  /iconv-lite@0.7.1:
+    resolution: {integrity: sha512-2Tth85cXwGFHfvRgZWszZSvdo+0Xsqmw8k8ZwxScfcBneNUraK+dxRxRm24nszx80Y0TVio8kKLt5sLE7ZCLlw==}
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
@@ -6619,7 +6619,7 @@ packages:
     dependencies:
       bytes: 3.1.2
       http-errors: 2.0.1
-      iconv-lite: 0.7.0
+      iconv-lite: 0.7.1
       unpipe: 1.0.0
     dev: false
 
@@ -6906,8 +6906,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  /send@1.2.0:
-    resolution: {integrity: sha512-uaW0WwXKpL9blXE2o0bRhoL2EGXIrZxQ2ZQ4mgcfoBxdFmQold+qWsD2jLrfZ0trjKL6vOw0j//eAwcALFjKSw==}
+  /send@1.2.1:
+    resolution: {integrity: sha512-1gnZf7DFcoIcajTjTwjwuDjzuz4PPcY2StKPlsGAQ1+YH20IRVrBaXSWmdjowTJ6u8Rc01PoYOGHXfP1mYcZNQ==}
     engines: {node: '>= 18'}
     dependencies:
       debug: 4.4.3
@@ -6925,14 +6925,14 @@ packages:
       - supports-color
     dev: false
 
-  /serve-static@2.2.0:
-    resolution: {integrity: sha512-61g9pCh0Vnh7IutZjtLGGpTA355+OPn2TyDv/6ivP2h/AdAVX9azsoxmg2/M6nZeQZNYBEwIcsne1mJd9oQItQ==}
+  /serve-static@2.2.1:
+    resolution: {integrity: sha512-xRXBn0pPqQTVQiC8wyQrKs2MOlX24zQ0POGaj0kultvoOCstBQM5yvOhAVSUwOMjQtTvsPWoNCHfPGwaaQJhTw==}
     engines: {node: '>= 18'}
     dependencies:
       encodeurl: 2.0.0
       escape-html: 1.0.3
       parseurl: 1.3.3
-      send: 1.2.0
+      send: 1.2.1
     transitivePeerDependencies:
       - supports-color
     dev: false
