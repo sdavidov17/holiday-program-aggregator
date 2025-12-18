@@ -84,6 +84,8 @@ describe('SubscriptionService', () => {
         expiresAt: subscription.expiresAt,
         currentPeriodEnd: subscription.currentPeriodEnd,
         cancelAtPeriodEnd: false,
+        isActive: true,
+        tier: 'PREMIUM',
       });
     });
 
@@ -98,6 +100,8 @@ describe('SubscriptionService', () => {
         expiresAt: null,
         currentPeriodEnd: null,
         cancelAtPeriodEnd: false,
+        isActive: false,
+        tier: 'BASIC',
       });
     });
   });
