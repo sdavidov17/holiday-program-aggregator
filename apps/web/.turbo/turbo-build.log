@@ -10,74 +10,65 @@
    Docker: No
    Database URL: postgresql://postgres:****@localhost:5432/holiday_aggregator?schema=public
 Development environment - using SQLite
-warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
-For more information, see: https://pris.ly/prisma-config
+[33m[1mwarn[22m[39m The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+For more information, see: ]8;;https://pris.ly/prisma-confighttps://pris.ly/prisma-config]8;;
 
-Environment variables loaded from .env
-Prisma schema loaded from prisma/schema.prisma
+[2mEnvironment variables loaded from .env[22m
+[2mPrisma schema loaded from prisma/schema.prisma[22m
 
-✔ Generated Prisma Client (v6.13.0) to ./../../node_modules/.pnpm/@prisma+client@6.13.0_prisma@6.13.0_typescript@5.9.2/node_modules/@prisma/client in 33ms
+✔ Generated [1mPrisma Client[22m (v6.13.0)[2m to ./../../node_modules/.pnpm/@prisma+client@6.13.0_prisma@6.13.0_typescript@5.9.2/node_modules/@prisma/client[22m in 42ms
 
 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
 
-Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
 
-   ▲ Next.js 15.4.6
-   - Environments: .env.local, .env
+[1m[38;2;173;127;168m▲ Next.js 16.1.0[39m[22m (Turbopack)
+- Environments: .env.local, .env
 
-   Linting and checking validity of types ...
-   Creating an optimized production build ...
- ✓ Compiled successfully in 2000ms
-   Collecting page data ...
-   Generating static pages (0/28) ...
-   Generating static pages (7/28) 
-   Generating static pages (14/28) 
-   Generating static pages (21/28) 
- ✓ Generating static pages (28/28)
-   Finalizing page optimization ...
-   Collecting build traces ...
+[33m[1m⚠[22m[39m The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+[?25l[37m[1m [22m[39m Running TypeScript  [36m.[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m..[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m...[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m.[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m..[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m...[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m.[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m..[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m...[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m.[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m..[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m...[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m.[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m..[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m...[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m.[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m..[39m[2K[1G[37m[1m [22m[39m Running TypeScript  [36m...[39m[2K[1G[?25h[?25l[37m[1m [22m[39m Finished TypeScript in 3.4s  [36m.[39m[2K[1G[?25h[37m[1m [22m[39m Finished TypeScript in 3.4s    [32m[1m✓[22m[39m Finished TypeScript in 3.4s 
+[37m[1m [22m[39m Creating an optimized production build ...
+[32m[1m✓[22m[39m Compiled successfully in 1489.8ms
+[?25l[37m[1m [22m[39m Collecting page data using 10 workers  [36m.[39m[2K[1G[1A[2K[1G[37m[1m [22m[39m Collecting page data using 10 workers  [36m..[39m[2K[1G[1A[2K[1G[37m[1m [22m[39m Collecting page data using 10 workers  [36m...[39m[2K[1G[1A[2K[1G[37m[1m [22m[39m Collecting page data using 10 workers  [36m.[39m[2K[1G[1A[2K[1G[?25h[37m[1m [22m[39m Collecting page data using 10 workers in 799.2ms    [32m[1m✓[22m[39m Collecting page data using 10 workers in 799.2ms 
+[?25l[37m[1m [22m[39m Generating static pages using 10 workers (0/34)  [36m[    ][39m[2K[1G[1A[2K[1G[37m[1m [22m[39m Generating static pages using 10 workers (0/34)  [36m[=   ][39m[2K[1G[1A[2K[1G[?25h[32m[1m✓[22m[39m Generating static pages using 10 workers (34/34) in 396.8ms
+[?25l[37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G[?25h[37m[1m [22m[39m Finalizing page optimization in 12.5ms    [32m[1m✓[22m[39m Finalizing page optimization in 12.5ms 
 
-Route (pages)                                 Size  First Load JS
-┌ ○ /                                      9.82 kB         141 kB
-├   /_app                                      0 B         129 kB
-├ ○ /404                                     179 B         129 kB
-├ ○ /admin                                 2.03 kB         134 kB
-├ ○ /admin/providers                        2.3 kB         134 kB
-├ ○ /admin/providers/[id]                     3 kB         135 kB
-├ ○ /admin/providers/new                    2.9 kB         134 kB
-├ ○ /admin/subscription-monitor            1.63 kB         133 kB
-├ ○ /admin/users                           2.38 kB         134 kB
-├ ƒ /api/admin/setup                           0 B         129 kB
-├ ƒ /api/auth/[...nextauth]                    0 B         129 kB
-├ ƒ /api/auth/signup                           0 B         129 kB
-├ ƒ /api/cron/subscription-lifecycle           0 B         129 kB
-├ ƒ /api/debug/auth-test                       0 B         129 kB
-├ ƒ /api/debug/check-auth                      0 B         129 kB
-├ ƒ /api/debug/check-users                     0 B         129 kB
-├ ƒ /api/debug/seed-admin                      0 B         129 kB
-├ ƒ /api/health                                0 B         129 kB
-├ ƒ /api/health/live                           0 B         129 kB
-├ ƒ /api/health/ready                          0 B         129 kB
-├ ƒ /api/stripe/webhook                        0 B         129 kB
-├ ƒ /api/test                                  0 B         129 kB
-├ ƒ /api/trpc/[trpc]                           0 B         129 kB
-├ ○ /auth/error                              674 B         132 kB
-├ ƒ /auth/signin                           2.93 kB         135 kB
-├ ƒ /profile                               1.11 kB         133 kB
-├ ○ /search                                2.15 kB         134 kB
-├ ƒ /subscription                          3.53 kB         135 kB
-├   └ css/305dc20cad357a31.css             1.24 kB
-├ ○ /subscription/cancelled                  959 B         133 kB
-├ ○ /subscription/success                  1.28 kB         133 kB
-└ ○ /test-provider                           878 B         132 kB
-+ First Load JS shared by all               135 kB
-  ├ chunks/framework-01dc2719891821bb.js   57.8 kB
-  ├ chunks/main-713da7b4f4389b0c.js        33.9 kB
-  ├ chunks/pages/_app-5d607ad484ec3de9.js  36.5 kB
-  └ other shared chunks (total)            6.88 kB
+[4mRoute (pages)[24m
+┌ ○ /
+├   /_app
+├ ○ /404
+├ ○ /admin
+├ ○ /admin/bmad-dashboard
+├ ○ /admin/providers
+├ ○ /admin/providers/[id]
+├ ○ /admin/providers/new
+├ ○ /admin/subscription-monitor
+├ ○ /admin/users
+├ ƒ /api/admin/setup
+├ ƒ /api/admin/squad-report
+├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/auth/signup
+├ ƒ /api/cron/subscription-lifecycle
+├ ƒ /api/health
+├ ƒ /api/health/live
+├ ƒ /api/health/ready
+├ ƒ /api/stripe/webhook
+├ ƒ /api/test
+├ ƒ /api/trpc/[trpc]
+├ ○ /auth/error
+├ ƒ /auth/signin
+├ ƒ /profile
+├ ○ /search
+├ ƒ /subscription
+├ ○ /subscription/cancelled
+├ ○ /subscription/plans
+├ ○ /subscription/success
+├ ○ /test-login
+└ ○ /test-provider
 
-ƒ Middleware                                 34 kB
+ƒ Proxy (Middleware)
 
 ○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand
 
+[?25h

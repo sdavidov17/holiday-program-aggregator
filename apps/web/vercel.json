@@ -4,6 +4,5 @@
       "path": "/api/cron/subscription-lifecycle",
       "schedule": "0 9 * * *"
     }
-  ],
-  "ignoreCommand": "exit 1"
+  ]
 }
