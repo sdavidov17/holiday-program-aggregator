@@ -2,5 +2,6 @@
   "buildCommand": "turbo run build --filter=web",
   "outputDirectory": "apps/web/.next",
   "installCommand": "pnpm install",
-  "framework": null
+  "framework": null,
+  "ignoreCommand": "exit 1"
 }
