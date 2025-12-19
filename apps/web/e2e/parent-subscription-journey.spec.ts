@@ -317,8 +317,7 @@ test.describe('Parent Subscription Journey', () => {
         });
       });
 
-      // The user is on /subscription/plans, so we click the plan selection button directly
-      await page.click('[data-testid="select-premium"]');
+      await page.click('[data-testid="upgrade-plan"]');
       await expect(page).toHaveURL(/\/mock-checkout/);
 
       // Complete mocked payment
@@ -329,9 +328,8 @@ test.describe('Parent Subscription Journey', () => {
     });
   });
 
-  test.skip('Subscription cancellation flow', async ({ page }) => {
-    // Use SEEDED Cancellation User
-    await loginUser(page, { ...testUser, email: 'premium_cancel@test.com', password: 'Test123!@#' });
+  test('Subscription cancellation flow', async ({ page }) => {
+    await loginUser(page, { ...testUser, email: 'premium_cancel@test.com' });
 
     await test.step('Navigate to subscription management', async () => {
       await page.goto('/subscription');
@@ -339,8 +337,10 @@ test.describe('Parent Subscription Journey', () => {
     });
 
     await test.step('Cancel subscription', async () => {
+      // Setup listener for reload or just wait for status change since mutation is immediate
       await page.click('[data-testid="cancel-subscription"]');
-      // Reload to update status if necessary, or wait for automatic revalidation
+
+      // Verify cancellation status update
       await expect(page.locator('[data-testid="subscription-status"]')).toContainText(
         /canceled|past due/i,
       );
@@ -350,9 +350,8 @@ test.describe('Parent Subscription Journey', () => {
     // await test.step('Reactivate subscription', async () => { ... });
   });
 
-  test.skip('Search and filter performance', async ({ page }) => {
-    // Use SEEDED Premium User to verify real access (bypassing Guard natively)
-    await loginUser(page, { ...testUser, email: 'premium@test.com', password: 'Test123!@#' });
+  test('Search and filter performance', async ({ page }) => {
+    await loginUser(page, testUser);
 
     await test.step('Measure search performance', async () => {
       await page.goto('/search');
@@ -370,9 +369,9 @@ test.describe('Parent Subscription Journey', () => {
     });
   });
 
-  test.skip('Mobile responsive journey', async ({ page }) => {
+  test('Mobile responsive journey', async ({ page }) => {
     // Needs premium user to access search results
-    await loginUser(page, { ...testUser, email: 'premium@test.com', password: 'Test123!@#' });
+    await loginUser(page, { ...testUser, email: 'premium@test.com' });
 
     // Set viewport to mobile size
     await page.setViewportSize({ width: 375, height: 667 });
