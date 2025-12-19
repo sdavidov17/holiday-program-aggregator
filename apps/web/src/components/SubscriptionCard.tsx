@@ -57,6 +57,7 @@ export function SubscriptionCard() {
           expiresAt: subscription.expiresAt,
           currentPeriodEnd: subscription.currentPeriodEnd,
           cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+          stripeSubscriptionId: subscription.stripeSubscriptionId,
         }
       : null;
 

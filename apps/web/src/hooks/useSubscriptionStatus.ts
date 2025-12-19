@@ -15,11 +15,12 @@ export function useSubscriptionStatus() {
 
   const subscriptionData = subscription
     ? {
-        status: subscription.status as any, // API returns string, but we know it's SubscriptionStatus
-        expiresAt: subscription.expiresAt,
-        currentPeriodEnd: subscription.currentPeriodEnd,
-        cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
-      }
+      status: subscription.status as any, // API returns string, but we know it's SubscriptionStatus
+      expiresAt: subscription.expiresAt,
+      currentPeriodEnd: subscription.currentPeriodEnd,
+      cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+      stripeSubscriptionId: subscription.stripeSubscriptionId,
+    }
     : null;
 
   const hasActiveSubscription = isSubscriptionActive(subscriptionData);

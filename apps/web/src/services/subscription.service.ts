@@ -25,6 +25,7 @@ export class SubscriptionService {
       expiresAt: subscription?.expiresAt ?? null,
       currentPeriodEnd: subscription?.currentPeriodEnd ?? null,
       cancelAtPeriodEnd: subscription?.cancelAtPeriodEnd ?? false,
+      stripeSubscriptionId: subscription?.stripeSubscriptionId ?? null,
     };
   }
 
