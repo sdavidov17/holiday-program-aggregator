@@ -1,5 +1,8 @@
 # Ignore CSS files with Tailwind directives
 **/*.css
+node_modules
+public
+.turbo
 
 # Ignore test helpers
 src/test-helpers/**

@@ -70,7 +70,9 @@
   },
   "overrides": [
     {
-      "includes": ["src/test-helpers/**"],
+      "includes": [
+        "src/test-helpers/**"
+      ],
       "linter": {
         "rules": {
           "suspicious": {

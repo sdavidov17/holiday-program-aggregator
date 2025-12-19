@@ -76,7 +76,7 @@ export default function SubscriptionPlans() {
             <div
               key={plan.id}
               className="bg-white rounded-lg shadow-lg p-6 flex flex-col"
-              data-testid="plan-card"
+              data-testid={`plan-${plan.id}`}
             >
               <h2 className="text-xl font-bold mb-2">{plan.name}</h2>
               <div className="text-3xl font-bold mb-4">{plan.price}</div>
