@@ -63,6 +63,7 @@ export default function SubscriptionSuccess() {
             <div
               className="mb-6 p-4 rounded"
               style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+              data-testid="success-message"
             >
               {subscriptionStatus?.hasSubscription ? (
                 <div className="text-green-400">✅ Subscription is active and ready to use!</div>
