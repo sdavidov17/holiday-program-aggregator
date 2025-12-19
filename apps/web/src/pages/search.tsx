@@ -117,6 +117,7 @@ const SearchPage: NextPage = () => {
                 <button
                   type="button"
                   className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition"
+                  data-testid="search-button"
                 >
                   Search Programs
                 </button>

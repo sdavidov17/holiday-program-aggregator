@@ -48,6 +48,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     subscriptions Subscription[]
+    auditLogs     AuditLog[]
 }
 
 model VerificationToken {
@@ -161,6 +162,8 @@ model AuditLog {
     metadata      String?  // JSON string
     result        String   // "success" or "failure"
     errorMessage  String?
+
+    user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
     @@index([userId])
     @@index([eventType])

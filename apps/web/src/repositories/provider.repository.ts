@@ -142,6 +142,10 @@ export class ProviderRepository extends BaseRepository<Provider> {
       throw new Error('Provider not found');
     }
 
+    if (!provider.isVetted && !provider.isPublished) {
+      throw new Error('Provider must be vetted before publishing');
+    }
+
     return this.update(id, { isPublished: !provider.isPublished }, userId);
   }
 

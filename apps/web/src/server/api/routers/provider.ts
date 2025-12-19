@@ -1,18 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { ProviderRepository } from '~/repositories/provider.repository';
-import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
-
-// Admin-only procedure
-const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
-  if (ctx.session.user.role !== 'ADMIN') {
-    throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'Only admins can perform this action',
-    });
-  }
-  return next();
-});
+import { createTRPCRouter, protectedProcedure, adminProcedure } from '~/server/api/trpc';
 
 // Input schemas
 const createProviderSchema = z.object({
@@ -206,23 +195,23 @@ export const providerRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const providerRepository = new ProviderRepository(ctx.db);
-      const provider = await providerRepository.findById(input.id);
-
-      if (!provider) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Provider not found',
-        });
+      try {
+        return await providerRepository.togglePublishStatus(input.id, ctx.session.user.id);
+      } catch (error: any) {
+        if (error.message === 'Provider not found') {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Provider not found',
+          });
+        }
+        if (error.message === 'Provider must be vetted before publishing') {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+          });
+        }
+        throw error;
       }
-
-      if (!provider.isVetted && !provider.isPublished) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Provider must be vetted before publishing',
-        });
-      }
-
-      return providerRepository.togglePublishStatus(input.id, ctx.session.user.id);
     }),
 
   // Create program for a provider (admin only)
