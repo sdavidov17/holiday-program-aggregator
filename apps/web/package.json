@@ -62,7 +62,7 @@
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "react-email": "^5.0.7",
-    "resend": "^4.8.0",
+    "resend": "^6.6.0",
     "stripe": "^18.4.0",
     "superjson": "^2.2.2",
     "zod": "^3.25.76"
