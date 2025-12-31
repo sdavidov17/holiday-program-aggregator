@@ -86,6 +86,7 @@ describe('SubscriptionService', () => {
         cancelAtPeriodEnd: false,
         isActive: true,
         tier: 'PREMIUM',
+        stripeSubscriptionId: subscription.stripeSubscriptionId,
       });
     });
 
@@ -102,6 +103,7 @@ describe('SubscriptionService', () => {
         cancelAtPeriodEnd: false,
         isActive: false,
         tier: 'BASIC',
+        stripeSubscriptionId: null,
       });
     });
   });

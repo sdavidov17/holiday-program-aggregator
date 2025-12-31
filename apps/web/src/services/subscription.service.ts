@@ -54,7 +54,6 @@ export class SubscriptionService {
       stripeConfig: {
         hasSecretKey: !!env.STRIPE_SECRET_KEY,
         hasPriceId: !!env.STRIPE_ANNUAL_PRICE_ID,
-        priceId: env.STRIPE_ANNUAL_PRICE_ID,
       },
     });
 
@@ -62,7 +61,7 @@ export class SubscriptionService {
       throw new Error(
         'Stripe configuration is missing. Please set STRIPE_SECRET_KEY and STRIPE_ANNUAL_PRICE_ID in your .env file. ' +
         `Current config: STRIPE_SECRET_KEY=${env.STRIPE_SECRET_KEY ? 'set' : 'missing'}, ` +
-        `STRIPE_ANNUAL_PRICE_ID=${env.STRIPE_ANNUAL_PRICE_ID || 'missing'}`,
+        `STRIPE_ANNUAL_PRICE_ID=${env.STRIPE_ANNUAL_PRICE_ID ? 'set' : 'missing'}`,
       );
     }
 

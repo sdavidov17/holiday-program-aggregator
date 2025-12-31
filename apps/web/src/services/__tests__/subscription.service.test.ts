@@ -345,6 +345,7 @@ describe('SubscriptionService', () => {
         cancelAtPeriodEnd: false,
         expiresAt: expect.any(Date),
         currentPeriodEnd: expect.any(Date),
+        stripeSubscriptionId: expect.any(String),
       });
     });
 
@@ -369,6 +370,7 @@ describe('SubscriptionService', () => {
         cancelAtPeriodEnd: false,
         expiresAt: expect.any(Date),
         currentPeriodEnd: expect.any(Date),
+        stripeSubscriptionId: expect.any(String),
       });
     });
 
@@ -385,6 +387,7 @@ describe('SubscriptionService', () => {
         cancelAtPeriodEnd: false,
         expiresAt: null,
         currentPeriodEnd: null,
+        stripeSubscriptionId: null,
       });
     });
   });
