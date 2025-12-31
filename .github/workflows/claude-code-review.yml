@@ -111,7 +111,7 @@ jobs:
       # Post review summary as a check
       - name: Post Review Status
         if: always()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const conclusion = '${{ steps.claude-review.outcome }}' === 'success' ? 'success' : 'neutral';
