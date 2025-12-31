@@ -36,9 +36,10 @@ describe('useSubscriptionStatus', () => {
 
     const mockSubscription = {
       status: SubscriptionStatus.ACTIVE,
-      expiresAt: new Date('2025-12-31'),
-      currentPeriodEnd: new Date('2025-12-31'),
+      expiresAt: new Date('2026-12-31'),
+      currentPeriodEnd: new Date('2026-12-31'),
       cancelAtPeriodEnd: false,
+      stripeSubscriptionId: 'sub_test123',
     };
 
     mockUseQuery.mockReturnValue({
@@ -57,7 +58,7 @@ describe('useSubscriptionStatus', () => {
     expect(result.current.isInTrial).toBe(false);
     expect(result.current.needsRenewal).toBe(false);
     expect(result.current.daysUntilExpiry).toBeGreaterThan(0);
-    expect(result.current.expiresAt).toEqual(new Date('2025-12-31'));
+    expect(result.current.expiresAt).toEqual(new Date('2026-12-31'));
     expect(result.current.isLoading).toBe(false);
     expect(result.current.subscription).toEqual(mockSubscription);
   });
