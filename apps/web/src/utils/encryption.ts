@@ -1,8 +1,23 @@
 import CryptoJS from 'crypto-js';
 import { env } from '~/env.mjs';
 
-// Use environment variable or fallback for development
-const ENCRYPTION_KEY = env.ENCRYPTION_KEY || 'dev-32-character-encryption-key!!';
+// Encryption key must be set in production
+const DEV_FALLBACK_KEY = 'dev-only-32-char-key-not-for-prod!';
+
+function getEncryptionKey(): string {
+  if (env.ENCRYPTION_KEY) {
+    return env.ENCRYPTION_KEY;
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('ENCRYPTION_KEY environment variable is required in production');
+  }
+
+  console.warn('[DEV ONLY] Using development encryption key - never use in production');
+  return DEV_FALLBACK_KEY;
+}
+
+const ENCRYPTION_KEY = getEncryptionKey();
 
 export function encryptPII(text: string | null | undefined): string | null {
   if (!text) return null;
