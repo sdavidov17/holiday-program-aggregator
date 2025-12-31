@@ -1,0 +1,37 @@
+{
+  "recommendations": [
+    // Core - Claude Code
+    "anthropic.claude-code",
+
+    // Linting & Formatting (Biome replaces ESLint/Prettier)
+    "biomejs.biome",
+
+    // Database & ORM
+    "prisma.prisma",
+
+    // Frontend
+    "bradlc.vscode-tailwindcss",
+
+    // Testing
+    "orta.vscode-jest",
+    "ms-playwright.playwright",
+
+    // Git & GitHub
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+    "github.vscode-github-actions",
+
+    // Documentation & BMAD
+    "yzhang.markdown-all-in-one",
+    "redhat.vscode-yaml",
+
+    // Containers
+    "ms-vscode-remote.remote-containers",
+    "docker.docker"
+  ],
+  "unwantedRecommendations": [
+    // Biome replaces these
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}

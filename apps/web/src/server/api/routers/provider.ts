@@ -216,16 +216,9 @@ export const providerRouter = createTRPCRouter({
 
   // Create program for a provider (admin only)
   createProgram: adminProcedure.input(createProgramSchema).mutation(async ({ ctx, input }) => {
-    const { daysOfWeek, ...programData } = input;
+    const { ProgramRepository } = await import('~/repositories/program.repository');
+    const programRepository = new ProgramRepository(ctx.db);
 
-    // TODO: Move Program logic to ProgramRepository when created
-    const program = await ctx.db.program.create({
-      data: {
-        ...programData,
-        daysOfWeek: daysOfWeek ? JSON.stringify(daysOfWeek) : '[]',
-      },
-    });
-
-    return program;
+    return programRepository.createProgram(input, ctx.session.user.id);
   }),
 });
