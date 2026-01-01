@@ -129,8 +129,8 @@ importers:
         specifier: ^4.8.0
         version: 4.8.0(react-dom@19.2.3)(react@19.2.3)
       stripe:
-        specifier: ^18.4.0
-        version: 18.4.0(@types/node@24.2.1)
+        specifier: ^20.1.0
+        version: 20.1.0(@types/node@24.2.1)
       superjson:
         specifier: ^2.2.6
         version: 2.2.6
@@ -7127,11 +7127,11 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /stripe@18.4.0(@types/node@24.2.1):
-    resolution: {integrity: sha512-LKFeDnDYo4U/YzNgx2Lc9PT9XgKN0JNF1iQwZxgkS4lOw5NunWCnzyH5RhTlD3clIZnf54h7nyMWkS8VXPmtTQ==}
-    engines: {node: '>=12.*'}
+  /stripe@20.1.0(@types/node@24.2.1):
+    resolution: {integrity: sha512-o1VNRuMkY76ZCq92U3EH3/XHm/WHp7AerpzDs4Zyo8uE5mFL4QUcv/2SudWsSnhBSp4moO2+ZoGCZ7mT8crPmQ==}
+    engines: {node: '>=16'}
     peerDependencies:
-      '@types/node': '>=12.x.x'
+      '@types/node': '>=16'
     peerDependenciesMeta:
       '@types/node':
         optional: true
