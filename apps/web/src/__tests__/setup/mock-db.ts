@@ -51,6 +51,147 @@ export class MockPrismaClient {
   });
 }
 
+// Helper to match a single where condition value
+function matchCondition(itemValue: any, condition: any): boolean {
+  if (condition === null || condition === undefined) {
+    return itemValue === condition;
+  }
+
+  if (typeof condition === 'object') {
+    // Handle comparison operators
+    if (condition.gte !== undefined && condition.lte !== undefined) {
+      return itemValue >= condition.gte && itemValue <= condition.lte;
+    }
+    if (condition.gte !== undefined) {
+      return itemValue >= condition.gte;
+    }
+    if (condition.lte !== undefined) {
+      return itemValue <= condition.lte;
+    }
+    if (condition.gt !== undefined) {
+      return itemValue > condition.gt;
+    }
+    if (condition.lt !== undefined) {
+      return itemValue < condition.lt;
+    }
+    if (condition.contains !== undefined) {
+      const mode = condition.mode === 'insensitive' ? 'i' : '';
+      if (mode === 'i') {
+        return itemValue?.toLowerCase().includes(condition.contains.toLowerCase());
+      }
+      return itemValue?.includes(condition.contains);
+    }
+    if (condition.in !== undefined) {
+      return condition.in.includes(itemValue);
+    }
+    if (condition.notIn !== undefined) {
+      return !condition.notIn.includes(itemValue);
+    }
+    if (condition.equals !== undefined) {
+      return itemValue === condition.equals;
+    }
+    if (condition.not !== undefined) {
+      return itemValue !== condition.not;
+    }
+  }
+
+  return itemValue === condition;
+}
+
+// Helper to match where conditions against an item
+function matchWhere(item: any, where: any): boolean {
+  if (!where) return true;
+
+  return Object.entries(where).every(([key, value]: [string, any]) => {
+    // Handle OR conditions
+    if (key === 'OR' && Array.isArray(value)) {
+      return value.some((orCondition: any) => matchWhere(item, orCondition));
+    }
+
+    // Handle AND conditions
+    if (key === 'AND' && Array.isArray(value)) {
+      return value.every((andCondition: any) => matchWhere(item, andCondition));
+    }
+
+    // Handle NOT conditions
+    if (key === 'NOT') {
+      return !matchWhere(item, value);
+    }
+
+    // Handle nested relation filters (e.g., provider: { suburb: {...} })
+    if (typeof value === 'object' && value !== null && !isComparisonOperator(value)) {
+      // Check if this is a relation (provider, program, etc.)
+      const relatedModel = getRelatedModel(key);
+      if (relatedModel) {
+        const relatedItem = getRelatedItem(item, key);
+        if (!relatedItem) return false;
+        return matchWhere(relatedItem, value);
+      }
+    }
+
+    return matchCondition(item[key], value);
+  });
+}
+
+// Check if an object is a comparison operator object
+function isComparisonOperator(obj: any): boolean {
+  if (!obj || typeof obj !== 'object') return false;
+  const operatorKeys = ['gte', 'lte', 'gt', 'lt', 'contains', 'in', 'notIn', 'equals', 'not', 'mode'];
+  return Object.keys(obj).some(key => operatorKeys.includes(key));
+}
+
+// Get the related model name for a relation field
+function getRelatedModel(fieldName: string): string | null {
+  const relationMap: Record<string, string> = {
+    provider: 'provider',
+    programs: 'program',
+    user: 'user',
+    subscription: 'subscription',
+  };
+  return relationMap[fieldName] || null;
+}
+
+// Get related item from storage
+function getRelatedItem(item: any, relation: string): any {
+  if (relation === 'provider' && item.providerId) {
+    return mockStorage.provider.find((p: any) => p.id === item.providerId);
+  }
+  return null;
+}
+
+// Apply includes to an item
+function applyIncludes(item: any, include: any): any {
+  if (!include) return item;
+
+  const result = { ...item };
+
+  if (include.programs) {
+    result.programs = mockStorage.program?.filter((p: any) => p.providerId === item.id) || [];
+  }
+
+  if (include.provider) {
+    const provider = mockStorage.provider?.find((p: any) => p.id === item.providerId);
+    if (provider && typeof include.provider === 'object' && include.provider.select) {
+      // Apply select to the provider
+      const selected: any = {};
+      Object.keys(include.provider.select).forEach(key => {
+        if (include.provider.select[key]) {
+          selected[key] = provider[key];
+        }
+      });
+      result.provider = selected;
+    } else {
+      result.provider = provider || undefined;
+    }
+  }
+
+  if (include.user) {
+    result.user = mockStorage.user?.find((u: any) => u.id === item.userId) || undefined;
+  }
+
+  return result;
+}
+
 function createMockModel(modelName: string) {
   return {
     findUnique: jest.fn(({ where, include }: any) => {
@@ -58,16 +199,11 @@ function createMockModel(modelName: string) {
         Object.entries(where).every(([key, value]) => item[key] === value),
       );
 
-      if (item && include) {
-        // Handle includes (e.g., programs for provider)
-        const result = { ...item };
-        if (include.programs) {
-          result.programs = mockStorage.program?.filter((p: any) => p.providerId === item.id) || [];
-        }
-        return Promise.resolve(result);
+      if (item) {
+        return Promise.resolve(applyIncludes(item, include));
       }
 
-      return Promise.resolve(item || null);
+      return Promise.resolve(null);
     }),
 
     findFirst: jest.fn(({ where }: any) => {
@@ -80,43 +216,24 @@ function createMockModel(modelName: string) {
     findMany: jest.fn((options: any = {}) => {
       let items = [...mockStorage[modelName]];
 
+      // Apply where filter using the new matchWhere helper
       if (options.where) {
-        items = items.filter((item: any) => {
-          // Handle direct where conditions
-          const conditions = options.where;
-          return Object.entries(conditions).every(([key, value]: [string, any]) => {
-            // Handle OR conditions
-            if (key === 'OR' && Array.isArray(value)) {
-              return value.some((orCondition: any) =>
-                Object.entries(orCondition).every(([k, v]: [string, any]) => {
-                  if (typeof v === 'object' && v !== null) {
-                    if (v.contains) {
-                      return item[k]?.toLowerCase().includes(v.contains.toLowerCase());
-                    }
-                  }
-                  return item[k] === v;
-                }),
-              );
-            }
+        items = items.filter((item: any) => matchWhere(item, options.where));
+      }
 
-            // Handle nested conditions
-            if (typeof value === 'object' && value !== null) {
-              if (value.contains) {
-                return item[key]?.toLowerCase().includes(value.contains.toLowerCase());
-              }
-              if (value.in) {
-                return value.in.includes(item[key]);
-              }
-              if (value.some) {
-                // For relational filters like programs: { some: {...} }
-                return true; // Simplified for mock
-              }
-            }
-            return item[key] === value;
-          });
+      // Apply distinct - filter to unique values of specified fields
+      if (options.distinct) {
+        const distinctFields = Array.isArray(options.distinct) ? options.distinct : [options.distinct];
+        const seen = new Set();
+        items = items.filter((item) => {
+          const key = distinctFields.map((field: string) => item[field]).join('|');
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
         });
       }
 
+      // Apply ordering
       if (options.orderBy) {
         const sortKey = Object.keys(options.orderBy)[0];
         const sortOrder = options.orderBy[sortKey];
@@ -129,6 +246,7 @@ function createMockModel(modelName: string) {
         });
       }
 
+      // Apply pagination
       if (options.skip) {
         items = items.slice(options.skip);
       }
@@ -137,16 +255,22 @@ function createMockModel(modelName: string) {
         items = items.slice(0, options.take);
       }
 
-      if (options.include) {
-        // Handle includes
+      // Apply select to limit fields returned
+      if (options.select) {
         items = items.map((item) => {
-          const result = { ...item };
-          if (options.include.programs) {
-            result.programs =
-              mockStorage.program?.filter((p: any) => p.providerId === item.id) || [];
-          }
-          return result;
+          const selected: any = {};
+          Object.keys(options.select).forEach(key => {
+            if (options.select[key]) {
+              selected[key] = item[key];
+            }
+          });
+          return selected;
         });
+      }
+
+      // Apply includes using the applyIncludes helper
+      if (options.include) {
+        items = items.map((item) => applyIncludes(item, options.include));
       }
 
       return Promise.resolve(items);
@@ -265,9 +389,7 @@ function createMockModel(modelName: string) {
       let items = [...mockStorage[modelName]];
 
       if (options.where) {
-        items = items.filter((item: any) =>
-          Object.entries(options.where).every(([key, value]) => item[key] === value),
-        );
+        items = items.filter((item: any) => matchWhere(item, options.where));
       }
 
       return Promise.resolve(items.length);
