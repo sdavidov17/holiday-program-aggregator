@@ -120,7 +120,7 @@ describe('Stripe Utilities', () => {
 
       it('should configure with correct API version', () => {
         expect(MockStripe).toHaveBeenCalledWith('sk_test_valid_key', {
-          apiVersion: '2025-07-30.basil',
+          apiVersion: '2025-12-15.clover',
           typescript: true,
         });
       });

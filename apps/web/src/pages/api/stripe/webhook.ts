@@ -7,7 +7,7 @@ import { logger } from '~/utils/logger';
 
 const stripe = env.STRIPE_SECRET_KEY
   ? new Stripe(env.STRIPE_SECRET_KEY, {
-      apiVersion: '2025-07-30.basil',
+      apiVersion: '2025-12-15.clover',
     })
   : null;
 
