@@ -118,6 +118,24 @@ function matchWhere(item: any, where: any): boolean {
       return !matchWhere(item, value);
     }
 
+    // Handle relation queries with 'some' (e.g., programs: { some: { ... } })
+    if (key === 'programs' && typeof value === 'object' && value !== null) {
+      const programs = mockStorage.program?.filter((p: any) => p.providerId === item.id) || [];
+      if (value.some) {
+        // At least one program must match the condition
+        return programs.some((p: any) => matchWhere(p, value.some));
+      }
+      if (value.every) {
+        // All programs must match the condition
+        return programs.every((p: any) => matchWhere(p, value.every));
+      }
+      if (value.none) {
+        // No programs should match the condition
+        return !programs.some((p: any) => matchWhere(p, value.none));
+      }
+      return true;
+    }
+
     // Handle nested relation filters (e.g., provider: { suburb: {...} })
     if (typeof value === 'object' && value !== null && !isComparisonOperator(value)) {
       // Check if this is a relation (provider, program, etc.)
@@ -166,7 +184,30 @@ function applyIncludes(item: any, include: any): any {
   const result = { ...item };
 
   if (include.programs) {
-    result.programs = mockStorage.program?.filter((p: any) => p.providerId === item.id) || [];
+    let programs = mockStorage.program?.filter((p: any) => p.providerId === item.id) || [];
+
+    // Handle include.programs as object with where/orderBy
+    if (typeof include.programs === 'object') {
+      // Apply where filter to programs
+      if (include.programs.where) {
+        programs = programs.filter((p: any) => matchWhere(p, include.programs.where));
+      }
+
+      // Apply orderBy to programs
+      if (include.programs.orderBy) {
+        const sortKey = Object.keys(include.programs.orderBy)[0];
+        const sortOrder = include.programs.orderBy[sortKey];
+        programs.sort((a: any, b: any) => {
+          const aVal = a[sortKey];
+          const bVal = b[sortKey];
+          if (aVal < bVal) return sortOrder === 'asc' ? -1 : 1;
+          if (aVal > bVal) return sortOrder === 'asc' ? 1 : -1;
+          return 0;
+        });
+      }
+    }
+
+    result.programs = programs;
   }
 
   if (include.provider) {

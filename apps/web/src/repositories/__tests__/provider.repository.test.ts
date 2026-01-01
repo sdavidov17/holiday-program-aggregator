@@ -424,4 +424,658 @@ describe('ProviderRepository', () => {
       expect(remaining).toHaveLength(2);
     });
   });
+
+  describe('findByIdWithPrograms', () => {
+    it('should find provider with programs included', async () => {
+      const providerData = createTestProvider({ isVetted: true, isPublished: true });
+      const created = await prisma.provider.create({
+        data: providerData as any,
+      });
+
+      const program1 = createTestProgram({ providerId: created.id, name: 'Program 1' });
+      const program2 = createTestProgram({ providerId: created.id, name: 'Program 2' });
+      await prisma.program.create({ data: program1 as any });
+      await prisma.program.create({ data: program2 as any });
+
+      const result = await repository.findByIdWithPrograms(created.id);
+
+      expect(result).not.toBeNull();
+      expect(result?.id).toBe(created.id);
+      expect(result?.programs).toHaveLength(2);
+    });
+
+    it('should return null for non-existent id', async () => {
+      const result = await repository.findByIdWithPrograms('non-existent-id');
+
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('findManyWithPrograms', () => {
+    it('should find all providers with programs included', async () => {
+      const provider1 = await prisma.provider.create({
+        data: createTestProvider({ businessName: 'Provider 1' }) as any,
+      });
+      const provider2 = await prisma.provider.create({
+        data: createTestProvider({ businessName: 'Provider 2' }) as any,
+      });
+
+      await prisma.program.create({
+        data: createTestProgram({ providerId: provider1.id }) as any,
+      });
+      await prisma.program.create({
+        data: createTestProgram({ providerId: provider2.id }) as any,
+      });
+
+      const result = await repository.findManyWithPrograms();
+
+      expect(result).toHaveLength(2);
+      expect(result[0].programs).toBeDefined();
+      expect(result[1].programs).toBeDefined();
+    });
+
+    it('should apply options while including programs', async () => {
+      await prisma.provider.create({
+        data: createTestProvider({ businessName: 'Published', isPublished: true }) as any,
+      });
+      await prisma.provider.create({
+        data: createTestProvider({ businessName: 'Unpublished', isPublished: false }) as any,
+      });
+
+      const result = await repository.findManyWithPrograms({ where: { isPublished: true } });
+
+      expect(result).toHaveLength(1);
+      expect(result[0].businessName).toBe('Published');
+    });
+  });
+
+  describe('findByLocation', () => {
+    beforeEach(async () => {
+      await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Sydney Provider',
+          suburb: 'Bondi',
+          state: 'NSW',
+          isPublished: true,
+          isVetted: true,
+        }) as any,
+      });
+      await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Melbourne Provider',
+          suburb: 'St Kilda',
+          state: 'VIC',
+          isPublished: true,
+          isVetted: true,
+        }) as any,
+      });
+      await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Unpublished Sydney',
+          suburb: 'Bondi',
+          state: 'NSW',
+          isPublished: false,
+          isVetted: true,
+        }) as any,
+      });
+    });
+
+    it('should find providers by suburb', async () => {
+      const result = await repository.findByLocation({ suburb: 'Bondi' });
+
+      expect(result).toHaveLength(1);
+      expect(result[0].businessName).toBe('Sydney Provider');
+    });
+
+    it('should find providers by state', async () => {
+      const result = await repository.findByLocation({ state: 'VIC' });
+
+      expect(result).toHaveLength(1);
+      expect(result[0].businessName).toBe('Melbourne Provider');
+    });
+
+    it('should filter by published and vetted by default', async () => {
+      const result = await repository.findByLocation({});
+
+      expect(result).toHaveLength(2);
+      expect(result.every((p) => p.isPublished && p.isVetted)).toBe(true);
+    });
+
+    it('should allow overriding isPublished filter', async () => {
+      const result = await repository.findByLocation({ isPublished: false });
+
+      expect(result).toHaveLength(1);
+      expect(result[0].businessName).toBe('Unpublished Sydney');
+    });
+
+    it('should include only active published programs', async () => {
+      const provider = await prisma.provider.findFirst({
+        where: { businessName: 'Sydney Provider' },
+      });
+
+      await prisma.program.create({
+        data: createTestProgram({
+          providerId: provider!.id,
+          isActive: true,
+          isPublished: true,
+          name: 'Active Program',
+        }) as any,
+      });
+      await prisma.program.create({
+        data: createTestProgram({
+          providerId: provider!.id,
+          isActive: false,
+          isPublished: true,
+          name: 'Inactive Program',
+        }) as any,
+      });
+
+      const result = await repository.findByLocation({ suburb: 'Bondi' });
+
+      expect(result[0].programs).toHaveLength(1);
+      expect(result[0].programs[0].name).toBe('Active Program');
+    });
+  });
+
+  describe('findVettedProviders', () => {
+    beforeEach(async () => {
+      const vettingDate1 = new Date('2024-01-15');
+      const vettingDate2 = new Date('2024-01-20');
+
+      await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Vetted Early',
+          isVetted: true,
+          isPublished: true,
+          vettingDate: vettingDate1,
+        }) as any,
+      });
+      await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Vetted Late',
+          isVetted: true,
+          isPublished: true,
+          vettingDate: vettingDate2,
+        }) as any,
+      });
+      await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Not Vetted',
+          isVetted: false,
+          isPublished: true,
+        }) as any,
+      });
+      await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Not Published',
+          isVetted: true,
+          isPublished: false,
+        }) as any,
+      });
+    });
+
+    it('should return only vetted and published providers', async () => {
+      const result = await repository.findVettedProviders();
+
+      expect(result).toHaveLength(2);
+      expect(result.every((p) => p.isVetted && p.isPublished)).toBe(true);
+    });
+
+    it('should order by vetting date descending', async () => {
+      const result = await repository.findVettedProviders();
+
+      expect(result[0].businessName).toBe('Vetted Late');
+      expect(result[1].businessName).toBe('Vetted Early');
+    });
+  });
+
+  describe('updateVettingStatus', () => {
+    let providerId: string;
+
+    beforeEach(async () => {
+      const created = await prisma.provider.create({
+        data: createTestProvider({
+          isVetted: false,
+          vettingStatus: 'NOT_STARTED',
+        }) as any,
+      });
+      providerId = created.id;
+    });
+
+    it('should approve provider vetting', async () => {
+      const result = await repository.updateVettingStatus(
+        providerId,
+        'APPROVED',
+        'Meets all requirements',
+        'admin-user-1',
+      );
+
+      expect(result.isVetted).toBe(true);
+      expect(result.vettingStatus).toBe('APPROVED');
+      expect(result.vettingNotes).toBe('Meets all requirements');
+      expect(result.vettingDate).toBeDefined();
+    });
+
+    it('should reject provider vetting', async () => {
+      const result = await repository.updateVettingStatus(
+        providerId,
+        'REJECTED',
+        'Missing documentation',
+        'admin-user-1',
+      );
+
+      expect(result.isVetted).toBe(false);
+      expect(result.vettingStatus).toBe('REJECTED');
+      expect(result.vettingNotes).toBe('Missing documentation');
+    });
+  });
+
+  describe('togglePublishStatus', () => {
+    it('should unpublish a published vetted provider', async () => {
+      const created = await prisma.provider.create({
+        data: createTestProvider({
+          isVetted: true,
+          isPublished: true,
+        }) as any,
+      });
+
+      const result = await repository.togglePublishStatus(created.id, 'user-1');
+
+      expect(result.isPublished).toBe(false);
+    });
+
+    it('should publish an unpublished vetted provider', async () => {
+      const created = await prisma.provider.create({
+        data: createTestProvider({
+          isVetted: true,
+          isPublished: false,
+        }) as any,
+      });
+
+      const result = await repository.togglePublishStatus(created.id, 'user-1');
+
+      expect(result.isPublished).toBe(true);
+    });
+
+    it('should throw error for non-existent provider', async () => {
+      await expect(repository.togglePublishStatus('non-existent', 'user-1')).rejects.toThrow(
+        'Provider not found',
+      );
+    });
+
+    it('should throw error when trying to publish unvetted provider', async () => {
+      const created = await prisma.provider.create({
+        data: createTestProvider({
+          isVetted: false,
+          isPublished: false,
+        }) as any,
+      });
+
+      await expect(repository.togglePublishStatus(created.id, 'user-1')).rejects.toThrow(
+        'Provider must be vetted before publishing',
+      );
+    });
+  });
+
+  describe('findWithUpcomingPrograms', () => {
+    it('should find providers with upcoming programs', async () => {
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 7);
+
+      const pastDate = new Date();
+      pastDate.setDate(pastDate.getDate() - 7);
+
+      const provider1 = await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Has Future Programs',
+          isVetted: true,
+          isPublished: true,
+        }) as any,
+      });
+
+      const provider2 = await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Only Past Programs',
+          isVetted: true,
+          isPublished: true,
+        }) as any,
+      });
+
+      // Future program
+      await prisma.program.create({
+        data: createTestProgram({
+          providerId: provider1.id,
+          startDate: futureDate,
+          isActive: true,
+          isPublished: true,
+        }) as any,
+      });
+
+      // Past program
+      await prisma.program.create({
+        data: createTestProgram({
+          providerId: provider2.id,
+          startDate: pastDate,
+          isActive: true,
+          isPublished: true,
+        }) as any,
+      });
+
+      const result = await repository.findWithUpcomingPrograms();
+
+      expect(result).toHaveLength(1);
+      expect(result[0].businessName).toBe('Has Future Programs');
+      expect(result[0].programs).toHaveLength(1);
+    });
+
+    it('should exclude inactive programs', async () => {
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 7);
+
+      const provider = await prisma.provider.create({
+        data: createTestProvider({
+          isVetted: true,
+          isPublished: true,
+        }) as any,
+      });
+
+      await prisma.program.create({
+        data: createTestProgram({
+          providerId: provider.id,
+          startDate: futureDate,
+          isActive: false,
+          isPublished: true,
+        }) as any,
+      });
+
+      const result = await repository.findWithUpcomingPrograms();
+
+      expect(result).toHaveLength(0);
+    });
+
+    it('should exclude unpublished programs', async () => {
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 7);
+
+      const provider = await prisma.provider.create({
+        data: createTestProvider({
+          isVetted: true,
+          isPublished: true,
+        }) as any,
+      });
+
+      await prisma.program.create({
+        data: createTestProgram({
+          providerId: provider.id,
+          startDate: futureDate,
+          isActive: true,
+          isPublished: false,
+        }) as any,
+      });
+
+      const result = await repository.findWithUpcomingPrograms();
+
+      expect(result).toHaveLength(0);
+    });
+
+    it('should order programs by start date', async () => {
+      const nearFuture = new Date();
+      nearFuture.setDate(nearFuture.getDate() + 3);
+
+      const farFuture = new Date();
+      farFuture.setDate(farFuture.getDate() + 10);
+
+      const provider = await prisma.provider.create({
+        data: createTestProvider({
+          isVetted: true,
+          isPublished: true,
+        }) as any,
+      });
+
+      await prisma.program.create({
+        data: createTestProgram({
+          providerId: provider.id,
+          name: 'Far Future',
+          startDate: farFuture,
+          isActive: true,
+          isPublished: true,
+        }) as any,
+      });
+
+      await prisma.program.create({
+        data: createTestProgram({
+          providerId: provider.id,
+          name: 'Near Future',
+          startDate: nearFuture,
+          isActive: true,
+          isPublished: true,
+        }) as any,
+      });
+
+      const result = await repository.findWithUpcomingPrograms();
+
+      expect(result[0].programs[0].name).toBe('Near Future');
+      expect(result[0].programs[1].name).toBe('Far Future');
+    });
+  });
+
+  describe('getStatistics', () => {
+    beforeEach(async () => {
+      // Create providers with various states
+      const p1 = await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Vetted Published With Programs',
+          isVetted: true,
+          isPublished: true,
+        }) as any,
+      });
+      await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Vetted Published No Programs',
+          isVetted: true,
+          isPublished: true,
+        }) as any,
+      });
+      await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Vetted Unpublished',
+          isVetted: true,
+          isPublished: false,
+        }) as any,
+      });
+      await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Not Vetted',
+          isVetted: false,
+          isPublished: false,
+        }) as any,
+      });
+
+      // Add active program to first provider
+      await prisma.program.create({
+        data: createTestProgram({
+          providerId: p1.id,
+          isActive: true,
+        }) as any,
+      });
+    });
+
+    it('should return correct statistics', async () => {
+      const stats = await repository.getStatistics();
+
+      expect(stats.total).toBe(4);
+      expect(stats.vetted).toBe(3);
+      expect(stats.published).toBe(2);
+      expect(stats.withPrograms).toBe(1);
+    });
+  });
+
+  describe('searchByKeyword', () => {
+    beforeEach(async () => {
+      await prisma.provider.create({
+        data: createTestProvider({
+          businessName: 'Summer Camp Adventures',
+          isVetted: true,
+          isPublished: true,
+        }) as any,
+      });
+    });
+
+    it('should delegate to search method', async () => {
+      const result = await repository.searchByKeyword('Summer');
+
+      expect(result).toHaveLength(1);
+      expect(result[0].businessName).toContain('Summer');
+    });
+  });
+
+  describe('createProvider', () => {
+    it('should create provider with ageGroups as JSON', async () => {
+      const result = await repository.createProvider(
+        {
+          businessName: 'New Provider',
+          email: 'new@example.com',
+          phone: '0412345678',
+          suburb: 'Sydney',
+          state: 'NSW',
+          postcode: '2000',
+          ageGroups: ['5-8', '9-12'],
+        },
+        'user-1',
+      );
+
+      expect(result.businessName).toBe('New Provider');
+      expect(result.ageGroups).toBe(JSON.stringify(['5-8', '9-12']));
+      expect(result.vettingStatus).toBe('NOT_STARTED');
+    });
+
+    it('should set vetting status and date when isVetted is true', async () => {
+      const result = await repository.createProvider(
+        {
+          businessName: 'Pre-approved Provider',
+          email: 'approved@example.com',
+          phone: '0412345678',
+          suburb: 'Sydney',
+          state: 'NSW',
+          postcode: '2000',
+          isVetted: true,
+        },
+        'admin-1',
+      );
+
+      expect(result.isVetted).toBe(true);
+      expect(result.vettingStatus).toBe('APPROVED');
+      expect(result.vettingDate).toBeDefined();
+    });
+
+    it('should handle empty ageGroups', async () => {
+      const result = await repository.createProvider(
+        {
+          businessName: 'No Age Groups',
+          email: 'noage@example.com',
+          phone: '0412345678',
+          suburb: 'Sydney',
+          state: 'NSW',
+          postcode: '2000',
+        },
+        'user-1',
+      );
+
+      expect(result.ageGroups).toBe('[]');
+    });
+  });
+
+  describe('updateProvider', () => {
+    let providerId: string;
+
+    beforeEach(async () => {
+      const created = await prisma.provider.create({
+        data: createTestProvider({
+          ageGroups: JSON.stringify(['5-8']),
+          isVetted: false,
+        }) as any,
+      });
+      providerId = created.id;
+    });
+
+    it('should update ageGroups as JSON', async () => {
+      const result = await repository.updateProvider(
+        providerId,
+        {
+          ageGroups: ['9-12', '13-16'],
+        },
+        'user-1',
+      );
+
+      expect(result.ageGroups).toBe(JSON.stringify(['9-12', '13-16']));
+    });
+
+    it('should update vetting status when isVetted changes to true', async () => {
+      const result = await repository.updateProvider(
+        providerId,
+        {
+          isVetted: true,
+        },
+        'admin-1',
+      );
+
+      expect(result.isVetted).toBe(true);
+      expect(result.vettingStatus).toBe('APPROVED');
+      expect(result.vettingDate).toBeDefined();
+    });
+
+    it('should update vetting status when isVetted changes to false', async () => {
+      // First vet the provider
+      await repository.updateProvider(providerId, { isVetted: true }, 'admin-1');
+
+      // Then unvet
+      const result = await repository.updateProvider(
+        providerId,
+        {
+          isVetted: false,
+        },
+        'admin-1',
+      );
+
+      expect(result.isVetted).toBe(false);
+      expect(result.vettingStatus).toBe('NOT_STARTED');
+      expect(result.vettingDate).toBeNull();
+    });
+
+    it('should not change vetting status if isVetted stays the same', async () => {
+      // Create a vetted provider with specific vetting date
+      const vettedProvider = await prisma.provider.create({
+        data: createTestProvider({
+          isVetted: true,
+          vettingStatus: 'APPROVED',
+          vettingDate: new Date('2024-01-01'),
+        }) as any,
+      });
+
+      const result = await repository.updateProvider(
+        vettedProvider.id,
+        {
+          businessName: 'Updated Name',
+          isVetted: true, // Same as current
+        },
+        'user-1',
+      );
+
+      expect(result.businessName).toBe('Updated Name');
+      // Vetting date should remain unchanged
+      expect(result.vettingDate?.toISOString()).toBe(new Date('2024-01-01').toISOString());
+    });
+
+    it('should handle null ageGroups', async () => {
+      const result = await repository.updateProvider(
+        providerId,
+        {
+          ageGroups: null,
+        },
+        'user-1',
+      );
+
+      expect(result.ageGroups).toBe('[]');
+    });
+  });
 });
