@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 import bcrypt from 'bcryptjs';
 
 // Since SQLite doesn't support enums, we define them as constants
@@ -7,7 +9,20 @@ const UserRole = {
   ADMIN: 'ADMIN',
 } as const;
 
-const prisma = new PrismaClient();
+// Get database URL from environment
+function getDatabaseUrl(): string {
+  if (process.env.DATABASE_URL) {
+    return process.env.DATABASE_URL;
+  }
+  const isDocker = process.env.DOCKER_ENV === 'true';
+  return isDocker
+    ? 'postgresql://postgres:postgres@postgres:5432/holiday_aggregator?schema=public'
+    : 'postgresql://postgres:postgres@localhost:5432/holiday_aggregator?schema=public';
+}
+
+const pool = new Pool({ connectionString: getDatabaseUrl() });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log('🌱 Starting database seed...');
@@ -216,4 +231,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
+    await pool.end();
   });
