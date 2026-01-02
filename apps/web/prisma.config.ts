@@ -4,11 +4,17 @@ import { defineConfig } from 'prisma/config';
 // Determine environment
 const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production';
 const isDocker = process.env.DOCKER_ENV === 'true';
+const isCI = process.env.CI === 'true';
 
 // Get DATABASE_URL or use default for development
 function getDatabaseUrl(): string {
   if (process.env.DATABASE_URL) {
     return process.env.DATABASE_URL;
+  }
+
+  // CI builds use placeholder - Prisma generate only needs schema, not connection
+  if (isCI) {
+    return 'postgresql://placeholder:placeholder@localhost:5432/placeholder';
   }
 
   if (isProduction) {
