@@ -9,13 +9,19 @@ console.log('🔧 Validating Prisma configuration for PostgreSQL...');
 
 const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production';
 const isDocker = process.env.DOCKER_ENV === 'true';
+const isCI = process.env.CI === 'true';
 
 // Check DATABASE_URL for migrations (prisma.config.ts handles runtime)
 if (!process.env.DATABASE_URL) {
-  if (isProduction) {
+  if (isProduction && !isCI) {
+    // Only fail in actual production, not during CI builds
     console.error('❌ DATABASE_URL not set in production!');
     console.error('   Please configure your PostgreSQL database connection');
     process.exit(1);
+  } else if (isCI) {
+    // Use placeholder for CI builds (Prisma generate only needs schema, not connection)
+    process.env.DATABASE_URL = 'postgresql://placeholder:placeholder@localhost:5432/placeholder';
+    console.log('ℹ️  CI environment detected, using placeholder DATABASE_URL for schema generation');
   } else {
     // Default to local PostgreSQL (Docker or local installation)
     const defaultUrl = isDocker
