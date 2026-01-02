@@ -1,8 +1,44 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap");
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Custom theme configuration - migrated from tailwind.config.js */
+@theme {
+  /* Primary colors (blue) */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+
+  /* Secondary colors (yellow) */
+  --color-secondary-50: #fefce8;
+  --color-secondary-100: #fef9c3;
+  --color-secondary-200: #fef08a;
+  --color-secondary-300: #fde047;
+  --color-secondary-400: #facc15;
+  --color-secondary-500: #eab308;
+  --color-secondary-600: #ca8a04;
+  --color-secondary-700: #a16207;
+  --color-secondary-800: #854d0e;
+  --color-secondary-900: #713f12;
+
+  /* Accent colors */
+  --color-accent-light: #e0f2fe;
+  --color-accent: #7dd3fc;
+  --color-accent-dark: #0284c7;
+
+  /* Custom shadows */
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-large: 0 8px 32px rgba(0, 0, 0, 0.16);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
 
 @layer base {
   :root {
@@ -40,15 +76,15 @@
   }
 
   .btn-primary {
-    @apply btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 px-6 py-3 text-sm;
+    @apply inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 px-6 py-3 text-sm;
   }
 
   .btn-secondary {
-    @apply btn bg-white text-primary-600 border-2 border-primary-600 hover:bg-primary-50 focus:ring-primary-500 px-6 py-3 text-sm;
+    @apply inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed bg-white text-primary-600 border-2 border-primary-600 hover:bg-primary-50 focus:ring-primary-500 px-6 py-3 text-sm;
   }
 
   .btn-ghost {
-    @apply btn bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500 px-4 py-2 text-sm;
+    @apply inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500 px-4 py-2 text-sm;
   }
 
   .card {
@@ -68,19 +104,19 @@
   }
 
   .badge-primary {
-    @apply badge bg-primary-100 text-primary-700;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-700;
   }
 
   .badge-success {
-    @apply badge bg-green-100 text-green-700;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700;
   }
 
   .badge-warning {
-    @apply badge bg-yellow-100 text-yellow-700;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700;
   }
 
   .badge-danger {
-    @apply badge bg-red-100 text-red-700;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700;
   }
 
   .activity-icon {
