@@ -2,15 +2,186 @@
 
 ## Overview
 
-This guide covers deployment procedures for the Holiday Program Aggregator across all environments. We use Vercel for hosting with PostgreSQL on Neon.
+This guide covers deployment procedures for the Holiday Program Aggregator. We use **GitHub Actions with Vercel CLI** for controlled deployments that only proceed after all CI checks pass.
+
+## Deployment Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     GitHub Repository                           │
+│                                                                  │
+│  Push to main ──► GitHub Actions Workflows                      │
+│                         │                                        │
+│         ┌───────────────┼───────────────────┐                   │
+│         ▼               ▼                   ▼                   │
+│   ┌──────────┐   ┌──────────┐       ┌────────────┐             │
+│   │ Quality  │   │   E2E    │       │  Security  │             │
+│   │ Checks   │   │  Tests   │       │   Scan     │             │
+│   └────┬─────┘   └────┬─────┘       └─────┬──────┘             │
+│        │              │                   │                     │
+│        └──────────────┴───────────────────┘                     │
+│                       │                                          │
+│                       ▼  All checks pass                        │
+│              ┌────────────────┐                                 │
+│              │  Deploy to     │                                 │
+│              │    Vercel      │                                 │
+│              └───────┬────────┘                                 │
+│                      │                                          │
+│                      ▼                                          │
+│         ┌────────────────────────┐                              │
+│         │ Create Release Tag     │                              │
+│         │ Create GitHub Release  │                              │
+│         └────────────────────────┘                              │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+                       │
+                       ▼
+              ┌────────────────┐
+              │    Vercel      │
+              │  Production    │
+              └────────────────┘
+```
 
 ## Environments
 
-| Environment | URL | Branch | Purpose |
-|------------|-----|--------|---------|
-| Development | `dev-*.vercel.app` | feature branches | Development testing |
-| Staging | `staging-*.vercel.app` | `staging` | Pre-production testing |
-| Production | `holidayprograms.com.au` | `main` | Live system |
+| Environment | Trigger | Purpose |
+|------------|---------|---------|
+| Preview | Pull Request to `main` | Feature testing, review |
+| Production | Push to `main` (after CI passes) | Live system |
+
+## CI/CD Pipeline
+
+### Required Status Checks
+
+The production deployment **waits for all three checks** to pass:
+
+1. **Quality Checks** (`ci.yml`)
+   - TypeScript type checking
+   - Biome linting
+   - Unit tests with Jest
+   - Code coverage
+
+2. **E2E Tests** (`e2e.yml`)
+   - Playwright browser tests
+   - Database integration tests
+
+3. **Security Scan** (`security-scan.yml`)
+   - Dependency vulnerability scan
+   - License compliance check
+   - SAST with CodeQL
+   - Secret scanning
+
+### Deployment Workflow
+
+The `.github/workflows/deploy.yml` workflow:
+
+```yaml
+# Triggered on push/PR to main
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# For PRs: Deploy preview immediately
+# For pushes to main: Wait for CI, then deploy production
+```
+
+## Deployment Process
+
+### 1. Preview Deployments (Pull Requests)
+
+When you open a PR to `main`:
+- GitHub Actions automatically deploys a preview
+- Preview URL is commented on the PR
+- No need to wait for CI (allows quick visual review)
+
+```bash
+# Create feature branch
+git checkout -b feature/my-feature
+git push origin feature/my-feature
+
+# Open PR → Automatic preview deployment
+```
+
+### 2. Production Deployment (Push to main)
+
+When code is merged/pushed to `main`:
+
+1. **CI Pipeline Runs** (parallel)
+   - Quality Checks
+   - E2E Tests
+   - Security Scan
+
+2. **Deploy Workflow Waits**
+   - Waits for all three checks to pass
+   - If any check fails, deployment is blocked
+
+3. **Production Deploy**
+   - Pulls Vercel environment
+   - Builds with `vercel build --prod`
+   - Deploys with `vercel deploy --prebuilt --prod`
+
+4. **Release Created**
+   - Creates version tag: `v2026.01.02-abc1234`
+   - Creates GitHub Release with changelog
+
+### 3. Manual Deployment (Emergency)
+
+If needed, you can deploy directly via Vercel CLI:
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Link project (one-time)
+vercel link
+
+# Deploy to preview
+vercel
+
+# Deploy to production
+vercel --prod
+```
+
+## GitHub Secrets Required
+
+| Secret | Description |
+|--------|-------------|
+| `VERCEL_TOKEN` | Vercel API token (from Account Settings → Tokens) |
+| `VERCEL_ORG_ID` | Team/Org ID (from `.vercel/project.json`) |
+| `VERCEL_PROJECT_ID` | Project ID (from `.vercel/project.json`) |
+
+### Getting Vercel IDs
+
+```bash
+# Run in project root
+vercel link
+
+# View the IDs
+cat .vercel/project.json
+# Output: {"projectId":"prj_XXX","orgId":"team_XXX"}
+```
+
+## Vercel Configuration
+
+### Dashboard Settings
+
+1. **Git Integration**: Connected to GitHub repo
+2. **Ignored Build Step**: Set to "Don't build anything"
+   - We handle builds via GitHub Actions for more control
+3. **Environment Variables**: Set in Vercel dashboard
+   - DATABASE_URL, NEXTAUTH_SECRET, etc.
+
+### vercel.json
+
+```json
+{
+  "buildCommand": "turbo run build --filter=web",
+  "outputDirectory": "apps/web/.next",
+  "installCommand": "pnpm install"
+}
+```
 
 ## Pre-Deployment Checklist
 
@@ -18,411 +189,108 @@ This guide covers deployment procedures for the Holiday Program Aggregator acros
 - [ ] All tests passing (`pnpm test`)
 - [ ] Linting clean (`pnpm lint`)
 - [ ] Type checking passes (`pnpm typecheck`)
-- [ ] Build succeeds locally (`pnpm build`)
-- [ ] No security vulnerabilities (`pnpm audit`)
+- [ ] Build succeeds locally (`SKIP_ENV_VALIDATION=true pnpm build`)
 
 ### Database
-- [ ] Migrations tested locally
+- [ ] Schema changes pushed (`pnpm db:push`)
+- [ ] Seed data updated if needed
 - [ ] Rollback plan documented
-- [ ] Database backup completed
-- [ ] Connection pooling configured
 
 ### Configuration
-- [ ] Environment variables updated
-- [ ] API keys rotated if needed
+- [ ] Environment variables updated in Vercel dashboard
 - [ ] Feature flags configured
-- [ ] CDN cache rules set
-
-## Deployment Process
-
-### 1. Feature Branch Deployment (Automatic)
-
-```bash
-# Push to feature branch
-git push origin feature/epic-1-story-2
-
-# Vercel automatically creates preview deployment
-# URL: https://holiday-program-aggregator-<hash>.vercel.app
-```
-
-### 2. Staging Deployment
-
-```bash
-# Merge to staging branch
-git checkout staging
-git merge feature/epic-1-story-2
-git push origin staging
-
-# Verify deployment
-curl https://staging-holiday-programs.vercel.app/api/health
-```
-
-### 3. Production Deployment
-
-#### Step 1: Pre-deployment
-```bash
-# Ensure on latest main
-git checkout main
-git pull origin main
-
-# Create release tag
-git tag -a v1.2.0 -m "Release: User authentication feature"
-git push origin v1.2.0
-```
-
-#### Step 2: Database Migration
-```bash
-# Connect to production database
-DATABASE_URL=$PROD_DATABASE_URL pnpm db:migrate deploy
-
-# Verify migration
-DATABASE_URL=$PROD_DATABASE_URL pnpm db:studio
-```
-
-#### Step 3: Deploy to Production
-```bash
-# Merge to main (triggers deployment)
-git push origin main
-
-# Monitor deployment
-vercel logs --prod --follow
-```
-
-#### Step 4: Post-deployment Verification
-```bash
-# Health check
-curl https://holidayprograms.com.au/api/health
-
-# Run smoke tests
-pnpm test:smoke --env=production
-
-# Check error rates
-vercel logs --prod --error
-```
-
-## Environment Variables
-
-### Required Variables
-
-```env
-# Database
-DATABASE_URL=              # PostgreSQL connection string
-DATABASE_POOL_URL=         # Pooled connection for serverless
-
-# Authentication
-NEXTAUTH_URL=             # Application URL
-NEXTAUTH_SECRET=          # Random secret (openssl rand -hex 32)
-
-# OAuth Providers
-DISCORD_CLIENT_ID=        # Discord OAuth app ID
-DISCORD_CLIENT_SECRET=    # Discord OAuth secret
-
-# Email (SendGrid)
-SENDGRID_API_KEY=         # SendGrid API key
-EMAIL_FROM=               # Sender email address
-
-# Stripe
-STRIPE_SECRET_KEY=        # Stripe secret key
-STRIPE_WEBHOOK_SECRET=    # Webhook endpoint secret
-NEXT_PUBLIC_STRIPE_KEY=   # Publishable key
-
-# Maps
-NEXT_PUBLIC_MAPBOX_TOKEN= # Mapbox public token
-
-# Monitoring
-SENTRY_DSN=              # Sentry error tracking
-DATADOG_API_KEY=         # Datadog monitoring
-```
-
-### Environment-Specific Config
-
-```typescript
-// src/env.mjs
-export const env = {
-  NODE_ENV: process.env.NODE_ENV,
-  DATABASE_URL: process.env.DATABASE_URL,
-  // Validation ensures all required vars are present
-};
-```
-
-## Database Deployment
-
-### Migration Strategy
-
-```bash
-# Create migration
-pnpm db:migrate dev --name add_user_preferences
-
-# Test migration
-pnpm db:migrate deploy --dry-run
-
-# Apply to staging
-DATABASE_URL=$STAGING_DB pnpm db:migrate deploy
-
-# Apply to production
-DATABASE_URL=$PROD_DB pnpm db:migrate deploy
-```
-
-### Rollback Procedure
-
-```bash
-# View migration history
-pnpm db:migrate status
-
-# Rollback last migration
-pnpm db:migrate rollback
-
-# Rollback to specific migration
-pnpm db:migrate rollback --to 20230801120000_initial
-```
-
-### Database Backup
-
-```bash
-# Automated daily backups via Neon
-# Manual backup before major changes
-pg_dump $DATABASE_URL > backup_$(date +%Y%m%d_%H%M%S).sql
-
-# Restore from backup
-psql $DATABASE_URL < backup_20230801_120000.sql
-```
-
-## Monitoring & Alerts
-
-### Health Checks
-
-```typescript
-// apps/web/src/pages/api/health/index.ts
-export default async function handler(req, res) {
-  const checks = {
-    api: 'ok',
-    database: await checkDatabase(),
-    redis: await checkRedis(),
-    timestamp: new Date().toISOString(),
-  };
-  
-  const healthy = Object.values(checks).every(v => v === 'ok' || v);
-  res.status(healthy ? 200 : 503).json(checks);
-}
-```
-
-### Monitoring Setup
-
-1. **Vercel Analytics**: Automatic for all deployments
-2. **Sentry**: Error tracking and performance
-3. **Datadog**: Infrastructure and APM
-4. **Uptime Robot**: External availability monitoring
-
-### Alert Configuration
-
-```yaml
-# .github/monitoring/alerts.yml
-alerts:
-  - name: High Error Rate
-    condition: error_rate > 1%
-    duration: 5m
-    notify: ["oncall@team.com"]
-    
-  - name: Slow API Response
-    condition: p95_latency > 1000ms
-    duration: 10m
-    notify: ["dev@team.com"]
-```
 
 ## Rollback Procedures
 
-### Immediate Rollback (< 5 minutes)
+### Via Vercel Dashboard (Fastest)
+
+1. Go to Vercel Dashboard → Project → Deployments
+2. Find the last known good deployment
+3. Click "..." → "Promote to Production"
+
+### Via CLI
 
 ```bash
-# Vercel instant rollback
-vercel rollback
+# List recent deployments
+vercel ls
 
-# Or via dashboard
-# https://vercel.com/dashboard -> Select deployment -> Rollback
+# Rollback to specific deployment
+vercel rollback [deployment-url]
 ```
 
-### Database Rollback
+### Via Git
 
 ```bash
-# Stop application traffic
-vercel --prod --scale 0
-
-# Rollback database
-pnpm db:migrate rollback
-
-# Restore previous deployment
-vercel rollback
-
-# Resume traffic
-vercel --prod --scale 1
-```
-
-### Full Rollback
-
-```bash
-# 1. Revert code
+# Revert the problematic commit
 git revert HEAD
 git push origin main
 
-# 2. Rollback database if needed
-DATABASE_URL=$PROD_DB pnpm db:migrate rollback
-
-# 3. Clear caches
-curl -X POST https://api.vercel.com/v1/purge?url=https://holidayprograms.com.au/*
-
-# 4. Verify
-pnpm test:smoke --env=production
+# This triggers a new deployment with the reverted code
 ```
 
-## Performance Optimization
+## Monitoring Deployments
 
-### Build Optimization
+### GitHub Actions
 
-```javascript
-// next.config.js
-module.exports = {
-  output: 'standalone',
-  compress: true,
-  poweredByHeader: false,
-  
-  images: {
-    domains: ['images.holidayprograms.com.au'],
-    formats: ['image/avif', 'image/webp'],
-  },
-  
-  experimental: {
-    optimizeCss: true,
-  },
-};
+```bash
+# List recent deploy runs
+gh run list --workflow=deploy.yml
+
+# Watch a specific run
+gh run watch <run-id>
+
+# View logs for failed run
+gh run view <run-id> --log-failed
 ```
 
-### Edge Functions
+### Vercel
 
-```typescript
-// Use edge runtime for better performance
-export const config = {
-  runtime: 'edge',
-  regions: ['syd1'], // Sydney region
-};
+```bash
+# View production logs
+vercel logs --prod --follow
+
+# Check deployment status
+vercel inspect [deployment-url]
 ```
-
-### Caching Strategy
-
-```typescript
-// API responses
-res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate');
-
-// Static assets
-res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-```
-
-## Security Checklist
-
-### Pre-Production
-- [ ] Security headers configured (CSP, HSTS, etc.)
-- [ ] API rate limiting enabled
-- [ ] Input validation on all endpoints
-- [ ] SQL injection prevention verified
-- [ ] XSS protection enabled
-- [ ] Authentication properly configured
-
-### Production
-- [ ] SSL certificate valid
-- [ ] Secrets rotated from staging
-- [ ] Admin access restricted
-- [ ] Audit logging enabled
-- [ ] WAF rules configured
-- [ ] DDoS protection active
 
 ## Troubleshooting
 
-### Common Issues
-
-#### Build Failures
-```bash
-# Clear cache and rebuild
-rm -rf .next node_modules
-pnpm install
-pnpm build
-
-# Check for missing environment variables
-vercel env pull
-```
-
-#### Database Connection Issues
-```bash
-# Test connection
-psql $DATABASE_URL -c "SELECT 1"
-
-# Check connection pool
-DATABASE_POOL_URL=$PROD_POOL_URL pnpm db:studio
-```
-
-#### Performance Issues
-```bash
-# Analyze bundle size
-pnpm analyze
-
-# Check for memory leaks
-vercel logs --prod | grep "JavaScript heap out of memory"
-
-# Review function execution time
-vercel logs --prod --output json | jq '.duration'
-```
-
-## Deployment Commands Reference
+### Build Failures in GitHub Actions
 
 ```bash
-# Local development
-pnpm dev                  # Start dev server
-pnpm build               # Build production
-pnpm start               # Start production server
+# Check the failed logs
+gh run view <run-id> --log-failed
 
-# Database
-pnpm db:push             # Push schema changes
-pnpm db:migrate dev      # Create migration
-pnpm db:migrate deploy   # Apply migrations
-pnpm db:seed             # Seed database
-
-# Deployment
-vercel                   # Deploy preview
-vercel --prod           # Deploy production
-vercel rollback         # Rollback deployment
-vercel logs --prod      # View production logs
-
-# Monitoring
-vercel env pull         # Pull environment variables
-vercel inspect [url]    # Inspect deployment
+# Common issues:
+# - SKIP_ENV_VALIDATION not set → Add to workflow
+# - Prisma generate fails → Check DATABASE_URL placeholder
 ```
 
-## Post-Deployment Tasks
+### "Project not found" Error
 
-1. **Announce Deployment**
-   - Update team in Slack
-   - Log in deployment spreadsheet
-   - Update status page if needed
+```bash
+# Verify IDs are correct
+vercel link
 
-2. **Monitor Metrics**
-   - Error rates
-   - Response times
-   - User feedback
-   - Business metrics
+# Update GitHub secrets with values from:
+cat .vercel/project.json
+```
 
-3. **Document Changes**
-   - Update changelog
-   - Update API documentation
-   - Notify stakeholders
+### CI Checks Not Passing
 
-## Emergency Contacts
+The deploy workflow waits indefinitely for checks. To unblock:
+1. Fix the failing check
+2. Or cancel the deploy workflow and fix later
 
-- **On-Call Engineer**: Check PagerDuty
-- **Vercel Support**: support@vercel.com
-- **Database Admin**: dba@team.com
-- **Security Team**: security@team.com
+## Version Tagging
+
+Every production deployment creates:
+- **Tag**: `v<year>.<month>.<day>-<short-sha>`
+  - Example: `v2026.01.02-abc1234`
+- **GitHub Release**: With recent commit changelog
 
 ## Related Documentation
 
-- [Architecture Overview](./Specs/architecture/high-level-architecture.md)
-- [Branching Strategy](./branching-strategy.md)
+- [Branching Strategy](../project/branching-strategy.md)
+- [CI/CD Strategy](./ci-cd-strategy.md)
 - [Testing Strategy](./testing-strategy.md)
-- [Security Guide](./security-sre-observability.md)
