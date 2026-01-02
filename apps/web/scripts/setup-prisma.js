@@ -2,18 +2,15 @@
 
 /**
  * Simplified Prisma setup script for PostgreSQL-only configuration
- * All environments now use PostgreSQL for consistency
+ * Prisma 7+ uses prisma.config.ts for configuration, this script validates the environment
  */
 
-const _fs = require('node:fs');
-const _path = require('node:path');
-
-console.log('🔧 Configuring Prisma for PostgreSQL...');
+console.log('🔧 Validating Prisma configuration for PostgreSQL...');
 
 const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production';
 const isDocker = process.env.DOCKER_ENV === 'true';
 
-// Ensure DATABASE_URL is set
+// Check DATABASE_URL for migrations (prisma.config.ts handles runtime)
 if (!process.env.DATABASE_URL) {
   if (isProduction) {
     console.error('❌ DATABASE_URL not set in production!');
