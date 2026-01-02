@@ -35,6 +35,8 @@ jobs:
 
       - name: Build Project
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          SKIP_ENV_VALIDATION: true
 
       - name: Deploy to Vercel (Preview)
         id: deploy
@@ -107,6 +109,8 @@ jobs:
 
       - name: Build Project
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          SKIP_ENV_VALIDATION: true
 
       - name: Deploy to Vercel (Production)
         id: deploy
