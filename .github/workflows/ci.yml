@@ -114,6 +114,78 @@ jobs:
           NEXTAUTH_URL: "http://localhost:3000"
           ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
 
+  # Integration tests with real PostgreSQL database
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: holiday_aggregator_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup Database Schema
+        run: cd apps/web && pnpm db:push
+        env:
+          DATABASE_URL: "postgresql://postgres:password@localhost:5432/holiday_aggregator_test"
+          NEXTAUTH_SECRET: "test-secret-for-ci"
+          ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+
+      - name: Run Integration Tests
+        run: cd apps/web && pnpm test:integration:ci
+        env:
+          DATABASE_URL: "postgresql://postgres:password@localhost:5432/holiday_aggregator_test"
+          NEXTAUTH_SECRET: "test-secret-for-ci"
+          ENCRYPTION_KEY: "test-encryption-key-1234567890123456789012345678"
+          NODE_ENV: test
+
+      - name: Upload Integration Test Results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: integration-test-results
+          path: apps/web/coverage/junit-integration.xml
+          retention-days: 30
+
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
