@@ -27,16 +27,21 @@ jobs:
         uses: neondatabase/create-branch-action@v5
         with:
           project_id: ${{ vars.NEON_PROJECT_ID }}
-          branch_name: pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.ref }}
+          branch_name: pr-${{ github.event.pull_request.number }}
           api_key: ${{ secrets.NEON_API_KEY }}
-          username: neondb_owner
+
+      - name: Debug Branch Outputs
+        run: |
+          echo "Branch ID: ${{ steps.create-branch.outputs.branch_id }}"
+          echo "DB Host: ${{ steps.create-branch.outputs.db_host }}"
+          echo "DB URL set: ${{ steps.create-branch.outputs.db_url != '' }}"
 
       - name: Branch Created Summary
         run: |
           echo "## 🌿 Neon Database Branch Created" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Branch ID:** ${{ steps.create-branch.outputs.branch_id }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Branch Name:** pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.ref }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch Name:** pr-${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
 
   deploy-preview:
     name: Deploy Preview
@@ -200,14 +205,14 @@ jobs:
         uses: neondatabase/delete-branch-action@v3
         with:
           project_id: ${{ vars.NEON_PROJECT_ID }}
-          branch: pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.ref }}
+          branch: pr-${{ github.event.pull_request.number }}
           api_key: ${{ secrets.NEON_API_KEY }}
 
       - name: Branch Deleted Summary
         run: |
           echo "## 🗑️ Neon Database Branch Deleted" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Branch Name:** pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.ref }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch Name:** pr-${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
 
   deploy-production:
     name: Deploy Production
