@@ -68,7 +68,6 @@ jobs:
       - name: Get Neon Branch Connection String
         id: neon-db
         run: |
-          # Get branch details from Neon API
           BRANCH_NAME="pr-${{ github.event.pull_request.number }}"
 
           # Get branch info
@@ -76,28 +75,69 @@ jobs:
             "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/branches")
 
           BRANCH_ID=$(echo "$BRANCH_INFO" | jq -r ".branches[] | select(.name == \"$BRANCH_NAME\") | .id")
+          echo "Branch ID: $BRANCH_ID"
+
+          if [ -z "$BRANCH_ID" ] || [ "$BRANCH_ID" = "null" ]; then
+            echo "Error: Could not find branch $BRANCH_NAME"
+            exit 1
+          fi
 
           # Get endpoint (host) for the branch
           ENDPOINTS=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
             "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/endpoints")
 
           HOST=$(echo "$ENDPOINTS" | jq -r ".endpoints[] | select(.branch_id == \"$BRANCH_ID\") | .host")
+          ENDPOINT_ID=$(echo "$ENDPOINTS" | jq -r ".endpoints[] | select(.branch_id == \"$BRANCH_ID\") | .id")
+          echo "Host: $HOST"
+          echo "Endpoint ID: $ENDPOINT_ID"
 
-          # Get password from connection URI (stored in role)
+          # Start/wake up the endpoint if it's suspended
+          echo "Waking up the compute endpoint..."
+          curl -s -X POST -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+            "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/endpoints/$ENDPOINT_ID/start" || true
+
+          # Wait for endpoint to be ready
+          for i in {1..12}; do
+            ENDPOINT_STATUS=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+              "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/endpoints/$ENDPOINT_ID" | jq -r '.endpoint.current_state')
+            echo "Attempt $i/12: Endpoint status is $ENDPOINT_STATUS"
+            if [ "$ENDPOINT_STATUS" = "active" ]; then
+              echo "Endpoint is active!"
+              break
+            fi
+            sleep 5
+          done
+
+          # Get password from role
           ROLE_INFO=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
             "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/branches/$BRANCH_ID/roles/neondb_owner")
 
           PASSWORD=$(echo "$ROLE_INFO" | jq -r ".role.password")
 
-          # Construct DATABASE_URL
+          if [ -z "$PASSWORD" ] || [ "$PASSWORD" = "null" ]; then
+            echo "Error: Could not get password for role"
+            exit 1
+          fi
+
           DATABASE_URL="postgresql://neondb_owner:${PASSWORD}@${HOST}/neondb?sslmode=require"
 
-          # Set as output (masked)
           echo "::add-mask::$PASSWORD"
           echo "database_url=$DATABASE_URL" >> $GITHUB_OUTPUT
 
       - name: Setup Database Schema on Branch
-        run: cd apps/web && pnpm db:push
+        run: |
+          # Retry db:push a few times in case the endpoint is still warming up
+          for i in {1..3}; do
+            echo "Attempt $i/3: Pushing schema to database..."
+            if cd apps/web && pnpm db:push; then
+              echo "Schema pushed successfully!"
+              exit 0
+            fi
+            echo "Failed, waiting 10s before retry..."
+            sleep 10
+          done
+          echo "All attempts failed"
+          exit 1
         env:
           DATABASE_URL: ${{ steps.neon-db.outputs.database_url }}
 
