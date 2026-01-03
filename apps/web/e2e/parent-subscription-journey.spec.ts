@@ -2,7 +2,7 @@
  * Parent Subscription Journey E2E Test
  * Complete end-to-end test for parent user journey from landing to subscription
  *
- * NOTE: These tests require a seeded database and are skipped on preview deployments.
+ * NOTE: These tests use dynamic test users created by global-setup.ts
  */
 
 import { faker } from '@faker-js/faker';
@@ -10,11 +10,12 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import { expect, type Page, test } from '@playwright/test';
+import { getBasicUser, getPremiumCancelUser, getPremiumUser } from './test-users';
 
-// Check if running against deployed preview (no seeded database)
-const isPreviewEnv = process.env.BASE_URL?.includes('vercel.app');
+// Check if dynamic test users are available (DATABASE_URL was set for global setup)
+const hasDynamicUsers = !!process.env.DATABASE_URL;
 
-// Get database URL from environment
+// Get database URL from environment (required for DB operations in tests)
 function getDatabaseUrl(): string {
   if (process.env.DATABASE_URL) {
     return process.env.DATABASE_URL;
@@ -25,19 +26,23 @@ function getDatabaseUrl(): string {
     : 'postgresql://postgres:postgres@localhost:5432/holiday_aggregator?schema=public';
 }
 
-const pool = new Pool({ connectionString: getDatabaseUrl() });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+// Only create prisma client if we have database access
+let prisma: PrismaClient | null = null;
+if (hasDynamicUsers) {
+  const pool = new Pool({ connectionString: getDatabaseUrl() });
+  const adapter = new PrismaPg(pool);
+  prisma = new PrismaClient({ adapter });
+}
 
-// Test data
-const testUser = {
+// Test data for new user registration (uses faker for unique emails)
+const newTestUser = {
   email: faker.internet.email().toLowerCase(),
   password: 'Test123!@#',
   name: faker.person.fullName(),
 };
 
 // Helper functions
-async function registerUser(page: Page, user: typeof testUser) {
+async function registerUser(page: Page, user: { email: string; password: string; name: string }) {
   await page.goto('/auth/signin');
   await page.click('[data-testid="toggle-auth-mode"]');
   await page.fill('[data-testid="name-input"]', user.name);
@@ -47,7 +52,7 @@ async function registerUser(page: Page, user: typeof testUser) {
   await page.click('[data-testid="signup-button"]');
 }
 
-async function loginUser(page: Page, user: typeof testUser) {
+async function loginUser(page: Page, user: { email: string; password: string }) {
   await page.goto('/auth/signin');
   await page.fill('[data-testid="email-input"]', user.email);
   await page.fill('[data-testid="password-input"]', user.password);
@@ -93,7 +98,7 @@ test.describe('Parent Subscription Journey', () => {
       await page.click('[data-testid="hero-cta"]');
       await expect(page).toHaveURL(/\/auth\/sign(in|up)/);
 
-      await registerUser(page, testUser);
+      await registerUser(page, newTestUser);
 
       // Should redirect to home after successful signup
       await expect(page).toHaveURL('/');
@@ -252,10 +257,11 @@ test.describe('Parent Subscription Journey', () => {
   });
 
   test('Subscription upgrade flow', async ({ page }) => {
-    test.skip(!!isPreviewEnv, 'Requires seeded database users - skipped on preview');
+    test.skip(!hasDynamicUsers, 'Requires DATABASE_URL for dynamic test user creation');
 
-    // Login with existing basic user
-    await loginUser(page, { ...testUser, email: 'basic@test.com' });
+    // Login with dynamically created basic user
+    const basicUser = getBasicUser();
+    await loginUser(page, basicUser);
 
     await test.step('Navigate to account settings', async () => {
       await page.goto('/subscription');
@@ -357,10 +363,11 @@ test.describe('Parent Subscription Journey', () => {
   });
 
   test('Subscription cancellation flow', async ({ page }) => {
-    test.skip(!!isPreviewEnv, 'Requires seeded database users - skipped on preview');
+    test.skip(!hasDynamicUsers, 'Requires DATABASE_URL for dynamic test user creation');
 
-    // Use SEEDED Cancellation User
-    await loginUser(page, { ...testUser, email: 'premium_cancel@test.com', password: 'Test123!@#' });
+    // Use dynamically created premium cancel user
+    const cancelUser = getPremiumCancelUser();
+    await loginUser(page, cancelUser);
 
     await test.step('Navigate to subscription management', async () => {
       await page.goto('/subscription');
@@ -379,10 +386,12 @@ test.describe('Parent Subscription Journey', () => {
       });
 
       // Manually update DB to reflect cancellation (simulating the backend side effect)
-      await prisma.subscription.updateMany({
-        where: { stripeSubscriptionId: 'sub_premium_cancel' },
-        data: { cancelAtPeriodEnd: true },
-      });
+      if (prisma) {
+        await prisma.subscription.updateMany({
+          where: { stripeSubscriptionId: cancelUser.subscriptionId },
+          data: { cancelAtPeriodEnd: true },
+        });
+      }
 
       // Click cancel
       await page.click('[data-testid="cancel-subscription"]');
@@ -395,10 +404,12 @@ test.describe('Parent Subscription Journey', () => {
       );
 
       // Cleanup: Reset subscription to active for next test run
-      await prisma.subscription.updateMany({
-        where: { stripeSubscriptionId: 'sub_premium_cancel' },
-        data: { cancelAtPeriodEnd: false },
-      });
+      if (prisma) {
+        await prisma.subscription.updateMany({
+          where: { stripeSubscriptionId: cancelUser.subscriptionId },
+          data: { cancelAtPeriodEnd: false },
+        });
+      }
     });
 
     // Reactivation is not implemented yet (shows alert)
@@ -406,10 +417,11 @@ test.describe('Parent Subscription Journey', () => {
   });
 
   test('Search and filter performance', async ({ page }) => {
-    test.skip(!!isPreviewEnv, 'Requires seeded database users - skipped on preview');
+    test.skip(!hasDynamicUsers, 'Requires DATABASE_URL for dynamic test user creation');
 
-    // Use SEEDED Premium User to verify real access (bypassing Guard natively)
-    await loginUser(page, { ...testUser, email: 'premium@test.com', password: 'Test123!@#' });
+    // Use dynamically created premium user to verify real access
+    const premiumUser = getPremiumUser();
+    await loginUser(page, premiumUser);
 
     await test.step('Measure search performance', async () => {
       await page.goto('/search');
@@ -428,10 +440,11 @@ test.describe('Parent Subscription Journey', () => {
   });
 
   test('Mobile responsive journey', async ({ page }) => {
-    test.skip(!!isPreviewEnv, 'Requires seeded database users - skipped on preview');
+    test.skip(!hasDynamicUsers, 'Requires DATABASE_URL for dynamic test user creation');
 
     // Needs premium user to access search results
-    await loginUser(page, { ...testUser, email: 'premium@test.com', password: 'Test123!@#' });
+    const premiumUser = getPremiumUser();
+    await loginUser(page, premiumUser);
 
     // Set viewport to mobile size
     await page.setViewportSize({ width: 375, height: 667 });

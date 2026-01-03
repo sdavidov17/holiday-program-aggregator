@@ -120,6 +120,7 @@ jobs:
         run: cd apps/web && pnpm test:e2e
         env:
           BASE_URL: ${{ needs.deploy-preview.outputs.stable-url }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           CI: true
         continue-on-error: true
 

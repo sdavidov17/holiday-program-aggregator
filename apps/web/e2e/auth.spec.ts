@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test';
+import { getPremiumUser } from './test-users';
 
-// Check if running against deployed preview (no seeded database)
-const isPreviewEnv = process.env.BASE_URL?.includes('vercel.app');
+// Check if dynamic test users are available (DATABASE_URL was set for global setup)
+const hasDynamicUsers = !!process.env.DATABASE_URL;
 
 test.describe('Authentication', () => {
   test('should load sign-in page', async ({ page }) => {
@@ -62,15 +63,16 @@ test.describe('Authentication', () => {
     await expect(page).toHaveURL(/signin|error/);
   });
 
-  // Skip on preview - requires seeded database users
+  // Uses dynamic test users created by global setup
   test('should successfully sign in with valid credentials', async ({ page }) => {
-    test.skip(!!isPreviewEnv, 'Requires seeded database users - skipped on preview');
+    test.skip(!hasDynamicUsers, 'Requires DATABASE_URL for dynamic test user creation');
 
+    const premiumUser = getPremiumUser();
     await page.goto('/auth/signin');
 
-    // Use seeded test user credentials
-    await page.fill('input[type="email"], [data-testid="email-input"]', 'premium@test.com');
-    await page.fill('input[type="password"], [data-testid="password-input"]', 'Test123!@#');
+    // Use dynamically created test user credentials
+    await page.fill('input[type="email"], [data-testid="email-input"]', premiumUser.email);
+    await page.fill('input[type="password"], [data-testid="password-input"]', premiumUser.password);
     await page.click('button[type="submit"], [data-testid="signin-button"]');
 
     // Should redirect away from sign-in page
