@@ -29,11 +29,32 @@ This document defines our testing approach for the Holiday Program Aggregator, e
 
 ## Testing Stack
 
-- **Unit Tests**: Jest + React Testing Library
-- **Integration Tests**: Jest + Supertest
-- **E2E Tests**: Playwright
+- **Unit Tests**: Jest + React Testing Library (mocked DB)
+- **Integration Tests**: Jest with real PostgreSQL
+- **E2E Tests (CI)**: Playwright with seeded PostgreSQL
+- **E2E Tests (Preview)**: Playwright against deployed preview
 - **Performance Tests**: k6
-- **Security Tests**: OWASP ZAP
+- **Security Tests**: OWASP ZAP, CodeQL
+
+## Test Environments
+
+| Environment | Database | Purpose |
+|-------------|----------|---------|
+| Unit Tests | Mocked | Fast, isolated component/logic testing |
+| Integration Tests | Real PostgreSQL | Database operations, tRPC procedures |
+| E2E Tests (CI) | Seeded PostgreSQL | Full user journeys with test users |
+| E2E Tests (Preview) | Production DB | UI validation on deployed environment |
+
+### Preview Environment Considerations
+
+Tests running against preview deployments skip tests that require seeded database users:
+```typescript
+const isPreviewEnv = process.env.BASE_URL?.includes('vercel.app');
+test('requires seeded user', async ({ page }) => {
+  test.skip(!!isPreviewEnv, 'Requires seeded database users');
+  // ...
+});
+```
 
 ## Test Categories
 
