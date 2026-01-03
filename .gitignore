@@ -27,3 +27,4 @@ Thumbs.db
 # Playwright traces
 apps/web/data/*.zip
 apps/web/data/*.md
+.vercel

@@ -46,10 +46,28 @@ This guide covers deployment procedures for the Holiday Program Aggregator. We u
 
 | Environment | Trigger | URL |
 |------------|---------|-----|
-| Preview | Pull Request to `main` | `https://holiday-heroes-*-sdavidov17s-projects.vercel.app` |
+| Preview | Pull Request to `main` | Dynamic: `https://holiday-heroes-*-sdavidov17s-projects.vercel.app` |
+| Preview (Stable) | Pull Request to `main` | **https://holiday-heroes-preview.vercel.app** (for OAuth) |
 | Production | Push to `main` (after CI passes) | https://holiday-heroes-five.vercel.app |
 
 **Production URL**: https://holiday-heroes-five.vercel.app
+**Stable Preview URL**: https://holiday-heroes-preview.vercel.app
+
+### Google OAuth Configuration
+
+Add these URLs to Google Cloud Console (APIs & Services → Credentials → OAuth 2.0 Client):
+
+**Authorized redirect URIs:**
+```
+https://holiday-heroes-five.vercel.app/api/auth/callback/google
+https://holiday-heroes-preview.vercel.app/api/auth/callback/google
+```
+
+**Authorized JavaScript origins:**
+```
+https://holiday-heroes-five.vercel.app
+https://holiday-heroes-preview.vercel.app
+```
 
 ## CI/CD Pipeline
 

@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+# Stable preview domain for OAuth callbacks
+env:
+  PREVIEW_DOMAIN: holiday-heroes-preview.vercel.app
+
 jobs:
   deploy-preview:
     name: Deploy Preview
@@ -16,6 +20,9 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    outputs:
+      preview-url: ${{ steps.deploy.outputs.preview-url }}
+      stable-url: ${{ steps.alias.outputs.stable-url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -49,6 +56,13 @@ jobs:
           url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
           echo "preview-url=$url" >> $GITHUB_OUTPUT
 
+      - name: Add Stable Preview Alias
+        id: alias
+        run: |
+          # Add stable alias for OAuth callbacks
+          vercel alias ${{ steps.deploy.outputs.preview-url }} ${{ env.PREVIEW_DOMAIN }} --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
+          echo "stable-url=https://${{ env.PREVIEW_DOMAIN }}" >> $GITHUB_OUTPUT
+
       - name: Comment Preview URL on PR
         uses: actions/github-script@v7
         with:
@@ -57,8 +71,86 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `✅ **Preview Deployment Ready**\n\n🔗 ${{ steps.deploy.outputs.preview-url }}`
+              body: `✅ **Preview Deployment Ready**\n\n🔗 **Preview URL:** ${{ steps.deploy.outputs.preview-url }}\n🔐 **Stable URL (OAuth):** https://${{ env.PREVIEW_DOMAIN }}\n\n_E2E tests running against stable URL..._`
             })
+
+  # E2E tests against preview deployment
+  e2e-preview:
+    name: E2E Tests (Preview)
+    runs-on: ubuntu-latest
+    needs: deploy-preview
+    if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Browsers
+        run: cd apps/web && pnpm exec playwright install --with-deps chromium
+
+      - name: Wait for deployment to be ready
+        run: |
+          echo "Waiting for ${{ needs.deploy-preview.outputs.stable-url }} to be ready..."
+          for i in {1..30}; do
+            if curl -s -o /dev/null -w "%{http_code}" "${{ needs.deploy-preview.outputs.stable-url }}" | grep -q "200\|301\|302"; then
+              echo "Deployment is ready!"
+              exit 0
+            fi
+            echo "Attempt $i/30 - waiting 10s..."
+            sleep 10
+          done
+          echo "Deployment not ready after 5 minutes"
+          exit 1
+
+      - name: Run E2E Tests against Preview
+        id: e2e
+        run: cd apps/web && pnpm test:e2e
+        env:
+          BASE_URL: ${{ needs.deploy-preview.outputs.stable-url }}
+          CI: true
+        continue-on-error: true
+
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-preview
+          path: apps/web/playwright-report/
+          retention-days: 30
+
+      - name: Comment E2E Results on PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ steps.e2e.outcome }}' === 'success' ? '✅' : '❌';
+            const message = '${{ steps.e2e.outcome }}' === 'success'
+              ? 'All E2E tests passed against preview deployment!'
+              : 'Some E2E tests failed. Check the [Playwright Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `${status} **E2E Tests (Preview)**\n\n${message}\n\n**Tested URL:** ${{ needs.deploy-preview.outputs.stable-url }}`
+            })
+
+      - name: Fail if E2E tests failed
+        if: steps.e2e.outcome == 'failure'
+        run: exit 1
 
   deploy-production:
     name: Deploy Production

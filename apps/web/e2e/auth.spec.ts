@@ -2,17 +2,17 @@ import { expect, test } from '@playwright/test';
 
 test.describe('Authentication', () => {
   test('should load sign-in page', async ({ page }) => {
-    // Try to navigate to the sign-in page
-    const response = await page.goto('http://localhost:3000/auth/signin', {
+    // Try to navigate to the sign-in page (uses baseURL from config)
+    const response = await page.goto('/auth/signin', {
       waitUntil: 'domcontentloaded',
-      timeout: 10000,
+      timeout: 30000,
     });
 
     // Check if the page loaded successfully
     expect(response).toBeTruthy();
     expect(response?.status()).toBe(200);
 
-    // Check for sign-in page elements - Updated to match actual content
+    // Check for sign-in page elements
     await expect(page.locator('h1')).toContainText('Welcome Back!');
     // Check for any sign-in button or form
     const signInForm = page.locator('form');
@@ -20,17 +20,54 @@ test.describe('Authentication', () => {
   });
 
   test('should check if server is accessible', async ({ page }) => {
-    try {
-      const response = await page.goto('http://localhost:3000/', {
-        waitUntil: 'domcontentloaded',
-        timeout: 10000,
-      });
+    const response = await page.goto('/', {
+      waitUntil: 'domcontentloaded',
+      timeout: 30000,
+    });
 
-      console.log('Server response status:', response?.status());
-      expect(response).toBeTruthy();
-    } catch (error) {
-      console.error('Failed to connect to server:', error);
-      throw error;
-    }
+    console.log('Server response status:', response?.status());
+    expect(response).toBeTruthy();
+    expect(response?.status()).toBe(200);
+  });
+
+  test('should display Google sign-in option', async ({ page }) => {
+    await page.goto('/auth/signin');
+
+    // Check for Google OAuth button
+    const googleButton = page.locator('button:has-text("Google"), [data-testid="google-signin"]');
+    await expect(googleButton).toBeVisible();
+  });
+
+  test('should display credentials sign-in form', async ({ page }) => {
+    await page.goto('/auth/signin');
+
+    // Check for email/password form
+    await expect(page.locator('input[type="email"], [data-testid="email-input"]')).toBeVisible();
+    await expect(page.locator('input[type="password"], [data-testid="password-input"]')).toBeVisible();
+    await expect(page.locator('button[type="submit"], [data-testid="signin-button"]')).toBeVisible();
+  });
+
+  test('should show validation error for invalid credentials', async ({ page }) => {
+    await page.goto('/auth/signin');
+
+    // Fill with invalid credentials
+    await page.fill('input[type="email"], [data-testid="email-input"]', 'invalid@test.com');
+    await page.fill('input[type="password"], [data-testid="password-input"]', 'wrongpassword');
+    await page.click('button[type="submit"], [data-testid="signin-button"]');
+
+    // Should show error message or stay on sign-in page
+    await expect(page).toHaveURL(/signin|error/);
+  });
+
+  test('should successfully sign in with valid credentials', async ({ page }) => {
+    await page.goto('/auth/signin');
+
+    // Use seeded test user credentials
+    await page.fill('input[type="email"], [data-testid="email-input"]', 'premium@test.com');
+    await page.fill('input[type="password"], [data-testid="password-input"]', 'Test123!@#');
+    await page.click('button[type="submit"], [data-testid="signin-button"]');
+
+    // Should redirect away from sign-in page
+    await page.waitForURL((url) => !url.pathname.includes('/auth/signin'), { timeout: 10000 });
   });
 });
