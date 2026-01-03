@@ -18,8 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
     outputs:
-      db-url: ${{ steps.create-branch.outputs.db_url }}
-      db-url-unpooled: ${{ steps.create-branch.outputs.db_url_unpooled }}
       branch-id: ${{ steps.create-branch.outputs.branch_id }}
     steps:
       - name: Create Neon Branch
@@ -29,14 +27,7 @@ jobs:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: pr-${{ github.event.pull_request.number }}
           api_key: ${{ secrets.NEON_API_KEY }}
-          # Default Neon database owner role
           username: neondb_owner
-
-      - name: Debug Branch Outputs
-        run: |
-          echo "Branch ID: ${{ steps.create-branch.outputs.branch_id }}"
-          echo "DB Host: ${{ steps.create-branch.outputs.db_host }}"
-          echo "DB URL set: ${{ steps.create-branch.outputs.db_url != '' }}"
 
       - name: Branch Created Summary
         run: |
@@ -74,10 +65,41 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Get Neon Branch Connection String
+        id: neon-db
+        run: |
+          # Get branch details from Neon API
+          BRANCH_NAME="pr-${{ github.event.pull_request.number }}"
+
+          # Get branch info
+          BRANCH_INFO=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+            "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/branches")
+
+          BRANCH_ID=$(echo "$BRANCH_INFO" | jq -r ".branches[] | select(.name == \"$BRANCH_NAME\") | .id")
+
+          # Get endpoint (host) for the branch
+          ENDPOINTS=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+            "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/endpoints")
+
+          HOST=$(echo "$ENDPOINTS" | jq -r ".endpoints[] | select(.branch_id == \"$BRANCH_ID\") | .host")
+
+          # Get password from connection URI (stored in role)
+          ROLE_INFO=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+            "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/branches/$BRANCH_ID/roles/neondb_owner")
+
+          PASSWORD=$(echo "$ROLE_INFO" | jq -r ".role.password")
+
+          # Construct DATABASE_URL
+          DATABASE_URL="postgresql://neondb_owner:${PASSWORD}@${HOST}/neondb?sslmode=require"
+
+          # Set as output (masked)
+          echo "::add-mask::$PASSWORD"
+          echo "database_url=$DATABASE_URL" >> $GITHUB_OUTPUT
+
       - name: Setup Database Schema on Branch
         run: cd apps/web && pnpm db:push
         env:
-          DATABASE_URL: ${{ needs.create-neon-branch.outputs.db-url }}
+          DATABASE_URL: ${{ steps.neon-db.outputs.database_url }}
 
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
@@ -89,14 +111,13 @@ jobs:
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           SKIP_ENV_VALIDATION: true
-          # Use the Neon branch for the preview build
-          DATABASE_URL: ${{ needs.create-neon-branch.outputs.db-url }}
+          DATABASE_URL: ${{ steps.neon-db.outputs.database_url }}
 
       - name: Deploy to Vercel (Preview)
         id: deploy
         run: |
           url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} \
-            --env DATABASE_URL="${{ needs.create-neon-branch.outputs.db-url }}")
+            --env DATABASE_URL="${{ steps.neon-db.outputs.database_url }}")
           echo "preview-url=$url" >> $GITHUB_OUTPUT
 
       - name: Add Stable Preview Alias
@@ -141,6 +162,31 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Get Neon Branch Connection String
+        id: neon-db
+        run: |
+          BRANCH_NAME="pr-${{ github.event.pull_request.number }}"
+
+          BRANCH_INFO=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+            "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/branches")
+
+          BRANCH_ID=$(echo "$BRANCH_INFO" | jq -r ".branches[] | select(.name == \"$BRANCH_NAME\") | .id")
+
+          ENDPOINTS=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+            "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/endpoints")
+
+          HOST=$(echo "$ENDPOINTS" | jq -r ".endpoints[] | select(.branch_id == \"$BRANCH_ID\") | .host")
+
+          ROLE_INFO=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+            "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/branches/$BRANCH_ID/roles/neondb_owner")
+
+          PASSWORD=$(echo "$ROLE_INFO" | jq -r ".role.password")
+
+          DATABASE_URL="postgresql://neondb_owner:${PASSWORD}@${HOST}/neondb?sslmode=require"
+
+          echo "::add-mask::$PASSWORD"
+          echo "database_url=$DATABASE_URL" >> $GITHUB_OUTPUT
+
       - name: Install Playwright Browsers
         run: cd apps/web && pnpm exec playwright install --with-deps chromium
 
@@ -163,8 +209,7 @@ jobs:
         run: cd apps/web && pnpm test:e2e
         env:
           BASE_URL: ${{ needs.deploy-preview.outputs.stable-url }}
-          # Use the same Neon branch as the preview deployment
-          DATABASE_URL: ${{ needs.create-neon-branch.outputs.db-url }}
+          DATABASE_URL: ${{ steps.neon-db.outputs.database_url }}
           CI: true
         continue-on-error: true
 
