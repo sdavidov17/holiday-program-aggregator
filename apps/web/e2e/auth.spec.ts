@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+// Check if running against deployed preview (no seeded database)
+const isPreviewEnv = process.env.BASE_URL?.includes('vercel.app');
+
 test.describe('Authentication', () => {
   test('should load sign-in page', async ({ page }) => {
     // Try to navigate to the sign-in page (uses baseURL from config)
@@ -59,7 +62,10 @@ test.describe('Authentication', () => {
     await expect(page).toHaveURL(/signin|error/);
   });
 
+  // Skip on preview - requires seeded database users
   test('should successfully sign in with valid credentials', async ({ page }) => {
+    test.skip(!!isPreviewEnv, 'Requires seeded database users - skipped on preview');
+
     await page.goto('/auth/signin');
 
     // Use seeded test user credentials

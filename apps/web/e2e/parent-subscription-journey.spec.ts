@@ -1,6 +1,8 @@
 /**
  * Parent Subscription Journey E2E Test
  * Complete end-to-end test for parent user journey from landing to subscription
+ *
+ * NOTE: These tests require a seeded database and are skipped on preview deployments.
  */
 
 import { faker } from '@faker-js/faker';
@@ -8,6 +10,9 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import { expect, type Page, test } from '@playwright/test';
+
+// Check if running against deployed preview (no seeded database)
+const isPreviewEnv = process.env.BASE_URL?.includes('vercel.app');
 
 // Get database URL from environment
 function getDatabaseUrl(): string {
@@ -247,6 +252,8 @@ test.describe('Parent Subscription Journey', () => {
   });
 
   test('Subscription upgrade flow', async ({ page }) => {
+    test.skip(!!isPreviewEnv, 'Requires seeded database users - skipped on preview');
+
     // Login with existing basic user
     await loginUser(page, { ...testUser, email: 'basic@test.com' });
 
@@ -350,6 +357,8 @@ test.describe('Parent Subscription Journey', () => {
   });
 
   test('Subscription cancellation flow', async ({ page }) => {
+    test.skip(!!isPreviewEnv, 'Requires seeded database users - skipped on preview');
+
     // Use SEEDED Cancellation User
     await loginUser(page, { ...testUser, email: 'premium_cancel@test.com', password: 'Test123!@#' });
 
@@ -397,6 +406,8 @@ test.describe('Parent Subscription Journey', () => {
   });
 
   test('Search and filter performance', async ({ page }) => {
+    test.skip(!!isPreviewEnv, 'Requires seeded database users - skipped on preview');
+
     // Use SEEDED Premium User to verify real access (bypassing Guard natively)
     await loginUser(page, { ...testUser, email: 'premium@test.com', password: 'Test123!@#' });
 
@@ -417,6 +428,8 @@ test.describe('Parent Subscription Journey', () => {
   });
 
   test('Mobile responsive journey', async ({ page }) => {
+    test.skip(!!isPreviewEnv, 'Requires seeded database users - skipped on preview');
+
     // Needs premium user to access search results
     await loginUser(page, { ...testUser, email: 'premium@test.com', password: 'Test123!@#' });
 
