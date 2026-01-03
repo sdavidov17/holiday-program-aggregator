@@ -29,6 +29,8 @@ jobs:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: pr-${{ github.event.pull_request.number }}
           api_key: ${{ secrets.NEON_API_KEY }}
+          # Default Neon database owner role
+          username: neondb_owner
 
       - name: Debug Branch Outputs
         run: |
