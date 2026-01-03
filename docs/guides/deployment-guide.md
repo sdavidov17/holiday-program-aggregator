@@ -44,10 +44,12 @@ This guide covers deployment procedures for the Holiday Program Aggregator. We u
 
 ## Environments
 
-| Environment | Trigger | Purpose |
-|------------|---------|---------|
-| Preview | Pull Request to `main` | Feature testing, review |
-| Production | Push to `main` (after CI passes) | Live system |
+| Environment | Trigger | URL |
+|------------|---------|-----|
+| Preview | Pull Request to `main` | `https://holiday-heroes-*-sdavidov17s-projects.vercel.app` |
+| Production | Push to `main` (after CI passes) | https://holiday-heroes-five.vercel.app |
+
+**Production URL**: https://holiday-heroes-five.vercel.app
 
 ## CI/CD Pipeline
 
@@ -162,6 +164,12 @@ vercel link
 cat .vercel/project.json
 # Output: {"projectId":"prj_XXX","orgId":"team_XXX"}
 ```
+
+### Current Project Configuration
+
+- **Project Name**: `holiday-heroes`
+- **Project ID**: `prj_pefqEPrBoA4V8NjV45YP9NYGDaZQ`
+- **Org ID**: `team_fLwDOqDAesgaDDz2f8HQJqIl`
 
 ## Vercel Configuration
 
