@@ -14,49 +14,83 @@ The pipeline enforces rigorous checks on every Pull Request (PR) before code can
 2.  **Commit & Push**: Developer pushes code to a feature branch.
 3.  **Pull Request**: A PR is opened against `main`.
 4.  **Automated Checks (Parallel)**:
-    *   **Linting & Formatting**: Biome ensures code style and quality.
-    *   **Type Checking**: TypeScript validation.
-    *   **Unit Tests**: Jest tests for isolated logic.
-    *   **Build Verification**: Runs `pnpm build` to ensure the application compiles successfully.
-    *   **Security Audit**: `pnpm audit` checks for high-severity vulnerabilities in dependencies (Blocking).
-    *   **E2E Tests**: Playwright tests run against a full instance of the app with a dedicated Postgres service.
-4.  **Review**: Code review (including automated Claude AI review) must pass.
-5.  **Merge**: Once all checks pass, code is merged to `main`.
-6.  **Deployment**: Vercel automatically deploys `main` to Staging/Production (based on branch configuration).
+    *   **Quality Checks**: Linting (Biome), TypeScript validation, and build verification.
+    *   **Unit Tests**: Jest tests for isolated logic (mocked database).
+    *   **Integration Tests**: Jest tests with real PostgreSQL for database operations and tRPC procedures.
+    *   **E2E Tests**: Playwright tests run against a full instance of the app with a seeded Postgres database.
+    *   **Security Scans**: CodeQL analysis and dependency audits.
+5.  **Review**: Code review (including automated Claude AI review) must pass.
+6.  **Merge**: Once all checks pass, code is merged to `main`.
+7.  **Deploy & Verify**:
+    *   Vercel deploys to preview with stable alias (`holiday-heroes-preview.vercel.app`)
+    *   **E2E Tests (Preview)**: Playwright tests validate the deployed preview environment
+8.  **Production**: Vercel automatically deploys `main` to Production (based on branch configuration).
 
 ## CI/CD Flow Diagram
 
 ```mermaid
 graph TD
     A([Developer Push]) --> B[Pull Request]
-    
+
     subgraph "CI Pipeline (GitHub Actions)"
         direction TB
         B --> C{Parallel Checks}
-        C --> D[Lint & Format]
-        C --> E[Type Check]
-        C --> F[Unit Tests]
-        C --> G[Build Check]
-        C --> H[Security Audit]
-        C --> I[E2E Tests (Playwright)]
-        
-        I -- Uses --> J[(Postgres Service)]
+        C --> D[Quality Checks<br/>Lint, TypeCheck, Build]
+        C --> E[Unit Tests<br/>Mocked DB]
+        C --> F[Integration Tests<br/>Real PostgreSQL]
+        C --> G[E2E Tests<br/>Seeded PostgreSQL]
+        C --> H[Security Scans<br/>CodeQL + Audit]
+
+        F -- Uses --> J[(PostgreSQL Service)]
+        G -- Uses --> J
     end
-    
-    D & E & F & G & H & I --> K{All Pass?}
+
+    D & E & F & G & H --> K{All Pass?}
     K -- No --> L[Block Merge]
     K -- Yes --> M[Allow Merge]
-    
+
     M --> N[Merge to Main]
-    N -->|Auto Deploy| O([Staging / Beta])
-    N -- Tag v* --> P([Production Release])
+
+    subgraph "Deploy Pipeline"
+        N --> O[Deploy Preview]
+        O --> P[Stable Alias<br/>holiday-heroes-preview.vercel.app]
+        P --> Q[E2E Tests Preview]
+    end
+
+    Q --> R{Pass?}
+    R -- Yes --> S([Production Ready])
+    R -- No --> T[Block Production]
+    S -- Tag v* --> U([Production Release])
 ```
 
 ## Environment Strategy
 
-*   **Preview**: Deployed automatically for every PR.
+*   **Preview**: Deployed automatically for every PR with stable alias for OAuth testing.
 *   **Staging**: The `main` branch acts as Staging. It is always deployable and reflects the latest integrated state.
 *   **Production**: Deployed via release tags (e.g., `v*`). This ensures you only promote thoroughly tested code from `main`.
+
+## Required Status Checks
+
+The following checks must pass before merging to `main`:
+
+| Check | Description |
+|-------|-------------|
+| **Quality Checks** | Linting, TypeScript validation, and build verification |
+| **E2E Tests** | Playwright tests with seeded PostgreSQL database |
+| **CodeQL Analysis** | Static code analysis for security vulnerabilities |
+| **Integration Tests** | Jest tests with real PostgreSQL database |
+| **E2E Tests (Preview)** | Playwright tests against deployed preview environment |
+| **Security Scan Summary** | Dependency audit and secret scanning |
+
+## Stable Preview Domain
+
+For OAuth authentication (Google, etc.) to work on preview deployments, we use a stable alias:
+
+- **Stable URL**: `https://holiday-heroes-preview.vercel.app`
+- **Purpose**: Allows OAuth providers to have a consistent callback URL
+- **Configuration**: Add this URL to OAuth provider's authorized redirect URIs
+
+This alias is automatically applied to the latest preview deployment via the deploy workflow.
 
 
 ## Deployment Strategy Options
@@ -84,8 +118,9 @@ Based on your request ("deployment to staging on merge to main, production on si
 
 ### 1. Ephemeral Previews (The "Cool URLs")
 *   **Ref**: Pull Requests
-*   **URL**: `https://holiday-program-aggregator-git-feature-xyz.vercel.app`
-*   **Action**: Created automatically for every PR.
+*   **Dynamic URL**: `https://holiday-program-aggregator-git-feature-xyz.vercel.app`
+*   **Stable Alias**: `https://holiday-heroes-preview.vercel.app` (for OAuth testing)
+*   **Action**: Created automatically for every PR. Stable alias applied to latest preview.
 
 ### 2. Staging / Beta
 *   **Ref**: `main` branch
