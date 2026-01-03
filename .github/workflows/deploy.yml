@@ -5,16 +5,44 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened, closed]
 
 # Stable preview domain for OAuth callbacks
 env:
   PREVIEW_DOMAIN: holiday-heroes-preview.vercel.app
 
 jobs:
+  # Create Neon database branch for PR
+  create-neon-branch:
+    name: Create Database Branch
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    outputs:
+      db-url: ${{ steps.create-branch.outputs.db_url }}
+      db-url-unpooled: ${{ steps.create-branch.outputs.db_url_unpooled }}
+      branch-id: ${{ steps.create-branch.outputs.branch_id }}
+    steps:
+      - name: Create Neon Branch
+        id: create-branch
+        uses: neondatabase/create-branch-action@v5
+        with:
+          project_id: ${{ vars.NEON_PROJECT_ID }}
+          branch_name: pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.ref }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+          username: neondb_owner
+
+      - name: Branch Created Summary
+        run: |
+          echo "## 🌿 Neon Database Branch Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch ID:** ${{ steps.create-branch.outputs.branch_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch Name:** pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.ref }}" >> $GITHUB_STEP_SUMMARY
+
   deploy-preview:
     name: Deploy Preview
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    needs: create-neon-branch
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     permissions:
       pull-requests: write
     env:
@@ -39,6 +67,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Setup Database Schema on Branch
+        run: cd apps/web && pnpm db:push
+        env:
+          DATABASE_URL: ${{ needs.create-neon-branch.outputs.db-url }}
+
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
@@ -49,11 +82,14 @@ jobs:
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           SKIP_ENV_VALIDATION: true
+          # Use the Neon branch for the preview build
+          DATABASE_URL: ${{ needs.create-neon-branch.outputs.db-url }}
 
       - name: Deploy to Vercel (Preview)
         id: deploy
         run: |
-          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} \
+            --env DATABASE_URL="${{ needs.create-neon-branch.outputs.db-url }}")
           echo "preview-url=$url" >> $GITHUB_OUTPUT
 
       - name: Add Stable Preview Alias
@@ -71,15 +107,15 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `✅ **Preview Deployment Ready**\n\n🔗 **Preview URL:** ${{ steps.deploy.outputs.preview-url }}\n🔐 **Stable URL (OAuth):** https://${{ env.PREVIEW_DOMAIN }}\n\n_E2E tests running against stable URL..._`
+              body: `✅ **Preview Deployment Ready**\n\n🔗 **Preview URL:** ${{ steps.deploy.outputs.preview-url }}\n🔐 **Stable URL (OAuth):** https://${{ env.PREVIEW_DOMAIN }}\n🌿 **Database Branch:** pr-${{ github.event.pull_request.number }}\n\n_E2E tests running against stable URL with dedicated database branch..._`
             })
 
   # E2E tests against preview deployment
   e2e-preview:
     name: E2E Tests (Preview)
     runs-on: ubuntu-latest
-    needs: deploy-preview
-    if: github.event_name == 'pull_request'
+    needs: [create-neon-branch, deploy-preview]
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     permissions:
       pull-requests: write
     steps:
@@ -120,7 +156,8 @@ jobs:
         run: cd apps/web && pnpm test:e2e
         env:
           BASE_URL: ${{ needs.deploy-preview.outputs.stable-url }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          # Use the same Neon branch as the preview deployment
+          DATABASE_URL: ${{ needs.create-neon-branch.outputs.db-url }}
           CI: true
         continue-on-error: true
 
@@ -146,12 +183,31 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `${status} **E2E Tests (Preview)**\n\n${message}\n\n**Tested URL:** ${{ needs.deploy-preview.outputs.stable-url }}`
+              body: `${status} **E2E Tests (Preview)**\n\n${message}\n\n**Tested URL:** ${{ needs.deploy-preview.outputs.stable-url }}\n**Database Branch:** pr-${{ github.event.pull_request.number }}`
             })
 
       - name: Fail if E2E tests failed
         if: steps.e2e.outcome == 'failure'
         run: exit 1
+
+  # Delete Neon branch when PR is closed
+  delete-neon-branch:
+    name: Delete Database Branch
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    steps:
+      - name: Delete Neon Branch
+        uses: neondatabase/delete-branch-action@v3
+        with:
+          project_id: ${{ vars.NEON_PROJECT_ID }}
+          branch: pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.ref }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+
+      - name: Branch Deleted Summary
+        run: |
+          echo "## 🗑️ Neon Database Branch Deleted" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch Name:** pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.ref }}" >> $GITHUB_STEP_SUMMARY
 
   deploy-production:
     name: Deploy Production
