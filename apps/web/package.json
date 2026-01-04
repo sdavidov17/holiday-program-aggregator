@@ -75,7 +75,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.10",
-    "@checkly/cli": "^0.4.14",
     "@faker-js/faker": "^9.9.0",
     "@jest/globals": "^30.2.0",
     "@playwright/test": "^1.57.0",
