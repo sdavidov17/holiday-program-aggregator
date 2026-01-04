@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const baseUrl = process.env.ENVIRONMENT_URL || 'https://holiday-heroes.vercel.app';
+const baseUrl = process.env.ENVIRONMENT_URL || 'https://holiday-heroes-five.vercel.app';
 
 test('Sign in page loads and form is functional', async ({ page }) => {
   // Navigate to sign in page

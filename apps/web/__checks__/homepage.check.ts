@@ -17,6 +17,6 @@ new BrowserCheck('homepage-availability', {
     entrypoint: path.join(__dirname, 'specs/homepage.spec.ts'),
   },
   environmentVariables: [
-    { key: 'ENVIRONMENT_URL', value: process.env.ENVIRONMENT_URL || 'https://holiday-heroes.vercel.app' },
+    { key: 'ENVIRONMENT_URL', value: process.env.ENVIRONMENT_URL || 'https://holiday-heroes-five.vercel.app' },
   ],
 });
