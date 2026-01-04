@@ -8,6 +8,7 @@ on:
     types: [opened, synchronize, reopened, closed]
 
 # Stable preview domain for OAuth callbacks
+# Neon database branching managed via GitHub Actions (not Vercel integration)
 env:
   PREVIEW_DOMAIN: holiday-heroes-preview.vercel.app
 
