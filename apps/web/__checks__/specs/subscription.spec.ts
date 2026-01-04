@@ -15,7 +15,7 @@ test('Subscription plans page is accessible', async ({ page }) => {
     // Verify signin page loads correctly
     await expect(page.locator('h1')).toContainText(/Welcome/i, { timeout: 10000 });
   } else {
-    // Verify subscription plans are visible
-    await expect(page.locator('h1, h2')).toBeVisible({ timeout: 10000 });
+    // Verify subscription plans page has a heading
+    await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 10000 });
   }
 });
