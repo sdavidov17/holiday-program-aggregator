@@ -82,13 +82,11 @@ jobs:
             exit 1
           fi
 
-          # Get endpoint (host) for the branch
+          # Get endpoint for the branch
           ENDPOINTS=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
             "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/endpoints")
 
-          HOST=$(echo "$ENDPOINTS" | jq -r ".endpoints[] | select(.branch_id == \"$BRANCH_ID\") | .host")
           ENDPOINT_ID=$(echo "$ENDPOINTS" | jq -r ".endpoints[] | select(.branch_id == \"$BRANCH_ID\") | .id")
-          echo "Host: $HOST"
           echo "Endpoint ID: $ENDPOINT_ID"
 
           # Start/wake up the endpoint if it's suspended
@@ -108,19 +106,20 @@ jobs:
             sleep 5
           done
 
-          # Get password from role
-          ROLE_INFO=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
-            "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/branches/$BRANCH_ID/roles/neondb_owner")
+          # Get connection URI directly from Neon API
+          CONNECTION_INFO=$(curl -s -H "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+            "https://console.neon.tech/api/v2/projects/${{ vars.NEON_PROJECT_ID }}/connection_uri?branch_id=$BRANCH_ID&role_name=neondb_owner&database_name=neondb")
 
-          PASSWORD=$(echo "$ROLE_INFO" | jq -r ".role.password")
+          DATABASE_URL=$(echo "$CONNECTION_INFO" | jq -r ".uri")
 
-          if [ -z "$PASSWORD" ] || [ "$PASSWORD" = "null" ]; then
-            echo "Error: Could not get password for role"
+          if [ -z "$DATABASE_URL" ] || [ "$DATABASE_URL" = "null" ]; then
+            echo "Error: Could not get connection URI"
+            echo "Response: $CONNECTION_INFO"
             exit 1
           fi
 
-          DATABASE_URL="postgresql://neondb_owner:${PASSWORD}@${HOST}/neondb?sslmode=require"
-
+          # Mask the password portion of the URL
+          PASSWORD=$(echo "$DATABASE_URL" | sed -n 's/.*:\/\/[^:]*:\([^@]*\)@.*/\1/p')
           echo "::add-mask::$PASSWORD"
           echo "database_url=$DATABASE_URL" >> $GITHUB_OUTPUT
 
