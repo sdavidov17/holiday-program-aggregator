@@ -1,0 +1,74 @@
+name: Checkly Monitoring
+
+on:
+  push:
+    branches: [main]
+  # Allow manual trigger for testing
+  workflow_dispatch:
+  # Run checks daily to ensure monitors are up to date
+  schedule:
+    - cron: '0 6 * * *' # 6 AM UTC daily
+
+env:
+  CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
+  CHECKLY_ACCOUNT_ID: ${{ secrets.CHECKLY_ACCOUNT_ID }}
+  ENVIRONMENT_URL: https://holiday-heroes.vercel.app
+
+jobs:
+  deploy-checks:
+    name: Deploy Checkly Monitors
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Deploy Checkly Monitors
+        run: npx checkly deploy --force
+
+      - name: Run Checkly Tests
+        run: npx checkly test --env ENVIRONMENT_URL=${{ env.ENVIRONMENT_URL }}
+
+  # Triggered after production deployment to verify monitors
+  trigger-after-deploy:
+    name: Trigger Checks After Deploy
+    runs-on: ubuntu-latest
+    needs: deploy-checks
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    defaults:
+      run:
+        working-directory: apps/web
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Trigger Checkly Checks
+        run: npx checkly trigger --tags critical
