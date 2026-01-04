@@ -46,7 +46,7 @@
     "@prisma/client": "^7.2.0",
     "@react-email/components": "^1.0.3",
     "@react-email/render": "^1.2.0",
-    "@stripe/stripe-js": "^7.8.0",
+    "@stripe/stripe-js": "^8.6.0",
     "@t3-oss/env-nextjs": "^0.13.10",
     "@tanstack/react-query": "^5.90.16",
     "@trpc/client": "^11.8.1",
