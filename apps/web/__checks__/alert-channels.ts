@@ -13,8 +13,9 @@ import { SlackAlertChannel, EmailAlertChannel } from 'checkly/constructs';
  * - Recovery notifications
  */
 export const slackChannel = new SlackAlertChannel('slack-alerts', {
-  // Webhook URL is set via environment variable in Checkly dashboard
-  url: process.env.CHECKLY_SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/YOUR/WEBHOOK/URL',
+  // Webhook URL must be set via CHECKLY_SLACK_WEBHOOK_URL environment variable in Checkly dashboard
+  // If not set, alerts will be disabled (Checkly requires a valid URL)
+  url: process.env.CHECKLY_SLACK_WEBHOOK_URL ?? '',
 
   // Send alert on failure
   sendFailure: true,
@@ -35,7 +36,8 @@ export const slackChannel = new SlackAlertChannel('slack-alerts', {
  * Configure in Checkly dashboard with your email
  */
 export const emailChannel = new EmailAlertChannel('email-alerts', {
-  address: process.env.CHECKLY_ALERT_EMAIL || 'alerts@example.com',
+  // Email address must be set via CHECKLY_ALERT_EMAIL environment variable in Checkly dashboard
+  address: process.env.CHECKLY_ALERT_EMAIL ?? '',
   sendFailure: true,
   sendRecovery: true,
   sendDegraded: false,

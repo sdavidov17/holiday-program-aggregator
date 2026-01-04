@@ -40,15 +40,9 @@ jobs:
 
       - name: Deploy Checkly Monitors
         run: npx checkly deploy --force
-        env:
-          CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
-          CHECKLY_ACCOUNT_ID: ${{ secrets.CHECKLY_ACCOUNT_ID }}
 
       - name: Run Checkly Tests
         run: npx checkly test --env ENVIRONMENT_URL=${{ env.ENVIRONMENT_URL }}
-        env:
-          CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
-          CHECKLY_ACCOUNT_ID: ${{ secrets.CHECKLY_ACCOUNT_ID }}
 
   # Triggered after production deployment to verify monitors
   trigger-after-deploy:
@@ -78,6 +72,3 @@ jobs:
 
       - name: Trigger Checkly Checks
         run: npx checkly trigger --tags critical
-        env:
-          CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
-          CHECKLY_ACCOUNT_ID: ${{ secrets.CHECKLY_ACCOUNT_ID }}
