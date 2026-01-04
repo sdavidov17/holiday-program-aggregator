@@ -1,49 +1,47 @@
-import { SlackAlertChannel, EmailAlertChannel } from 'checkly/constructs';
+import { SlackAlertChannel, EmailAlertChannel, AlertChannel } from 'checkly/constructs';
 
 /**
- * Slack Alert Channel for Holiday Heroes
+ * Alert Channels for Holiday Heroes Monitoring
  *
- * To set up:
+ * Channels are only created if their required environment variables are set.
+ * This allows the project to deploy without Slack/Email configured initially.
+ *
+ * To set up Slack alerts:
  * 1. Create a Slack incoming webhook: https://api.slack.com/messaging/webhooks
- * 2. Set CHECKLY_SLACK_WEBHOOK_URL environment variable in Checkly dashboard
+ * 2. Add CHECKLY_SLACK_WEBHOOK_URL to GitHub secrets
  *
- * Features:
- * - Instant alerts on failures
- * - Daily summary reports
- * - Recovery notifications
+ * Alternatively, use Checkly's native Slack integration (recommended):
+ * Checkly Dashboard → Integrations → Slack → "Add to Slack"
  */
-export const slackChannel = new SlackAlertChannel('slack-alerts', {
-  // Webhook URL must be set via CHECKLY_SLACK_WEBHOOK_URL environment variable in Checkly dashboard
-  // If not set, alerts will be disabled (Checkly requires a valid URL)
-  url: process.env.CHECKLY_SLACK_WEBHOOK_URL ?? '',
 
-  // Send alert on failure
-  sendFailure: true,
+const alertChannelsList: AlertChannel[] = [];
 
-  // Send alert on recovery
-  sendRecovery: true,
+// Only create Slack channel if webhook URL is configured
+if (process.env.CHECKLY_SLACK_WEBHOOK_URL) {
+  const slackChannel = new SlackAlertChannel('slack-alerts', {
+    url: process.env.CHECKLY_SLACK_WEBHOOK_URL,
+    sendFailure: true,
+    sendRecovery: true,
+    sendDegraded: true,
+    sslExpiry: true,
+    sslExpiryThreshold: 7,
+  });
+  alertChannelsList.push(slackChannel);
+}
 
-  // Send alert on degraded performance
-  sendDegraded: true,
-
-  // SSL expiry alerts (7 days before)
-  sslExpiry: true,
-  sslExpiryThreshold: 7,
-});
+// Only create Email channel if email address is configured
+if (process.env.CHECKLY_ALERT_EMAIL) {
+  const emailChannel = new EmailAlertChannel('email-alerts', {
+    address: process.env.CHECKLY_ALERT_EMAIL,
+    sendFailure: true,
+    sendRecovery: true,
+    sendDegraded: false,
+  });
+  alertChannelsList.push(emailChannel);
+}
 
 /**
- * Email Alert Channel (backup)
- * Configure in Checkly dashboard with your email
+ * Export alert channels for use in checks
+ * Will be empty array if no channels are configured
  */
-export const emailChannel = new EmailAlertChannel('email-alerts', {
-  // Email address must be set via CHECKLY_ALERT_EMAIL environment variable in Checkly dashboard
-  address: process.env.CHECKLY_ALERT_EMAIL ?? '',
-  sendFailure: true,
-  sendRecovery: true,
-  sendDegraded: false,
-});
-
-/**
- * Export all alert channels for use in checks
- */
-export const alertChannels = [slackChannel];
+export const alertChannels = alertChannelsList;
