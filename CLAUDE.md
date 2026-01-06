@@ -193,3 +193,67 @@ This project uses BMAD (Business-Model-Architecture-Development) methodology:
 - When invoked with `@dev` in Cursor, follows strict story implementation workflow
 
 Refer to documentation in `/docs/` for all implementation details, requirements, and architectural decisions.
+
+## Claude Code Skills & Automation
+
+### Available Skills
+This project has specialized skills configured in `.claude/commands/`:
+
+**BMAD Agents** (`/BMad/agents/`):
+- `/dev` - Full Stack Developer (James) - Story implementation
+- `/architect` - System Architect (Winston) - Architecture design
+- `/pm` - Project Manager - Project planning
+- `/po` - Product Owner - Product decisions
+- `/qa` - QA Engineer (Quinn) - Testing and quality
+- `/sm` - Scrum Master - Process facilitation
+- `/analyst` - Business Analyst - Requirements analysis
+- `/ux-expert` - UX Designer - User experience
+
+**Domain Skills** (`/domain/`):
+- `/security` - Security reviews, OWASP compliance, PII handling
+- `/sre` - Observability, monitoring, production readiness
+- `/devops` - CI/CD, GitHub Actions, deployment
+- `/code-review` - Thorough code review with project conventions
+- `/api-design` - tRPC router design and API patterns
+- `/reflect` - Process captured learnings and update CLAUDE.md
+
+### Self-Improving Loop
+The project uses a learning capture system:
+1. Corrections during sessions are detected and queued
+2. Run `/reflect` to review and apply learnings to CLAUDE.md
+3. Future sessions benefit from accumulated knowledge
+
+Learnings are stored in `.claude/learnings.json` and hooks notify when pending learnings accumulate.
+
+### Hooks Configuration
+Active hooks in `.claude/settings.local.json`:
+- **PostToolUse (git commit)**: Reminds to run `/reflect` after commits
+- **Stop**: Notifies when >5 learnings are pending
+
+## Observed Patterns & Preferences
+
+### Code Conventions
+- Always use `ctx.session.user.id` for user identification in tRPC routers
+- Prefer `protectedProcedure` over manual auth checks
+- Use Zod schemas for all tRPC input validation
+- Delegate business logic to services, keep routers thin
+- Use repository pattern for all database operations
+
+### Testing Conventions
+- Run `pnpm typecheck` before committing
+- Test files go in `__tests__/` directory
+- Use `describe/it` pattern for Jest tests
+- Mock Prisma client for unit tests
+- BDD scenarios must have corresponding test implementations
+
+### Error Handling
+- Log errors with context using `logger.error()`
+- Use `TRPCError` with appropriate codes
+- Never expose internal error details to clients
+- Always include audit logging for security-sensitive operations
+
+### Naming Conventions
+- tRPC routers: `{entity}Router` (e.g., `providerRouter`)
+- Repositories: `{Entity}Repository` (e.g., `ProviderRepository`)
+- Services: `{Entity}Service` (e.g., `SubscriptionService`)
+- Zod schemas: `{action}{Entity}Input` (e.g., `createProviderInput`)
