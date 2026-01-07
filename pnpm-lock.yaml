@@ -61,8 +61,8 @@ importers:
         specifier: ^1.0.3
         version: 1.0.3(react-dom@19.2.3)(react@19.2.3)
       '@react-email/render':
-        specifier: ^1.2.0
-        version: 1.2.0(react-dom@19.2.3)(react@19.2.3)
+        specifier: ^2.0.1
+        version: 2.0.1(react-dom@19.2.3)(react@19.2.3)
       '@stripe/stripe-js':
         specifier: ^8.6.0
         version: 8.6.0
@@ -2742,20 +2742,6 @@ packages:
     dependencies:
       html-to-text: 9.0.5
       prettier: 3.7.4
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
-      react-promise-suspense: 0.3.4
-    dev: false
-
-  /@react-email/render@1.2.0(react-dom@19.2.3)(react@19.2.3):
-    resolution: {integrity: sha512-5fpbV16VYR9Fmk8t7xiwPNAjxjdI8XzVtlx9J9OkhOsIHdr2s5DwAj8/MXzWa9qRYJyLirQ/l7rBSjjgyRAomw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^18.0 || ^19.0 || ^19.0.0-rc
-      react-dom: ^18.0 || ^19.0 || ^19.0.0-rc
-    dependencies:
-      html-to-text: 9.0.5
-      prettier: 3.6.2
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
       react-promise-suspense: 0.3.4
@@ -7956,12 +7942,6 @@ packages:
 
   /preact@10.28.2:
     resolution: {integrity: sha512-lbteaWGzGHdlIuiJ0l2Jq454m6kcpI1zNje6d8MlGAFlYvP2GO4ibnat7P74Esfz4sPTdM6UxtTwh/d3pwM9JA==}
-    dev: false
-
-  /prettier@3.6.2:
-    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
-    engines: {node: '>=14'}
-    hasBin: true
     dev: false
 
   /prettier@3.7.4:
