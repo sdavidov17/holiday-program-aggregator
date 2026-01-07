@@ -63,8 +63,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0(react-dom@19.2.3)(react@19.2.3)
       '@stripe/stripe-js':
-        specifier: ^7.8.0
-        version: 7.8.0
+        specifier: ^8.6.0
+        version: 8.6.0
       '@t3-oss/env-nextjs':
         specifier: ^0.13.10
         version: 0.13.10(typescript@5.9.3)(zod@4.3.4)
@@ -2892,8 +2892,8 @@ packages:
   /@standard-schema/spec@1.0.0:
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
-  /@stripe/stripe-js@7.8.0:
-    resolution: {integrity: sha512-DNXRfYUgkZlrniQORbA/wH8CdFRhiBSE0R56gYU0V5vvpJ9WZwvGrz9tBAZmfq2aTgw6SK7mNpmTizGzLWVezw==}
+  /@stripe/stripe-js@8.6.0:
+    resolution: {integrity: sha512-EB0/GGgs4hfezzkiMkinlRgWtjz8fSdwVQhwYS7Sg/RQrSvuNOz+ssPjD+lAzqaYTCB0zlbrt0fcqVziLJrufQ==}
     engines: {node: '>=12.16'}
     dev: false
 
