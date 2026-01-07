@@ -5,11 +5,11 @@ import { alertChannels } from './alert-channels';
 /**
  * Sign In Journey Check
  * Verifies the authentication flow is working
- * Runs every 5 minutes
+ * Runs daily
  */
 new BrowserCheck('signin-journey', {
   name: '🔐 Sign In Page',
-  frequency: Frequency.EVERY_5M,
+  frequency: Frequency.EVERY_24H,
   locations: ['ap-southeast-2', 'us-east-1'],
   tags: ['critical', 'auth', 'user-journey'],
   alertChannels,

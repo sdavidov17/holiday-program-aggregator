@@ -5,11 +5,11 @@ import { alertChannels } from './alert-channels';
 /**
  * Homepage Availability Check
  * Verifies the landing page loads correctly
- * Runs every minute from Australia and US
+ * Runs daily from Australia and US
  */
 new BrowserCheck('homepage-availability', {
   name: '🏠 Homepage Availability',
-  frequency: Frequency.EVERY_1M,
+  frequency: Frequency.EVERY_24H,
   locations: ['ap-southeast-2', 'us-east-1'],
   tags: ['critical', 'homepage', 'user-journey'],
   alertChannels,

@@ -5,11 +5,11 @@ import { alertChannels } from './alert-channels';
 /**
  * Subscription Plans Page Check
  * Verifies the subscription plans are accessible
- * Runs every 10 minutes
+ * Runs daily
  */
 new BrowserCheck('subscription-plans', {
   name: '💳 Subscription Plans',
-  frequency: Frequency.EVERY_10M,
+  frequency: Frequency.EVERY_24H,
   locations: ['ap-southeast-2', 'us-east-1'],
   tags: ['critical', 'subscription', 'user-journey'],
   alertChannels,

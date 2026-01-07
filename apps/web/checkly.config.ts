@@ -14,7 +14,7 @@ export default defineConfig({
 
   checks: {
     // Frequency for all checks (can be overridden per check)
-    frequency: Frequency.EVERY_5M,
+    frequency: Frequency.EVERY_24H,
     // Locations to run checks from
     locations: ['ap-southeast-2', 'us-east-1'],
     // Default runtime for browser checks
