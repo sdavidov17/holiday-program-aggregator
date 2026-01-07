@@ -8,6 +8,7 @@ overrides:
   glob@^10.0.0: ^10.5.0
   glob@^11.0.0: ^11.1.0
   qs: '>=6.14.1'
+  preact: '>=10.27.3'
 
 importers:
 
@@ -7246,8 +7247,8 @@ packages:
       next: 16.1.1(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.2.3)(react@19.2.3)
       oauth: 0.9.15
       openid-client: 5.7.1
-      preact: 10.27.0
-      preact-render-to-string: 5.2.6(preact@10.27.0)
+      preact: 10.28.2
+      preact-render-to-string: 5.2.6(preact@10.28.2)
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
       uuid: 8.3.2
@@ -7938,17 +7939,17 @@ packages:
     resolution: {integrity: sha512-Jtc2612XINuBjIl/QTWsV5UvE8UHuNblcO3vVADSrKsrc6RqGX6lOW1cEo3CM2v0XG4Nat8nI+YM7/f26VxXLw==}
     engines: {node: '>=12'}
 
-  /preact-render-to-string@5.2.6(preact@10.27.0):
+  /preact-render-to-string@5.2.6(preact@10.28.2):
     resolution: {integrity: sha512-JyhErpYOvBV1hEPwIxc/fHWXPfnEGdRKxc8gFdAZ7XV4tlzyzG847XAyEZqoDnynP88akM4eaHcSOzNcLWFguw==}
     peerDependencies:
       preact: '>=10'
     dependencies:
-      preact: 10.27.0
+      preact: 10.28.2
       pretty-format: 3.8.0
     dev: false
 
-  /preact@10.27.0:
-    resolution: {integrity: sha512-/DTYoB6mwwgPytiqQTh/7SFRL98ZdiD8Sk8zIUVOxtwq4oWcwrcd1uno9fE/zZmUaUrFNYzbH14CPebOz9tZQw==}
+  /preact@10.28.2:
+    resolution: {integrity: sha512-lbteaWGzGHdlIuiJ0l2Jq454m6kcpI1zNje6d8MlGAFlYvP2GO4ibnat7P74Esfz4sPTdM6UxtTwh/d3pwM9JA==}
     dev: false
 
   /prettier@3.6.2:
