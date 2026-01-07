@@ -5,11 +5,11 @@ import { alertChannels } from './alert-channels';
 /**
  * Registration Page Check
  * Verifies the registration form is accessible
- * Runs every 10 minutes
+ * Runs daily
  */
 new BrowserCheck('registration-journey', {
   name: '📝 Registration Page',
-  frequency: Frequency.EVERY_10M,
+  frequency: Frequency.EVERY_24H,
   locations: ['ap-southeast-2', 'us-east-1'],
   tags: ['critical', 'auth', 'user-journey'],
   alertChannels,
