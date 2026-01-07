@@ -2,6 +2,7 @@ import type { Prisma, PrismaClient } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import { env } from '~/env.mjs';
 import { SubscriptionStatus } from '~/server/db';
+import { auditLogger } from '~/utils/auditLogger';
 import { logger } from '~/utils/logger';
 import { createCheckoutSession, createStripeCustomer, stripe } from '~/utils/stripe';
 import { isSubscriptionActive } from '~/utils/subscription';
@@ -114,6 +115,21 @@ export class SubscriptionService {
       },
     });
 
+    // Audit log for checkout session creation
+    await auditLogger.logEvent(
+      'SUBSCRIPTION_CHECKOUT_STARTED',
+      { correlationId: `checkout-${crypto.randomUUID()}` },
+      {
+        userId,
+        email,
+        result: 'success',
+        metadata: {
+          sessionId: session.id,
+          priceId: env.STRIPE_ANNUAL_PRICE_ID,
+        },
+      },
+    );
+
     return {
       sessionId: session.id,
       url: session.url,
@@ -155,12 +171,30 @@ export class SubscriptionService {
       },
     });
 
+    const correlationId = `cancel-${crypto.randomUUID()}`;
+
     logger.info('Subscription canceled', {
-      correlationId: 'cancel-' + Date.now(),
+      correlationId,
       userId,
       subscriptionId: subscription.id,
       stripeSubscriptionId: subscription.stripeSubscriptionId,
     });
+
+    // Audit log for subscription cancellation
+    await auditLogger.logEvent(
+      'SUBSCRIPTION_CANCELLED',
+      { correlationId },
+      {
+        userId,
+        result: 'success',
+        metadata: {
+          subscriptionId: subscription.id,
+          stripeSubscriptionId: subscription.stripeSubscriptionId,
+          cancelAtPeriodEnd: true,
+          currentPeriodEnd: subscription.currentPeriodEnd,
+        },
+      },
+    );
 
     return {
       success: true,
@@ -211,12 +245,28 @@ export class SubscriptionService {
       },
     });
 
+    const correlationId = `resume-${crypto.randomUUID()}`;
+
     logger.info('Subscription resumed', {
-      correlationId: 'resume-' + Date.now(),
+      correlationId,
       userId,
       subscriptionId: subscription.id,
       stripeSubscriptionId: subscription.stripeSubscriptionId,
     });
+
+    // Audit log for subscription resumption
+    await auditLogger.logEvent(
+      'SUBSCRIPTION_RESUMED',
+      { correlationId },
+      {
+        userId,
+        result: 'success',
+        metadata: {
+          subscriptionId: subscription.id,
+          stripeSubscriptionId: subscription.stripeSubscriptionId,
+        },
+      },
+    );
 
     return {
       success: true,
@@ -255,11 +305,29 @@ export class SubscriptionService {
       },
     });
 
+    const correlationId = `checkout-complete-${crypto.randomUUID()}`;
+
     logger.info('Checkout completed and subscription activated', {
-      correlationId: 'checkout-complete-' + Date.now(),
+      correlationId,
       userId,
       stripeSubscriptionId,
     });
+
+    // Audit log for successful checkout completion - critical for financial compliance
+    await auditLogger.logEvent(
+      'SUBSCRIPTION_CHECKOUT_COMPLETED',
+      { correlationId },
+      {
+        userId,
+        result: 'success',
+        metadata: {
+          stripeSubscriptionId,
+          stripePriceId,
+          currentPeriodStart: currentPeriodStart.toISOString(),
+          currentPeriodEnd: currentPeriodEnd.toISOString(),
+        },
+      },
+    );
   }
 
   /**
@@ -354,19 +422,38 @@ export class SubscriptionService {
 
     // Determine tier from priceId (mock logic for now, or fetch from config)
     const tier = priceId.includes('premium') ? 'PREMIUM' : 'BASIC';
+    const previousPriceId = subscription.stripePriceId;
 
     // Update locally
-    return await this.db.subscription.update({
+    const updatedSubscription = await this.db.subscription.update({
       where: { id: subscription.id },
       data: {
         stripePriceId: priceId,
-        // We don't actually store "tier" in the schema based on previous errors, 
+        // We don't actually store "tier" in the schema based on previous errors,
         // effectively we might need to ignore the tier check or add it if the schema supports it.
         // The test expects 'tier' in return, but schema might not have it.
-        // Let's check schema.prisma first? 
+        // Let's check schema.prisma first?
         // Actually the test expects `result.tier` from the return value.
         // I will return the tier in the object, even if not in DB, to satisfy test.
       },
-    }).then(sub => ({ ...sub, tier }));
+    });
+
+    // Audit log for tier change
+    await auditLogger.logEvent(
+      'SUBSCRIPTION_TIER_CHANGED',
+      { correlationId: `tier-change-${crypto.randomUUID()}` },
+      {
+        userId,
+        result: 'success',
+        metadata: {
+          subscriptionId: subscription.id,
+          previousPriceId,
+          newPriceId: priceId,
+          newTier: tier,
+        },
+      },
+    );
+
+    return { ...updatedSubscription, tier };
   }
 }
