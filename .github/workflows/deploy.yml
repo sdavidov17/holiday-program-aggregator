@@ -323,7 +323,7 @@ jobs:
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
       - name: Wait for CI to pass
-        uses: lewagon/wait-on-check-action@v1.3.4
+        uses: lewagon/wait-on-check-action@v1.4.1
         with:
           ref: ${{ github.sha }}
           check-name: 'Quality Checks'
@@ -331,7 +331,7 @@ jobs:
           wait-interval: 10
 
       - name: Wait for E2E Tests
-        uses: lewagon/wait-on-check-action@v1.3.4
+        uses: lewagon/wait-on-check-action@v1.4.1
         with:
           ref: ${{ github.sha }}
           check-name: 'E2E Tests'
@@ -339,7 +339,7 @@ jobs:
           wait-interval: 10
 
       - name: Wait for Security Scan
-        uses: lewagon/wait-on-check-action@v1.3.4
+        uses: lewagon/wait-on-check-action@v1.4.1
         with:
           ref: ${{ github.sha }}
           check-name: 'Security Scan Summary'
