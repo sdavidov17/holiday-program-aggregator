@@ -21,8 +21,8 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.2.0",
-    "@commitlint/config-conventional": "^20.2.0",
+    "@commitlint/cli": "^20.3.0",
+    "@commitlint/config-conventional": "^20.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "turbo": "^2.7.2"
@@ -46,7 +46,7 @@
     "bcryptjs": "^3.0.3",
     "crypto-js": "^4.2.0",
     "resend": "^6.0.1",
-    "zod": "^4.3.4"
+    "zod": "^4.3.5"
   },
   "bmad": {
     "version": "4.35.0",
