@@ -34,11 +34,16 @@ interface MockStripeEvent {
 }
 
 // Mock Stripe methods
-const mockCustomersCreate = jest.fn<() => Promise<MockStripeCustomer>>();
-const mockCheckoutSessionsCreate = jest.fn<() => Promise<MockStripeSession>>();
-const mockSubscriptionsRetrieve = jest.fn<() => Promise<MockStripeSubscription>>();
-const mockSubscriptionsUpdate = jest.fn<() => Promise<MockStripeSubscription>>();
-const mockWebhooksConstructEvent = jest.fn<() => MockStripeEvent>();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockCustomersCreate = jest.fn<(...args: any[]) => Promise<MockStripeCustomer>>();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockCheckoutSessionsCreate = jest.fn<(...args: any[]) => Promise<MockStripeSession>>();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockSubscriptionsRetrieve = jest.fn<(...args: any[]) => Promise<MockStripeSubscription>>();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockSubscriptionsUpdate = jest.fn<(...args: any[]) => Promise<MockStripeSubscription>>();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mockWebhooksConstructEvent = jest.fn<(...args: any[]) => MockStripeEvent>();
 
 // Mock Stripe class
 const MockStripe = jest.fn().mockImplementation(() => ({

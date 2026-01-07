@@ -7,13 +7,18 @@ import { describe, expect, it, jest, beforeEach } from '@jest/globals';
 import type { AuditEventType } from '../auditLogger';
 
 // Mock database functions
-let mockAuditLogCreate: jest.Mock;
-let mockAuditLogFindMany: jest.Mock;
-let mockAuditLogCount: jest.Mock;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let mockAuditLogCreate: jest.Mock<any, any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let mockAuditLogFindMany: jest.Mock<any, any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let mockAuditLogCount: jest.Mock<any, any>;
 
 // Mock logger functions
-let mockLoggerInfo: jest.Mock;
-let mockLoggerError: jest.Mock;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let mockLoggerInfo: jest.Mock<any, any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let mockLoggerError: jest.Mock<any, any>;
 
 describe('AuditLogger', () => {
   let AuditLogger: typeof import('../auditLogger').AuditLogger;
@@ -190,6 +195,9 @@ describe('AuditLogger', () => {
         'AUTH_EMAIL_VERIFIED',
         'SUBSCRIPTION_CREATED',
         'SUBSCRIPTION_CANCELLED',
+        'SUBSCRIPTION_RESUMED',
+        'SUBSCRIPTION_CHECKOUT_STARTED',
+        'SUBSCRIPTION_TIER_CHANGED',
         'PAYMENT_SUCCEEDED',
         'PAYMENT_FAILED',
       ];

@@ -250,7 +250,7 @@ describe('Encryption Key Validation', () => {
   const originalEnv = process.env.NODE_ENV;
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv;
+    (process.env as { NODE_ENV?: string }).NODE_ENV = originalEnv;
     jest.resetModules();
   });
 
@@ -272,7 +272,7 @@ describe('Encryption Key Validation', () => {
   });
 
   it('should work with fallback key in development', async () => {
-    process.env.NODE_ENV = 'development';
+    (process.env as { NODE_ENV?: string }).NODE_ENV = 'development';
     jest.resetModules();
     jest.mock('~/env.mjs', () => ({
       env: {
