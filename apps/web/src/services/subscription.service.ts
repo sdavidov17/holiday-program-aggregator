@@ -118,7 +118,7 @@ export class SubscriptionService {
     // Audit log for checkout session creation
     await auditLogger.logEvent(
       'SUBSCRIPTION_CHECKOUT_STARTED',
-      { correlationId: 'checkout-' + Date.now() },
+      { correlationId: `checkout-${crypto.randomUUID()}` },
       {
         userId,
         email,
@@ -171,7 +171,7 @@ export class SubscriptionService {
       },
     });
 
-    const correlationId = 'cancel-' + Date.now();
+    const correlationId = `cancel-${crypto.randomUUID()}`;
 
     logger.info('Subscription canceled', {
       correlationId,
@@ -245,7 +245,7 @@ export class SubscriptionService {
       },
     });
 
-    const correlationId = 'resume-' + Date.now();
+    const correlationId = `resume-${crypto.randomUUID()}`;
 
     logger.info('Subscription resumed', {
       correlationId,
@@ -305,11 +305,29 @@ export class SubscriptionService {
       },
     });
 
+    const correlationId = `checkout-complete-${crypto.randomUUID()}`;
+
     logger.info('Checkout completed and subscription activated', {
-      correlationId: 'checkout-complete-' + Date.now(),
+      correlationId,
       userId,
       stripeSubscriptionId,
     });
+
+    // Audit log for successful checkout completion - critical for financial compliance
+    await auditLogger.logEvent(
+      'SUBSCRIPTION_CHECKOUT_COMPLETED',
+      { correlationId },
+      {
+        userId,
+        result: 'success',
+        metadata: {
+          stripeSubscriptionId,
+          stripePriceId,
+          currentPeriodStart: currentPeriodStart.toISOString(),
+          currentPeriodEnd: currentPeriodEnd.toISOString(),
+        },
+      },
+    );
   }
 
   /**
@@ -423,7 +441,7 @@ export class SubscriptionService {
     // Audit log for tier change
     await auditLogger.logEvent(
       'SUBSCRIPTION_TIER_CHANGED',
-      { correlationId: 'tier-change-' + Date.now() },
+      { correlationId: `tier-change-${crypto.randomUUID()}` },
       {
         userId,
         result: 'success',
