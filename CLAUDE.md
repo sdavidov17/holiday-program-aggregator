@@ -226,9 +226,33 @@ The project uses a learning capture system:
 Learnings are stored in `.claude/learnings.json` and hooks notify when pending learnings accumulate.
 
 ### Hooks Configuration
-Active hooks in `.claude/settings.local.json`:
-- **PostToolUse (git commit)**: Reminds to run `/reflect` after commits
-- **Stop**: Notifies when >5 learnings are pending
+
+This project implements comprehensive guardrails using Claude Code hooks (see `.claude/HOOKS.md` for full documentation).
+
+**Active Hooks in `.claude/settings.local.json`:**
+
+**PreToolUse (Bash commands):**
+- Block dangerous `rm -rf` with home/root paths
+- Block `git push --force` to main/master branches
+- Warn on production keywords (prod, production, DATABASE_URL)
+
+**PreToolUse (File edits - Edit/Write):**
+- Block modifications to `.env` files and credentials
+- Block hardcoded secrets (API keys, tokens, passwords, AWS/GitHub tokens)
+- Warn on test file modifications (anti-pattern reminders)
+- Warn on critical file changes (schema.prisma, package.json, configs)
+
+**PostToolUse:**
+- Remind to run `/reflect` after git commits
+
+**Stop (Session completion):**
+- Verify tests were run if code was modified
+
+**Quick Reference:** See `.claude/HOOKS-QUICKREF.md` for complete protection matrix.
+
+**Installation:** These hooks are project-specific. For global terminal protection, see "Global Setup" section in `.claude/HOOKS.md`.
+
+**Philosophy:** Hooks provide deterministic enforcement regardless of what Claude thinks it should do - far more reliable than prompt-based instructions alone.
 
 ## Observed Patterns & Preferences
 
