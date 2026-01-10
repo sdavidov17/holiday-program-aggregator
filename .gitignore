@@ -28,3 +28,4 @@ Thumbs.db
 apps/web/data/*.zip
 apps/web/data/*.md
 .vercel
+.turbo/

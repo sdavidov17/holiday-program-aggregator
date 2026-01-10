@@ -1,4 +1,4 @@
-import { SlackAlertChannel, EmailAlertChannel, AlertChannel } from 'checkly/constructs';
+import { type AlertChannel, EmailAlertChannel, SlackAlertChannel } from 'checkly/constructs';
 
 /**
  * Alert Channels for Holiday Heroes Monitoring

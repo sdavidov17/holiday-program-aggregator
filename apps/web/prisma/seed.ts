@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
+import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { Pool } from 'pg';
 
 // Since SQLite doesn't support enums, we define them as constants
 const UserRole = {
@@ -70,7 +70,9 @@ async function main() {
 
   // Create premium user for cancellation tests
   const premiumCancelEmail = 'premium_cancel@test.com';
-  const existingPremiumCancel = await prisma.user.findUnique({ where: { email: premiumCancelEmail } });
+  const existingPremiumCancel = await prisma.user.findUnique({
+    where: { email: premiumCancelEmail },
+  });
   if (!existingPremiumCancel) {
     await prisma.user.create({
       data: {

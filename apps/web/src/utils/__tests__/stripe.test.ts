@@ -3,7 +3,7 @@
  * Tests for Stripe customer creation, checkout sessions, webhooks, and subscription management
  */
 
-import { describe, expect, it, jest, beforeEach } from '@jest/globals';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
 // Mock types
 interface MockStripeCustomer {

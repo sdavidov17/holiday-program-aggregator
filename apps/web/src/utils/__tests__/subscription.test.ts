@@ -3,19 +3,19 @@
  * Tests for subscription status checks and helper functions
  */
 
-import { describe, expect, it, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
+import { SubscriptionStatus } from '~/types/database';
 import {
-  isSubscriptionActive,
-  isSubscriptionInTrial,
-  doesSubscriptionNeedRenewal,
-  getSubscriptionStatusLabel,
-  getSubscriptionStatusColor,
-  getDaysUntilExpiry,
   canCancelSubscription,
   canResumeSubscription,
+  doesSubscriptionNeedRenewal,
+  getDaysUntilExpiry,
+  getSubscriptionStatusColor,
+  getSubscriptionStatusLabel,
+  isSubscriptionActive,
+  isSubscriptionInTrial,
   type SubscriptionData,
 } from '../subscription';
-import { SubscriptionStatus } from '~/types/database';
 
 describe('Subscription Utilities', () => {
   // Helper to create subscription data

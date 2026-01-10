@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { ProviderRepository } from '~/repositories/provider.repository';
-import { createTRPCRouter, protectedProcedure, adminProcedure } from '~/server/api/trpc';
+import { adminProcedure, createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 
 // Input schemas
 const createProviderSchema = z.object({

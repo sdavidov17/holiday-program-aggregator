@@ -3,7 +3,7 @@
  * Tests for security audit logging, event tracking, and compliance reporting
  */
 
-import { describe, expect, it, jest, beforeEach } from '@jest/globals';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import type { AuditEventType } from '../auditLogger';
 
 // Mock database functions

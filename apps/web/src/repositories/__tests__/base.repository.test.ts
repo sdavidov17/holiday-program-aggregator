@@ -47,15 +47,15 @@ describe('BaseRepository', () => {
       const customPrisma = setupMockDatabase() as any;
       const repo = new TestRepository(customPrisma);
 
-      expect(repo['prisma']).toBe(customPrisma);
-      expect(repo['modelName']).toBe('provider');
+      expect(repo.prisma).toBe(customPrisma);
+      expect(repo.modelName).toBe('provider');
     });
 
     it('should use default db if no prisma provided', async () => {
       // This tests the fallback to default db
       // In test environment, it will use the mock
       const repo = new TestRepository();
-      expect(repo['modelName']).toBe('provider');
+      expect(repo.modelName).toBe('provider');
     });
   });
 

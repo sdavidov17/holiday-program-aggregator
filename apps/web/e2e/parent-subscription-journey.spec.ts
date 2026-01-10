@@ -6,10 +6,10 @@
  */
 
 import { faker } from '@faker-js/faker';
-import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
 import { expect, type Page, test } from '@playwright/test';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from '@prisma/client';
+import { Pool } from 'pg';
 import { getBasicUser, getPremiumCancelUser, getPremiumUser } from './test-users';
 
 // Check if dynamic test users are available (DATABASE_URL was set for global setup)
@@ -149,7 +149,6 @@ test.describe('Parent Subscription Journey', () => {
       await expect(page.locator('[data-testid="plan-essential"]')).toBeVisible();
       await expect(page.locator('[data-testid="plan-premium"]')).toBeVisible();
 
-
       // View plan details
       await expect(page.locator('[data-testid="plan-features"]')).toBeVisible();
 
@@ -176,7 +175,9 @@ test.describe('Parent Subscription Journey', () => {
                     status: 'ACTIVE',
                     tier: 'PREMIUM',
                     expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-                    currentPeriodEnd: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+                    currentPeriodEnd: new Date(
+                      Date.now() + 365 * 24 * 60 * 60 * 1000,
+                    ).toISOString(),
                     cancelAtPeriodEnd: false,
                     isActive: true,
                   },
@@ -200,7 +201,9 @@ test.describe('Parent Subscription Journey', () => {
                     status: 'ACTIVE',
                     tier: 'PREMIUM',
                     expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-                    currentPeriodEnd: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+                    currentPeriodEnd: new Date(
+                      Date.now() + 365 * 24 * 60 * 60 * 1000,
+                    ).toISOString(),
                     cancelAtPeriodEnd: false,
                     isActive: true,
                   },
@@ -379,8 +382,8 @@ test.describe('Parent Subscription Journey', () => {
       await page.route('**/api/trpc/subscription.cancelSubscription*', async (route) => {
         const json = {
           result: {
-            data: { success: true }
-          }
+            data: { success: true },
+          },
         };
         await route.fulfill({ json });
       });

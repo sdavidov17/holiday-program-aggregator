@@ -3,7 +3,7 @@
  * Tests for PII encryption/decryption and password hashing
  */
 
-import { describe, expect, it, jest, beforeEach, afterEach } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 
 // Mock the env module before importing encryption
 jest.mock('~/env.mjs', () => ({
@@ -290,9 +290,7 @@ describe('Encryption Key Validation', () => {
     const decrypted = decryptPII(encrypted);
 
     expect(decrypted).toBe(plainText);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      expect.stringContaining('DEV ONLY')
-    );
+    expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('DEV ONLY'));
 
     consoleSpy.mockRestore();
   });

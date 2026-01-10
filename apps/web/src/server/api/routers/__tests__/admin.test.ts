@@ -3,7 +3,7 @@
  * Tests for admin user management endpoints
  */
 
-import { describe, expect, it, jest, beforeEach } from '@jest/globals';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import type { Session } from 'next-auth';
 
 describe('adminRouter', () => {
@@ -143,9 +143,9 @@ describe('adminRouter', () => {
       });
       const router = adminRouter.createCaller(ctx);
 
-      await expect(
-        router.updateUserRole({ userId: 'user-1', role: 'ADMIN' }),
-      ).rejects.toThrow('Only admins can perform this action');
+      await expect(router.updateUserRole({ userId: 'user-1', role: 'ADMIN' })).rejects.toThrow(
+        'Only admins can perform this action',
+      );
     });
 
     it('should update user role to ADMIN', async () => {
@@ -218,9 +218,9 @@ describe('adminRouter', () => {
       });
       const router = adminRouter.createCaller(ctx);
 
-      await expect(
-        router.updateUserRole({ userId: 'admin-only', role: 'USER' }),
-      ).rejects.toThrow('Cannot remove the last admin');
+      await expect(router.updateUserRole({ userId: 'admin-only', role: 'USER' })).rejects.toThrow(
+        'Cannot remove the last admin',
+      );
     });
 
     it('should allow demoting admin when not the last one', async () => {
@@ -285,7 +285,9 @@ describe('adminRouter', () => {
       });
       const router = adminRouter.createCaller(ctx);
 
-      await expect(router.deleteUser({ userId: 'user-1' })).rejects.toThrow('Only admins can perform this action');
+      await expect(router.deleteUser({ userId: 'user-1' })).rejects.toThrow(
+        'Only admins can perform this action',
+      );
     });
 
     it('should delete a regular user', async () => {
@@ -328,9 +330,9 @@ describe('adminRouter', () => {
       });
       const router = adminRouter.createCaller(ctx);
 
-      await expect(
-        router.deleteUser({ userId: 'other-admin' }),
-      ).rejects.toThrow('Cannot delete the last admin');
+      await expect(router.deleteUser({ userId: 'other-admin' })).rejects.toThrow(
+        'Cannot delete the last admin',
+      );
     });
 
     it('should allow deleting admin when not the last one', async () => {

@@ -154,8 +154,19 @@ function matchWhere(item: any, where: any): boolean {
 // Check if an object is a comparison operator object
 function isComparisonOperator(obj: any): boolean {
   if (!obj || typeof obj !== 'object') return false;
-  const operatorKeys = ['gte', 'lte', 'gt', 'lt', 'contains', 'in', 'notIn', 'equals', 'not', 'mode'];
-  return Object.keys(obj).some(key => operatorKeys.includes(key));
+  const operatorKeys = [
+    'gte',
+    'lte',
+    'gt',
+    'lt',
+    'contains',
+    'in',
+    'notIn',
+    'equals',
+    'not',
+    'mode',
+  ];
+  return Object.keys(obj).some((key) => operatorKeys.includes(key));
 }
 
 // Get the related model name for a relation field
@@ -215,7 +226,7 @@ function applyIncludes(item: any, include: any): any {
     if (provider && typeof include.provider === 'object' && include.provider.select) {
       // Apply select to the provider
       const selected: any = {};
-      Object.keys(include.provider.select).forEach(key => {
+      Object.keys(include.provider.select).forEach((key) => {
         if (include.provider.select[key]) {
           selected[key] = provider[key];
         }
@@ -264,7 +275,9 @@ function createMockModel(modelName: string) {
 
       // Apply distinct - filter to unique values of specified fields
       if (options.distinct) {
-        const distinctFields = Array.isArray(options.distinct) ? options.distinct : [options.distinct];
+        const distinctFields = Array.isArray(options.distinct)
+          ? options.distinct
+          : [options.distinct];
         const seen = new Set();
         items = items.filter((item) => {
           const key = distinctFields.map((field: string) => item[field]).join('|');
@@ -300,7 +313,7 @@ function createMockModel(modelName: string) {
       if (options.select) {
         items = items.map((item) => {
           const selected: any = {};
-          Object.keys(options.select).forEach(key => {
+          Object.keys(options.select).forEach((key) => {
             if (options.select[key]) {
               selected[key] = item[key];
             }

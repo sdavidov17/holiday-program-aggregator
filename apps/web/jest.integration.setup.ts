@@ -24,7 +24,8 @@ jest.mock(
       DATABASE_URL: process.env.DATABASE_URL, // Use real DATABASE_URL from environment
       GOOGLE_CLIENT_ID: 'test-google-client-id',
       GOOGLE_CLIENT_SECRET: 'test-google-client-secret',
-      ENCRYPTION_KEY: process.env.ENCRYPTION_KEY || 'test-encryption-key-1234567890123456789012345678',
+      ENCRYPTION_KEY:
+        process.env.ENCRYPTION_KEY || 'test-encryption-key-1234567890123456789012345678',
       STRIPE_SECRET_KEY: 'sk_test_123',
       STRIPE_WEBHOOK_SECRET: 'whsec_test_123',
       STRIPE_ANNUAL_PRICE_ID: 'price_test_123',
@@ -61,23 +62,22 @@ afterAll(async () => {
 // Clean up test data before each test
 beforeEach(async () => {
   // Clean up test providers (those created during tests)
-  await db.provider.deleteMany({
-    where: {
-      email: {
-        startsWith: 'test-provider',
+  await db.provider
+    .deleteMany({
+      where: {
+        email: {
+          startsWith: 'test-provider',
+        },
       },
-    },
-  }).catch(() => {});
+    })
+    .catch(() => {});
 });
 
 // Suppress noisy console errors in tests
 const originalError = console.error;
 beforeAll(() => {
   console.error = jest.fn((...args) => {
-    if (
-      !args[0]?.includes?.('Not authenticated') &&
-      !args[0]?.includes?.('NEXT_REDIRECT')
-    ) {
+    if (!args[0]?.includes?.('Not authenticated') && !args[0]?.includes?.('NEXT_REDIRECT')) {
       originalError(...args);
     }
   });

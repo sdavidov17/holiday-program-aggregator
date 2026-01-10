@@ -12,13 +12,19 @@ test('Sign in page loads and form is functional', async ({ page }) => {
   // Verify sign in form elements are visible
   await expect(page.locator('h1')).toContainText(/Welcome/i, { timeout: 10000 });
   await expect(page.locator('input[type="email"], [data-testid="email-input"]')).toBeVisible();
-  await expect(page.locator('input[type="password"], [data-testid="password-input"]')).toBeVisible();
+  await expect(
+    page.locator('input[type="password"], [data-testid="password-input"]'),
+  ).toBeVisible();
   await expect(page.locator('button[type="submit"], [data-testid="signin-button"]')).toBeVisible();
 
   // Verify Google OAuth button is visible
-  await expect(page.locator('button:has-text("Google"), [data-testid="google-signin"]')).toBeVisible();
+  await expect(
+    page.locator('button:has-text("Google"), [data-testid="google-signin"]'),
+  ).toBeVisible();
 
   // Verify form is interactive (can type in fields)
   await page.fill('input[type="email"], [data-testid="email-input"]', 'test@example.com');
-  await expect(page.locator('input[type="email"], [data-testid="email-input"]')).toHaveValue('test@example.com');
+  await expect(page.locator('input[type="email"], [data-testid="email-input"]')).toHaveValue(
+    'test@example.com',
+  );
 });

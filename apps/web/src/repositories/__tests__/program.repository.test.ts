@@ -203,7 +203,11 @@ describe('ProgramRepository', () => {
       const result = await repository.search({ suburb: 'Sydney' });
 
       expect(result).toHaveLength(2);
-      expect(result.every((p) => p.provider?.suburb === 'Sydney' || p.provider?.suburb?.includes('Sydney'))).toBe(true);
+      expect(
+        result.every(
+          (p) => p.provider?.suburb === 'Sydney' || p.provider?.suburb?.includes('Sydney'),
+        ),
+      ).toBe(true);
     });
 
     it('should search by location (state)', async () => {
@@ -256,7 +260,7 @@ describe('ProgramRepository', () => {
 
   describe('findUpcoming', () => {
     beforeEach(async () => {
-      const now = new Date();
+      const _now = new Date();
       const future7 = new Date();
       future7.setDate(future7.getDate() + 7);
       const future45 = new Date();
@@ -605,7 +609,7 @@ describe('ProgramRepository', () => {
 
   describe('getProviderStats', () => {
     beforeEach(async () => {
-      const now = new Date();
+      const _now = new Date();
       const future = new Date();
       future.setDate(future.getDate() + 10);
       const past = new Date();

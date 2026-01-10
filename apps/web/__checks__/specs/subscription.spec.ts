@@ -4,7 +4,9 @@ const baseUrl = process.env.ENVIRONMENT_URL || 'https://holiday-heroes-five.verc
 
 test('Subscription plans page is accessible', async ({ page }) => {
   // Navigate to subscription plans page
-  const response = await page.goto(`${baseUrl}/subscription/plans`, { waitUntil: 'domcontentloaded' });
+  const response = await page.goto(`${baseUrl}/subscription/plans`, {
+    waitUntil: 'domcontentloaded',
+  });
 
   // Verify response status (may redirect to signin if auth required)
   expect(response?.status()).toBeLessThan(400);

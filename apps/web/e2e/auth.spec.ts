@@ -47,8 +47,12 @@ test.describe('Authentication', () => {
 
     // Check for email/password form
     await expect(page.locator('input[type="email"], [data-testid="email-input"]')).toBeVisible();
-    await expect(page.locator('input[type="password"], [data-testid="password-input"]')).toBeVisible();
-    await expect(page.locator('button[type="submit"], [data-testid="signin-button"]')).toBeVisible();
+    await expect(
+      page.locator('input[type="password"], [data-testid="password-input"]'),
+    ).toBeVisible();
+    await expect(
+      page.locator('button[type="submit"], [data-testid="signin-button"]'),
+    ).toBeVisible();
   });
 
   test('should show validation error for invalid credentials', async ({ page }) => {

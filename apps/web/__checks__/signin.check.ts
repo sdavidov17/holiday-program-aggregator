@@ -1,5 +1,5 @@
+import * as path from 'node:path';
 import { BrowserCheck, Frequency } from 'checkly/constructs';
-import * as path from 'path';
 import { alertChannels } from './alert-channels';
 
 /**
@@ -17,6 +17,9 @@ new BrowserCheck('signin-journey', {
     entrypoint: path.join(__dirname, 'specs/signin.spec.ts'),
   },
   environmentVariables: [
-    { key: 'ENVIRONMENT_URL', value: process.env.ENVIRONMENT_URL || 'https://holiday-heroes-five.vercel.app' },
+    {
+      key: 'ENVIRONMENT_URL',
+      value: process.env.ENVIRONMENT_URL || 'https://holiday-heroes-five.vercel.app',
+    },
   ],
 });

@@ -6,7 +6,6 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import type { PrismaClient } from '@prisma/client';
 import {
-  createStripeCustomer as createStripeCustomerFactory,
   createStripeSubscription,
   createTestSubscription,
   createTestUser,
@@ -35,7 +34,7 @@ jest.mock('~/utils/stripe', () => ({
 }));
 
 // Import mocked modules
-import { stripe, createStripeCustomer, createCheckoutSession } from '~/utils/stripe';
+import { createCheckoutSession, createStripeCustomer, stripe } from '~/utils/stripe';
 
 describe('SubscriptionService', () => {
   let service: SubscriptionService;
@@ -80,10 +79,7 @@ describe('SubscriptionService', () => {
         sessionId: mockSession.id,
         url: mockSession.url,
       });
-      expect(createStripeCustomer).toHaveBeenCalledWith(
-        'user@example.com',
-        user.id
-      );
+      expect(createStripeCustomer).toHaveBeenCalledWith('user@example.com', user.id);
     });
 
     it('should use existing Stripe customer if available', async () => {

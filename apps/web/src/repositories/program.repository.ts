@@ -3,8 +3,8 @@
  * Provides database operations for Program entities with audit logging
  */
 
-import type { PrismaClient, Program, Prisma } from '@prisma/client';
-import { BaseRepository, type FindOptions } from './base.repository';
+import type { Prisma, PrismaClient, Program } from '@prisma/client';
+import { BaseRepository } from './base.repository';
 
 export interface ProgramWithProvider extends Program {
   provider?: {
@@ -430,7 +430,7 @@ export class ProgramRepository extends BaseRepository<Program> {
   async bulkUpdateByProvider(
     providerId: string,
     data: Partial<Program>,
-    userId?: string,
+    _userId?: string,
   ): Promise<number> {
     try {
       const result = await this.prisma.program.updateMany({
@@ -448,7 +448,7 @@ export class ProgramRepository extends BaseRepository<Program> {
   /**
    * Delete all programs for a provider
    */
-  async deleteByProviderId(providerId: string, userId?: string): Promise<number> {
+  async deleteByProviderId(providerId: string, _userId?: string): Promise<number> {
     try {
       const result = await this.prisma.program.deleteMany({
         where: { providerId },

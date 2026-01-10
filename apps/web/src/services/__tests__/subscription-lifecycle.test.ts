@@ -3,7 +3,7 @@
  * Tests for renewal reminders and expiration processing
  */
 
-import { describe, expect, it, jest, beforeEach, afterEach } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { addDays, startOfDay } from 'date-fns';
 
 describe('Subscription Lifecycle Service', () => {
@@ -150,9 +150,7 @@ describe('Subscription Lifecycle Service', () => {
         },
       };
 
-      mockFindMany
-        .mockResolvedValueOnce([subscriptionNoEmail])
-        .mockResolvedValueOnce([]);
+      mockFindMany.mockResolvedValueOnce([subscriptionNoEmail]).mockResolvedValueOnce([]);
 
       const results = await processSubscriptionLifecycle();
 
@@ -217,9 +215,7 @@ describe('Subscription Lifecycle Service', () => {
         },
       };
 
-      mockFindMany
-        .mockResolvedValueOnce([subscriptionWithError])
-        .mockResolvedValueOnce([]);
+      mockFindMany.mockResolvedValueOnce([subscriptionWithError]).mockResolvedValueOnce([]);
       mockSendRenewalReminder.mockRejectedValue(new Error('Email service down'));
 
       const results = await processSubscriptionLifecycle();
@@ -242,9 +238,7 @@ describe('Subscription Lifecycle Service', () => {
         },
       };
 
-      mockFindMany
-        .mockResolvedValueOnce([])
-        .mockResolvedValueOnce([expiredSubscription]);
+      mockFindMany.mockResolvedValueOnce([]).mockResolvedValueOnce([expiredSubscription]);
       mockUpdate.mockResolvedValue({
         ...expiredSubscription,
         status: 'EXPIRED',
@@ -281,9 +275,7 @@ describe('Subscription Lifecycle Service', () => {
         },
       };
 
-      mockFindMany
-        .mockResolvedValueOnce([subscription])
-        .mockResolvedValueOnce([]);
+      mockFindMany.mockResolvedValueOnce([subscription]).mockResolvedValueOnce([]);
       mockUpdate.mockResolvedValue(subscription);
       mockSendRenewalReminder.mockResolvedValue(undefined);
 
@@ -320,9 +312,7 @@ describe('Subscription Lifecycle Service', () => {
         },
       ];
 
-      mockFindMany
-        .mockResolvedValueOnce(subscriptions)
-        .mockResolvedValueOnce([]);
+      mockFindMany.mockResolvedValueOnce(subscriptions).mockResolvedValueOnce([]);
       mockUpdate.mockResolvedValue({});
       mockSendRenewalReminder.mockResolvedValue(undefined);
 
@@ -347,9 +337,7 @@ describe('Subscription Lifecycle Service', () => {
         },
       };
 
-      mockFindMany
-        .mockResolvedValueOnce([subscription])
-        .mockResolvedValueOnce([]);
+      mockFindMany.mockResolvedValueOnce([subscription]).mockResolvedValueOnce([]);
       mockUpdate.mockResolvedValue(subscription);
       mockSendRenewalReminder.mockResolvedValue(undefined);
 
@@ -376,9 +364,7 @@ describe('Subscription Lifecycle Service', () => {
         },
       };
 
-      mockFindMany
-        .mockResolvedValueOnce([])
-        .mockResolvedValueOnce([expiredNoEmail]);
+      mockFindMany.mockResolvedValueOnce([]).mockResolvedValueOnce([expiredNoEmail]);
       mockUpdate.mockResolvedValue({
         ...expiredNoEmail,
         status: 'EXPIRED',
@@ -426,9 +412,7 @@ describe('Subscription Lifecycle Service', () => {
         },
       };
 
-      mockFindMany
-        .mockResolvedValueOnce([])
-        .mockResolvedValueOnce([expiredSubscription]);
+      mockFindMany.mockResolvedValueOnce([]).mockResolvedValueOnce([expiredSubscription]);
       mockUpdate.mockRejectedValue(new Error('Update failed'));
 
       const results = await processSubscriptionLifecycle();

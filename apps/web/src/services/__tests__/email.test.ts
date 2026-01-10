@@ -3,7 +3,7 @@
  * Tests for sending renewal reminders and expiration notices via Resend
  */
 
-import { describe, expect, it, jest, beforeEach, afterEach } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 
 describe('Email Service', () => {
   // Mock functions
@@ -211,9 +211,7 @@ describe('Email Service', () => {
 
         await sendRenewalReminder('test@example.com', testData);
 
-        expect(consoleWarnSpy).toHaveBeenCalledWith(
-          'Resend not configured, skipping email send',
-        );
+        expect(consoleWarnSpy).toHaveBeenCalledWith('Resend not configured, skipping email send');
       });
 
       it('should not throw error when Resend is not configured', async () => {
@@ -237,9 +235,7 @@ describe('Email Service', () => {
 
         await sendExpirationNotice('test@example.com', testData);
 
-        expect(consoleWarnSpy).toHaveBeenCalledWith(
-          'Resend not configured, skipping email send',
-        );
+        expect(consoleWarnSpy).toHaveBeenCalledWith('Resend not configured, skipping email send');
       });
 
       it('should not throw error when Resend is not configured', async () => {

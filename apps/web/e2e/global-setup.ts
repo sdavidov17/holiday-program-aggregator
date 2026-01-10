@@ -2,12 +2,13 @@
  * Playwright Global Setup
  * Creates dynamic test users before E2E tests run
  */
-import { PrismaClient } from '@prisma/client';
+
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
+import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import * as fs from 'fs';
-import * as path from 'path';
+import { Pool } from 'pg';
 
 // Generate unique run ID for this test run
 const runId = `e2e-${Date.now()}`;
