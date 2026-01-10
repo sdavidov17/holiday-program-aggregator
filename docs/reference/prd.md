@@ -1,20 +1,56 @@
-# Holiday Program Aggregator: Product Requirements Document (PRD)
+# Holiday Hero: Product Requirements Document (PRD)
 
 ### **Goals and Background Context**
 
+#### **Vision**
+Evolve from a **Holiday Program Aggregator** into a comprehensive **Parent Activity Planning Platform** that becomes the trusted hub for all children's activities.
+
 #### **Goals**
-* Validate a subscription-based business model for a niche, high-value market segment.
-* Become the most trusted and convenient platform for parents to discover and vet school holiday programs.
-* Significantly reduce the time and stress parents experience during holiday planning.
-* Build a scalable platform that can expand into adjacent markets (e.g., after-school activities) in the future.
+* **Primary**: Validate a subscription-based business model for a niche, high-value market segment.
+* **Core Value**: Become the most trusted and convenient platform for parents to discover and vet school holiday programs.
+* **User Impact**: Significantly reduce the time and stress parents experience during holiday planning.
+* **Growth**: Build a scalable platform that expands into adjacent markets including:
+  - Provider self-registration and management
+  - Smart parent profiles with auto-updating preferences
+  - Parent communities and group activity planning
+  - Weekend sports and year-round activities (future)
 
 #### **Background Context**
-This document outlines the requirements for a Minimum Viable Product (MVP) designed to address a critical gap in the Australian market. Busy, "Urban Professional Parents" currently lack a centralized, trusted, and efficient way to find and book holiday activities for their children. This PRD details a premium aggregator service that will solve this problem through a curated, well-vetted selection of programs and a seamless, user-centric web experience.
+This document outlines the requirements for the Holiday Hero platform, addressing a critical gap in the Australian market. Busy, "Urban Professional Parents" currently lack a centralized, trusted, and efficient way to find and book holiday activities for their children. This PRD details a premium aggregator service that will solve this problem through a curated, well-vetted selection of programs, intelligent agent-powered provider discovery, and a seamless, user-centric web experience.
+
+> **See Also**: [Customer Journeys Proposal](/docs/reference/customer-journeys-proposal.md) for detailed journey maps and priority matrix.
 
 #### **Change Log**
 | Date | Version | Description | Author |
 | :--- | :--- | :--- | :--- |
 | 27/07/2025 | 1.0 | Initial PRD draft creation and validation. | John (PM) |
+| 10/01/2026 | 2.0 | Expanded vision to Parent Activity Platform. Added Epics 5-9. | Sergei (PM) |
+
+---
+### **User Personas**
+
+#### **Primary: Urban Professional Parent ("Sarah")**
+* **Demographics**: 30-45 years old, dual-income household, 1-3 children aged 4-14
+* **Pain Points**:
+  - Limited time for research during work hours
+  - Overwhelmed by fragmented information across provider websites
+  - Anxiety about program quality and child safety
+  - Last-minute scrambling before each school holiday
+* **Goals**: Find trustworthy, age-appropriate activities quickly; reduce planning stress
+* **Behaviour**: Mobile-first, values reviews and recommendations, willing to pay for convenience
+
+#### **Secondary: Holiday Program Provider ("James")**
+* **Demographics**: Small business owner or program coordinator, runs holiday camps/activities
+* **Pain Points**:
+  - Marketing to reach new parents is expensive and fragmented
+  - Managing bookings and parent inquiries is time-consuming
+  - Competing with larger providers for visibility
+* **Goals**: Attract more families, establish credibility, reduce admin burden
+* **Behaviour**: Values exposure over cost, wants simple onboarding, appreciates analytics
+
+#### **Tertiary: Admin/Platform Operator**
+* **Role**: Internal team managing provider vetting, content quality, and platform operations
+* **Goals**: Efficiently onboard quality providers, maintain data freshness, handle support
 
 ---
 ### **Requirements**
@@ -30,6 +66,30 @@ This document outlines the requirements for a Minimum Viable Product (MVP) desig
 * **FR8:** The system shall automatically generate and send a curated email of program suggestions to users based on their saved preferences prior to each school holiday period.
 * **FR9:** The system shall securely process annual subscription payments through an integrated third-party payment provider.
 * **FR10:** The system shall manage the user's subscription lifecycle, including sending renewal reminders and restricting access to premium features upon subscription expiry.
+
+**Agentic Provider Discovery (P0)**
+* **FR11:** The system shall include an AI-powered research agent that autonomously discovers holiday program providers via Google Places, web search, and manual seeds.
+* **FR12:** The research agent shall extract provider information using Claude API and create leads with confidence scores for human review.
+* **FR13:** The system shall provide an outreach workflow where the agent drafts transparent emails (from platform founder) for admin approval before sending.
+* **FR14:** The system shall integrate with ABN Lookup API for automated business verification.
+* **FR15:** The system shall display Google Reviews ratings and review counts on provider pages with links to Google Maps.
+
+**Provider Self-Registration (P1)**
+* **FR16:** The system shall allow providers to self-register by submitting business details, ABN, and required certifications (WWCC, insurance).
+* **FR17:** The system shall provide providers with a dashboard to manage their programs, view analytics, and respond to reviews.
+
+**Smart Parent Profiles (P1)**
+* **FR18:** The system shall allow parents to add children with date of birth, automatically calculating and updating ages.
+* **FR19:** The system shall support multiple locations (home, work) for proximity-based search.
+* **FR20:** The system shall allow parents to configure notification preferences (frequency, types of updates).
+
+**Proactive Planning Triggers (P1)**
+* **FR21:** The system shall integrate Australian school calendars (by state) to trigger planning reminders at 6, 4, and 2 weeks before each holiday period.
+* **FR22:** The system shall support waitlist functionality for fully booked programs with availability notifications.
+
+**Reviews & Social Features (P2)**
+* **FR23:** The system shall allow verified subscribers to submit reviews with star ratings, comments, and optional photos.
+* **FR24:** The system shall support parent friend groups with shared visibility of preferences and group activity planning.
 
 #### **Non-Functional**
 * **NFR1 (Performance):** The core search and discovery interface shall load in under 3 seconds and achieve a Largest Contentful Paint (LCP) of under 2.5 seconds.
@@ -69,10 +129,23 @@ This document outlines the requirements for a Minimum Viable Product (MVP) desig
 ---
 ### **Epic List**
 
+#### **MVP Epics (P0)**
 * **Epic 1: Foundation, Provider Management & Subscriptions:** To establish the core technical foundation, build the internal admin tools for provider management, and implement the user subscription and payment system.
 * **Epic 2: Parent-Facing Search & Discovery:** To launch the primary application, allowing subscribed users to search, filter, and view vetted holiday programs.
 * **Epic 3: Proactive Suggestions & User Preferences:** To enhance user value by implementing the preference center and the automated email system for curated suggestions.
 * **Epic 4: Security, SRE & Observability:** To implement comprehensive monitoring, security hardening, and observability practices ensuring the platform's reliability, security, and ability to proactively detect and respond to issues.
+* **Epic 5: Agentic Provider Discovery:** To implement an AI-powered agent system that autonomously researches, discovers, and onboards holiday program providers with human-in-the-loop approval.
+
+#### **Growth Epics (P1)**
+* **Epic 6: Provider Self-Registration & Dashboard:** To enable providers to self-register on the platform, manage their programs, and access analytics through a dedicated dashboard.
+* **Epic 7: Smart Parent Profiles & Notifications:** To implement auto-evolving parent profiles with child age tracking, multiple locations, and configurable notification preferences.
+
+#### **Engagement Epics (P2)**
+* **Epic 8: Reviews & Ratings System:** To build a comprehensive review system allowing parents to rate and review programs, building social proof and trust.
+* **Epic 9: Parent Communities & Group Planning:** To enable parents to connect with friends, form groups, and coordinate activities together with AI-assisted group planning.
+
+#### **Expansion Epics (P3 - Future)**
+* **Epic 10: Weekend Sports & Year-Round Activities:** To expand beyond holiday programs into weekly sports, after-school activities, and term-based programs.
 
 ---
 ### **Epic 1: Foundation, Provider Management & Subscriptions (Hybrid Approach)**
@@ -167,13 +240,151 @@ This document outlines the requirements for a Minimum Viable Product (MVP) desig
 * **Acceptance Criteria:** 1. Synthetic tests for signup, login, search, payment. 2. Tests run every 5 minutes from Sydney. 3. Alerts within 2 minutes of failures. 4. SLOs defined and monitored for all journeys.
 
 ---
+### **Epic 5: Agentic Provider Discovery (P0)**
+
+**Epic Goal:** Implement an AI-powered agent system that autonomously researches, discovers, and onboards holiday program providers with human-in-the-loop approval at key decision points. This reduces manual acquisition effort while maintaining quality control.
+
+> **See Also**: [Agent Journey Map](/docs/architecture/agent-journey-map.md) and [Implementation Plan](/.claude/plans/sorted-wondering-plum.md)
+
+#### **Story 5.1: Research Agent Infrastructure**
+*As an admin, I want an agent system that can research providers from multiple sources, so that we can scale provider acquisition.*
+* **Acceptance Criteria:** 1. Trigger.dev background jobs configured for agent tasks. 2. PostgreSQL job queue with retry logic. 3. Feature toggle (AGENT_ENABLED) controls agent system. 4. Claude API integration for research analysis.
+
+#### **Story 5.2: Google Places & Web Discovery**
+*As the research agent, I want to discover providers via Google Places and web search, so that I can find providers across regions.*
+* **Acceptance Criteria:** 1. Google Places API integration for business discovery. 2. Google Reviews data captured (rating, count, place ID). 3. Web scraping for additional provider info. 4. Leads created with confidence scores.
+
+#### **Story 5.3: Provider Lead Queue**
+*As an admin, I want to review discovered provider leads before they're contacted, so that I can ensure quality.*
+* **Acceptance Criteria:** 1. Admin dashboard shows lead queue with filters. 2. Lead details include research summary and confidence score. 3. Admin can approve, reject, or mark duplicate. 4. ABN auto-verified via API.
+
+#### **Story 5.4: Transparent Outreach Workflow**
+*As an admin, I want to review and approve outreach emails before sending, so that communications are appropriate.*
+* **Acceptance Criteria:** 1. Claude generates email drafts (founder persona). 2. Email appears in approval queue (DRAFT status). 3. Admin can edit and approve. 4. Approved emails sent via Resend.
+
+#### **Story 5.5: Term Confirmation System**
+*As the system, I want to remind providers to confirm their programs each term, so that data stays fresh.*
+* **Acceptance Criteria:** 1. Australian school calendar integration by state. 2. Reminder emails sent 4 weeks before term end. 3. Provider self-service portal (no login required). 4. Non-responders flagged after 3 attempts.
+
+---
+### **Epic 6: Provider Self-Registration & Dashboard (P1)**
+
+**Epic Goal:** Enable providers to self-register on the platform, reducing acquisition costs while giving providers control over their listings and access to performance analytics.
+
+#### **Story 6.1: Provider Registration Flow**
+*As a provider, I want to register my business on Holiday Hero, so that parents can find my programs.*
+* **Acceptance Criteria:** 1. Multi-step registration form. 2. ABN auto-verification. 3. Document upload for WWCC and insurance. 4. Email confirmation and progress tracking.
+
+#### **Story 6.2: Provider Dashboard**
+*As a registered provider, I want a dashboard to manage my programs, so that I can keep listings up to date.*
+* **Acceptance Criteria:** 1. Program CRUD operations. 2. Analytics view (impressions, clicks). 3. Review management (view and respond). 4. Profile and certification management.
+
+#### **Story 6.3: Admin Provider Review**
+*As an admin, I want to review provider applications, so that only quality providers are listed.*
+* **Acceptance Criteria:** 1. Application queue with status filters. 2. Document verification workflow. 3. Approve/reject with messaging. 4. Welcome email on approval.
+
+---
+### **Epic 7: Smart Parent Profiles & Notifications (P1)**
+
+**Epic Goal:** Create intelligent parent profiles that evolve automatically (e.g., children's ages update on birthdays) and provide configurable notification preferences for a personalized experience.
+
+#### **Story 7.1: Child Profiles with DOB**
+*As a parent, I want to add my children with their dates of birth, so that age-appropriate programs are recommended.*
+* **Acceptance Criteria:** 1. Add/edit/remove children. 2. DOB stored, age calculated dynamically. 3. Age updates automatically on birthdays. 4. Age-based activity category mapping.
+
+#### **Story 7.2: Multiple Location Support**
+*As a parent, I want to save multiple locations (home, work), so that I can search for programs near either.*
+* **Acceptance Criteria:** 1. Primary and secondary location fields. 2. Toggle between locations in search. 3. Location-based program recommendations.
+
+#### **Story 7.3: Notification Preferences**
+*As a parent, I want to control what notifications I receive, so that I only get relevant updates.*
+* **Acceptance Criteria:** 1. Granular notification toggles (planning reminders, new programs, waitlist). 2. Frequency options (instant, daily, weekly). 3. Channel preferences (email, future: push). 4. Unsubscribe management.
+
+---
+### **Epic 8: Reviews & Ratings System (P2)**
+
+**Epic Goal:** Build a comprehensive review system that allows parents to rate and review programs, creating social proof and helping other parents make informed decisions.
+
+#### **Story 8.1: Review Submission**
+*As a parent, I want to review programs I've attended, so that I can help other parents.*
+* **Acceptance Criteria:** 1. Star rating (1-5). 2. Written review with pros/cons. 3. Child age at time of review. 4. Optional photo upload.
+
+#### **Story 8.2: Review Display & Moderation**
+*As a visitor, I want to see reviews on program pages, so that I can evaluate quality.*
+* **Acceptance Criteria:** 1. Reviews displayed with ratings. 2. Helpful votes on reviews. 3. Admin moderation queue. 4. Provider response capability.
+
+#### **Story 8.3: Review Prompts**
+*As the system, I want to prompt parents to review after programs end, so that we collect feedback.*
+* **Acceptance Criteria:** 1. Post-program email prompt. 2. Click tracking for conversions. 3. Reminder if not reviewed.
+
+---
+### **Epic 9: Parent Communities & Group Planning (P2)**
+
+**Epic Goal:** Enable parents to connect with friends, form groups, and coordinate activities together with AI-assisted group planning recommendations.
+
+#### **Story 9.1: Friend Connections**
+*As a parent, I want to connect with other parents, so that we can plan activities together.*
+* **Acceptance Criteria:** 1. Invite friends via email/link. 2. Accept/decline friend requests. 3. View friends' public preferences (opt-in). 4. See friends interested in same programs.
+
+#### **Story 9.2: Parent Groups**
+*As a parent, I want to create/join groups (e.g., school parents, neighborhood), so that we can coordinate.*
+* **Acceptance Criteria:** 1. Create and manage groups. 2. Group member management. 3. Group activity feed. 4. Group messaging/chat.
+
+#### **Story 9.3: AI Group Planning**
+*As a group member, I want AI-powered activity suggestions for our group, so that planning is easier.*
+* **Acceptance Criteria:** 1. Aggregate group preferences. 2. Claude-powered recommendations. 3. RSVP/interest tracking. 4. Booking threshold notifications.
+
+---
+### **Epic 10: Weekend Sports & Year-Round Activities (P3 - Future)**
+
+**Epic Goal:** Expand beyond holiday programs into weekly sports, after-school activities, and term-based programs, transforming Holiday Hero into a comprehensive activity planning platform.
+
+#### **Story 10.1: Activity Type Expansion**
+*As a parent, I want to search for weekend and ongoing activities, so that I can plan year-round.*
+* **Acceptance Criteria:** 1. New activity types (weekly, term, ongoing). 2. Frequency filters in search. 3. Season/term scheduling. 4. Registration period tracking.
+
+#### **Story 10.2: Sports Club Onboarding**
+*As a sports club, I want to list our programs, so that families can find us.*
+* **Acceptance Criteria:** 1. Sports-specific registration flow. 2. Team/age group management. 3. Season scheduling. 4. Tryout/registration windows.
+
+> **Note:** Epic 10 may coincide with a platform rebrand from "Holiday Hero" to a broader name (e.g., "KidsGo", "ActivityHub"). See branding considerations in customer journeys document.
+
+---
+### **Priority Roadmap**
+
+| Phase | Priority | Epics | Focus |
+|-------|----------|-------|-------|
+| **MVP** | P0 | 1-5 | Foundation + Search + Agent Discovery |
+| **V1.1** | P1 | 6-7 | Provider Self-Reg + Smart Profiles |
+| **V2.0** | P2 | 8-9 | Reviews + Communities |
+| **V3.0** | P3 | 10 | Weekend Sports (+ potential rebrand) |
+
+#### **Journey-to-Epic Mapping**
+
+| Journey | Epic(s) |
+|---------|---------|
+| J1: Parent Discovery & Search | Epic 2, Epic 3 |
+| J2: Agentic Provider Discovery | Epic 5 |
+| J3: Provider Self-Registration | Epic 6 |
+| J4: Smart Parent Profile | Epic 7 |
+| J5: Proactive Planning Triggers | Epic 3, Epic 7 |
+| J6: Reviews & Ratings | Epic 8 |
+| J7: Parent Communities | Epic 9 |
+| J8: AI Group Planning | Epic 9 |
+| J9: Weekend Sports | Epic 10 |
+
+> **See Also**: [Customer Journeys Proposal](/docs/reference/customer-journeys-proposal.md) for detailed priority matrix and success metrics.
+
+---
 ### **Checklist Results Report**
 
 * **Executive Summary:** The PRD has been validated and is **Ready** for the next phase. The document is comprehensive, consistent, and provides a clear, actionable plan for the MVP. No blocking issues were identified.
 * **Final Decision:** ✅ **READY FOR ARCHITECT**
+* **V2.0 Update:** Expanded to include 10 Epics covering the full Parent Activity Platform vision.
 
 ---
 ### **Next Steps**
 
-* **UX Expert Prompt:** "Hello Sally (UX Expert). Here is the completed and validated PRD. Please review it, particularly the 'User Interface Design Goals' and detailed Epics, and then begin the UI/UX Specification process."
-* **Architect Prompt:** "Hello Winston (Architect). Here is the completed and validated PRD, which includes high-level Technical Assumptions. Please review it thoroughly and begin the fullstack architecture design process."
+* **Agent Implementation:** Begin Phase 1 of Epic 5 (Agentic Provider Discovery). See GitHub Issues #230-236.
+* **UX Expert Prompt:** "Hello Sally (UX Expert). Here is the completed and validated PRD with expanded vision. Please review the new Epics 5-10 and update UI/UX specifications."
+* **Architect Prompt:** "Hello Winston (Architect). Please review the new Epics 5-10, particularly the Agent infrastructure requirements (Trigger.dev, Claude API, job queues)."
