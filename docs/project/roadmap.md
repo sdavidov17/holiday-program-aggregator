@@ -7,170 +7,180 @@ This document consolidates all project planning for the Parent Pilot platform (f
 
 ---
 
+## MVP Definition
+
+**MVP Goal**: Enable paying subscribers to search and discover vetted holiday programs.
+
+| Priority | Epic | Status | Required for MVP |
+|----------|------|--------|------------------|
+| P0 | Epic 1: Foundation & Subscriptions | 85% | Yes (core done) |
+| P0 | Epic 2: Search & Discovery | Not Started | **Yes - Core MVP** |
+| P0 | Epic 4: Security (priority stories) | 33% | Yes (subset) |
+| P1 | Epic 5: Agentic Provider Discovery | Designed | No - Post-MVP |
+| P1 | Epic 3: Proactive Suggestions | Not Started | No |
+| P2 | Epic 6-9: Growth Features | Not Started | No |
+| P2 | Epic 11: Native Mobile App | Not Started | No |
+
+---
+
 ## Epic Structure
 
 ### Epic 0: Initial Setup (COMPLETED)
 - **Issue**: #2
-- **Stories**: #10 (completed)
-- Pre-PRD infrastructure work
+- **Status**: ✅ Complete
 
-### Epic 1: Foundation, Provider Management & Subscriptions
+### Epic 1: Foundation & Subscriptions (85% Complete)
 - **Issue**: #99
-- **Stories**: #92-98, #243 (PWA)
-- Authentication, subscriptions, provider management, PWA
-- **Status**: 71% complete (5/7 core stories done)
+- **Stories**:
+  - [x] 1.1: Initial Project & CI/CD Setup (#92)
+  - [x] 1.2: User Account System (#93)
+  - [x] 1.3: Subscription & Payment Integration (#94)
+  - [x] 1.4: Subscription Lifecycle Management (#95)
+  - [x] 1.5: Manual Provider Onboarding Tool (#96)
+  - [x] 1.8: Progressive Web App (PWA) Configuration (#243)
+- **Deferred to Epic 5**:
+  - Story 1.6: Crawler-Assisted Data Entry (#97) → Merged into Epic 5
+  - Story 1.7: Automated Data Refresh (#98) → Merged into Epic 5
 
-### Epic 2: Parent-Facing Search & Discovery
+> **Note**: Stories 1.6-1.7 require the same infrastructure as Epic 5 (job queues, AI integration). They are now part of the Agentic Provider Discovery epic.
+
+### Epic 2: Search & Discovery (MVP Priority)
 - **Issue**: #104
-- **Stories**: #100-103
-- Core search functionality for MVP
-- **Status**: Not Started
+- **Stories**:
+  - [ ] 2.1: Search & Filter Interface (#100)
+  - [ ] 2.2: Display Program Search Results (#101)
+  - [ ] 2.3: Interactive Map View (#102)
+  - [ ] 2.4: Detailed Provider Profile Page (#103)
+- **Status**: Not Started - **NEXT PRIORITY**
 
-### Epic 3: Proactive Suggestions & User Preferences
+### Epic 3: Proactive Suggestions
 - **Issue**: #105
 - **Stories**: #83-85
-- Automated recommendations and preference center
-- **Status**: Not Started
+- **Status**: Not Started (P1)
 
-### Epic 4: Security, SRE & Observability
+### Epic 4: Security & Observability
 - **Issue**: #7
-- **Stories**: #23-33, #89-91, #137-138, #147
-- Monitoring, security hardening, test coverage
-- **Status**: 33% complete (5/15 stories done)
+- **Priority Stories for MVP**:
+  - [ ] 4.1: Security Headers & CSP (#23)
+  - [ ] 4.4: Critical Journey Monitoring (#26)
+  - [ ] Rate Limiting (#8)
+- **Full Stories**: #23-33, #89-91, #137-138, #147
+- **Status**: 33% complete
 
-### Epic 5: Provider Portal
-- **Issue**: #37
-- **Stories**: #38-42
-- Self-service provider dashboard and management
-- **Status**: Not Started
+### Epic 5: Agentic Provider Discovery
+- **Issue**: #82 (Epic 11 legacy) - needs new epic issue
+- **Infrastructure Issues**: #230-236
+- **Stories**:
+  - [ ] 5.1: Research Agent Infrastructure
+  - [ ] 5.2: Google Places & Web Discovery
+  - [ ] 5.3: Provider Lead Queue
+  - [ ] 5.4: Transparent Outreach Workflow
+  - [ ] 5.5: Term Confirmation System
+- **Includes**: Former Stories 1.6-1.7 functionality
+- **Status**: Designed, Not Started (P1)
 
-### Epic 6: Subscription & Payment Processing
-- **Issue**: #9
-- **Stories**: #44-47
-- Payment flows, billing, invoicing
-- **Status**: Partially implemented in Epic 1
-
-### Epic 7: Communication Hub
-- **Issue**: #48
-- **Stories**: #49-52
-- Messaging, notifications, reviews
-- **Status**: Not Started
-
-### Epic 8: Analytics & Business Intelligence
-- **Issue**: #53
-- **Stories**: #54-57
-- Admin dashboards, provider metrics, user analytics
-- **Status**: Not Started
-
-### Epic 9: Mobile & Offline Support
-- **Issue**: #58
-- **Stories**: #59-61
-- PWA implementation, offline caching
-- **Status**: In Progress (PWA work started)
-
-### Epic 10: Advanced Features & Integrations
-- **Issue**: #62
-- **Stories**: #63-66
-- AI recommendations, calendar integration, social features
-- **Status**: Not Started
+### Epic 6-10: Growth & Expansion
+- Provider Portal, Smart Profiles, Reviews, Communities, Sports
+- **Status**: Not Started (P1-P3)
 
 ### Epic 11: Native Mobile App
-- **Issue**: #82, #237-242
-- **Stories**: Expo setup, navigation, friend discovery, push notifications
-- **Status**: Planned
-
----
-
-## Agent System (Agentic Provider Discovery)
-
-Autonomous provider research and onboarding system with human-in-the-loop approval.
-
-| Issue | Phase | Description | Status |
-|-------|-------|-------------|--------|
-| #230 | 1.1 | Database Schema for Agent System | Open |
-| #231 | 1.2 | PostgreSQL-Based Job Queue | Open |
-| #232 | 1.3 | Cron Endpoint Infrastructure | Open |
-| #233 | 1.4 | Environment Variables & Config | Open |
-| #234 | Docs | Journey Maps & Workflow Diagrams | Open |
-| #235 | 1.5 | Trigger.dev Setup & Feature Toggle | Open |
-| #236 | 2.5 | Observability, Logging & Testing | Open |
-
-**Documentation**:
-- Architecture: `/docs/architecture/agent-system.md`
-- Journey Maps: `/docs/architecture/agent-journey-map.md`
-
----
-
-## Milestone Timeline
-
-| Phase | Target | Epic Focus | Status |
-|-------|--------|------------|--------|
-| **Phase 1: Foundation** | Completed | Epic 0, Epic 1 (core) | 85% |
-| **Phase 2: Security & Quality** | Q1 2026 | Epic 4 (priority stories) | 33% |
-| **Phase 3: MVP Search** | Q1 2026 | Epic 2 (all stories) | Not Started |
-| **Phase 4: Agent System** | Q2 2026 | Agent Phases 1.1-1.5 | Designed |
-| **Phase 5: Growth Features** | Q2 2026 | Epic 3, Epic 7 | Not Started |
-| **Phase 6: Mobile** | Q3 2026 | Epic 9, Epic 11 | PWA Started |
+- **Issues**: #237-242
+- **Status**: Planned (P2)
+- **Prerequisite**: PWA (Story 1.8) ✅ provides interim mobile support
 
 ---
 
 ## Critical Path
 
 ```
-Epic 0 ✅ → Epic 1 🔄 → Epic 4 (Security) → Epic 2 (MVP) → Agent System → Epic 3 → Epic 11
+Epic 1 ✅ → Epic 2 (Search) → Epic 4 (Security) → Epic 5 (Agent) → Epic 3 → Epic 11
+    │           │                   │
+    │           │                   └── Run in parallel where possible
+    │           └── MVP LAUNCH GATE
+    └── Foundation complete (85%)
 ```
 
 ---
 
 ## Current Sprint Focus
 
-### In Progress
-1. **PWA Implementation** (#243) - Story 1.8
-2. **Agent System Design** - Architecture documentation complete
+### Completed This Sprint
+- [x] Story 1.8: PWA Implementation (#243)
 
-### Next Up
-1. Complete Epic 1 remaining stories (#97, #98)
-2. Epic 4 priority: Test coverage (#147), Rate limiting (#8)
-3. Begin Epic 2 for MVP search functionality
+### Next Sprint Priority
+1. **Epic 2 - Story 2.1**: Search & Filter Interface (#100)
+2. **Epic 2 - Story 2.2**: Display Search Results (#101)
+3. **Epic 4 - Security Headers**: (#23) - can run in parallel
+
+### Backlog (Post-MVP)
+- Epic 5: Agent System (#230-236)
+- Epic 3: Proactive Suggestions
+- Epic 6+: Growth features
 
 ---
 
-## Progress Metrics
+## Milestone Timeline
 
-| Metric | Current | Target |
-|--------|---------|--------|
-| Completed Stories | ~12 | 50+ |
-| Test Coverage | 30% | 80% |
-| Epics Completed | 1 | 5 (MVP) |
-| Agent Phases Done | 0 | 6 |
+| Milestone | Epics | Key Deliverable |
+|-----------|-------|-----------------|
+| **MVP Launch** | 1, 2, 4 (subset) | Parents can search & subscribe |
+| **Agent System** | 5 | Automated provider discovery |
+| **Engagement** | 3, 6, 7 | Proactive emails, provider portal |
+| **Community** | 8, 9, 11 | Reviews, groups, native app |
+| **Expansion** | 10 | Year-round activities |
+
+---
+
+## Story-to-Issue Mapping
+
+### Epic 1 (Foundation)
+| Story | Issue | Status |
+|-------|-------|--------|
+| 1.1 Initial Setup | #92 | ✅ Closed |
+| 1.2 User Accounts | #93 | ✅ Closed |
+| 1.3 Subscription Payment | #94 | ✅ Closed |
+| 1.4 Subscription Lifecycle | #95 | ✅ Closed |
+| 1.5 Manual Provider Onboarding | #96 | ✅ Closed |
+| 1.6 Crawler-Assisted Entry | #97 | ⏸️ Deferred to Epic 5 |
+| 1.7 Automated Data Refresh | #98 | ⏸️ Deferred to Epic 5 |
+| 1.8 PWA Configuration | #243 | ✅ Closed |
+
+### Epic 2 (Search - MVP)
+| Story | Issue | Status |
+|-------|-------|--------|
+| 2.1 Search & Filter | #100 | 🔜 Next |
+| 2.2 Search Results | #101 | Open |
+| 2.3 Map View | #102 | Open |
+| 2.4 Provider Profile | #103 | Open |
+
+### Epic 5 (Agent System)
+| Phase | Issue | Status |
+|-------|-------|--------|
+| 1.1 Database Schema | #230 | Open |
+| 1.2 Job Queue | #231 | Open |
+| 1.3 Cron Infrastructure | #232 | Open |
+| 1.4 Environment Config | #233 | Open |
+| 1.5 Trigger.dev Setup | #235 | Open |
+| 2.5 Observability | #236 | Open |
+| Docs: Journey Maps | #234 | Open |
 
 ---
 
 ## Technical Stack
 
-- Next.js 15.4.6 / React 19.1.1
-- tRPC v11 / Prisma v6
+- Next.js 16.1.1 / React 19.2.3
+- tRPC v11 / Prisma v7
 - NextAuth v4
-- TypeScript 5.9.2
-- Tailwind CSS 3.4.17
-- Biome 2.2.0
-
----
-
-## Story Files
-
-All story documentation in `docs/stories/`:
-- `epic-0-story-*.md` (4 files) - Completed
-- `epic-1-story-*.md` (7+ files) - In Progress
-- `epic-2-story-*.md` (4 files) - Planned
-- `epic-3-story-*.md` (3 files) - Planned
-- `epic-4-story-*.md` (15+ files) - Partial
+- TypeScript 5.9.3
+- Tailwind CSS 4.x
+- Biome 2.x
+- PWA via next-pwa
 
 ---
 
 ## Related Documents
 
+- **PRD**: `/docs/reference/prd.md`
 - **Implementation Status**: `/docs/project/implementation-status.md`
-- **Epic Story Structure**: `/docs/project/epic-story-structure.md`
 - **Agent Architecture**: `/docs/architecture/agent-system.md`
-- **PRD**: `/docs/reference/prd/`
+- **Agent Journey Maps**: `/docs/architecture/agent-journey-map.md`

@@ -27,6 +27,7 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 | 10/01/2026 | 2.0 | Expanded vision to Parent Activity Platform. Added Epics 5-10. | Sergei (PM) |
 | 10/01/2026 | 2.1 | Rebranded to "Parent Pilot". Added contact-based friend discovery. | Sergei (PM) |
 | 10/01/2026 | 2.2 | Added mobile strategy: PWA (Story 1.8) + Native App (Epic 11). | Sergei (PM) |
+| 10/01/2026 | 2.3 | Reconciled MVP scope: Epic 5 moved to P1, Stories 1.6-1.7 merged into Epic 5. | Sergei (PM) |
 
 ---
 ### **User Personas**
@@ -132,23 +133,25 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 ### **Epic List**
 
 #### **MVP Epics (P0)**
-* **Epic 1: Foundation, Provider Management & Subscriptions:** To establish the core technical foundation, build the internal admin tools for provider management, and implement the user subscription and payment system.
-* **Epic 2: Parent-Facing Search & Discovery:** To launch the primary application, allowing subscribed users to search, filter, and view vetted holiday programs.
-* **Epic 3: Proactive Suggestions & User Preferences:** To enhance user value by implementing the preference center and the automated email system for curated suggestions.
-* **Epic 4: Security, SRE & Observability:** To implement comprehensive monitoring, security hardening, and observability practices ensuring the platform's reliability, security, and ability to proactively detect and respond to issues.
-* **Epic 5: Agentic Provider Discovery:** To implement an AI-powered agent system that autonomously researches, discovers, and onboards holiday program providers with human-in-the-loop approval.
+* **Epic 1: Foundation & Subscriptions:** Core technical foundation, user auth, subscriptions, admin tools. *(85% complete)*
+* **Epic 2: Parent-Facing Search & Discovery:** Core search functionality for MVP - the primary user value proposition.
+* **Epic 4: Security & Observability (subset):** Priority security stories (headers, CSP, rate limiting) for MVP launch.
 
-#### **Growth Epics (P1)**
-* **Epic 6: Provider Self-Registration & Dashboard:** To enable providers to self-register on the platform, manage their programs, and access analytics through a dedicated dashboard.
-* **Epic 7: Smart Parent Profiles & Notifications:** To implement auto-evolving parent profiles with child age tracking, multiple locations, and configurable notification preferences.
+#### **Post-MVP Epics (P1)**
+* **Epic 5: Agentic Provider Discovery:** AI-powered agent system for autonomous provider research and onboarding. *(Includes former Stories 1.6-1.7)*
+* **Epic 3: Proactive Suggestions & User Preferences:** Preference center and automated email suggestions.
+* **Epic 6: Provider Self-Registration & Dashboard:** Provider self-service portal and analytics.
+* **Epic 7: Smart Parent Profiles & Notifications:** Auto-evolving profiles with child age tracking.
 
 #### **Engagement Epics (P2)**
-* **Epic 8: Reviews & Ratings System:** To build a comprehensive review system allowing parents to rate and review programs, building social proof and trust.
-* **Epic 9: Parent Communities & Group Planning:** To enable parents to connect with friends, form groups, and coordinate activities together with AI-assisted group planning.
-* **Epic 11: Native Mobile App:** To build an Expo/React Native app with full device access (contacts, push notifications) and App Store presence.
+* **Epic 8: Reviews & Ratings System:** Parent reviews and social proof.
+* **Epic 9: Parent Communities & Group Planning:** Friend connections and group activity planning.
+* **Epic 11: Native Mobile App:** Expo/React Native app for contacts API and push notifications.
 
 #### **Expansion Epics (P3 - Future)**
-* **Epic 10: Weekend Sports & Year-Round Activities:** To expand beyond holiday programs into weekly sports, after-school activities, and term-based programs.
+* **Epic 10: Weekend Sports & Year-Round Activities:** Expand beyond holiday programs.
+
+> **Note on Stories 1.6-1.7**: The crawler-assisted data entry (1.6) and automated data refresh (1.7) stories have been merged into Epic 5 (Agentic Provider Discovery) as they require the same infrastructure (job queues, AI integration, background processing).
 
 ---
 ### **Epic 1: Foundation, Provider Management & Subscriptions (Hybrid Approach)**
@@ -175,13 +178,15 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 *As an admin, I want a simple interface to manually enter, edit, and vet new provider data, so that we have a reliable way to onboard our first providers for launch.*
 * **Acceptance Criteria:** 1. A logged-in admin can access a secure admin dashboard. 2. The admin can create a new provider profile using a data entry form. 3. The form includes all necessary fields. 4. The admin can mark the provider as 'Vetted' and 'Published'.
 
-#### **Story 1.6: Crawler-Assisted Data Entry**
+#### **Story 1.6: Crawler-Assisted Data Entry** *(Deferred to Epic 5)*
 *As an admin, I want a tool that can take a provider's URL and attempt to automatically pre-fill the data entry form, so that I can speed up the manual onboarding process.*
 * **Acceptance Criteria:** 1. The "New Provider" form has a URL field. 2. Submitting a URL triggers the crawling agent to extract key info. 3. Extracted data pre-populates the form fields. 4. The admin can then review, correct, and complete the form.
+* **Status:** Merged into Epic 5 - requires job queue and AI infrastructure.
 
-#### **Story 1.7: Automated Data Refresh & Review**
+#### **Story 1.7: Automated Data Refresh & Review** *(Deferred to Epic 5)*
 *As an admin, I want the system to periodically re-crawl existing providers and highlight potential changes, so I can efficiently keep the data up to date.*
 * **Acceptance Criteria:** 1. The crawling agent runs automatically on a schedule. 2. If the agent detects a potential change, it flags the provider in the admin dashboard. 3. The admin dashboard has a queue for reviewing flagged providers.
+* **Status:** Merged into Epic 5 - requires scheduled jobs and change detection.
 
 #### **Story 1.8: Progressive Web App (PWA) Configuration**
 *As a parent, I want to install Parent Pilot on my phone's home screen, so that I can access it quickly like a native app.*
@@ -396,10 +401,12 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 
 | Phase | Priority | Epics | Focus |
 |-------|----------|-------|-------|
-| **MVP** | P0 | 1-5 | Foundation + Search + Agent Discovery + PWA |
-| **V1.1** | P1 | 6-7 | Provider Self-Reg + Smart Profiles |
+| **MVP** | P0 | 1, 2, 4 (subset) | Foundation + Search + Security basics + PWA |
+| **V1.0** | P1 | 5, 3, 6-7 | Agent Discovery + Proactive + Provider Portal |
 | **V2.0** | P2 | 8-9, 11 | Reviews + Communities + Native Mobile App |
 | **V3.0** | P3 | 10 | Weekend Sports |
+
+> **MVP Scope Clarification**: Epic 5 (Agentic Provider Discovery) moved from P0 to P1. MVP focuses on enabling parents to search manually-onboarded providers. Agent automation scales provider acquisition post-launch.
 
 #### **Mobile Strategy**
 - **P0 (MVP)**: PWA via Story 1.8 - installable, offline-capable, no app store needed
@@ -431,6 +438,8 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 ---
 ### **Next Steps**
 
-* **Agent Implementation:** Begin Phase 1 of Epic 5 (Agentic Provider Discovery). See GitHub Issues #230-236.
-* **UX Expert Prompt:** "Hello Sally (UX Expert). Here is the completed and validated PRD with expanded vision. Please review the new Epics 5-10 and update UI/UX specifications."
-* **Architect Prompt:** "Hello Winston (Architect). Please review the new Epics 5-10, particularly the Agent infrastructure requirements (Trigger.dev, Claude API, job queues)."
+* **MVP Focus:** Complete Epic 2 (Search & Discovery) - Stories 2.1-2.4. This is the core user value.
+* **Security Baseline:** Implement Epic 4 priority stories (#23, #26, #8) in parallel with Epic 2.
+* **Post-MVP:** Begin Epic 5 (Agentic Provider Discovery) once MVP search is live. See GitHub Issues #230-236.
+
+> **See Also**: [Project Roadmap](/docs/project/roadmap.md) for current sprint focus and detailed story-to-issue mapping.
