@@ -55,3 +55,4 @@ dev2.log
 
 # turbo
 .turbo.env.production
+trace/
