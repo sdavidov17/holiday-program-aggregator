@@ -1,0 +1,75 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/guards/block_dangerous_rm.sh",
+            "description": "Block destructive rm commands with home/root paths"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/guards/warn_production.sh",
+            "description": "Warn when production keywords detected"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/guards/block_force_push.sh",
+            "description": "Block git force push commands"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/guards/protect_sensitive_files.sh",
+            "description": "Protect .env, credentials, and sensitive config files"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/guards/detect_hardcoded_secrets.sh",
+            "description": "Detect hardcoded API keys, tokens, and passwords"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/guards/warn_test_changes.sh",
+            "description": "Warn when test files are being modified"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/guards/protect_critical_files.sh",
+            "description": "Protect critical project files (schema, configs)"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/post_commit_reminder.sh",
+            "description": "Remind to run /reflect after commits"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/guards/check_tests_run.sh",
+            "description": "Verify tests were run before session completion"
+          }
+        ]
+      }
+    ]
+  }
+}
