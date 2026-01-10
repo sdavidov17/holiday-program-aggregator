@@ -129,6 +129,13 @@ const config = {
     locales: ['en'],
     defaultLocale: 'en',
   },
+
+  /**
+   * Empty turbopack config to allow dev mode to work with Turbopack
+   * while next-pwa uses webpack for production builds.
+   * Production builds use --webpack flag explicitly.
+   */
+  turbopack: {},
 };
 
 export default withPWA(config);
