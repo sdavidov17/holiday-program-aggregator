@@ -1,4 +1,4 @@
-# Holiday Hero: Product Requirements Document (PRD)
+# Parent Pilot: Product Requirements Document (PRD)
 
 ### **Goals and Background Context**
 
@@ -16,7 +16,7 @@ Evolve from a **Holiday Program Aggregator** into a comprehensive **Parent Activ
   - Weekend sports and year-round activities (future)
 
 #### **Background Context**
-This document outlines the requirements for the Holiday Hero platform, addressing a critical gap in the Australian market. Busy, "Urban Professional Parents" currently lack a centralized, trusted, and efficient way to find and book holiday activities for their children. This PRD details a premium aggregator service that will solve this problem through a curated, well-vetted selection of programs, intelligent agent-powered provider discovery, and a seamless, user-centric web experience.
+This document outlines the requirements for the Parent Pilot platform, addressing a critical gap in the Australian market. Busy, "Urban Professional Parents" currently lack a centralized, trusted, and efficient way to find and book holiday activities for their children. This PRD details a premium aggregator service that will solve this problem through a curated, well-vetted selection of programs, intelligent agent-powered provider discovery, and a seamless, user-centric web experience.
 
 > **See Also**: [Customer Journeys Proposal](/docs/reference/customer-journeys-proposal.md) for detailed journey maps and priority matrix.
 
@@ -24,7 +24,8 @@ This document outlines the requirements for the Holiday Hero platform, addressin
 | Date | Version | Description | Author |
 | :--- | :--- | :--- | :--- |
 | 27/07/2025 | 1.0 | Initial PRD draft creation and validation. | John (PM) |
-| 10/01/2026 | 2.0 | Expanded vision to Parent Activity Platform. Added Epics 5-9. | Sergei (PM) |
+| 10/01/2026 | 2.0 | Expanded vision to Parent Activity Platform. Added Epics 5-10. | Sergei (PM) |
+| 10/01/2026 | 2.1 | Rebranded to "Parent Pilot". Added contact-based friend discovery. | Sergei (PM) |
 
 ---
 ### **User Personas**
@@ -272,7 +273,7 @@ This document outlines the requirements for the Holiday Hero platform, addressin
 **Epic Goal:** Enable providers to self-register on the platform, reducing acquisition costs while giving providers control over their listings and access to performance analytics.
 
 #### **Story 6.1: Provider Registration Flow**
-*As a provider, I want to register my business on Holiday Hero, so that parents can find my programs.*
+*As a provider, I want to register my business on Parent Pilot, so that parents can find my programs.*
 * **Acceptance Criteria:** 1. Multi-step registration form. 2. ABN auto-verification. 3. Document upload for WWCC and insurance. 4. Email confirmation and progress tracking.
 
 #### **Story 6.2: Provider Dashboard**
@@ -322,15 +323,19 @@ This document outlines the requirements for the Holiday Hero platform, addressin
 
 **Epic Goal:** Enable parents to connect with friends, form groups, and coordinate activities together with AI-assisted group planning recommendations.
 
-#### **Story 9.1: Friend Connections**
-*As a parent, I want to connect with other parents, so that we can plan activities together.*
-* **Acceptance Criteria:** 1. Invite friends via email/link. 2. Accept/decline friend requests. 3. View friends' public preferences (opt-in). 4. See friends interested in same programs.
+#### **Story 9.1: Contact-Based Friend Discovery**
+*As a parent, I want to find friends from my phone contacts who are already on Parent Pilot, so that I can easily connect with people I know.*
+* **Acceptance Criteria:** 1. Opt-in contacts permission request. 2. Phone/email matching against existing users. 3. "Parents you may know" suggestions displayed. 4. One-tap friend requests. 5. Privacy-compliant (hashed matching, no raw storage).
 
-#### **Story 9.2: Parent Groups**
+#### **Story 9.2: Friend Connections**
+*As a parent, I want to connect with other parents, so that we can plan activities together.*
+* **Acceptance Criteria:** 1. Invite friends via email/link/SMS. 2. Accept/decline friend requests. 3. View friends' public preferences (opt-in). 4. See friends interested in same programs.
+
+#### **Story 9.3: Parent Groups**
 *As a parent, I want to create/join groups (e.g., school parents, neighborhood), so that we can coordinate.*
 * **Acceptance Criteria:** 1. Create and manage groups. 2. Group member management. 3. Group activity feed. 4. Group messaging/chat.
 
-#### **Story 9.3: AI Group Planning**
+#### **Story 9.4: AI Group Planning**
 *As a group member, I want AI-powered activity suggestions for our group, so that planning is easier.*
 * **Acceptance Criteria:** 1. Aggregate group preferences. 2. Claude-powered recommendations. 3. RSVP/interest tracking. 4. Booking threshold notifications.
 
@@ -347,7 +352,7 @@ This document outlines the requirements for the Holiday Hero platform, addressin
 *As a sports club, I want to list our programs, so that families can find us.*
 * **Acceptance Criteria:** 1. Sports-specific registration flow. 2. Team/age group management. 3. Season scheduling. 4. Tryout/registration windows.
 
-> **Note:** Epic 10 may coincide with a platform rebrand from "Holiday Hero" to a broader name (e.g., "KidsGo", "ActivityHub"). See branding considerations in customer journeys document.
+> **Note:** Epic 10 expands the platform into year-round activities, fully realizing the "Parent Pilot" vision as a comprehensive activity planning platform.
 
 ---
 ### **Priority Roadmap**

@@ -1,7 +1,8 @@
-# Customer Journeys - Holiday Hero Platform
+# Customer Journeys - Parent Pilot Platform
 
 > **Status**: ✅ APPROVED - Integrated into [PRD v2.0](/docs/reference/prd.md)
 > **Date**: January 2026
+> **Brand**: Parent Pilot (formerly Parent Pilot)
 
 ## Vision Evolution
 
@@ -49,7 +50,7 @@ Holiday Program Aggregator      →      Parent Activity Planning Platform
 │  ───────────               ─────                     ─────                       │
 │                                                                                  │
 │  Parent hears about    →   Visits site, sees    →   Searches programs,          │
-│  Holiday Hero from         sample programs          finds relevant options       │
+│  Parent Pilot from         sample programs          finds relevant options       │
 │  friend/ad/social          without signup           in under 5 minutes           │
 │                                                                                  │
 │         │                        │                        │                      │
@@ -142,7 +143,7 @@ Holiday Program Aggregator      →      Parent Activity Planning Platform
 │  ────────────              ─────                    ──────                       │
 │                                                                                  │
 │  Provider finds        →   Fills registration  →   Uploads documents:           │
-│  Holiday Hero              form:                   • ABN verification            │
+│  Parent Pilot              form:                   • ABN verification            │
 │  (Google, referral,        • Business name         • WWCC (or commit to)         │
 │  our outreach)             • Contact details       • Insurance cert              │
 │                            • Program types         • Photos/description          │
@@ -379,15 +380,37 @@ Holiday Program Aggregator      →      Parent Activity Planning Platform
 │  PARENT: CONNECT WITH OTHER PARENTS → PLAN TOGETHER                             │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                  │
-│  1. CONNECT                2. SHARE                 3. COORDINATE                │
-│  ─────────                 ─────                    ──────────                   │
+│  1. DISCOVER FRIENDS         2. CONNECT              3. COORDINATE              │
+│  ────────────────            ───────                 ──────────                 │
 │                                                                                  │
-│  Parent invites        →   Friends see each    →   Plan activities              │
-│  friends via email         other's kids ages       together:                    │
-│  or share link             and preferences         • "Sarah's booking           │
-│                                                       this camp, join?"          │
-│                                                    • Group chat                  │
-│                                                    • Shared calendar             │
+│  ┌─────────────────────┐                                                        │
+│  │ "Find friends from  │     Parent sends      →   Plan activities              │
+│  │  your contacts"     │     invite or accepts     together:                    │
+│  │                     │     friend request        • "Sarah's booking           │
+│  │ [Allow Access]      │                             this camp, join?"          │
+│  │                     │     Friends see each      • Group chat                  │
+│  │ 📱 Syncs phone      │     other's kids ages     • Shared calendar             │
+│  │    contacts         │     and preferences                                     │
+│  └─────────────────────┘     (opt-in sharing)                                   │
+│                                                                                  │
+│  CONTACT-BASED DISCOVERY                                                         │
+│  ═══════════════════════                                                         │
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  📱 Parents you may know                                                │    │
+│  │                                                                          │    │
+│  │  We found 5 parents from your contacts already on Parent Pilot:         │    │
+│  │                                                                          │    │
+│  │  ┌────────────────────────────────────────────────────────────────┐     │    │
+│  │  │  👤 Sarah M.          Kids: Emma (7), Liam (5)    [+ Add]      │     │    │
+│  │  │  👤 James K.          Kids: Oliver (8)            [+ Add]      │     │    │
+│  │  │  👤 Emma W.           Kids: Mia (6), Noah (4)     [+ Add]      │     │    │
+│  │  │  👤 Michael T.        Kids: Ava (9)               [+ Add]      │     │    │
+│  │  │  👤 Jessica L.        Kids: Sophie (7)            [+ Add]      │     │    │
+│  │  └────────────────────────────────────────────────────────────────┘     │    │
+│  │                                                                          │    │
+│  │  [Add All]  [Skip for now]                                              │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
 │                                                                                  │
 │  FRIEND GROUP FEATURES                                                           │
 │  ═════════════════════                                                           │
@@ -423,13 +446,22 @@ Holiday Program Aggregator      →      Parent Activity Planning Platform
 ```
 
 **Key Features Required:**
-- [ ] Friend invitations
+- [ ] **Contact-based friend discovery** (phone/email matching)
+- [ ] Contacts permission request (opt-in, privacy-compliant)
+- [ ] "Parents you may know" suggestions
+- [ ] Friend invitations (email, link, SMS)
 - [ ] Friend groups
 - [ ] Group-visible preferences (opt-in)
 - [ ] "X is interested in this program" notifications
 - [ ] Group activity planning
 - [ ] Group chat or messaging
 - [ ] Shared calendar view
+
+**Privacy Considerations:**
+- Contacts only processed for matching, never stored raw
+- Users can revoke access anytime
+- Phone numbers hashed for matching
+- GDPR/APP compliant consent flow
 
 **Status**: Not started (P2 - later phase)
 
@@ -730,7 +762,7 @@ Holiday Program Aggregator      →      Parent Activity Planning Platform
 │  │  Sydney Kids Camp                                                        │    │
 │  │  ──────────────────                                                      │    │
 │  │                                                                          │    │
-│  │  ★★★★☆ 4.2 on Holiday Hero (47 reviews)                                 │    │
+│  │  ★★★★☆ 4.2 on Parent Pilot (47 reviews)                                 │    │
 │  │                                                                          │    │
 │  │  ★★★★☆ 4.3 on Google (127 reviews) [View on Google Maps ↗]             │    │
 │  │                                                                          │    │
@@ -762,18 +794,20 @@ model ProviderLead {
 
 ---
 
-## Branding Considerations (for V3+)
+## Branding Decision
 
-**Current**: Holiday Hero (focused on holiday programs)
+**Brand Name**: **Parent Pilot** ✅
 
-**Future Options** (when expanding to weekend sports):
-- **KidsGo** - Short, action-oriented
-- **ActivityHub** - Platform feel
-- **KidFinder** - Search-focused
-- **ParentPilot** - Parent-centric helper
-- **PlayDate** - Social/community feel
+**Rationale**:
+- **Parent-centric** - Focuses on the user (parent), not the activity type
+- **Guidance/navigation** - "Pilot" suggests helping navigate options
+- **Scalable** - Works for holidays, weekend sports, after-school, and beyond
+- **Memorable** - Alliterative, easy to remember
+- **Domain-friendly** - Clean for URLs and app names
 
-**Recommendation**: Keep "Holiday Hero" through V2, evaluate rebrand for V3 when weekend sports launches. The current name works well for the core value prop.
+**Previous Name**: Holiday Hero (too narrow for expanded vision)
+
+**Decision**: Rebrand now (January 2026) rather than later to avoid user confusion.
 
 ---
 
@@ -782,7 +816,8 @@ model ProviderLead {
 | Decision | Answer |
 |----------|--------|
 | Priority order | ✓ Confirmed: P0 → P1 → P2 → P3 |
-| Branding | ✓ Consider broader name for V3 |
+| Branding | ✓ Rebranded to "Parent Pilot" now (Jan 2026) |
+| Contact-based friend discovery | ✓ Add to J7/Epic 9 (P2) |
 | Waitlist/booking | ✓ Add to P1 |
 | Notification preferences | ✓ Add to P1 (J4) |
 | Google reviews integration | ✓ Add to P0 (J2) |
@@ -796,7 +831,7 @@ model ProviderLead {
 | **P0** | J1: Parent Search, J2: Agent Discovery (+Google Reviews) |
 | **P1** | J3: Provider Self-Reg, J4: Smart Profile (+Notifications), J5: Auto Triggers, A1: Waitlist |
 | **P2** | J6: Reviews, J7: Communities, J8: Group AI |
-| **P3** | J9: Weekend Sports (+ potential rebrand) |
+| **P3** | J9: Weekend Sports |
 
 ---
 
