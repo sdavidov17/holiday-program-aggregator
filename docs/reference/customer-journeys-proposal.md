@@ -818,6 +818,7 @@ model ProviderLead {
 | Priority order | ✓ Confirmed: P0 → P1 → P2 → P3 |
 | Branding | ✓ Rebranded to "Parent Pilot" now (Jan 2026) |
 | Contact-based friend discovery | ✓ Add to J7/Epic 9 (P2) |
+| Mobile strategy | ✓ Hybrid: PWA (P0) + Expo native app (P2) |
 | Waitlist/booking | ✓ Add to P1 |
 | Notification preferences | ✓ Add to P1 (J4) |
 | Google reviews integration | ✓ Add to P0 (J2) |

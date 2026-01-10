@@ -26,6 +26,7 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 | 27/07/2025 | 1.0 | Initial PRD draft creation and validation. | John (PM) |
 | 10/01/2026 | 2.0 | Expanded vision to Parent Activity Platform. Added Epics 5-10. | Sergei (PM) |
 | 10/01/2026 | 2.1 | Rebranded to "Parent Pilot". Added contact-based friend discovery. | Sergei (PM) |
+| 10/01/2026 | 2.2 | Added mobile strategy: PWA (Story 1.8) + Native App (Epic 11). | Sergei (PM) |
 
 ---
 ### **User Personas**
@@ -144,6 +145,7 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 #### **Engagement Epics (P2)**
 * **Epic 8: Reviews & Ratings System:** To build a comprehensive review system allowing parents to rate and review programs, building social proof and trust.
 * **Epic 9: Parent Communities & Group Planning:** To enable parents to connect with friends, form groups, and coordinate activities together with AI-assisted group planning.
+* **Epic 11: Native Mobile App:** To build an Expo/React Native app with full device access (contacts, push notifications) and App Store presence.
 
 #### **Expansion Epics (P3 - Future)**
 * **Epic 10: Weekend Sports & Year-Round Activities:** To expand beyond holiday programs into weekly sports, after-school activities, and term-based programs.
@@ -180,6 +182,10 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 #### **Story 1.7: Automated Data Refresh & Review**
 *As an admin, I want the system to periodically re-crawl existing providers and highlight potential changes, so I can efficiently keep the data up to date.*
 * **Acceptance Criteria:** 1. The crawling agent runs automatically on a schedule. 2. If the agent detects a potential change, it flags the provider in the admin dashboard. 3. The admin dashboard has a queue for reviewing flagged providers.
+
+#### **Story 1.8: Progressive Web App (PWA) Configuration**
+*As a parent, I want to install Parent Pilot on my phone's home screen, so that I can access it quickly like a native app.*
+* **Acceptance Criteria:** 1. Web app manifest configured with icons and theme. 2. Service worker provides offline caching for core pages. 3. Install prompt shown on supported browsers. 4. App works offline for cached content. 5. Lighthouse PWA score ≥90.
 
 ---
 ### **Epic 2: Parent-Facing Search & Discovery**
@@ -245,7 +251,7 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 
 **Epic Goal:** Implement an AI-powered agent system that autonomously researches, discovers, and onboards holiday program providers with human-in-the-loop approval at key decision points. This reduces manual acquisition effort while maintaining quality control.
 
-> **See Also**: [Agent Journey Map](/docs/architecture/agent-journey-map.md) and [Implementation Plan](/.claude/plans/sorted-wondering-plum.md)
+> **See Also**: [Agent System Architecture](/docs/architecture/agent-system.md) | [Agent Journey Map](/docs/architecture/agent-journey-map.md)
 
 #### **Story 5.1: Research Agent Infrastructure**
 *As an admin, I want an agent system that can research providers from multiple sources, so that we can scale provider acquisition.*
@@ -355,14 +361,49 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 > **Note:** Epic 10 expands the platform into year-round activities, fully realizing the "Parent Pilot" vision as a comprehensive activity planning platform.
 
 ---
+### **Epic 11: Native Mobile App (P2)**
+
+**Epic Goal:** Build a native mobile app using Expo/React Native to provide full access to device features (contacts, push notifications) and App Store presence, enabling the contact-based friend discovery feature.
+
+> **Note:** PWA (Story 1.8) provides immediate mobile support. This epic delivers the full native experience when P2 community features require native device APIs.
+
+#### **Story 11.1: Expo Project Setup**
+*As a developer, I want an Expo project configured to share code with the web app, so that we can build efficiently.*
+* **Acceptance Criteria:** 1. Expo project initialized in monorepo. 2. Shared TypeScript types and API client. 3. Authentication flow integrated. 4. Development builds working on iOS/Android.
+
+#### **Story 11.2: Core Navigation & Search**
+*As a parent, I want to search and browse programs on my phone, so that I can find activities on the go.*
+* **Acceptance Criteria:** 1. Tab-based navigation. 2. Search interface with filters. 3. Program list and detail views. 4. Map integration. 5. Performance matches web app.
+
+#### **Story 11.3: Profile & Preferences**
+*As a parent, I want to manage my profile and children on the app, so that recommendations stay relevant.*
+* **Acceptance Criteria:** 1. Profile editing. 2. Child management (add/edit/remove). 3. Location preferences. 4. Notification settings.
+
+#### **Story 11.4: Contact-Based Friend Discovery**
+*As a parent, I want to find friends from my phone contacts, so that I can connect with parents I know.*
+* **Acceptance Criteria:** 1. Native contacts permission request. 2. Phone/email matching against users. 3. "Parents you may know" screen. 4. Privacy-compliant (hashed matching).
+
+#### **Story 11.5: Push Notifications**
+*As a parent, I want to receive push notifications for planning reminders and updates, so that I don't miss important dates.*
+* **Acceptance Criteria:** 1. Push notification registration. 2. Holiday reminder notifications. 3. Waitlist availability alerts. 4. Friend activity notifications (opt-in).
+
+#### **Story 11.6: App Store Submission**
+*As the business, I want the app published on iOS App Store and Google Play, so that parents can discover us.*
+* **Acceptance Criteria:** 1. App Store assets (icons, screenshots, description). 2. Privacy policy and terms. 3. App review compliance. 4. Published on both stores.
+
+---
 ### **Priority Roadmap**
 
 | Phase | Priority | Epics | Focus |
 |-------|----------|-------|-------|
-| **MVP** | P0 | 1-5 | Foundation + Search + Agent Discovery |
+| **MVP** | P0 | 1-5 | Foundation + Search + Agent Discovery + PWA |
 | **V1.1** | P1 | 6-7 | Provider Self-Reg + Smart Profiles |
-| **V2.0** | P2 | 8-9 | Reviews + Communities |
-| **V3.0** | P3 | 10 | Weekend Sports (+ potential rebrand) |
+| **V2.0** | P2 | 8-9, 11 | Reviews + Communities + Native Mobile App |
+| **V3.0** | P3 | 10 | Weekend Sports |
+
+#### **Mobile Strategy**
+- **P0 (MVP)**: PWA via Story 1.8 - installable, offline-capable, no app store needed
+- **P2**: Native Expo app (Epic 11) - required for contacts API and push notifications
 
 #### **Journey-to-Epic Mapping**
 
