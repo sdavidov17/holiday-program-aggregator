@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { SessionProvider } from 'next-auth/react';
 import type React from 'react';
 import SearchPage from '../../pages/search';
@@ -22,6 +22,15 @@ jest.mock('next/link', () => ({
   default: ({ children, href }: { children: React.ReactNode; href: string }) => (
     <a href={href}>{children}</a>
   ),
+}));
+
+// Mock next/router
+const mockPush = jest.fn();
+jest.mock('next/router', () => ({
+  useRouter: () => ({
+    query: {},
+    push: mockPush,
+  }),
 }));
 
 // Mock PremiumFeatureGuard
@@ -63,7 +72,28 @@ jest.mock('~/utils/api', () => ({
         })),
       },
     },
+    provider: {
+      search: {
+        useQuery: jest.fn(() => ({
+          data: {
+            providers: [],
+            totalCount: 0,
+            hasMore: false,
+            limit: 20,
+            offset: 0,
+          },
+          isLoading: false,
+          isFetching: false,
+        })),
+      },
+    },
   },
+}));
+
+// Mock ProviderCard component
+jest.mock('~/components/ui/ProviderCard', () => ({
+  __esModule: true,
+  default: ({ name }: { name: string }) => <div data-testid="provider-card">{name}</div>,
 }));
 
 describe('SearchPage', () => {
@@ -78,6 +108,7 @@ describe('SearchPage', () => {
   };
 
   beforeEach(() => {
+    jest.clearAllMocks();
     const { useSession } = require('next-auth/react');
     (useSession as jest.Mock).mockReturnValue({
       data: mockSession,
@@ -85,59 +116,191 @@ describe('SearchPage', () => {
     });
   });
 
-  it('renders the search page with title', () => {
+  it('renders the search page with header', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
       </SessionProvider>,
     );
 
-    expect(screen.getByText('Program Search')).toBeInTheDocument();
+    expect(screen.getByText('Parent Pilot')).toBeInTheDocument();
   });
 
-  it('displays welcome message with user name', () => {
+  it('renders search input field', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
       </SessionProvider>,
     );
 
-    expect(screen.getByText(/Welcome Test User!/)).toBeInTheDocument();
+    expect(screen.getByTestId('search-input')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Search programs...')).toBeInTheDocument();
   });
 
-  it('renders search form fields', () => {
+  it('renders search button', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
       </SessionProvider>,
     );
 
-    expect(screen.getByLabelText('Location')).toBeInTheDocument();
-    expect(screen.getByLabelText('Age Group')).toBeInTheDocument();
-    expect(screen.getByLabelText('Activity Type')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Search Programs' })).toBeInTheDocument();
+    expect(screen.getByTestId('search-button')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
   });
 
-  it('shows back to profile link', () => {
+  it('renders filter sidebar on desktop', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
       </SessionProvider>,
     );
 
-    const backLink = screen.getByText('Back to Profile');
-    expect(backLink).toBeInTheDocument();
-    expect(backLink).toHaveAttribute('href', '/profile');
+    expect(screen.getByText('Location')).toBeInTheDocument();
+    expect(screen.getByText('Activity Type')).toBeInTheDocument();
+    expect(screen.getByText('Age Group')).toBeInTheDocument();
+    expect(screen.getByText('Program Dates')).toBeInTheDocument();
   });
 
-  it('displays demo interface notice', () => {
+  it('renders activity categories as checkboxes', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
       </SessionProvider>,
     );
 
-    expect(screen.getByText(/This is a demo search interface/)).toBeInTheDocument();
+    expect(screen.getByText('Sports')).toBeInTheDocument();
+    expect(screen.getByText('Arts & Crafts')).toBeInTheDocument();
+    expect(screen.getByText('Educational')).toBeInTheDocument();
+    expect(screen.getByText('Technology')).toBeInTheDocument();
+  });
+
+  it('renders age group radio buttons', () => {
+    render(
+      <SessionProvider session={mockSession}>
+        <SearchPage />
+      </SessionProvider>,
+    );
+
+    expect(screen.getByText('All ages')).toBeInTheDocument();
+    expect(screen.getByText('3-5 years')).toBeInTheDocument();
+    expect(screen.getByText('6-8 years')).toBeInTheDocument();
+  });
+
+  it('shows no results message when no providers found', () => {
+    render(
+      <SessionProvider session={mockSession}>
+        <SearchPage />
+      </SessionProvider>,
+    );
+
+    expect(screen.getByTestId('no-results-message')).toBeInTheDocument();
+    expect(screen.getByText('No programs found')).toBeInTheDocument();
+  });
+
+  it('displays provider cards when results are returned', () => {
+    const { api } = require('~/utils/api');
+    (api.provider.search.useQuery as jest.Mock).mockReturnValue({
+      data: {
+        providers: [
+          {
+            id: 'provider-1',
+            businessName: 'Test Provider',
+            description: 'Test description',
+            suburb: 'Sydney',
+            state: 'NSW',
+            isVetted: true,
+            logoUrl: null,
+            programs: [{ category: 'Sports' }],
+          },
+        ],
+        totalCount: 1,
+        hasMore: false,
+        limit: 20,
+        offset: 0,
+      },
+      isLoading: false,
+      isFetching: false,
+    });
+
+    render(
+      <SessionProvider session={mockSession}>
+        <SearchPage />
+      </SessionProvider>,
+    );
+
+    expect(screen.getAllByTestId('provider-card').length).toBeGreaterThan(0);
+    expect(screen.getByText('Test Provider')).toBeInTheDocument();
+  });
+
+  it('shows result count', () => {
+    const { api } = require('~/utils/api');
+    (api.provider.search.useQuery as jest.Mock).mockReturnValue({
+      data: {
+        providers: [
+          {
+            id: 'provider-1',
+            businessName: 'Test Provider',
+            description: 'Test description',
+            suburb: 'Sydney',
+            state: 'NSW',
+            isVetted: true,
+            logoUrl: null,
+            programs: [],
+          },
+        ],
+        totalCount: 1,
+        hasMore: false,
+        limit: 20,
+        offset: 0,
+      },
+      isLoading: false,
+      isFetching: false,
+    });
+
+    render(
+      <SessionProvider session={mockSession}>
+        <SearchPage />
+      </SessionProvider>,
+    );
+
+    expect(screen.getByText('1 program found')).toBeInTheDocument();
+  });
+
+  it('handles search form submission', () => {
+    render(
+      <SessionProvider session={mockSession}>
+        <SearchPage />
+      </SessionProvider>,
+    );
+
+    const searchInput = screen.getByTestId('search-input');
+    fireEvent.change(searchInput, { target: { value: 'soccer' } });
+
+    const searchButton = screen.getByTestId('search-button');
+    fireEvent.click(searchButton);
+
+    expect(mockPush).toHaveBeenCalledWith(
+      { pathname: '/search', query: { query: 'soccer' } },
+      undefined,
+      { shallow: true },
+    );
+  });
+
+  it('shows loading state', () => {
+    const { api } = require('~/utils/api');
+    (api.provider.search.useQuery as jest.Mock).mockReturnValue({
+      data: null,
+      isLoading: true,
+      isFetching: false,
+    });
+
+    render(
+      <SessionProvider session={mockSession}>
+        <SearchPage />
+      </SessionProvider>,
+    );
+
+    expect(screen.getByText('Searching...')).toBeInTheDocument();
   });
 
   it('renders for unauthenticated users', () => {
@@ -153,28 +316,17 @@ describe('SearchPage', () => {
       </SessionProvider>,
     );
 
-    expect(screen.getByText('Program Search')).toBeInTheDocument();
+    expect(screen.getByText('Parent Pilot')).toBeInTheDocument();
+    expect(screen.getByText('Profile')).toBeInTheDocument();
   });
 
-  it('shows user email when name is not available', () => {
-    const { useSession } = require('next-auth/react');
-    (useSession as jest.Mock).mockReturnValue({
-      data: {
-        ...mockSession,
-        user: {
-          ...mockSession.user,
-          name: null,
-        },
-      },
-      status: 'authenticated',
-    });
-
+  it('shows user name in header when authenticated', () => {
     render(
       <SessionProvider session={mockSession}>
         <SearchPage />
       </SessionProvider>,
     );
 
-    expect(screen.getByText(/Welcome test@example.com!/)).toBeInTheDocument();
+    expect(screen.getByText('Test User')).toBeInTheDocument();
   });
 });

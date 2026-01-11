@@ -18,6 +18,8 @@ jobs:
   deploy-checks:
     name: Deploy Checkly Monitors
     runs-on: ubuntu-latest
+    # Only run if FEATURE_CHECKLY_ENABLED is true (set as repository variable)
+    if: vars.FEATURE_CHECKLY_ENABLED == 'true'
     defaults:
       run:
         working-directory: apps/web
