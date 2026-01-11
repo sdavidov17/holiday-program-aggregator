@@ -223,6 +223,188 @@ async function main() {
     console.log(`✅ Test user already exists: ${testUserEmail}`);
   }
 
+  // Create test providers and programs for E2E search tests
+  console.log('🌱 Creating test providers and programs...');
+
+  // Clean up existing test providers
+  await prisma.program.deleteMany({
+    where: {
+      provider: {
+        email: {
+          endsWith: '@test-provider.com',
+        },
+      },
+    },
+  });
+  await prisma.provider.deleteMany({
+    where: {
+      email: {
+        endsWith: '@test-provider.com',
+      },
+    },
+  });
+
+  // Create vetted and published providers
+  const providers = await Promise.all([
+    prisma.provider.create({
+      data: {
+        businessName: 'Sydney Sports Academy',
+        contactName: 'John Smith',
+        email: 'contact@test-provider.com',
+        phone: '02 9999 0001',
+        website: 'https://sportsacademy.example.com',
+        abn: '12345678901',
+        address: '123 Sports St',
+        suburb: 'Sydney',
+        state: 'NSW',
+        postcode: '2000',
+        description: 'Premier sports training for kids of all ages',
+        isVetted: true,
+        isPublished: true,
+        vettingDate: new Date(),
+        vettingStatus: 'APPROVED',
+      },
+    }),
+    prisma.provider.create({
+      data: {
+        businessName: 'Creative Kids Art Studio',
+        contactName: 'Sarah Johnson',
+        email: 'hello@test-provider.com',
+        phone: '02 9999 0002',
+        website: 'https://creativekids.example.com',
+        abn: '23456789012',
+        address: '456 Art Lane',
+        suburb: 'Bondi',
+        state: 'NSW',
+        postcode: '2026',
+        description: 'Nurturing creativity through art and crafts',
+        isVetted: true,
+        isPublished: true,
+        vettingDate: new Date(),
+        vettingStatus: 'APPROVED',
+      },
+    }),
+    prisma.provider.create({
+      data: {
+        businessName: 'Tech Explorers Academy',
+        contactName: 'Mike Chen',
+        email: 'info@test-provider.com',
+        phone: '02 9999 0003',
+        website: 'https://techexplorers.example.com',
+        abn: '34567890123',
+        address: '789 Innovation Dr',
+        suburb: 'Chatswood',
+        state: 'NSW',
+        postcode: '2067',
+        description: 'STEM education and technology programs for the future',
+        isVetted: true,
+        isPublished: true,
+        vettingDate: new Date(),
+        vettingStatus: 'APPROVED',
+      },
+    }),
+  ]);
+  console.log('✅ Created 3 test providers');
+
+  // Create programs for each provider
+  const now = new Date();
+  const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  const programsData = [
+    // Sports Academy programs
+    {
+      providerId: providers[0].id,
+      name: 'Summer Soccer Camp',
+      description: 'Intensive soccer training for young athletes',
+      category: 'Sports',
+      ageMin: 8,
+      ageMax: 14,
+      price: 250,
+      location: 'Sydney Sports Complex',
+      startDate: nextMonth,
+      endDate: new Date(nextMonth.getTime() + 5 * 24 * 60 * 60 * 1000),
+      startTime: '09:00',
+      endTime: '15:00',
+      capacity: 30,
+      isActive: true,
+      isPublished: true,
+    },
+    {
+      providerId: providers[0].id,
+      name: 'Basketball Skills Clinic',
+      description: 'Improve your basketball game with pro coaches',
+      category: 'Sports',
+      ageMin: 10,
+      ageMax: 16,
+      price: 180,
+      location: 'Indoor Sports Centre',
+      startDate: new Date(nextMonth.getTime() + 7 * 24 * 60 * 60 * 1000),
+      endDate: new Date(nextMonth.getTime() + 10 * 24 * 60 * 60 * 1000),
+      startTime: '10:00',
+      endTime: '14:00',
+      capacity: 20,
+      isActive: true,
+      isPublished: true,
+    },
+    // Art Studio programs
+    {
+      providerId: providers[1].id,
+      name: 'Young Artists Workshop',
+      description: 'Explore painting, drawing and mixed media',
+      category: 'Arts',
+      ageMin: 6,
+      ageMax: 12,
+      price: 200,
+      location: 'Creative Kids Studio Bondi',
+      startDate: nextMonth,
+      endDate: new Date(nextMonth.getTime() + 5 * 24 * 60 * 60 * 1000),
+      startTime: '09:30',
+      endTime: '12:30',
+      capacity: 15,
+      isActive: true,
+      isPublished: true,
+    },
+    // Tech programs
+    {
+      providerId: providers[2].id,
+      name: 'Robotics Workshop',
+      description: 'Build and program robots with LEGO and Arduino',
+      category: 'Technology',
+      ageMin: 10,
+      ageMax: 15,
+      price: 350,
+      location: 'Tech Hub Chatswood',
+      startDate: new Date(nextMonth.getTime() + 14 * 24 * 60 * 60 * 1000),
+      endDate: new Date(nextMonth.getTime() + 19 * 24 * 60 * 60 * 1000),
+      startTime: '09:00',
+      endTime: '15:00',
+      capacity: 12,
+      isActive: true,
+      isPublished: true,
+    },
+    {
+      providerId: providers[2].id,
+      name: 'Game Development Basics',
+      description: 'Create your first video game with Scratch and Unity',
+      category: 'Technology',
+      ageMin: 12,
+      ageMax: 17,
+      price: 300,
+      location: 'Tech Hub Chatswood',
+      startDate: new Date(nextMonth.getTime() + 21 * 24 * 60 * 60 * 1000),
+      endDate: new Date(nextMonth.getTime() + 26 * 24 * 60 * 60 * 1000),
+      startTime: '10:00',
+      endTime: '16:00',
+      capacity: 10,
+      isActive: true,
+      isPublished: true,
+    },
+  ];
+
+  await prisma.program.createMany({
+    data: programsData,
+  });
+  console.log('✅ Created 5 test programs');
+
   console.log('🎉 Database seed completed!');
 }
 
