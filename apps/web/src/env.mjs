@@ -57,6 +57,15 @@ export const env = createEnv({
     ADMIN_PASSWORD: z.string().optional(),
     ADMIN_NAME: z.string().optional(),
     ADMIN_SETUP_KEY: z.string().optional(),
+    // Feature Flags (server-only for security-sensitive features)
+    FEATURE_AGENT_ENABLED: z
+      .enum(['true', 'false'])
+      .default('false')
+      .transform((val) => val === 'true'),
+    FEATURE_CHECKLY_ENABLED: z
+      .enum(['true', 'false'])
+      .default('false')
+      .transform((val) => val === 'true'),
   },
 
   /**
@@ -67,6 +76,11 @@ export const env = createEnv({
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
+    // Feature Flags (client-accessible)
+    NEXT_PUBLIC_FEATURE_RUM_ENABLED: z
+      .enum(['true', 'false'])
+      .default('false')
+      .transform((val) => val === 'true'),
   },
 
   /**
@@ -95,6 +109,10 @@ export const env = createEnv({
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
     ADMIN_NAME: process.env.ADMIN_NAME,
     ADMIN_SETUP_KEY: process.env.ADMIN_SETUP_KEY,
+    // Feature Flags
+    FEATURE_AGENT_ENABLED: process.env.FEATURE_AGENT_ENABLED,
+    FEATURE_CHECKLY_ENABLED: process.env.FEATURE_CHECKLY_ENABLED,
+    NEXT_PUBLIC_FEATURE_RUM_ENABLED: process.env.NEXT_PUBLIC_FEATURE_RUM_ENABLED,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -1,6 +1,11 @@
 /**
  * Monitoring and Analytics for Critical User Journeys
+ *
+ * Gated by NEXT_PUBLIC_FEATURE_RUM_ENABLED feature flag.
+ * When disabled, all tracking operations are no-ops.
  */
+
+import { isRumEnabled } from '~/lib/feature-flags/client';
 
 export enum MonitoringEvent {
   // Parent Journey Events
@@ -45,10 +50,23 @@ class MonitoringService {
   private sessionId: string;
   private userId: string | undefined = undefined;
   private performanceObserver: PerformanceObserver | null = null;
+  private enabled: boolean;
 
   constructor() {
+    this.enabled = isRumEnabled();
     this.sessionId = this.generateSessionId();
-    this.initializePerformanceObserver();
+
+    // Only initialize performance observer if RUM is enabled
+    if (this.enabled) {
+      this.initializePerformanceObserver();
+    }
+  }
+
+  /**
+   * Check if RUM is enabled
+   */
+  public isEnabled(): boolean {
+    return this.enabled;
   }
 
   private generateSessionId(): string {
@@ -93,6 +111,11 @@ class MonitoringService {
   }
 
   public track(event: MonitoringEvent, properties?: Record<string, any>) {
+    // Skip tracking if RUM is disabled
+    if (!this.enabled) {
+      return;
+    }
+
     const data: MonitoringData = {
       event,
       properties,
@@ -111,6 +134,11 @@ class MonitoringService {
   }
 
   public trackError(event: MonitoringEvent, error: Error, context?: Record<string, any>) {
+    // Skip tracking if RUM is disabled
+    if (!this.enabled) {
+      return;
+    }
+
     const data: MonitoringData = {
       event,
       properties: context,
@@ -128,6 +156,11 @@ class MonitoringService {
   }
 
   public async trackApiCall<T>(operation: string, apiCall: () => Promise<T>): Promise<T> {
+    // If RUM is disabled, just execute the API call without tracking
+    if (!this.enabled) {
+      return apiCall();
+    }
+
     const startTime = Date.now();
 
     try {
@@ -197,6 +230,11 @@ class MonitoringService {
   }
 
   public sendAlert(message: string, context: Record<string, any>) {
+    // Skip alerts if RUM is disabled
+    if (!this.enabled) {
+      return;
+    }
+
     // Send alerts for critical issues
     if (process.env.NEXT_PUBLIC_ALERT_WEBHOOK) {
       fetch(process.env.NEXT_PUBLIC_ALERT_WEBHOOK, {
@@ -215,6 +253,11 @@ class MonitoringService {
     const startTime = Date.now();
 
     return () => {
+      // Skip tracking if RUM is disabled
+      if (!this.enabled) {
+        return;
+      }
+
       const duration = Date.now() - startTime;
       this.track(MonitoringEvent.PAGE_LOAD_TIME, {
         label,
@@ -364,6 +407,11 @@ export const healthChecks = {
 
 // Automated Health Monitoring
 export function startHealthMonitoring() {
+  // Skip health monitoring if RUM is disabled
+  if (!monitoring.isEnabled()) {
+    return;
+  }
+
   // High priority - every minute
   setInterval(async () => {
     const searchHealthy = await healthChecks.checkSearchAvailability();

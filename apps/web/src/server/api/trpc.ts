@@ -147,6 +147,35 @@ export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
   return next({ ctx });
 });
 
+// Feature flag middleware factory
+// Use to gate entire routers or procedures behind feature flags
+import type { FeatureFlagKey } from '~/lib/feature-flags';
+
+export function createFeatureFlagMiddleware(flag: FeatureFlagKey) {
+  return t.middleware(async ({ ctx, next }) => {
+    const { isFeatureEnabled, FeatureFlags } = await import('~/lib/feature-flags');
+
+    if (!isFeatureEnabled(flag)) {
+      const flagMeta = FeatureFlags[flag];
+      logger.warn(`Feature flag blocked: ${flag}`, {
+        correlationId: ctx.correlationId,
+        userId: ctx.session?.user?.id,
+      });
+
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: `Feature '${flagMeta.description}' is not enabled`,
+      });
+    }
+
+    return next({ ctx });
+  });
+}
+
+// Agent procedure - admin access gated by AGENT_ENABLED feature flag
+// Use: agentProcedure.query(...) or agentProcedure.mutation(...)
+export const agentProcedure = adminProcedure.use(createFeatureFlagMiddleware('AGENT_ENABLED'));
+
 // Premium procedure that requires an active subscription
 export const premiumProcedure = protectedProcedure.use(async ({ ctx, next }) => {
   const { isSubscriptionActive } = await import('~/utils/subscription');
