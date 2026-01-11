@@ -34,12 +34,15 @@ const AGE_PRESETS = [
 ];
 
 const SearchPage: NextPage = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { filters, setFilters, clearAllFilters, hasActiveFilters, activeFilterCount } =
     useSearchFilters();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [searchInput, setSearchInput] = useState(filters.query || '');
   const [locationInput, setLocationInput] = useState(filters.suburb || '');
+
+  // Only fetch when authenticated (prevents UNAUTHORIZED errors during session establishment)
+  const isAuthenticated = status === 'authenticated';
 
   // Fetch search results
   const {
@@ -61,7 +64,7 @@ const SearchPage: NextPage = () => {
       offset: 0,
     },
     {
-      enabled: true,
+      enabled: isAuthenticated,
       staleTime: 30000,
     },
   );
@@ -302,7 +305,7 @@ const SearchPage: NextPage = () => {
                 {/* Results Header */}
                 <div className="flex items-center justify-between mb-4">
                   <h1 className="text-xl font-semibold text-gray-900">
-                    {isLoading ? (
+                    {status === 'loading' || isLoading ? (
                       'Searching...'
                     ) : (
                       <>
