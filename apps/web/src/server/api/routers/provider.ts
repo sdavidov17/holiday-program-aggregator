@@ -3,6 +3,36 @@ import { z } from 'zod';
 import { ProviderRepository } from '~/repositories/provider.repository';
 import { adminProcedure, createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 
+// Activity categories for filtering
+const _ACTIVITY_CATEGORIES = [
+  'Sports',
+  'Arts',
+  'Educational',
+  'Outdoor',
+  'Technology',
+  'Music',
+  'Drama',
+  'Dance',
+  'Cooking',
+  'Science',
+] as const;
+
+// Search input schema
+const _searchSchema = z.object({
+  query: z.string().optional(),
+  suburb: z.string().optional(),
+  state: z.string().optional(),
+  postcode: z.string().optional(),
+  categories: z.array(z.string()).optional(),
+  ageMin: z.coerce.number().int().min(0).max(18).optional(),
+  ageMax: z.coerce.number().int().min(0).max(18).optional(),
+  startDate: z.string().optional(), // ISO date string
+  endDate: z.string().optional(), // ISO date string
+  maxPrice: z.coerce.number().min(0).optional(),
+  limit: z.coerce.number().int().min(1).max(50).default(20),
+  offset: z.coerce.number().int().min(0).default(0),
+});
+
 // Input schemas
 const createProviderSchema = z.object({
   businessName: z.string().min(1, 'Business name is required'),
@@ -51,7 +81,142 @@ const createProgramSchema = z.object({
   isPublished: z.boolean().optional(),
 });
 
+// Re-export categories for frontend
+export const ACTIVITY_CATEGORIES = _ACTIVITY_CATEGORIES;
+
 export const providerRouter = createTRPCRouter({
+  // Search providers and programs with filters
+  search: protectedProcedure.input(_searchSchema).query(async ({ ctx, input }) => {
+    const {
+      query,
+      suburb,
+      state,
+      postcode,
+      categories,
+      ageMin,
+      ageMax,
+      startDate,
+      endDate,
+      maxPrice,
+      limit,
+      offset,
+    } = input;
+
+    // Build provider where clause
+    const providerWhere: Record<string, unknown> = {
+      isPublished: true,
+      isVetted: true,
+    };
+
+    // Location filters
+    if (suburb) {
+      providerWhere.suburb = { contains: suburb, mode: 'insensitive' };
+    }
+    if (state) {
+      providerWhere.state = state;
+    }
+    if (postcode) {
+      providerWhere.postcode = postcode;
+    }
+
+    // Text search on business name and description
+    if (query) {
+      providerWhere.OR = [
+        { businessName: { contains: query, mode: 'insensitive' } },
+        { description: { contains: query, mode: 'insensitive' } },
+      ];
+    }
+
+    // Build program where clause for filtering
+    const programWhere: Record<string, unknown> = {
+      isPublished: true,
+      isActive: true,
+    };
+
+    // Category filter
+    if (categories && categories.length > 0) {
+      programWhere.category = { in: categories };
+    }
+
+    // Age range filter - find programs that overlap with requested age range
+    if (ageMin !== undefined || ageMax !== undefined) {
+      const ageFilters: Record<string, unknown>[] = [];
+      if (ageMin !== undefined) {
+        // Program's max age must be >= user's min age
+        ageFilters.push({ ageMax: { gte: ageMin } });
+      }
+      if (ageMax !== undefined) {
+        // Program's min age must be <= user's max age
+        ageFilters.push({ ageMin: { lte: ageMax } });
+      }
+      programWhere.AND = ageFilters;
+    }
+
+    // Date range filter
+    if (startDate || endDate) {
+      const dateFilters: Record<string, unknown>[] = [];
+      if (startDate) {
+        // Program ends after or on the requested start date
+        dateFilters.push({ endDate: { gte: new Date(startDate) } });
+      }
+      if (endDate) {
+        // Program starts before or on the requested end date
+        dateFilters.push({ startDate: { lte: new Date(endDate) } });
+      }
+      programWhere.AND = [
+        ...((programWhere.AND as Record<string, unknown>[]) || []),
+        ...dateFilters,
+      ];
+    }
+
+    // Max price filter
+    if (maxPrice !== undefined) {
+      programWhere.price = { lte: maxPrice };
+    }
+
+    // Query providers with matching programs
+    const [providers, totalCount] = await Promise.all([
+      ctx.db.provider.findMany({
+        where: {
+          ...providerWhere,
+          programs: {
+            some: programWhere,
+          },
+        },
+        include: {
+          programs: {
+            where: programWhere,
+            orderBy: { startDate: 'asc' },
+          },
+        },
+        orderBy: { businessName: 'asc' },
+        skip: offset,
+        take: limit,
+      }),
+      ctx.db.provider.count({
+        where: {
+          ...providerWhere,
+          programs: {
+            some: programWhere,
+          },
+        },
+      }),
+    ]);
+
+    return {
+      providers,
+      totalCount,
+      hasMore: offset + providers.length < totalCount,
+      limit,
+      offset,
+    };
+  }),
+
+  // Get activity categories
+  getCategories: protectedProcedure.query(() => {
+    return ACTIVITY_CATEGORIES;
+  }),
+
   // Get all providers (admin only)
   getAll: adminProcedure
     .input(
