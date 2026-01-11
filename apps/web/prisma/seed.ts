@@ -24,7 +24,7 @@ const pool = new Pool({ connectionString: getDatabaseUrl() });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
-async function main() {
+async function _main() {
   console.log('🌱 Starting database seed...');
 
   // Clean up test users first
@@ -133,74 +133,73 @@ async function main() {
     console.warn('⚠️  Admin credentials not found in environment variables');
     console.log('   Set ADMIN_EMAIL and ADMIN_PASSWORD in .env.local');
     console.log('   Skipping admin user creation...');
-    return;
-  }
+  } else {
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
-  // Hash the password
-  const hashedPassword = await bcrypt.hash(adminPassword, 10);
-
-  // Check if admin already exists
-  const existingAdmin = await prisma.user.findUnique({
-    where: { email: adminEmail },
-  });
-
-  if (existingAdmin) {
-    console.log(`✅ Admin user already exists: ${adminEmail}`);
-
-    // Update to ensure they have admin role and password
-    await prisma.user.update({
+    // Check if admin already exists
+    const existingAdmin = await prisma.user.findUnique({
       where: { email: adminEmail },
-      data: {
-        role: UserRole.ADMIN,
-        password: hashedPassword,
-        emailVerified: new Date(),
-      },
     });
-    console.log(`📝 Updated ${adminEmail} to ADMIN role with latest password`);
-  } else {
-    // Create admin user
-    const admin = await prisma.user.create({
-      data: {
-        email: adminEmail,
-        name: adminName,
-        password: hashedPassword,
-        role: UserRole.ADMIN,
-        emailVerified: new Date(),
-      },
-    });
-    console.log(`✅ Created admin user: ${admin.email}`);
-  }
 
-  // Also create the same account as a regular user for testing
-  const regularUserEmail = 'serge.user@test.com';
-  const existingRegularUser = await prisma.user.findUnique({
-    where: { email: regularUserEmail },
-  });
+    if (existingAdmin) {
+      console.log(`✅ Admin user already exists: ${adminEmail}`);
 
-  if (existingRegularUser) {
-    console.log(`✅ Regular user already exists: ${regularUserEmail}`);
-    // Update password to match
-    await prisma.user.update({
+      // Update to ensure they have admin role and password
+      await prisma.user.update({
+        where: { email: adminEmail },
+        data: {
+          role: UserRole.ADMIN,
+          password: hashedPassword,
+          emailVerified: new Date(),
+        },
+      });
+      console.log(`📝 Updated ${adminEmail} to ADMIN role with latest password`);
+    } else {
+      // Create admin user
+      const admin = await prisma.user.create({
+        data: {
+          email: adminEmail,
+          name: adminName,
+          password: hashedPassword,
+          role: UserRole.ADMIN,
+          emailVerified: new Date(),
+        },
+      });
+      console.log(`✅ Created admin user: ${admin.email}`);
+    }
+
+    // Also create the same account as a regular user for testing
+    const regularUserEmail = 'serge.user@test.com';
+    const existingRegularUser = await prisma.user.findUnique({
       where: { email: regularUserEmail },
-      data: {
-        password: hashedPassword,
-        emailVerified: new Date(),
-      },
     });
-    console.log(`📝 Updated ${regularUserEmail} password`);
-  } else {
-    // Create regular user with same password
-    await prisma.user.create({
-      data: {
-        email: regularUserEmail,
-        name: 'Serge (User)',
-        password: hashedPassword,
-        role: UserRole.USER,
-        emailVerified: new Date(),
-      },
-    });
-    console.log(`✅ Created regular user: ${regularUserEmail}`);
-  }
+
+    if (existingRegularUser) {
+      console.log(`✅ Regular user already exists: ${regularUserEmail}`);
+      // Update password to match
+      await prisma.user.update({
+        where: { email: regularUserEmail },
+        data: {
+          password: hashedPassword,
+          emailVerified: new Date(),
+        },
+      });
+      console.log(`📝 Updated ${regularUserEmail} password`);
+    } else {
+      // Create regular user with same password
+      await prisma.user.create({
+        data: {
+          email: regularUserEmail,
+          name: 'Serge (User)',
+          password: hashedPassword,
+          role: UserRole.USER,
+          emailVerified: new Date(),
+        },
+      });
+      console.log(`✅ Created regular user: ${regularUserEmail}`);
+    }
+  } // End of admin credentials else block
 
   // Create a test user if it doesn't exist
   const testUserEmail = 'user@test.com';
@@ -408,7 +407,7 @@ async function main() {
   console.log('🎉 Database seed completed!');
 }
 
-main()
+_main()
   .catch((e) => {
     console.error('❌ Seed error:', e);
     process.exit(1);
