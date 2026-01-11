@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>HolidayHeroes - Find School Holiday Programs for Kids</title>
+        <title>Parent Pilot - Find School Holiday Programs for Kids</title>
         <meta
           name="description"
           content="Discover amazing school holiday activities and programs for your children. Trusted by thousands of Australian families."
@@ -153,20 +153,20 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="hero-gradient relative overflow-hidden">
+      <section className="hero-section relative overflow-hidden">
         <div className="container-custom section-padding">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-in">
-              <h1 className="text-5xl lg:text-6xl font-sans font-bold text-gray-900 mb-6">
-                Find providers for <span className="text-gradient">school holidays</span>
+              <h1 className="text-3xl lg:text-4xl font-sans font-semibold text-gray-900 mb-4">
+                Find providers for school holidays
               </h1>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-lg text-gray-600 mb-6">
                 Search through thousands of verified holiday programs and activities for your
                 children
               </p>
 
               {/* Search Form */}
-              <form onSubmit={handleSearch} className="bg-white rounded-2xl shadow-large p-2">
+              <form onSubmit={handleSearch} className="bg-white rounded-lg border border-gray-300 p-2">
                 <div className="flex flex-col md:flex-row gap-2">
                   <div className="flex-1 relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -203,21 +203,21 @@ export default function Home() {
               </form>
 
               {/* Quick Stats */}
-              <div className="flex flex-wrap gap-6 mt-8">
+              <div className="flex flex-wrap gap-6 mt-6">
                 <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-primary-600" />
+                  <Shield className="w-4 h-4 text-gray-700" />
                   <span className="text-sm text-gray-600">
                     <strong className="text-gray-900">500+</strong> Vetted Providers
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-primary-600" />
+                  <Users className="w-4 h-4 text-gray-700" />
                   <span className="text-sm text-gray-600">
                     <strong className="text-gray-900">10,000+</strong> Happy Families
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Star className="w-5 h-5 text-secondary-400 fill-secondary-400" />
+                  <Star className="w-4 h-4 text-gray-700 fill-gray-700" />
                   <span className="text-sm text-gray-600">
                     <strong className="text-gray-900">4.8</strong> Average Rating
                   </span>
@@ -227,9 +227,7 @@ export default function Home() {
 
             {/* Hero Image/Illustration */}
             <div className="relative hidden lg:block">
-              <div className="absolute -top-20 -right-20 w-96 h-96 bg-primary-100 rounded-full blur-3xl opacity-50" />
-              <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-secondary-100 rounded-full blur-3xl opacity-50" />
-              <div className="relative bg-white rounded-3xl shadow-large p-8">
+              <div className="relative bg-white rounded-lg border border-gray-200 p-8">
                 <div className="grid grid-cols-2 gap-4">
                   <ActivityIcon type="arts" size="lg" />
                   <ActivityIcon type="sports" size="lg" />
@@ -245,11 +243,11 @@ export default function Home() {
       {/* Popular Activities */}
       <section className="section-padding bg-white">
         <div className="container-custom">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-sans font-bold text-gray-900 mb-4">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl font-sans font-semibold text-gray-900 mb-2">
               Popular Activities
             </h2>
-            <p className="text-lg text-gray-600">Explore activities by category</p>
+            <p className="text-base text-gray-600">Explore activities by category</p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
@@ -268,12 +266,12 @@ export default function Home() {
       {/* Featured Providers */}
       <section className="section-padding bg-gray-50">
         <div className="container-custom">
-          <div className="flex items-center justify-between mb-12">
+          <div className="flex items-center justify-between mb-10">
             <div>
-              <h2 className="text-3xl lg:text-4xl font-sans font-bold text-gray-900 mb-4">
+              <h2 className="text-2xl font-sans font-semibold text-gray-900 mb-2">
                 Featured Providers
               </h2>
-              <p className="text-lg text-gray-600">Discover top-rated holiday program providers</p>
+              <p className="text-base text-gray-600">Discover top-rated holiday program providers</p>
             </div>
             <Link href="/providers" className="btn-secondary hidden md:flex items-center gap-2">
               View All <ChevronRight className="w-4 h-4" />
@@ -297,19 +295,19 @@ export default function Home() {
       {/* Why Choose Us */}
       <section className="section-padding bg-white">
         <div className="container-custom">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-sans font-bold text-gray-900 mb-4">
-              Why Families Choose HolidayHeroes
+          <div className="text-center mb-10">
+            <h2 className="text-2xl font-sans font-semibold text-gray-900 mb-2">
+              Why Families Choose Parent Pilot
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-base text-gray-600">
               Everything you need to find the perfect holiday program
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-8 h-8 text-primary-600" />
+              <div className="w-14 h-14 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <Shield className="w-7 h-7 text-gray-700" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Vetted Providers</h3>
               <p className="text-sm text-gray-600">
@@ -318,8 +316,8 @@ export default function Home() {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-secondary-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Star className="w-8 h-8 text-secondary-500" />
+              <div className="w-14 h-14 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <Star className="w-7 h-7 text-gray-700" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Real Reviews</h3>
               <p className="text-sm text-gray-600">
@@ -328,8 +326,8 @@ export default function Home() {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Clock className="w-8 h-8 text-green-600" />
+              <div className="w-14 h-14 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <Clock className="w-7 h-7 text-gray-700" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Save Time</h3>
               <p className="text-sm text-gray-600">
@@ -338,8 +336,8 @@ export default function Home() {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Heart className="w-8 h-8 text-pink-600" />
+              <div className="w-14 h-14 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <Heart className="w-7 h-7 text-gray-700" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Peace of Mind</h3>
               <p className="text-sm text-gray-600">
@@ -351,20 +349,20 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="section-padding bg-gradient-to-br from-primary-600 to-primary-700">
+      <section className="section-padding bg-gray-900 border-t border-gray-800">
         <div className="container-custom text-center">
-          <h2 className="text-3xl lg:text-4xl font-sans font-bold text-white mb-4">
+          <h2 className="text-2xl font-sans font-semibold text-white mb-3">
             Ready to Find the Perfect Holiday Program?
           </h2>
-          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
-            Join thousands of Australian families who trust HolidayHeroes to find amazing school
+          <p className="text-base text-gray-300 mb-6 max-w-2xl mx-auto">
+            Join thousands of Australian families who trust Parent Pilot to find amazing school
             holiday activities
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             {session ? (
               <Link
                 href="/search"
-                className="btn bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 text-lg"
+                className="btn bg-white text-gray-900 hover:bg-gray-100 px-6 py-3 text-base"
               >
                 Start Searching
               </Link>
@@ -372,13 +370,13 @@ export default function Home() {
               <>
                 <Link
                   href="/auth/signin?signup=true"
-                  className="btn bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 text-lg"
+                  className="btn bg-white text-gray-900 hover:bg-gray-100 px-6 py-3 text-base"
                 >
                   Get Started Free
                 </Link>
                 <Link
                   href="/auth/signin"
-                  className="btn bg-primary-700 text-white hover:bg-primary-800 border-2 border-white/20 px-8 py-4 text-lg"
+                  className="btn bg-gray-800 text-white hover:bg-gray-700 border border-gray-700 px-6 py-3 text-base"
                 >
                   Sign In
                 </Link>
@@ -395,7 +393,7 @@ export default function Home() {
             <div>
               <div className="mb-4">
                 <Logo showText={false} />
-                <span className="font-sans font-bold text-xl text-white ml-2">HolidayHeroes</span>
+                <span className="font-sans font-bold text-xl text-white ml-2">Parent Pilot</span>
               </div>
               <p className="text-sm">
                 Australia&apos;s trusted platform for finding school holiday programs
@@ -486,7 +484,7 @@ export default function Home() {
           </div>
 
           <div className="mt-12 pt-8 border-t border-gray-800 text-center text-sm">
-            <p>&copy; 2025 HolidayHeroes. All rights reserved.</p>
+            <p>&copy; 2026 Parent Pilot. All rights reserved.</p>
           </div>
         </div>
       </footer>

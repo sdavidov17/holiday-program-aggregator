@@ -112,7 +112,7 @@ export default function SignIn() {
               </h1>
               <p className="text-gray-600">
                 {isSignUp
-                  ? 'Join HolidayHeroes to find amazing programs'
+                  ? 'Join Parent Pilot to find amazing programs'
                   : 'Sign in to find amazing holiday programs'}
               </p>
             </div>
