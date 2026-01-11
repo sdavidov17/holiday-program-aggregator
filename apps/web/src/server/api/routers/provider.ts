@@ -120,11 +120,23 @@ export const providerRouter = createTRPCRouter({
     }
 
     // Text search on business name and description
+    // Split query into words and match any of them for better UX
     if (query) {
-      providerWhere.OR = [
-        { businessName: { contains: query, mode: 'insensitive' } },
-        { description: { contains: query, mode: 'insensitive' } },
-      ];
+      const searchTerms = query.trim().split(/\s+/).filter(Boolean);
+      if (searchTerms.length === 1) {
+        // Single word: simple contains search
+        providerWhere.OR = [
+          { businessName: { contains: query, mode: 'insensitive' } },
+          { description: { contains: query, mode: 'insensitive' } },
+        ];
+      } else {
+        // Multiple words: match any word in business name or description
+        const wordConditions = searchTerms.flatMap((term) => [
+          { businessName: { contains: term, mode: 'insensitive' } },
+          { description: { contains: term, mode: 'insensitive' } },
+        ]);
+        providerWhere.OR = wordConditions;
+      }
     }
 
     // Build program where clause for filtering
