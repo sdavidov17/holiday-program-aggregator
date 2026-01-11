@@ -432,8 +432,9 @@ test.describe('Parent Subscription Journey', () => {
       // Wait for page to be ready and session to be established
       await page.waitForLoadState('networkidle');
 
-      // Wait for session to be fully established (My Account link visible means user is logged in)
-      await expect(page.locator('text=My Account').or(page.locator('a:has-text("Profile")'))).toBeVisible({
+      // Wait for session to be fully established (profile link visible means user is logged in)
+      // The search page shows username in the profile link, so we look for the link by href
+      await expect(page.locator('a[href="/profile"]')).toBeVisible({
         timeout: 10000,
       });
 
@@ -487,10 +488,8 @@ test.describe('Parent Subscription Journey', () => {
       await page.goto('/search');
       await page.waitForLoadState('networkidle');
 
-      // Wait for session to be established
-      await expect(
-        page.locator('text=My Account').or(page.locator('a:has-text("Profile")')),
-      ).toBeVisible({ timeout: 10000 });
+      // Wait for session to be established (profile link visible means user is logged in)
+      await expect(page.locator('a[href="/profile"]')).toBeVisible({ timeout: 10000 });
 
       await page.fill('[data-testid="search-input"]', 'sports');
       await page.click('[data-testid="search-button"]');
