@@ -239,6 +239,11 @@ jobs:
       - name: Install Playwright Browsers
         run: cd apps/web && pnpm exec playwright install --with-deps chromium
 
+      - name: Seed Database with Test Data
+        run: cd apps/web && pnpm db:push && pnpm db:seed
+        env:
+          DATABASE_URL: ${{ steps.neon-db.outputs.database_url }}
+
       - name: Wait for deployment to be ready
         run: |
           echo "Waiting for ${{ needs.deploy-preview.outputs.stable-url }} to be ready..."
