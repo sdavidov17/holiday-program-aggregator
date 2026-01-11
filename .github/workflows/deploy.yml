@@ -155,10 +155,14 @@ jobs:
       - name: Deploy to Vercel (Preview)
         id: deploy
         run: |
+          # Pass DATABASE_URL both as build-env and env to ensure it's available everywhere
+          # This overrides any project-level DATABASE_URL that might point to a different database
           url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} \
+            --build-env DATABASE_URL="${{ steps.neon-db.outputs.database_url }}" \
             --env DATABASE_URL="${{ steps.neon-db.outputs.database_url }}" \
             --env NEXTAUTH_URL="https://${{ env.PREVIEW_DOMAIN }}")
           echo "preview-url=$url" >> $GITHUB_OUTPUT
+          echo "Deployed with DATABASE_URL pointing to Neon branch: pr-${{ github.event.pull_request.number }}"
 
       - name: Add Stable Preview Alias
         id: alias
