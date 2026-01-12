@@ -311,18 +311,22 @@ jobs:
     steps:
       - name: Check E2E Preview Status
         run: |
-          if [ "${{ github.actor }}" = "dependabot[bot]" ]; then
-            echo "✅ Dependabot PR - E2E Preview skipped (CI E2E tests provide coverage)"
+          # Check if this is a Dependabot PR by branch name or actor
+          IS_DEPENDABOT="false"
+          if [[ "${{ github.head_ref }}" == dependabot/* ]] || [ "${{ github.actor }}" = "dependabot[bot]" ]; then
+            IS_DEPENDABOT="true"
+          fi
+
+          if [ "$IS_DEPENDABOT" = "true" ]; then
+            echo "✅ Dependabot PR - E2E Preview not required (CI E2E tests provide coverage)"
             exit 0
           elif [ "${{ needs.e2e-preview.result }}" = "success" ]; then
             echo "✅ E2E Preview tests passed"
             exit 0
-          elif [ "${{ needs.e2e-preview.result }}" = "skipped" ] && [ "${{ github.actor }}" = "dependabot[bot]" ]; then
-            echo "✅ E2E Preview skipped for Dependabot"
-            exit 0
           else
             echo "❌ E2E Preview tests failed or were skipped unexpectedly"
             echo "Result: ${{ needs.e2e-preview.result }}"
+            echo "Branch: ${{ github.head_ref }}"
             exit 1
           fi
 
