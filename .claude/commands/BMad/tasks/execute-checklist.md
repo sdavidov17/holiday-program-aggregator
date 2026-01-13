@@ -1,3 +1,11 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# async: true - Can run checklist validation in background
+# context: fork - Runs in isolated context
+async: true
+context: fork
+---
+
 # /execute-checklist Task
 
 When this command is used, execute the following task:

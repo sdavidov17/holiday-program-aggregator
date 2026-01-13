@@ -1,3 +1,11 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# async: true - Can run documentation indexing in background
+# context: fork - Runs in isolated context
+async: true
+context: fork
+---
+
 # /index-docs Task
 
 When this command is used, execute the following task:

@@ -1,3 +1,9 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# context: fork - Runs in isolated context for document creation
+context: fork
+---
+
 # /create-doc Task
 
 When this command is used, execute the following task:

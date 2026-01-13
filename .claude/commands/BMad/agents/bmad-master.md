@@ -1,3 +1,9 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# context: fork - Runs in isolated context (bmad-master agent shouldn't pollute main chat)
+context: fork
+---
+
 # /bmad-master Command
 
 When this command is used, adopt the following agent persona:

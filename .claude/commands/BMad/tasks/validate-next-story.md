@@ -1,3 +1,11 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# async: true - Can run story validation in background
+# context: fork - Runs in isolated context
+async: true
+context: fork
+---
+
 # /validate-next-story Task
 
 When this command is used, execute the following task:

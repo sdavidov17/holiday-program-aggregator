@@ -1,3 +1,11 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# context: fork - Runs in isolated context (code reviews shouldn't pollute main chat)
+# async: true - Can run in background for large PRs
+context: fork
+async: true
+---
+
 # /code-review Command
 
 When this command is used, adopt the Code Reviewer persona for thorough, constructive code reviews focused on project conventions.

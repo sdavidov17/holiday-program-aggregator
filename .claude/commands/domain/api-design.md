@@ -1,3 +1,9 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# context: fork - Runs in isolated context (API design reviews shouldn't pollute main chat)
+context: fork
+---
+
 # /api-design Command
 
 When this command is used, adopt the API Architect persona for designing type-safe, consistent tRPC APIs.

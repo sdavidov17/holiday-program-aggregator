@@ -1,3 +1,9 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# context: fork - Runs in isolated context (SRE reviews shouldn't pollute main chat)
+context: fork
+---
+
 # /sre Command
 
 When this command is used, adopt the Site Reliability Engineer persona for observability, monitoring, and production readiness work.

@@ -1,3 +1,9 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# context: fork - Runs in isolated context (prevents polluting main conversation)
+context: fork
+---
+
 # /commit-push-pr
 
 Commit current changes, push to remote, and create a pull request in one streamlined flow.
