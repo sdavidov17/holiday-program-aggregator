@@ -157,10 +157,10 @@ export default function Home() {
         <div className="container-custom section-padding">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-in">
-              <h1 className="text-5xl lg:text-6xl font-sans font-bold text-gray-900 mb-6">
-                Find providers for <span className="text-gradient">school holidays</span>
+              <h1 className="text-5xl lg:text-6xl font-sans font-bold text-white mb-6">
+                Find providers for <span className="text-white/90">school holidays</span>
               </h1>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-xl text-white/80 mb-8">
                 Search through thousands of verified holiday programs and activities for your
                 children
               </p>
@@ -205,21 +205,21 @@ export default function Home() {
               {/* Quick Stats */}
               <div className="flex flex-wrap gap-6 mt-8">
                 <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-primary-600" />
-                  <span className="text-sm text-gray-600">
-                    <strong className="text-gray-900">500+</strong> Vetted Providers
+                  <Shield className="w-5 h-5 text-white/90" />
+                  <span className="text-sm text-white/80">
+                    <strong className="text-white">500+</strong> Vetted Providers
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-primary-600" />
-                  <span className="text-sm text-gray-600">
-                    <strong className="text-gray-900">10,000+</strong> Happy Families
+                  <Users className="w-5 h-5 text-white/90" />
+                  <span className="text-sm text-white/80">
+                    <strong className="text-white">10,000+</strong> Happy Families
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Star className="w-5 h-5 text-secondary-400 fill-secondary-400" />
-                  <span className="text-sm text-gray-600">
-                    <strong className="text-gray-900">4.8</strong> Average Rating
+                  <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                  <span className="text-sm text-white/80">
+                    <strong className="text-white">4.8</strong> Average Rating
                   </span>
                 </div>
               </div>

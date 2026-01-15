@@ -119,26 +119,26 @@
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 focus:ring-primary-500 px-6 py-3 text-sm font-medium shadow-lg hover:shadow-xl;
+    @apply rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 px-6 py-3 text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-200;
     box-shadow: var(--shadow-lg);
   }
 
   .btn-secondary {
-    @apply bg-gradient-to-r from-secondary-600 to-secondary-700 text-white hover:from-secondary-700 hover:to-secondary-800 focus:ring-secondary-500 px-6 py-3 text-sm font-medium shadow-lg hover:shadow-xl;
+    @apply rounded-xl bg-gradient-to-r from-secondary-600 to-secondary-700 text-white hover:from-secondary-700 hover:to-secondary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500 px-6 py-3 text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-200;
     box-shadow: var(--shadow-lg);
   }
 
   .btn-accent {
-    @apply bg-gradient-to-r from-accent-500 to-accent-600 text-white hover:from-accent-600 hover:to-accent-700 focus:ring-accent-400 px-6 py-3 text-sm font-medium shadow-lg hover:shadow-xl;
+    @apply rounded-xl bg-gradient-to-r from-accent-500 to-accent-600 text-white hover:from-accent-600 hover:to-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-400 px-6 py-3 text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-200;
     box-shadow: var(--shadow-lg);
   }
 
   .btn-outline {
-    @apply bg-white/80 backdrop-blur-sm text-gray-700 border-2 border-gray-200 hover:bg-white hover:border-primary-300 hover:text-primary-700 focus:ring-primary-400 px-6 py-3 text-sm font-medium shadow-md hover:shadow-lg;
+    @apply rounded-xl bg-white/80 backdrop-blur-sm text-gray-700 border-2 border-gray-200 hover:bg-white hover:border-primary-300 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-400 px-6 py-3 text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200;
   }
 
   .btn-ghost {
-    @apply bg-transparent text-gray-600 hover:bg-white/60 hover:text-gray-900 focus:ring-gray-400 px-4 py-2 text-sm backdrop-blur-sm hover:shadow-md;
+    @apply rounded-xl bg-transparent text-gray-600 hover:bg-white/60 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 px-4 py-2 text-sm backdrop-blur-sm hover:shadow-md transition-all duration-200;
   }
 
   .card {
