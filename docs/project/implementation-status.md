@@ -3,7 +3,7 @@
 ## Overview
 This document tracks the implementation status of all epics and stories for the Parent Pilot platform (formerly Holiday Hero).
 
-**Last Updated**: January 10, 2026
+**Last Updated**: January 16, 2026
 
 ---
 
@@ -11,9 +11,9 @@ This document tracks the implementation status of all epics and stories for the 
 
 | Metric | Value | Target |
 |--------|-------|--------|
-| **Total Epics** | 12 (0-11) | - |
+| **Total Epics** | 14 (0-12 + UI) | - |
 | **Completed Epics** | 1 | - |
-| **Total Stories** | 60+ | - |
+| **Total Stories** | 85+ | - |
 | **Completed Stories** | ~12 | - |
 | **Test Coverage** | 30% | 80% |
 | **Architecture Score** | 8.6/10 | - |
@@ -36,6 +36,8 @@ This document tracks the implementation status of all epics and stories for the 
 | Epic 9: Mobile & Offline | #58 | IN PROGRESS | 10% |
 | Epic 10: Advanced Features | #62 | NOT STARTED | 0% |
 | Epic 11: Native Mobile App | #82, #237-242 | PLANNED | 0% |
+| Epic 12: Direct Booking | TBD | NOT STARTED | 0% |
+| Epic UI: Design System | TBD | IN PROGRESS | 15% |
 
 ---
 
@@ -176,10 +178,77 @@ Agentic Provider Discovery - autonomous research and onboarding with human-in-th
 | Epic | Issue | Stories | Status |
 |------|-------|---------|--------|
 | Epic 7: Communication Hub | #48 | #49-52 | NOT STARTED |
-| Epic 8: Analytics & BI | #53 | #54-57 | NOT STARTED |
-| Epic 9: Mobile & Offline | #58 | #59-61 | IN PROGRESS (PWA) |
+| Epic 8: Reviews & Ratings | TBD | 5 stories | NOT STARTED |
+| Epic 9: Parent Communities | TBD | 6 stories | NOT STARTED |
 | Epic 10: Advanced Features | #62 | #63-66 | NOT STARTED |
 | Epic 11: Native Mobile | #82, #237-242 | 6 stories | PLANNED |
+
+---
+
+### Epic 8: Reviews & Ratings System (NEW)
+**Status**: NOT STARTED | **Issue**: TBD | **Priority**: P2
+
+| Story | Issue | Status |
+|-------|-------|--------|
+| 8.1: Review Submission Form | TBD | PENDING |
+| 8.2: Review Display & Moderation | TBD | PENDING |
+| 8.3: Post-Program Review Prompts | TBD | PENDING |
+| 8.4: Provider Review Response | TBD | PENDING |
+| 8.5: Review Verification Badge | TBD | PENDING |
+
+---
+
+### Epic 9: Parent Communities & Group Planning (NEW)
+**Status**: NOT STARTED | **Issue**: TBD | **Priority**: P2
+
+| Story | Issue | Status |
+|-------|-------|--------|
+| 9.1: Contact-Based Friend Discovery | TBD | PENDING |
+| 9.2: Friend Connections | TBD | PENDING |
+| 9.3: Parent Groups | TBD | PENDING |
+| 9.4: AI Group Planning | TBD | PENDING |
+| 9.5: Activity Sharing | TBD | PENDING |
+| 9.6: Group Messaging | TBD | PENDING |
+
+---
+
+### Epic 12: Direct Booking & Payments (NEW)
+**Status**: NOT STARTED | **Issue**: TBD | **Priority**: P2
+
+| Story | Issue | Status |
+|-------|-------|--------|
+| 12.1: Provider Availability Calendar | TBD | PENDING |
+| 12.2: Real-Time Availability Display | TBD | PENDING |
+| 12.3: Booking Flow UI | TBD | PENDING |
+| 12.4: Booking Payment Integration | TBD | PENDING |
+| 12.5: Parent Booking Management | TBD | PENDING |
+| 12.6: Provider Booking Dashboard | TBD | PENDING |
+| 12.7: Booking Notifications | TBD | PENDING |
+| 12.8: Booking Analytics | TBD | PENDING |
+
+**Dependencies**: Epic 6 (Provider Dashboard)
+
+---
+
+### Epic UI: Design System & UI Polish (NEW)
+**Status**: IN PROGRESS | **Issue**: TBD | **Priority**: Continuous
+
+| Story | Issue | Status |
+|-------|-------|--------|
+| UI.1: Glassmorphism Component Library | TBD | PENDING |
+| UI.2: Gradient System Enhancement | TBD | IN PROGRESS |
+| UI.3: Animation Library | TBD | PENDING |
+| UI.4: Component Consistency Audit | TBD | PENDING |
+| UI.5: Dark Mode Support | TBD | PENDING |
+| UI.6: Micro-interactions | TBD | PENDING |
+| UI.7: Responsive Polish | TBD | PENDING |
+| UI.8: Accessibility Audit | TBD | PENDING |
+
+**Current Progress**:
+- Akiflow-inspired theme foundation in globals.css
+- Button variants with rounded corners and gradients
+- Hero section with proper contrast
+- Card glass effects and floating animations
 
 ---
 
