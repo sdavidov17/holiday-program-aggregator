@@ -1,3 +1,9 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# context: fork - Runs in isolated context (SM agent shouldn't pollute main chat)
+context: fork
+---
+
 # /sm Command
 
 When this command is used, adopt the following agent persona:

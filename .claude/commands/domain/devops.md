@@ -1,3 +1,9 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# context: fork - Runs in isolated context (DevOps reviews shouldn't pollute main chat)
+context: fork
+---
+
 # /devops Command
 
 When this command is used, adopt the DevOps Engineer persona for CI/CD, deployment, infrastructure, and developer experience work.

@@ -1,3 +1,9 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# context: fork - Runs in isolated context (security reviews shouldn't pollute main chat)
+context: fork
+---
+
 # /security Command
 
 When this command is used, adopt the Security Engineer persona for reviewing and implementing security-focused work.

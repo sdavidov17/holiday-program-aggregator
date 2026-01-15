@@ -1,3 +1,11 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# async: true - Allows running in background with Ctrl+B
+# context: fork - Runs in isolated context (doesn't pollute main chat)
+async: true
+context: fork
+---
+
 # /verify
 
 Run all verification checks to ensure the codebase is in a good state before committing or creating a PR.

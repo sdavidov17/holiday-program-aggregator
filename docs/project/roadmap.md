@@ -3,7 +3,7 @@
 ## Overview
 This document consolidates all project planning for the Parent Pilot platform (formerly Holiday Hero).
 
-**Last Updated**: January 10, 2026
+**Last Updated**: January 16, 2026
 
 ---
 
@@ -20,6 +20,8 @@ This document consolidates all project planning for the Parent Pilot platform (f
 | P1 | Epic 3: Proactive Suggestions | Not Started | No |
 | P2 | Epic 6-9: Growth Features | Not Started | No |
 | P2 | Epic 11: Native Mobile App | Not Started | No |
+| P2 | Epic 12: Direct Booking & Payments | Not Started | No |
+| Cont | Epic UI: Design System | In Progress | No (parallel) |
 
 ---
 
@@ -88,17 +90,65 @@ This document consolidates all project planning for the Parent Pilot platform (f
 - **Status**: Planned (P2)
 - **Prerequisite**: PWA (Story 1.8) ✅ provides interim mobile support
 
+### Epic 12: Direct Booking & Payments (NEW)
+- **Issue**: TBD
+- **Stories**:
+  - [ ] 12.1: Provider Availability Calendar
+  - [ ] 12.2: Real-Time Availability Display
+  - [ ] 12.3: Booking Flow UI
+  - [ ] 12.4: Booking Payment Integration
+  - [ ] 12.5: Parent Booking Management
+  - [ ] 12.6: Provider Booking Dashboard
+  - [ ] 12.7: Booking Notifications
+  - [ ] 12.8: Booking Analytics
+- **Status**: Not Started (P2)
+- **Prerequisites**: Epic 6 (Provider Dashboard)
+
+### Epic UI: Design System & UI Polish (Continuous)
+- **Issue**: TBD
+- **Stories**:
+  - [ ] UI.1: Glassmorphism Component Library
+  - [ ] UI.2: Gradient System Enhancement
+  - [ ] UI.3: Animation Library (Framer Motion)
+  - [ ] UI.4: Component Consistency Audit
+  - [ ] UI.5: Dark Mode Support
+  - [ ] UI.6: Micro-interactions
+  - [ ] UI.7: Responsive Polish
+  - [ ] UI.8: Accessibility Audit
+- **Status**: In Progress (Akiflow-inspired refresh underway)
+- **Note**: Runs in parallel with all other work
+
 ---
 
 ## Critical Path
 
 ```
-Epic 1 ✅ → Epic 2 (Search) → Epic 4 (Security) → Epic 5 (Agent) → Epic 3 → Epic 11
-    │           │                   │
-    │           │                   └── Run in parallel where possible
-    │           └── MVP LAUNCH GATE
-    └── Foundation complete (85%)
+Epic 1 ✅ → Epic 2 (Search) → Epic 4 (Security) → MVP LAUNCH
+                                                      │
+    ┌─────────────────────────────────────────────────┤
+    │                                                 │
+    ▼                                                 ▼
+Epic 5 (Agent) ──────────────────────────► Epic 6 (Provider Portal)
+    │                                                 │
+    ▼                                                 ▼
+Epic 3 (Proactive) ──────────────────────► Epic 12 (Booking)
+    │                                                 │
+    ▼                                                 │
+Epic 8 (Reviews) ◄────────────────────────────────────┘
+    │
+    ▼
+Epic 9 (Communities) ──► Epic 11 (Native) ──► Epic 10 (Sports)
+
+Epic UI (Design) ─────── Parallel to ALL ──────
 ```
+
+**Phase Summary:**
+- **P0 MVP**: Epics 1, 2, 4 (subset)
+- **P1 V1.0**: Epics 5, 3, 6, 7
+- **P2 V2.0**: Epics 8, 9 (partial), 11
+- **P2 V2.5**: Epics 12, 9 (advanced)
+- **P3 V3.0**: Epic 10
+- **Continuous**: Epic UI
 
 ---
 
@@ -121,13 +171,15 @@ Epic 1 ✅ → Epic 2 (Search) → Epic 4 (Security) → Epic 5 (Agent) → Epic
 
 ## Milestone Timeline
 
-| Milestone | Epics | Key Deliverable |
-|-----------|-------|-----------------|
-| **MVP Launch** | 1, 2, 4 (subset) | Parents can search & subscribe |
-| **Agent System** | 5 | Automated provider discovery |
-| **Engagement** | 3, 6, 7 | Proactive emails, provider portal |
-| **Community** | 8, 9, 11 | Reviews, groups, native app |
-| **Expansion** | 10 | Year-round activities |
+| Milestone | Version | Epics | Target | Key Deliverable |
+|-----------|---------|-------|--------|-----------------|
+| **MVP Launch** | 1.0 | 1, 2, 4 (subset) | Q1 2026 | Parents can search & subscribe |
+| **Agent System** | 1.1 | 5 | Q2 2026 | Automated provider discovery |
+| **Growth Platform** | 1.2 | 3, 6, 7 | Q2 2026 | Proactive emails, provider portal |
+| **Social Proof** | 2.0 | 8, 9 (partial), 11 | Q3-Q4 2026 | Reviews, social basics, native app |
+| **Direct Booking** | 2.5 | 12, 9 (advanced) | Q1 2027 | In-platform booking & payments |
+| **Expansion** | 3.0 | 10 | 2027+ | Year-round activities |
+| **Design System** | - | UI | Ongoing | Premium UI polish (continuous) |
 
 ---
 
@@ -163,6 +215,49 @@ Epic 1 ✅ → Epic 2 (Search) → Epic 4 (Security) → Epic 5 (Agent) → Epic
 | 1.5 Trigger.dev Setup | #235 | Open |
 | 2.5 Observability | #236 | Open |
 | Docs: Journey Maps | #234 | Open |
+
+### Epic 8 (Reviews) - NEW
+| Story | Issue | Status |
+|-------|-------|--------|
+| 8.1 Review Submission | TBD | Planned |
+| 8.2 Review Display & Moderation | TBD | Planned |
+| 8.3 Post-Program Review Prompts | TBD | Planned |
+| 8.4 Provider Review Response | TBD | Planned |
+| 8.5 Review Verification Badge | TBD | Planned |
+
+### Epic 9 (Communities) - NEW
+| Story | Issue | Status |
+|-------|-------|--------|
+| 9.1 Contact-Based Friend Discovery | TBD | Planned |
+| 9.2 Friend Connections | TBD | Planned |
+| 9.3 Parent Groups | TBD | Planned |
+| 9.4 AI Group Planning | TBD | Planned |
+| 9.5 Activity Sharing | TBD | Planned |
+| 9.6 Group Messaging | TBD | Planned |
+
+### Epic 12 (Direct Booking) - NEW
+| Story | Issue | Status |
+|-------|-------|--------|
+| 12.1 Provider Availability Calendar | TBD | Planned |
+| 12.2 Real-Time Availability Display | TBD | Planned |
+| 12.3 Booking Flow UI | TBD | Planned |
+| 12.4 Booking Payment Integration | TBD | Planned |
+| 12.5 Parent Booking Management | TBD | Planned |
+| 12.6 Provider Booking Dashboard | TBD | Planned |
+| 12.7 Booking Notifications | TBD | Planned |
+| 12.8 Booking Analytics | TBD | Planned |
+
+### Epic UI (Design System) - NEW
+| Story | Issue | Status |
+|-------|-------|--------|
+| UI.1 Glassmorphism Component Library | TBD | Planned |
+| UI.2 Gradient System Enhancement | TBD | Planned |
+| UI.3 Animation Library | TBD | Planned |
+| UI.4 Component Consistency Audit | TBD | Planned |
+| UI.5 Dark Mode Support | TBD | Planned |
+| UI.6 Micro-interactions | TBD | Planned |
+| UI.7 Responsive Polish | TBD | Planned |
+| UI.8 Accessibility Audit | TBD | Planned |
 
 ---
 

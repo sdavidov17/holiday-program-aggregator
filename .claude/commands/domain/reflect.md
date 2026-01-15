@@ -1,3 +1,9 @@
+---
+# Skill Front Matter - Claude Code 2.10+ Features
+# context: fork - Runs in isolated context (reflection shouldn't pollute main chat)
+context: fork
+---
+
 # /reflect Command
 
 Process captured learnings from recent sessions and update CLAUDE.md with approved improvements.

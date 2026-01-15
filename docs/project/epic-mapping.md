@@ -1,6 +1,6 @@
 # Epic Mapping: PRD vs GitHub Issues
 
-## Current State (Updated: August 2, 2025)
+## Current State (Updated: January 16, 2026)
 
 After reorganization, we now have a clear epic structure that aligns the PRD with GitHub Issues.
 
@@ -36,17 +36,39 @@ After reorganization, we now have a clear epic structure that aligns the PRD wit
 - **Stories**: 4.1-4.15 (Various issues)
 - **Milestone**: Phase 2 & 3
 
-### Additional GitHub Epics (Future Work)
+#### Epic 8: Reviews & Ratings System (NEW)
+- **GitHub Issue**: #250 (epic), Stories #252-256
+- **PRD**: `docs/reference/prd.md` - Epic 8 section
+- **Stories**: 8.1-8.5
+- **Milestone**: Phase 3: Social Proof (V2.0)
 
-These epics exist in GitHub but are not yet defined in the PRD:
+#### Epic 9: Parent Communities & Group Planning (NEW)
+- **GitHub Issue**: Stories #257-262
+- **PRD**: `docs/reference/prd.md` - Epic 9 section
+- **Stories**: 9.1-9.6
+- **Milestone**: Phase 3: Social Proof (V2.0)
+
+#### Epic 12: Direct Booking & Payments (NEW)
+- **GitHub Issue**: #250 (epic), Stories #263-270
+- **PRD**: `docs/reference/prd.md` - Epic 12 section
+- **Stories**: 12.1-12.8
+- **Milestone**: Phase 4: Direct Booking (V2.5)
+
+#### Epic UI: Design System & UI Polish (NEW)
+- **GitHub Issue**: #251 (epic), Stories #271-278
+- **PRD**: `docs/reference/prd.md` - Epic UI section
+- **Stories**: UI.1-UI.8
+- **Milestone**: Continuous
+
+### Additional GitHub Epics (Legacy)
+
+These epics exist in GitHub from earlier planning:
 
 5. **Epic 5**: Provider Portal & Self-Service (Issue #37)
 6. **Epic 6**: Subscription & Payment Processing (Issue #9) - Note: Partially covered in Epic 1
 7. **Epic 7**: Communication Hub (Issue #48)
-8. **Epic 8**: Analytics & Business Intelligence (Issue #53)
-9. **Epic 9**: Mobile & Offline Support (Issue #58)
 10. **Epic 10**: Advanced Features & Integrations (Issue #62)
-11. **Epic 11**: Proactive Suggestions (Issue #82) - Duplicate of Epic 3
+11. **Epic 11**: Native Mobile App (Issues #237-242)
 
 ## Story Mapping
 
@@ -80,6 +102,41 @@ These epics exist in GitHub but are not yet defined in the PRD:
 
 #### Epic 4:
 - Story 4.1-4.15: See `docs/epic-story-structure.md` for full list
+
+#### Epic 8 (Reviews - NEW):
+- Story 8.1: Review Submission Form → Issue #252
+- Story 8.2: Review Display & Moderation → Issue #253
+- Story 8.3: Post-Program Review Prompts → Issue #254
+- Story 8.4: Provider Review Response → Issue #255
+- Story 8.5: Review Verification Badge → Issue #256
+
+#### Epic 9 (Communities - NEW):
+- Story 9.1: Contact-Based Friend Discovery → Issue #257
+- Story 9.2: Friend Connections → Issue #258
+- Story 9.3: Parent Groups → Issue #259
+- Story 9.4: AI Group Planning → Issue #260
+- Story 9.5: Activity Sharing → Issue #261
+- Story 9.6: Group Messaging → Issue #262
+
+#### Epic 12 (Booking - NEW):
+- Story 12.1: Provider Availability Calendar → Issue #263
+- Story 12.2: Real-Time Availability Display → Issue #264
+- Story 12.3: Booking Flow UI → Issue #265
+- Story 12.4: Booking Payment Integration → Issue #266
+- Story 12.5: Parent Booking Management → Issue #267
+- Story 12.6: Provider Booking Dashboard → Issue #268
+- Story 12.7: Booking Notifications → Issue #269
+- Story 12.8: Booking Analytics → Issue #270
+
+#### Epic UI (Design System - NEW):
+- Story UI.1: Glassmorphism Component Library → Issue #271
+- Story UI.2: Gradient System Enhancement → Issue #272
+- Story UI.3: Animation Library → Issue #273
+- Story UI.4: Component Consistency Audit → Issue #274
+- Story UI.5: Dark Mode Support → Issue #275
+- Story UI.6: Micro-interactions → Issue #276
+- Story UI.7: Responsive Polish → Issue #277
+- Story UI.8: Accessibility Audit → Issue #278
 
 ## Cleanup Actions Completed
 

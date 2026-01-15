@@ -28,6 +28,7 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 | 10/01/2026 | 2.1 | Rebranded to "Parent Pilot". Added contact-based friend discovery. | Sergei (PM) |
 | 10/01/2026 | 2.2 | Added mobile strategy: PWA (Story 1.8) + Native App (Epic 11). | Sergei (PM) |
 | 10/01/2026 | 2.3 | Reconciled MVP scope: Epic 5 moved to P1, Stories 1.6-1.7 merged into Epic 5. | Sergei (PM) |
+| 16/01/2026 | 2.4 | Added Epic 12 (Direct Booking) and Epic UI (Design System) based on competitive analysis. | Claude (AI) |
 
 ---
 ### **User Personas**
@@ -94,6 +95,20 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 * **FR23:** The system shall allow verified subscribers to submit reviews with star ratings, comments, and optional photos.
 * **FR24:** The system shall support parent friend groups with shared visibility of preferences and group activity planning.
 
+**Direct Booking System (P2)**
+* **FR25:** The system shall allow providers to configure program availability including dates, capacity, and time slots.
+* **FR26:** The system shall display real-time availability on program pages with "spots remaining" indicators.
+* **FR27:** The system shall enable parents to book and pay for programs directly through the platform.
+* **FR28:** The system shall process one-time booking payments through Stripe (extending existing subscription infrastructure).
+* **FR29:** The system shall provide parents with a booking management dashboard to view, modify, and cancel bookings.
+* **FR30:** The system shall provide providers with a booking dashboard to view incoming reservations and manage capacity.
+* **FR31:** The system shall send automated booking confirmations, reminders, and change notifications.
+
+**Design System (Continuous)**
+* **FR32:** The system shall implement a consistent, premium design system with glassmorphism effects, gradient theming, and smooth animations.
+* **FR33:** The system shall support dark mode with automatic system preference detection.
+* **FR34:** The system shall maintain WCAG 2.1 AA accessibility compliance across all UI components.
+
 #### **Non-Functional**
 * **NFR1 (Performance):** The core search and discovery interface shall load in under 3 seconds and achieve a Largest Contentful Paint (LCP) of under 2.5 seconds.
 * **NFR2 (Platform):** The system shall be a responsive web application, providing a consistent and fully functional experience on all modern desktop, tablet, and mobile browsers.
@@ -147,6 +162,10 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 * **Epic 8: Reviews & Ratings System:** Parent reviews and social proof.
 * **Epic 9: Parent Communities & Group Planning:** Friend connections and group activity planning.
 * **Epic 11: Native Mobile App:** Expo/React Native app for contacts API and push notifications.
+* **Epic 12: Direct Booking & Payments:** In-platform booking and payment processing.
+
+#### **Continuous Epics**
+* **Epic UI: Design System & UI Polish:** Premium Akiflow-inspired design system with glassmorphism, animations, and accessibility.
 
 #### **Expansion Epics (P3 - Future)**
 * **Epic 10: Weekend Sports & Year-Round Activities:** Expand beyond holiday programs.
@@ -397,14 +416,94 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 * **Acceptance Criteria:** 1. App Store assets (icons, screenshots, description). 2. Privacy policy and terms. 3. App review compliance. 4. Published on both stores.
 
 ---
+### **Epic 12: Direct Booking & Payments (P2)**
+
+**Epic Goal:** Enable parents to book and pay for programs directly through the platform, eliminating the need to visit external provider websites. This closes a key competitive gap with platforms like Kidsbook while creating a new revenue stream through booking fees.
+
+> **Dependencies:** Requires Epic 6 (Provider Dashboard) for provider-side availability management.
+
+#### **Story 12.1: Provider Availability Calendar**
+*As a provider, I want to configure my program availability, so that parents can see when spots are open.*
+* **Acceptance Criteria:** 1. Calendar UI for setting available dates. 2. Capacity configuration per date/session. 3. Time slot management for multi-session programs. 4. Recurring availability patterns. 5. Blackout date support.
+
+#### **Story 12.2: Real-Time Availability Display**
+*As a parent, I want to see live availability on program pages, so that I know if I can book.*
+* **Acceptance Criteria:** 1. "X spots remaining" indicator. 2. Availability calendar view on program pages. 3. Real-time updates (no stale data). 4. Sold-out visual treatment. 5. Waitlist option for full sessions.
+
+#### **Story 12.3: Booking Flow UI**
+*As a parent, I want a simple multi-step booking form, so that I can reserve a spot for my child.*
+* **Acceptance Criteria:** 1. Date/session selection. 2. Child selection (from profile). 3. Add-ons/extras selection (if applicable). 4. Review & confirm step. 5. Mobile-optimized flow.
+
+#### **Story 12.4: Booking Payment Integration**
+*As a parent, I want to pay securely for my booking, so that my spot is confirmed.*
+* **Acceptance Criteria:** 1. Stripe Checkout integration (one-time payments). 2. Card and Apple/Google Pay support. 3. Booking fee handling (platform revenue). 4. Payment confirmation and receipt. 5. Failed payment retry flow.
+
+#### **Story 12.5: Parent Booking Management**
+*As a parent, I want to view and manage my bookings, so that I can track my plans.*
+* **Acceptance Criteria:** 1. "My Bookings" dashboard. 2. Upcoming and past bookings views. 3. Booking details with program info. 4. Modification requests (date change). 5. Cancellation with refund rules.
+
+#### **Story 12.6: Provider Booking Dashboard**
+*As a provider, I want to see and manage incoming bookings, so that I can prepare for programs.*
+* **Acceptance Criteria:** 1. Bookings list with filters (date, status). 2. Booking details and attendee info. 3. Capacity utilization view. 4. Manual booking entry. 5. Export/print attendance lists.
+
+#### **Story 12.7: Booking Notifications**
+*As a parent, I want to receive booking confirmations and reminders, so that I don't forget.*
+* **Acceptance Criteria:** 1. Instant confirmation email. 2. Calendar invite (ICS attachment). 3. Reminder 1 week and 1 day before. 4. Cancellation/change notifications. 5. Push notifications (mobile app).
+
+#### **Story 12.8: Booking Analytics**
+*As an admin, I want to track booking metrics, so that I can understand platform performance.*
+* **Acceptance Criteria:** 1. Total bookings and revenue dashboard. 2. Conversion funnel (views → bookings). 3. Popular programs and times. 4. Provider performance metrics. 5. Refund/cancellation tracking.
+
+---
+### **Epic UI: Design System & UI Polish (Continuous)**
+
+**Epic Goal:** Establish and maintain a premium, Akiflow-inspired design system that conveys trust, quality, and modern aesthetics. This epic runs continuously alongside feature development to ensure visual consistency and delight.
+
+> **Note:** This epic can run in parallel with all other work. Design improvements enhance user perception of platform quality.
+
+#### **Story UI.1: Glassmorphism Component Library**
+*As a developer, I want standardized glass-effect components, so that the UI is consistent.*
+* **Acceptance Criteria:** 1. Glass card variants (light, medium, heavy blur). 2. Glass panel and modal components. 3. Documentation with usage guidelines. 4. Responsive behavior defined.
+
+#### **Story UI.2: Gradient System Enhancement**
+*As a designer, I want a consistent gradient system, so that branding is cohesive.*
+* **Acceptance Criteria:** 1. Primary, secondary, accent gradients defined. 2. Hero section gradient standards. 3. Button gradient variants. 4. Text gradient utility classes.
+
+#### **Story UI.3: Animation Library**
+*As a developer, I want a standardized animation library, so that interactions feel polished.*
+* **Acceptance Criteria:** 1. Framer Motion integration. 2. Entrance animations (fade, slide, scale). 3. Hover and click interactions. 4. Loading skeleton animations. 5. Page transition effects.
+
+#### **Story UI.4: Component Consistency Audit**
+*As a developer, I want all existing components to match the design system, so that the app looks unified.*
+* **Acceptance Criteria:** 1. Audit all existing components. 2. Update to use design tokens. 3. Fix inconsistent spacing/colors. 4. Ensure button variants match. 5. Form inputs standardized.
+
+#### **Story UI.5: Dark Mode Support**
+*As a parent, I want dark mode, so that I can browse comfortably at night.*
+* **Acceptance Criteria:** 1. Dark theme color palette. 2. System preference detection. 3. Manual toggle in settings. 4. Persisted preference. 5. All components dark-mode compatible.
+
+#### **Story UI.6: Micro-interactions**
+*As a user, I want subtle interactions, so that the app feels responsive and alive.*
+* **Acceptance Criteria:** 1. Button hover/press states. 2. Loading state indicators. 3. Success/error feedback animations. 4. Card hover effects. 5. Form validation animations.
+
+#### **Story UI.7: Responsive Polish**
+*As a mobile user, I want the app to work flawlessly on my phone, so that I can search on the go.*
+* **Acceptance Criteria:** 1. Mobile breakpoint audit. 2. Touch target size compliance (44px). 3. Gesture support where appropriate. 4. No horizontal scroll issues. 5. Performance on 3G networks.
+
+#### **Story UI.8: Accessibility Audit**
+*As a user with disabilities, I want the app to be accessible, so that I can use it effectively.*
+* **Acceptance Criteria:** 1. WCAG 2.1 AA compliance audit. 2. Color contrast fixes. 3. Keyboard navigation complete. 4. Screen reader testing. 5. Focus states visible.
+
+---
 ### **Priority Roadmap**
 
-| Phase | Priority | Epics | Focus |
-|-------|----------|-------|-------|
-| **MVP** | P0 | 1, 2, 4 (subset) | Foundation + Search + Security basics + PWA |
-| **V1.0** | P1 | 5, 3, 6-7 | Agent Discovery + Proactive + Provider Portal |
-| **V2.0** | P2 | 8-9, 11 | Reviews + Communities + Native Mobile App |
-| **V3.0** | P3 | 10 | Weekend Sports |
+| Phase | Priority | Epics | Focus | Target |
+|-------|----------|-------|-------|--------|
+| **MVP** | P0 | 1, 2, 4 (subset) | Foundation + Search + Security basics + PWA | Q1 2026 |
+| **V1.0** | P1 | 5, 3, 6-7 | Agent Discovery + Proactive + Provider Portal | Q2 2026 |
+| **V2.0** | P2 | 8, 9 (partial), 11 | Reviews + Social Basics + Native Mobile | Q3-Q4 2026 |
+| **V2.5** | P2 | 12, 9 (advanced) | Direct Booking + AI Group Planning | Q1 2027 |
+| **V3.0** | P3 | 10 | Weekend Sports & Year-Round | 2027+ |
+| **Continuous** | - | UI | Design System & UI Polish | Ongoing |
 
 > **MVP Scope Clarification**: Epic 5 (Agentic Provider Discovery) moved from P0 to P1. MVP focuses on enabling parents to search manually-onboarded providers. Agent automation scales provider acquisition post-launch.
 
@@ -425,6 +524,8 @@ This document outlines the requirements for the Parent Pilot platform, addressin
 | J7: Parent Communities | Epic 9 |
 | J8: AI Group Planning | Epic 9 |
 | J9: Weekend Sports | Epic 10 |
+| J10: Direct Booking | Epic 12 |
+| J11: Premium UI Experience | Epic UI |
 
 > **See Also**: [Customer Journeys Proposal](/docs/reference/customer-journeys-proposal.md) for detailed priority matrix and success metrics.
 
