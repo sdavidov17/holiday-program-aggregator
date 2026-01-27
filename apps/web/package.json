@@ -59,7 +59,7 @@
     "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
     "express-rate-limit": "^8.2.1",
-    "hono": "^4.11.4",
+    "hono": "^4.11.7",
     "lru-cache": "^11.2.4",
     "lucide-react": "^0.562.0",
     "micro": "^10.0.1",
